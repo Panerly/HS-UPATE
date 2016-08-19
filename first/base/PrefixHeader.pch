@@ -1,0 +1,56 @@
+//
+//  PrefixHeader.pch
+//  first
+//
+//  Created by HS on 16/5/23.
+//  Copyright © 2016年 HS. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+
+#define  PanRandomColor [UIColor colorWithRed:arc4random_uniform(256)/255.0 green:arc4random_uniform(256)/255.0 blue:arc4random_uniform(256)/255.0 alpha:1];
+
+#define PanScreenWidth [UIScreen mainScreen].bounds.size.width
+#define PanScreenHeight [UIScreen mainScreen].bounds.size.height
+#define waterInfoAPI @"http://192.168.3.156:8080/waterweb/servlet/LServlet"
+#import "AFNetworking.h"
+#import "SCChart.h"
+#define weatherAPIkey @"87aa67335bd8e0739a06cfccc6edecb5"
+#define weatherAPI @"http://apis.baidu.com/apistore/weatherservice/cityname"
+#define hisWeatherAPI @"http://apis.baidu.com/apistore/weatherservice/recentweathers"
+#define introduction @"http://www.hzsberp.com:9999/hzsb"
+//http://chenshenlu.jios.org:8888
+//#import "Masonry.h"
+
+
+
+#endif /* PrefixHeader_pch */
+
+
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
+
+//define this constant if you want to use Masonry without the 'mas_' prefix
+#define MAS_SHORTHAND
+
+//define this constant if you want to enable auto-boxing for default syntax
+#define MAS_SHORTHAND_GLOBALS
+
+#import "Masonry.h"
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MKFoundation.h>
+#import <MapKit/MKPlacemark.h>
+#import <MapKit/MKMapItem.h>
+#import "SVProgressHUD.h"
+#import "MJRefresh.h"
+#import "SCToastView.h"
+#import "UIImage+GIF.h"
+#endif
