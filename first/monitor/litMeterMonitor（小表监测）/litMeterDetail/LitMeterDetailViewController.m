@@ -7,8 +7,11 @@
 //
 
 #import "LitMeterDetailViewController.h"
+#import "XSChart.h"
 
-@interface LitMeterDetailViewController ()
+@interface LitMeterDetailViewController ()<XSChartDataSource,XSChartDelegate>
+
+@property(nonatomic,strong)NSArray *data;
 
 @end
 
@@ -36,9 +39,16 @@
     nextBtn.layer.shadowOffset = CGSizeMake(1, 1);
     nextBtn.layer.shadowColor = [[UIColor blackColor]CGColor];
     nextBtn.layer.shadowOpacity = .80f;
-    [nextBtn setTitle:@"待定" forState:UIControlStateNormal];
+    [nextBtn setTitle:@"重置" forState:UIControlStateNormal];
     [nextBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.view addSubview:nextBtn];
+    
+    _data=@[@1,@2,@3,@4,@9,@6,@12];
+    XSChart *chart=[[XSChart alloc]initWithFrame:CGRectMake(0, 284, PanScreenWidth, 220)];
+    chart.backgroundColor = [UIColor clearColor];
+    chart.dataSource=self;
+    chart.delegate=self;
+    [self.view addSubview:chart];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,6 +56,41 @@
     if (self.view.window == nil && [self isViewLoaded]) {
         self.view = nil;
     }
+}
+
+#pragma mark - XSChartDataSource,XSChartDelegate
+-(NSInteger)numberForChart:(XSChart *)chart
+{
+    return _data.count;
+}
+-(NSInteger)chart:(XSChart *)chart valueAtIndex:(NSInteger)index
+{
+    return [_data[index] floatValue];
+}
+-(BOOL)showDataAtPointForChart:(XSChart *)chart
+{
+    return YES;
+}
+-(NSString *)chart:(XSChart *)chart titleForXLabelAtIndex:(NSInteger)index
+{
+    return [NSString stringWithFormat:@"%ld",(long)index];
+}
+-(NSString *)titleForChart:(XSChart *)chart
+{
+    return @"周用量走势";
+}
+-(NSString *)titleForXAtChart:(XSChart *)chart
+{
+    return @"日期";
+}
+-(NSString *)titleForYAtChart:(XSChart *)chart
+{
+    return @"日用量/吨";
+}
+-(void)chart:(XSChart *)view didClickPointAtIndex:(NSInteger)index
+{
+    [SCToastView showInView:self.view text:[NSString stringWithFormat:@"%ld吨",(long)index] duration:.5 autoHide:YES];
+    NSLog(@"click at index:%ld",(long)index);
 }
 
 /*

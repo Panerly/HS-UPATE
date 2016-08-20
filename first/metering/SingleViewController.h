@@ -44,8 +44,6 @@ CLLocationManagerDelegate
 @property (weak, nonatomic) IBOutlet UIImageView *thirdImage;
 
 
-@property (nonatomic, strong) UIView *scanView;
-
 //用户信息
 @property (nonatomic, strong) NSString *ipLabel;
 @property (nonatomic, strong) NSString *dbLabel;

@@ -13,15 +13,32 @@
 #import <ShareSDK/ShareSDK.h>
 #import "MeterInfoModel.h"
 #import "MeterInfoTableViewCell.h"
+#import <AVFoundation/AVFoundation.h>
 
-@interface MeteringViewController ()<UITableViewDataSource, UITableViewDelegate>
+static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
+
+@interface MeteringViewController ()
+<
+UITableViewDataSource,
+UITableViewDelegate,
+AVCaptureMetadataOutputObjectsDelegate
+>
+
 {
     //判断是大表还是小表
     BOOL isBitMeter;
     UIImageView *loading;
     NSString *cellID;
+    //扫描确认btn
+    UIButton *scanBtn;
+    
 }
 @property (nonatomic, assign) NSInteger num;
+
+@property (nonatomic) AVCaptureSession *captureSession;
+@property (nonatomic) AVCaptureVideoPreviewLayer *videoPreviewLayer;
+@property (nonatomic) BOOL lastResult;
+
 @end
 
 @implementation MeteringViewController
@@ -29,7 +46,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    self.navigationController.navigationBar.backgroundColor = [UIColor orangeColor];
+    UIBarButtonItem *scan = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"qrcode_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(QRcode)];
+    
+    self.navigationItem.rightBarButtonItems = @[scan];
     
     isBitMeter = YES;
     _num = 5;
@@ -386,5 +405,159 @@
     }
 }
 
+#pragma mark - openQrcode
+
+- (void)QRcode {
+
+    [SVProgressHUD show];
+    
+    if (!_scanView) {
+        _scanView = [[UIView alloc] initWithFrame:self.view.bounds];
+        _scanView.center = self.view.center;
+        _scanView.backgroundColor = [UIColor blackColor];
+        _scanView.alpha = .8;
+        [self.view addSubview:_scanView];
+    }
+
+    if (!scanBtn) {
+
+        scanBtn = [[UIButton alloc] init];
+    }
+    [scanBtn setTitle:@"确定" forState:UIControlStateNormal];
+    scanBtn.backgroundColor = [UIColor redColor];
+    scanBtn.clipsToBounds = YES;
+    scanBtn.layer.cornerRadius = 5;
+    [scanBtn addTarget:self action:@selector(conformBtn) forControlEvents:UIControlEventTouchUpInside];
+    [_scanView addSubview:scanBtn];
+    [scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.equalTo(CGSizeMake(80, 30));
+        make.centerX.equalTo(_scanView.centerX);
+        make.bottom.equalTo(_scanView.bottom).with.offset(-80);
+    }];
+    
+    [self startReading];
+
+}
+//关闭窗口
+- (void)conformBtn
+{
+    [SVProgressHUD dismiss];
+    
+    [UIView animateWithDuration:.5 animations:^{
+        
+        _scanView.transform = CGAffineTransformMakeScale(.001, .001);
+        _videoPreviewLayer.transform = CATransform3DMakeScale(.001, .001, .001);
+        
+    } completion:^(BOOL finished) {
+        
+        [_scanView removeFromSuperview];
+        [_videoPreviewLayer removeFromSuperlayer];
+        
+        _videoPreviewLayer = nil;
+        _scanView = nil;
+
+    }];
+}
+
+//开始读取
+- (BOOL)startReading
+{
+    // 获取 AVCaptureDevice 实例
+    NSError * error;
+    AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    // 初始化输入流
+    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
+    if (!input) {
+        NSLog(@"%@", [error localizedDescription]);
+        return NO;
+    }
+    // 创建会话
+    _captureSession = [[AVCaptureSession alloc] init];
+    // 添加输入流
+    [_captureSession addInput:input];
+    // 初始化输出流
+    AVCaptureMetadataOutput *captureMetadataOutput = [[AVCaptureMetadataOutput alloc] init];
+    // 添加输出流
+    [_captureSession addOutput:captureMetadataOutput];
+
+    // 创建dispatch queue.
+    dispatch_queue_t dispatchQueue;
+    dispatchQueue = dispatch_queue_create(kScanQRCodeQueueName, NULL);
+    [captureMetadataOutput setMetadataObjectsDelegate:self queue:dispatchQueue];
+    // 设置元数据类型 AVMetadataObjectTypeQRCode
+    [captureMetadataOutput setMetadataObjectTypes:@[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code]];
+
+    // 创建输出对象
+    if (!_videoPreviewLayer) {
+        
+        _videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_captureSession];
+        _videoPreviewLayer.cornerRadius = 10;
+        [_videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+        [_videoPreviewLayer setFrame:CGRectMake(20, _scanView.center.y-PanScreenHeight/6, PanScreenWidth - 40, PanScreenHeight/3)];
+        [self.view.layer addSublayer:_videoPreviewLayer];
+        // 开始会话
+        [_captureSession startRunning];
+    }
+    [SVProgressHUD dismiss];
+
+    return YES;
+}
+
+//停止读取
+- (void)stopReading
+{
+    // 停止会话
+    [_captureSession stopRunning];
+    _captureSession = nil;
+}
+
+//获取捕获数据
+-(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects
+      fromConnection:(AVCaptureConnection *)connection
+{
+    if (metadataObjects != nil && [metadataObjects count] > 0) {
+        AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects objectAtIndex:0];
+        NSString *result = metadataObj.stringValue;
+//        if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
+//            result = metadataObj.stringValue;
+//        } else {
+//            NSLog(@"不是二维码");
+//        }
+        [self performSelectorOnMainThread:@selector(reportScanResult:) withObject:result waitUntilDone:NO];
+    }
+}
+//处理结果
+- (void)reportScanResult:(NSString *)result
+{
+    [self stopReading];
+    NSLog(@"扫描结果：%@",result);
+    UILabel *resultLabel = [[UILabel alloc] init];
+    resultLabel.text = result;
+    resultLabel.textColor = [UIColor whiteColor];
+    resultLabel.textAlignment = NSTextAlignmentCenter;
+    [_scanView addSubview:resultLabel];
+    [resultLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.equalTo(CGSizeMake(200, 25));
+        make.centerX.equalTo(_scanView.centerX);
+        make.top.equalTo(_scanView.mas_top).with.offset(84);
+    }];
+
+    if (!_lastResult) {
+        return;
+    }
+    _lastResult = NO;
+
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"条形码扫描" message:result preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
+    }];
+    [alertVC addAction:action];
+    [self presentViewController:alertVC animated:YES completion:^{
+
+    }];
+
+    // 以下处理了结果，继续下次扫描
+    _lastResult = YES;
+}
 
 @end

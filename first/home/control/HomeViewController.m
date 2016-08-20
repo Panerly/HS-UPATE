@@ -223,9 +223,8 @@
         }
         else{
             [SVProgressHUD showErrorWithStatus:@"天气加载失败"];
-//            self.city.text = [NSString stringWithFormat:@"城市:  加载失败^_^!"];
             self.weather.text = [NSString stringWithFormat:@"天气:  加载失败^_^!"];
-            self.temLabel.text = [NSString stringWithFormat:@"温度:  加载失败^_^!"];
+            self.temLabel.text = [NSString stringWithFormat:@"气温:  加载失败^_^!"];
             self.windDriection.text = [NSString stringWithFormat:@"风向:  加载失败^_^!"];
             self.windForceScale.text = [NSString stringWithFormat:@"风力:  加载失败^_^!"];
             self.time.text = [NSString stringWithFormat:@"日期:  加载失败^_^!"];

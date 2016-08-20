@@ -19,4 +19,6 @@ BMKLocationServiceDelegate
 @property (nonatomic, strong) BMKLocationService *locService;
 @property (nonatomic, strong) BMKMapView *mapView;
 
+@property (nonatomic, strong) UITableView *tableView;
+
 @end

@@ -210,13 +210,13 @@
                         <mask key="constraints">
                             <exclude reference="aAi-Xp-WeB"/>
                             <exclude reference="o4E-YA-rro"/>
-                            <exclude reference="dIN-uN-kBC"/>
-                            <exclude reference="oyX-3y-Jhr"/>
                             <exclude reference="wLd-IQ-hsj"/>
                             <exclude reference="E7B-CX-I1a"/>
                             <exclude reference="vKm-n6-U67"/>
                             <exclude reference="9GA-M7-iTZ"/>
                             <exclude reference="QNH-Jz-eT9"/>
+                            <exclude reference="dIN-uN-kBC"/>
+                            <exclude reference="oyX-3y-Jhr"/>
                         </mask>
                     </variation>
                 </view>

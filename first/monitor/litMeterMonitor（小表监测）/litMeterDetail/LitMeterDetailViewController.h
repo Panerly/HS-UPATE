@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface LitMeterDetailViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UILabel *usageLabel;
 
 @end

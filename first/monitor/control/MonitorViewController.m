@@ -244,39 +244,40 @@
         if (_webView) {//webView没关的话退出
             [self backAction];
         }
-        
-        //移除大表btn以及滚动视图
-        for (int i = 100; i < 104; i++) {
-            
-            [UIView animateWithDuration:.5 animations:^{
+        if (button) {
+            //移除大表btn以及滚动视图
+            for (int i = 100; i < 104; i++) {
                 
-                switch (i) {
-                    case 100:
-                        ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeTranslation(-PanScreenWidth/4, -PanScreenWidth);
-                        break;
-                    case 101:
-                        ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeTranslation(-PanScreenWidth/4, PanScreenWidth);
-                        break;
-                    case 102:
-                        ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeTranslation(PanScreenWidth/4, -PanScreenWidth);
-                        break;
-                    case 103:
-                        ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeTranslation(PanScreenWidth/4, PanScreenWidth);
-                        break;
-                        
-                    default:
-                        break;
-                }
-                
-                _infinitePageView.frame = CGRectMake(0, -[UIScreen mainScreen].bounds.size.height/3, PanScreenWidth, [UIScreen mainScreen].bounds.size.height/3);
-                
-            } completion:^(BOOL finished) {
-                
-                [(UIButton *)arr[i-100] removeFromSuperview];
-                [_infinitePageView removeFromSuperview];
-                _infinitePageView = nil;
-                
-            }];
+                [UIView animateWithDuration:.5 animations:^{
+                    
+                    switch (i) {
+                        case 100:
+                            ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeTranslation(-PanScreenWidth/4, -PanScreenWidth);
+                            break;
+                        case 101:
+                            ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeTranslation(-PanScreenWidth/4, PanScreenWidth);
+                            break;
+                        case 102:
+                            ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeTranslation(PanScreenWidth/4, -PanScreenWidth);
+                            break;
+                        case 103:
+                            ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeTranslation(PanScreenWidth/4, PanScreenWidth);
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                    
+                    _infinitePageView.frame = CGRectMake(0, -[UIScreen mainScreen].bounds.size.height/3, PanScreenWidth, [UIScreen mainScreen].bounds.size.height/3);
+                    
+                } completion:^(BOOL finished) {
+                    
+                    [(UIButton *)arr[i-100] removeFromSuperview];
+                    [_infinitePageView removeFromSuperview];
+                    _infinitePageView = nil;
+                    
+                }];
+            }
         }
         
         //创建小表btn并添加animation

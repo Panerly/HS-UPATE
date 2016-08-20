@@ -7,12 +7,21 @@
 //
 
 #import "CommProViewController.h"
+#import "LitMeterDetailViewController.h"
 
 #import <BaiduMapAPI_Map/BMKPointAnnotation.h>
 #import <BaiduMapAPI_Map/BMKPinAnnotationView.h>
 
 @interface CommProViewController ()
+<
+UITableViewDelegate,
+UITableViewDataSource
+>
 
+{
+    BOOL map_type;
+    UIView *paopaoBgView;
+}
 @end
 
 @implementation CommProViewController
@@ -20,8 +29,25 @@
     [super viewDidLoad];
 
     self.title = @"小表概览";
+    
+    map_type = YES;
+    
     [self initMapView];
+    
 }
+- (void)initTableView {
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(5, 75, 290, 150)];
+    
+    _tableView.backgroundColor = [UIColor clearColor];
+    
+    _tableView.delegate = self;
+    
+    _tableView.dataSource = self;
+    
+    [paopaoBgView addSubview:_tableView];
+}
+
 //初始化地图
 - (void)initMapView {
     
@@ -40,8 +66,64 @@
     //显示当前位置
     _mapView.showsUserLocation = YES;
     
+    _mapView.showMapScaleBar = YES;
+    
     self.view = _mapView;
+    
+    [self initDirectionBtn];
+    [self initlayerBtn];
 }
+
+//切换视角
+- (void)initDirectionBtn {
+    
+    UIButton *directionBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 15 - 40, PanScreenHeight - 15 - 40, 40, 40)];
+    
+    [directionBtn setImage:[UIImage imageNamed:@"icon_direction@2x"] forState:UIControlStateNormal];
+    
+    directionBtn.backgroundColor = [UIColor whiteColor];
+    
+    directionBtn.layer.cornerRadius = 5;
+    
+    directionBtn.alpha = .8f;
+    
+    [directionBtn addTarget:self action:@selector(directionAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_mapView addSubview:directionBtn];
+}
+
+- (void)directionAction {
+    
+    _mapView.userTrackingMode = BMKUserTrackingModeFollowWithHeading;
+    
+    [_mapView updateFocusIfNeeded];
+}
+
+//切换地图类型（标准、卫星）
+- (void)initlayerBtn {
+    
+    UIButton *layerBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 15 - 40, PanScreenHeight - 15*2 - 40*2, 40, 40)];
+    
+    layerBtn.backgroundColor = [UIColor whiteColor];
+    
+    [layerBtn setImage:[UIImage imageNamed:@"icon_layer@2x"] forState:UIControlStateNormal]; 
+    
+    layerBtn.layer.cornerRadius = 5;
+    
+    layerBtn.alpha = .8f;
+    
+    [layerBtn addTarget:self action:@selector(layerAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:layerBtn];
+}
+
+- (void)layerAction :(BOOL)type{
+    
+    _mapView.mapType = map_type ? BMKMapTypeSatellite:BMKMapTypeStandard;
+    
+    map_type = !map_type;
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [_mapView viewWillAppear];
@@ -88,13 +170,13 @@
         BMKPinAnnotationView *newAnnotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"myAnnotation"];
         newAnnotationView.pinColor = BMKPinAnnotationColorRed;
         
-        newAnnotationView.image = [UIImage imageNamed:@"icon_annotation@2x"];
+        newAnnotationView.image = [UIImage imageNamed:@"icon_pin"];
         
         newAnnotationView.animatesDrop = YES;// 设置该标注点动画显示
 
         newAnnotationView.leftCalloutAccessoryView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"1"]];
 
-        UIView *paopaoBgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 240)];
+        paopaoBgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 240)];
         
         paopaoBgView.layer.cornerRadius = 10;
 
@@ -112,13 +194,16 @@
 
         [paopaoBgView addSubview:v2];
 
-        UITextView *textV = [[UITextView alloc]initWithFrame:CGRectMake(5, 85, 290, 140)];
-        textV.font = [UIFont systemFontOfSize:12];
-        textV.text = @"具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n";
-        textV.backgroundColor = [UIColor clearColor];
-        textV.textAlignment = NSTextAlignmentLeft;
-        textV.editable = NO;
-        [paopaoBgView addSubview:textV];
+//        UITextView *textV = [[UITextView alloc]initWithFrame:CGRectMake(5, 85, 290, 140)];
+//        textV.font = [UIFont systemFontOfSize:12];
+//        textV.text = @"具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n";
+//        
+//        textV.backgroundColor = [UIColor clearColor];
+//        textV.textAlignment = NSTextAlignmentLeft;
+//        textV.editable = NO;
+//        [paopaoBgView addSubview:textV];
+        
+        [self initTableView];
 
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(75, 15, 215, 25)];
 
@@ -146,6 +231,38 @@
         return newAnnotationView;
     }
     return nil;
+}
+
+#pragma mark - UITableViewDelegate && UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    return 10;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    return 60;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellID"];
+    cell.backgroundColor = [UIColor clearColor];
+    cell.textLabel.font = [UIFont systemFontOfSize:13];
+    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.text = [NSString stringWithFormat:@"条码号：110110110\n抄收时间：216-8-18\n浙江省杭州市江干区XXX小区%ld号%ld单元",(long)indexPath.row,(long)indexPath.row];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    LitMeterDetailViewController *householdDetail = [[LitMeterDetailViewController alloc] init];
+    
+    [self.navigationController showViewController:householdDetail sender:nil];
 }
 
 - (void)didReceiveMemoryWarning {

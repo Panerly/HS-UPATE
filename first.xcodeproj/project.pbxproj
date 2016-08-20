@@ -25,6 +25,8 @@
 		45090A761D66CE3C00DA9456 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 45090A751D66CE3C00DA9456 /* libstdc++.6.0.9.tbd */; };
 		45090A781D66CF9200DA9456 /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 45090A771D66CF9200DA9456 /* mapapi.bundle */; };
 		45090A7C1D66ED7100DA9456 /* icon_annotation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45090A7B1D66ED7100DA9456 /* icon_annotation@2x.png */; };
+		45090A7E1D66F47000DA9456 /* icon_direction@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45090A7D1D66F47000DA9456 /* icon_direction@2x.png */; };
+		45090A801D66F7A800DA9456 /* icon_loca@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45090A7F1D66F7A800DA9456 /* icon_loca@2x.png */; };
 		450D58AF1CEDB354009B8ED9 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 450D58AE1CEDB354009B8ED9 /* Login.storyboard */; };
 		45107CEB1D52CC9400693E3D /* bg_server.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 45107CEA1D52CC9400693E3D /* bg_server.jpg */; };
 		45107CED1D52D0C100693E3D /* calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45107CEC1D52D0C100693E3D /* calendar@2x.png */; };
@@ -166,6 +168,10 @@
 		45771FCF1D0E7DD9006BF7F3 /* 雹.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FBC1D0E7DD9006BF7F3 /* 雹.png */; };
 		45771FD01D0E7DD9006BF7F3 /* 雾.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FBD1D0E7DD9006BF7F3 /* 雾.png */; };
 		45771FD11D0E7DD9006BF7F3 /* 霾.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FBE1D0E7DD9006BF7F3 /* 霾.png */; };
+		457949631D67E4CB0064D959 /* icon_layer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 457949621D67E4CB0064D959 /* icon_layer@2x.png */; };
+		457949681D67F58F0064D959 /* icon_pin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 457949671D67F58F0064D959 /* icon_pin@2x.png */; };
+		4579496C1D682C640064D959 /* MeterChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4579496B1D682C640064D959 /* MeterChartView.m */; };
+		4579496F1D682D560064D959 /* XSChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 4579496E1D682D560064D959 /* XSChart.m */; };
 		457CEE0B1D46EAB200E961A6 /* bg_阵雨.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 457CEE0A1D46EAB200E961A6 /* bg_阵雨.jpg */; };
 		457CEE111D47065500E961A6 /* cry1.gif in Resources */ = {isa = PBXBuildFile; fileRef = 457CEE0E1D47065500E961A6 /* cry1.gif */; };
 		457CEE121D47065500E961A6 /* cry2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 457CEE0F1D47065500E961A6 /* cry2.gif */; };
@@ -413,6 +419,8 @@
 		45090A751D66CE3C00DA9456 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		45090A771D66CF9200DA9456 /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = mapapi.bundle; path = ../../BaiduMap_IOSSDK_v3/BaiduMapAPI_Map.framework/Resources/mapapi.bundle; sourceTree = "<group>"; };
 		45090A7B1D66ED7100DA9456 /* icon_annotation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_annotation@2x.png"; sourceTree = "<group>"; };
+		45090A7D1D66F47000DA9456 /* icon_direction@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_direction@2x.png"; sourceTree = "<group>"; };
+		45090A7F1D66F7A800DA9456 /* icon_loca@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_loca@2x.png"; sourceTree = "<group>"; };
 		450D58AE1CEDB354009B8ED9 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Login.storyboard; path = ../Login.storyboard; sourceTree = "<group>"; };
 		45107CEA1D52CC9400693E3D /* bg_server.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg_server.jpg; sourceTree = "<group>"; };
 		45107CEC1D52D0C100693E3D /* calendar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar@2x.png"; sourceTree = "<group>"; };
@@ -615,6 +623,12 @@
 		45771FBC1D0E7DD9006BF7F3 /* 雹.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雹.png"; sourceTree = "<group>"; };
 		45771FBD1D0E7DD9006BF7F3 /* 雾.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雾.png"; sourceTree = "<group>"; };
 		45771FBE1D0E7DD9006BF7F3 /* 霾.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "霾.png"; sourceTree = "<group>"; };
+		457949621D67E4CB0064D959 /* icon_layer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_layer@2x.png"; sourceTree = "<group>"; };
+		457949671D67F58F0064D959 /* icon_pin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_pin@2x.png"; sourceTree = "<group>"; };
+		4579496A1D682C640064D959 /* MeterChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeterChartView.h; sourceTree = "<group>"; };
+		4579496B1D682C640064D959 /* MeterChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeterChartView.m; sourceTree = "<group>"; };
+		4579496D1D682D560064D959 /* XSChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XSChart.h; sourceTree = "<group>"; };
+		4579496E1D682D560064D959 /* XSChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XSChart.m; sourceTree = "<group>"; };
 		457CEE0A1D46EAB200E961A6 /* bg_阵雨.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "bg_阵雨.jpg"; sourceTree = "<group>"; };
 		457CEE0E1D47065500E961A6 /* cry1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = cry1.gif; sourceTree = "<group>"; };
 		457CEE0F1D47065500E961A6 /* cry2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = cry2.gif; sourceTree = "<group>"; };
@@ -1287,6 +1301,7 @@
 		4549363C1D615BA5004EC4E0 /* litMeterMonitor（小表监测） */ = {
 			isa = PBXGroup;
 			children = (
+				457949691D682C110064D959 /* MeterChart */,
 				45090A4D1D66B24800DA9456 /* CommunityProfile（小区概况） */,
 				454936511D616717004EC4E0 /* litMeterDetail */,
 				454936401D615C0B004EC4E0 /* controller */,
@@ -1475,6 +1490,17 @@
 				4548092C1D41FB3600FB9D64 /* 小到中雨.png */,
 			);
 			path = "天气图标";
+			sourceTree = "<group>";
+		};
+		457949691D682C110064D959 /* MeterChart */ = {
+			isa = PBXGroup;
+			children = (
+				4579496A1D682C640064D959 /* MeterChartView.h */,
+				4579496B1D682C640064D959 /* MeterChartView.m */,
+				4579496D1D682D560064D959 /* XSChart.h */,
+				4579496E1D682D560064D959 /* XSChart.m */,
+			);
+			name = MeterChart;
 			sourceTree = "<group>";
 		};
 		457CEE0D1D47065500E961A6 /* cry */ = {
@@ -2256,6 +2282,10 @@
 				45090A441D66AB2600DA9456 /* icon_danger.png */,
 				454936571D6179BD004EC4E0 /* icon_section.png */,
 				45090A7B1D66ED7100DA9456 /* icon_annotation@2x.png */,
+				45090A7D1D66F47000DA9456 /* icon_direction@2x.png */,
+				45090A7F1D66F7A800DA9456 /* icon_loca@2x.png */,
+				457949621D67E4CB0064D959 /* icon_layer@2x.png */,
+				457949671D67F58F0064D959 /* icon_pin@2x.png */,
 			);
 			path = image;
 			sourceTree = "<group>";
@@ -2621,6 +2651,7 @@
 				45978D711CED7E6400BF3C0E /* LaunchScreen.storyboard in Resources */,
 				45107CED1D52D0C100693E3D /* calendar@2x.png in Resources */,
 				45090A451D66AB2600DA9456 /* icon_danger.png in Resources */,
+				45090A7E1D66F47000DA9456 /* icon_direction@2x.png in Resources */,
 				458DFC361D3632DD00EB874A /* 2downarrow.png in Resources */,
 				456D195C1D5C6DFA0038C442 /* refresh@2x.png in Resources */,
 				4521A9C91D5811A9003BCDDB /* config@2x.png in Resources */,
@@ -2639,6 +2670,7 @@
 				45771FC51D0E7DD9006BF7F3 /* 多云.png in Resources */,
 				452ACC3B1D20EBAE00B50002 /* 中到大雨.png in Resources */,
 				454809221D41F28800FB9D64 /* bg_多云.jpg in Resources */,
+				457949631D67E4CB0064D959 /* icon_layer@2x.png in Resources */,
 				4548092D1D41FB3600FB9D64 /* 小到中雨.png in Resources */,
 				4555A2361D45E169009D1DC6 /* MJRefresh.bundle in Resources */,
 				456D19581D5C1F2E0038C442 /* 数据交换.png in Resources */,
@@ -2682,6 +2714,7 @@
 				4590EBDE1D3492A2002C49D2 /* ImageBrowser.storyboard in Resources */,
 				45D44BCB1D1D07AB00024E1B /* 刷新3.gif in Resources */,
 				45F03A3B1D5987B5009D8E4C /* close@2x.png in Resources */,
+				45090A801D66F7A800DA9456 /* icon_loca@2x.png in Resources */,
 				459241BC1D18DEAC0007A5A5 /* chart_line.png in Resources */,
 				45D6350E1D17DAB7004358B8 /* 定位2.png in Resources */,
 				45090A781D66CF9200DA9456 /* mapapi.bundle in Resources */,
@@ -2711,6 +2744,7 @@
 				454809291D41F28800FB9D64 /* bg_沙尘暴.jpg in Resources */,
 				45771FC21D0E7DD9006BF7F3 /* 多云转晴.png in Resources */,
 				456D19561D5C1F2E0038C442 /* 日盘点.png in Resources */,
+				457949681D67F58F0064D959 /* icon_pin@2x.png in Resources */,
 				450103021CF2AA560070E38A /* HomeSB.storyboard in Resources */,
 				45771FC71D0E7DD9006BF7F3 /* 小雨.png in Resources */,
 				454809231D41F28800FB9D64 /* bg_fine_night.jpg in Resources */,
@@ -2793,6 +2827,7 @@
 				45D44BBE1D1CFADA00024E1B /* SCCircleCell.m in Sources */,
 				45901B9D1D41E13100E6249C /* UIView+WebCacheOperation.m in Sources */,
 				45901B7B1D41E13100E6249C /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				4579496C1D682C640064D959 /* MeterChartView.m in Sources */,
 				45901B751D41E13100E6249C /* MASConstraint.m in Sources */,
 				45901B9F1D41E13100E6249C /* SVIndefiniteAnimatedView.m in Sources */,
 				45901B831D41E13100E6249C /* SCChart.m in Sources */,
@@ -2915,6 +2950,7 @@
 				45090A671D66BFCF00DA9456 /* CommProViewController.mm in Sources */,
 				4555A2351D45E169009D1DC6 /* MJRefreshStateHeader.m in Sources */,
 				45D44BD01D1D15F100024E1B /* HisDetailModel.m in Sources */,
+				4579496F1D682D560064D959 /* XSChart.m in Sources */,
 				458A74E91D5ADEEA00A53D8C /* MeterInfoTableViewCell.m in Sources */,
 				45901B6C1D41E13100E6249C /* JSONHTTPClient.m in Sources */,
 				45D6350C1D17B9E6004358B8 /* QueryModel.m in Sources */,

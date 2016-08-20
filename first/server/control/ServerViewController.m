@@ -62,7 +62,7 @@
     arr = [[NSMutableArray alloc] init];
     [arr removeAllObjects];
     
-    NSArray *titleArr = @[@"水费缴纳",@"意见建议",@"帮助说明",@"保修求助",@"服务热线"];
+    NSArray *titleArr = @[@"水费缴纳",@"意见建议",@"帮助说明",@"报修求助",@"服务热线"];
     NSArray *imageArr = @[@"waterCharg",@"suggestions",@"explain",@"help",@"call_icon"];
     
     for (int i = 0; i < 2; i++) {
