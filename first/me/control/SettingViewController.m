@@ -19,7 +19,6 @@
     NSString *userIdenty;
     NSUInteger fileSize;
 }
-
 @end
 
 @implementation SettingViewController
@@ -27,7 +26,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    UIImageView *bgView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    [bgView setImage:[UIImage imageNamed:@"bg_weather3.jpg"]];
+    [self.view addSubview:bgView];
+    
+    UIVisualEffectView *effectView;
+    if (!effectView) {
+        effectView = [[UIVisualEffectView alloc] initWithFrame:self.view.frame];
+    }
+    effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    [self.view addSubview:effectView];
     
     [self _createTableView];
 }
@@ -37,11 +45,15 @@
     
     fileSize = [[SDImageCache sharedImageCache] getDiskCount];
     [_tableView reloadData];
+ 
+    
 }
 
 - (void)_createTableView
 {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, PanScreenHeight) style:UITableViewStyleGrouped];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 79, PanScreenWidth, PanScreenHeight) style:UITableViewStyleGrouped];
+    
+    _tableView.backgroundColor = [UIColor clearColor];
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -50,7 +62,7 @@
     identy = @"logoutIdenty";
     
     _tableView.scrollEnabled = NO;
-    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
     
     [self.view addSubview:_tableView];
 }
@@ -88,8 +100,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SettingTableViewCell *userCell = [tableView dequeueReusableCellWithIdentifier:userIdenty];
-
-    userCell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (indexPath.section == 0 && indexPath.row == 0) {
         
@@ -97,35 +107,62 @@
             
             userCell = [[[NSBundle mainBundle] loadNibNamed:@"SettingTableViewCell" owner:self options:nil] lastObject];
             
+            UIVisualEffectView *effectView;
+            if (!effectView) {
+                effectView = [[UIVisualEffectView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, userCell.frame.size.height)];
+            }
+            effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+            
+            userCell.backgroundColor = [UIColor clearColor];
+            [userCell insertSubview:effectView belowSubview:userCell.contentView];
         }
-        
         return userCell;
     }
 
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     
+    cell.backgroundColor = [UIColor clearColor];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (indexPath.section == 1 && indexPath.row == 0) {
+
+        UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, cell.frame.size.height)];
+        effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        
         UIImageView *cleanImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"moreClear@2x"]];
         cleanImageView.frame = CGRectMake(10, (50-30)/2, 30, 30);
-        [cell addSubview:cleanImageView];
+        [effectView addSubview:cleanImageView];
         
-        cell.textLabel.text = @"点击清理";
-        cell.textLabel.textColor = [UIColor colorWithRed:81/255.0f green:155/255.0f blue:248/255.0f alpha:1];
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        UILabel *cleanLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+        cleanLabel.center = effectView.center;
+        cleanLabel.text = @"点击清理";
+        cleanLabel.textColor = [UIColor colorWithRed:81/255.0f green:155/255.0f blue:248/255.0f alpha:1];
+        cleanLabel.textAlignment = NSTextAlignmentCenter;
+        [effectView addSubview:cleanLabel];
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(PanScreenWidth-60, (50-25)/2, 60, 25)];
         label.text = [NSString stringWithFormat:@"%.1fM",fileSize / 1024.0 / 1024.0];
         label.font = [UIFont boldSystemFontOfSize:18];
-        [cell addSubview:label];
+        [effectView addSubview:label];
+        
+        [cell addSubview:effectView];
         
         return cell;
     }
     if (indexPath.section == 2 && indexPath.row == 0) {
-        cell.textLabel.textColor = [UIColor redColor];
-        cell.textLabel.text = @"退出登录";
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 5, PanScreenWidth-40, 40)];
+        view.backgroundColor = [UIColor redColor];
+        view.userInteractionEnabled = NO;
+        view.layer.cornerRadius = 10;
+        [cell addSubview:view];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((view.frame.size.width-70)/2, (40-25)/2, 70, 25)];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.userInteractionEnabled = NO;
+        label.text = @"退出登录";
+        [view addSubview:label];
+        view.userInteractionEnabled = NO;
         return cell;
     }
 

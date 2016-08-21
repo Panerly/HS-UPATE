@@ -25,6 +25,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIImageView *bgView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    [bgView setImage:[UIImage imageNamed:@"bg_weather3.jpg"]];
+    [self.view addSubview:bgView];
+    
+    UIVisualEffectView *effectView;
+    if (!effectView) {
+        effectView = [[UIVisualEffectView alloc] initWithFrame:self.view.frame];
+    }
+    effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    [self.view addSubview:effectView];
+    
     self.userIcon.clipsToBounds = YES;
     self.userIcon.layer.cornerRadius = 50;
     defaults = [NSUserDefaults standardUserDefaults];

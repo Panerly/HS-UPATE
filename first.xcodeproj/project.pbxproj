@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		450103021CF2AA560070E38A /* HomeSB.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 450103011CF2AA560070E38A /* HomeSB.storyboard */; };
 		450103041CF2B6A70070E38A /* bg_weater2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 450103031CF2B6A70070E38A /* bg_weater2.jpg */; };
+		450203A01D6944BB001CF0BB /* UIView+YALConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502039C1D6944BB001CF0BB /* UIView+YALConstraints.m */; };
+		450203A11D6944BB001CF0BB /* YALContextMenuTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502039F1D6944BB001CF0BB /* YALContextMenuTableView.m */; };
+		450203A61D6944D5001CF0BB /* ContextMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 450203A41D6944D5001CF0BB /* ContextMenuCell.m */; };
+		450203A71D6944D5001CF0BB /* ContextMenuCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450203A51D6944D5001CF0BB /* ContextMenuCell.xib */; };
+		450203AA1D695F4A001CF0BB /* icon_qrcode@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 450203A81D695F4A001CF0BB /* icon_qrcode@3x.png */; };
+		450203AB1D695F4A001CF0BB /* icon_close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 450203A91D695F4A001CF0BB /* icon_close@3x.png */; };
+		450203AD1D696078001CF0BB /* icon_qrcode_big@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 450203AC1D696078001CF0BB /* icon_qrcode_big@3x.png */; };
 		45090A451D66AB2600DA9456 /* icon_danger.png in Resources */ = {isa = PBXBuildFile; fileRef = 45090A441D66AB2600DA9456 /* icon_danger.png */; };
 		45090A4B1D66AD6400DA9456 /* AMWaveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 45090A481D66AD6400DA9456 /* AMWaveTransition.m */; };
 		45090A4C1D66AD6400DA9456 /* AMWaveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45090A4A1D66AD6400DA9456 /* AMWaveViewController.m */; };
@@ -46,7 +53,7 @@
 		451C258B1D4995F60076AB93 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 451C258A1D4995F60076AB93 /* RootViewController.m */; };
 		451C258D1D499D080076AB93 /* bg_晴.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 451C258C1D499D080076AB93 /* bg_晴.jpg */; };
 		451C258F1D49AA660076AB93 /* 雨夹雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 451C258E1D49AA660076AB93 /* 雨夹雪.png */; };
-		451C25911D49ABE30076AB93 /* light@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 451C25901D49ABE30076AB93 /* light@2x.png */; };
+		451C25911D49ABE30076AB93 /* light@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 451C25901D49ABE30076AB93 /* light@3x.png */; };
 		451DFFEB1D13857E003DCDDD /* weatherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 451DFFEA1D13857E003DCDDD /* weatherModel.m */; };
 		451DFFED1D13AECA003DCDDD /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DFFEC1D13AECA003DCDDD /* CoreLocation.framework */; };
 		4521337D1D24D769006841E1 /* 定位3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4521337C1D24D769006841E1 /* 定位3.png */; };
@@ -80,7 +87,7 @@
 		4521D7371D542842006DA76C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4521D7361D542842006DA76C /* MessageUI.framework */; };
 		4521D7391D542876006DA76C /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4521D7381D542876006DA76C /* ImageIO.framework */; };
 		4521D73B1D542880006DA76C /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4521D73A1D542880006DA76C /* JavaScriptCore.framework */; };
-		4521D73D1D542C3B006DA76C /* share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4521D73C1D542C3B006DA76C /* share@2x.png */; };
+		4521D73D1D542C3B006DA76C /* icon_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4521D73C1D542C3B006DA76C /* icon_share@2x.png */; };
 		452ACC381D20DFF600B50002 /* MeterDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 452ACC361D20DFF600B50002 /* MeterDataViewController.m */; };
 		452ACC391D20DFF600B50002 /* MeterDataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 452ACC371D20DFF600B50002 /* MeterDataViewController.xib */; };
 		452ACC3B1D20EBAE00B50002 /* 中到大雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 452ACC3A1D20EBAE00B50002 /* 中到大雨.png */; };
@@ -400,6 +407,17 @@
 		450102FF1CF2A7AD0070E38A /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		450103011CF2AA560070E38A /* HomeSB.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HomeSB.storyboard; sourceTree = "<group>"; };
 		450103031CF2B6A70070E38A /* bg_weater2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg_weater2.jpg; sourceTree = "<group>"; };
+		4502039B1D6944BB001CF0BB /* UIView+YALConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YALConstraints.h"; sourceTree = "<group>"; };
+		4502039C1D6944BB001CF0BB /* UIView+YALConstraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+YALConstraints.m"; sourceTree = "<group>"; };
+		4502039D1D6944BB001CF0BB /* YALContextMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YALContextMenuCell.h; sourceTree = "<group>"; };
+		4502039E1D6944BB001CF0BB /* YALContextMenuTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YALContextMenuTableView.h; sourceTree = "<group>"; };
+		4502039F1D6944BB001CF0BB /* YALContextMenuTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YALContextMenuTableView.m; sourceTree = "<group>"; };
+		450203A31D6944D5001CF0BB /* ContextMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextMenuCell.h; sourceTree = "<group>"; };
+		450203A41D6944D5001CF0BB /* ContextMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextMenuCell.m; sourceTree = "<group>"; };
+		450203A51D6944D5001CF0BB /* ContextMenuCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContextMenuCell.xib; sourceTree = "<group>"; };
+		450203A81D695F4A001CF0BB /* icon_qrcode@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_qrcode@3x.png"; sourceTree = "<group>"; };
+		450203A91D695F4A001CF0BB /* icon_close@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_close@3x.png"; sourceTree = "<group>"; };
+		450203AC1D696078001CF0BB /* icon_qrcode_big@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_qrcode_big@3x.png"; sourceTree = "<group>"; };
 		45090A441D66AB2600DA9456 /* icon_danger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_danger.png; sourceTree = "<group>"; };
 		45090A471D66AD6400DA9456 /* AMWaveTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWaveTransition.h; sourceTree = "<group>"; };
 		45090A481D66AD6400DA9456 /* AMWaveTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWaveTransition.m; sourceTree = "<group>"; };
@@ -452,7 +470,7 @@
 		451C258A1D4995F60076AB93 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		451C258C1D499D080076AB93 /* bg_晴.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "bg_晴.jpg"; sourceTree = "<group>"; };
 		451C258E1D49AA660076AB93 /* 雨夹雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雨夹雪.png"; sourceTree = "<group>"; };
-		451C25901D49ABE30076AB93 /* light@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "light@2x.png"; sourceTree = "<group>"; };
+		451C25901D49ABE30076AB93 /* light@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "light@3x.png"; sourceTree = "<group>"; };
 		451DFFE91D13857E003DCDDD /* weatherModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = weatherModel.h; sourceTree = "<group>"; };
 		451DFFEA1D13857E003DCDDD /* weatherModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = weatherModel.m; sourceTree = "<group>"; };
 		451DFFEC1D13AECA003DCDDD /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -505,7 +523,7 @@
 		4521D7361D542842006DA76C /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		4521D7381D542876006DA76C /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		4521D73A1D542880006DA76C /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		4521D73C1D542C3B006DA76C /* share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share@2x.png"; sourceTree = "<group>"; };
+		4521D73C1D542C3B006DA76C /* icon_share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_share@2x.png"; sourceTree = "<group>"; };
 		452ACC351D20DFF600B50002 /* MeterDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeterDataViewController.h; sourceTree = "<group>"; };
 		452ACC361D20DFF600B50002 /* MeterDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeterDataViewController.m; sourceTree = "<group>"; };
 		452ACC371D20DFF600B50002 /* MeterDataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeterDataViewController.xib; sourceTree = "<group>"; };
@@ -1013,6 +1031,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4502039A1D6944BB001CF0BB /* YALContextMenu */ = {
+			isa = PBXGroup;
+			children = (
+				4502039B1D6944BB001CF0BB /* UIView+YALConstraints.h */,
+				4502039C1D6944BB001CF0BB /* UIView+YALConstraints.m */,
+				4502039D1D6944BB001CF0BB /* YALContextMenuCell.h */,
+				4502039E1D6944BB001CF0BB /* YALContextMenuTableView.h */,
+				4502039F1D6944BB001CF0BB /* YALContextMenuTableView.m */,
+			);
+			name = YALContextMenu;
+			path = "../三方/YALContextMenu";
+			sourceTree = "<group>";
+		};
+		450203A21D6944D5001CF0BB /* ContextMenuCell */ = {
+			isa = PBXGroup;
+			children = (
+				450203A31D6944D5001CF0BB /* ContextMenuCell.h */,
+				450203A41D6944D5001CF0BB /* ContextMenuCell.m */,
+				450203A51D6944D5001CF0BB /* ContextMenuCell.xib */,
+			);
+			name = ContextMenuCell;
+			path = "../三方/ContextMenuCell";
+			sourceTree = "<group>";
+		};
 		45090A461D66AD6400DA9456 /* AMWaveTransition */ = {
 			isa = PBXGroup;
 			children = (
@@ -2082,6 +2124,8 @@
 		45DCA2FE1CEEDE8300E42468 /* metering(抄表) */ = {
 			isa = PBXGroup;
 			children = (
+				450203A21D6944D5001CF0BB /* ContextMenuCell */,
+				4502039A1D6944BB001CF0BB /* YALContextMenu */,
 				45BF59951D1A3B5700F3EFBD /* 抄表—单户 */,
 				45BF598F1D1A379900F3EFBD /* 任务详情 */,
 				45DCA30C1CEEDF3D00E42468 /* controller */,
@@ -2230,7 +2274,7 @@
 				45D44BC31D1D07AB00024E1B /* 刷新图片 */,
 				45771FAA1D0E7DD9006BF7F3 /* 天气图标 */,
 				45771F931D0E3B64006BF7F3 /* logo.png */,
-				4521D73C1D542C3B006DA76C /* share@2x.png */,
+				4521D73C1D542C3B006DA76C /* icon_share@2x.png */,
 				45FF5D111D0FAD1C00F3D4E4 /* dos.png */,
 				45FF5D121D0FAD1C00F3D4E4 /* mm.png */,
 				45FF5D131D0FAD1C00F3D4E4 /* userhelp.png */,
@@ -2271,7 +2315,7 @@
 				45C705F01D12436D002164C6 /* chart.png */,
 				4559EEF41D2E229500A80DE6 /* qrcode_icon.png */,
 				4559EEF61D2E336B00A80DE6 /* light.png */,
-				451C25901D49ABE30076AB93 /* light@2x.png */,
+				451C25901D49ABE30076AB93 /* light@3x.png */,
 				4559EEFA1D2E382500A80DE6 /* call_icon.png */,
 				458DFC2F1D36195200EB874A /* down.png */,
 				458DFC311D361BB200EB874A /* down2.png */,
@@ -2286,6 +2330,9 @@
 				45090A7F1D66F7A800DA9456 /* icon_loca@2x.png */,
 				457949621D67E4CB0064D959 /* icon_layer@2x.png */,
 				457949671D67F58F0064D959 /* icon_pin@2x.png */,
+				450203A81D695F4A001CF0BB /* icon_qrcode@3x.png */,
+				450203AC1D696078001CF0BB /* icon_qrcode_big@3x.png */,
+				450203A91D695F4A001CF0BB /* icon_close@3x.png */,
 			);
 			path = image;
 			sourceTree = "<group>";
@@ -2632,11 +2679,12 @@
 				45EB0C0C1D3E01E70062AE52 /* monitor_selected@2x.png in Resources */,
 				4521337D1D24D769006841E1 /* 定位3.png in Resources */,
 				45771FC31D0E7DD9006BF7F3 /* weather-forecast-14.png in Resources */,
+				450203A71D6944D5001CF0BB /* ContextMenuCell.xib in Resources */,
 				451C258F1D49AA660076AB93 /* 雨夹雪.png in Resources */,
 				45EB0C0B1D3E01E70062AE52 /* me@2x.png in Resources */,
 				45771FC91D0E7DD9006BF7F3 /* 晴.png in Resources */,
 				4545099F1D4F39E4006ED453 /* picker_bg.jpg in Resources */,
-				451C25911D49ABE30076AB93 /* light@2x.png in Resources */,
+				451C25911D49ABE30076AB93 /* light@3x.png in Resources */,
 				451C258D1D499D080076AB93 /* bg_晴.jpg in Resources */,
 				458A74EA1D5ADEEA00A53D8C /* MeterInfoTableViewCell.xib in Resources */,
 				45F03A371D5982A3009D8E4C /* moreClear@2x.png in Resources */,
@@ -2652,6 +2700,7 @@
 				45107CED1D52D0C100693E3D /* calendar@2x.png in Resources */,
 				45090A451D66AB2600DA9456 /* icon_danger.png in Resources */,
 				45090A7E1D66F47000DA9456 /* icon_direction@2x.png in Resources */,
+				450203AB1D695F4A001CF0BB /* icon_close@3x.png in Resources */,
 				458DFC361D3632DD00EB874A /* 2downarrow.png in Resources */,
 				456D195C1D5C6DFA0038C442 /* refresh@2x.png in Resources */,
 				4521A9C91D5811A9003BCDDB /* config@2x.png in Resources */,
@@ -2723,6 +2772,7 @@
 				4521D7201D542712006DA76C /* ShareSDKLocalizable.strings in Resources */,
 				456D19571D5C1F2E0038C442 /* 光电直读.png in Resources */,
 				45090A7C1D66ED7100DA9456 /* icon_annotation@2x.png in Resources */,
+				450203AA1D695F4A001CF0BB /* icon_qrcode@3x.png in Resources */,
 				45901B671D41E13100E6249C /* Info.plist in Resources */,
 				45E26C1B1D50746C00820EC3 /* Pay.xib in Resources */,
 				457CEE111D47065500E961A6 /* cry1.gif in Resources */,
@@ -2739,7 +2789,7 @@
 				454936581D6179BD004EC4E0 /* icon_section.png in Resources */,
 				45771FCB1D0E7DD9006BF7F3 /* 阵雨.png in Resources */,
 				45EB0C0A1D3E01E70062AE52 /* me_selected@2x.png in Resources */,
-				4521D73D1D542C3B006DA76C /* share@2x.png in Resources */,
+				4521D73D1D542C3B006DA76C /* icon_share@2x.png in Resources */,
 				45D635091D17B7F1004358B8 /* QueryTableViewCell.xib in Resources */,
 				454809291D41F28800FB9D64 /* bg_沙尘暴.jpg in Resources */,
 				45771FC21D0E7DD9006BF7F3 /* 多云转晴.png in Resources */,
@@ -2748,6 +2798,7 @@
 				450103021CF2AA560070E38A /* HomeSB.storyboard in Resources */,
 				45771FC71D0E7DD9006BF7F3 /* 小雨.png in Resources */,
 				454809231D41F28800FB9D64 /* bg_fine_night.jpg in Resources */,
+				450203AD1D696078001CF0BB /* icon_qrcode_big@3x.png in Resources */,
 				450103041CF2B6A70070E38A /* bg_weater2.jpg in Resources */,
 				45FF5D0F1D0FAD0400F3D4E4 /* message.png in Resources */,
 				457CEE0B1D46EAB200E961A6 /* bg_阵雨.jpg in Resources */,
@@ -2811,6 +2862,7 @@
 				4555A2371D45E169009D1DC6 /* MJRefreshConst.m in Sources */,
 				45771FA81D0E7CFD006BF7F3 /* Province.m in Sources */,
 				45901B891D41E13100E6249C /* SCPieChart.m in Sources */,
+				450203A61D6944D5001CF0BB /* ContextMenuCell.m in Sources */,
 				45978D631CED7E6400BF3C0E /* main.m in Sources */,
 				45901B741D41E13100E6249C /* MASCompositeConstraint.m in Sources */,
 				45DCA37A1CEF004E00E42468 /* LoginViewController.m in Sources */,
@@ -2907,6 +2959,7 @@
 				45D44BBC1D1CFADA00024E1B /* SCBarCell.m in Sources */,
 				45D44BAC1D1CC4B600024E1B /* HisDetailViewController.m in Sources */,
 				4555A22B1D45E169009D1DC6 /* MJRefreshFooter.m in Sources */,
+				450203A01D6944BB001CF0BB /* UIView+YALConstraints.m in Sources */,
 				4555A2291D45E169009D1DC6 /* MJRefreshBackFooter.m in Sources */,
 				45901B621D41E13100E6249C /* FXPageControl.m in Sources */,
 				4590EBE21D34930A002C49D2 /* FirstCollectionViewController.m in Sources */,
@@ -2942,6 +2995,7 @@
 				45901B661D41E13100E6249C /* HyTransitions.m in Sources */,
 				45901B841D41E13100E6249C /* SCChartLabel.m in Sources */,
 				452ACC381D20DFF600B50002 /* MeterDataViewController.m in Sources */,
+				450203A11D6944BB001CF0BB /* YALContextMenuTableView.m in Sources */,
 				45901B791D41E13100E6249C /* MASViewConstraint.m in Sources */,
 				45FF5D231D0FCD0800F3D4E4 /* CurrentReceiveTableViewCell.m in Sources */,
 				45901B6F1D41E13100E6249C /* JSONValueTransformer.m in Sources */,

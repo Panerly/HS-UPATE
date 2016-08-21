@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Metering View Controller-->
@@ -43,63 +42,36 @@
                                     <action selector="meterTypecOntrol:" destination="hWd-nY-iPm" eventType="valueChanged" id="1Bo-k1-cMh"/>
                                 </connections>
                             </segmentedControl>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="oqg-t0-HxV">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="hWd-nY-iPm" id="GaZ-3d-wDO"/>
-                                    <outlet property="delegate" destination="hWd-nY-iPm" id="Fim-Tn-8tc"/>
-                                </connections>
-                            </tableView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="fKg-12-nqk" firstAttribute="top" secondItem="oqg-t0-HxV" secondAttribute="bottom" id="2ED-yi-JB4"/>
                             <constraint firstItem="Bax-OO-hhU" firstAttribute="top" secondItem="B8Z-4a-Nj2" secondAttribute="bottom" id="4VZ-tX-PxP">
                                 <variation key="widthClass=compact" constant="10"/>
                             </constraint>
-                            <constraint firstItem="oqg-t0-HxV" firstAttribute="leading" secondItem="oX4-gt-QKI" secondAttribute="leadingMargin" constant="-20" id="Hax-UU-nmA">
-                                <variation key="widthClass=compact" constant="-20"/>
-                            </constraint>
-                            <constraint firstItem="oqg-t0-HxV" firstAttribute="top" secondItem="Bax-OO-hhU" secondAttribute="bottom" constant="10" id="JRL-Ll-oBg"/>
                             <constraint firstItem="Bax-OO-hhU" firstAttribute="centerX" secondItem="oX4-gt-QKI" secondAttribute="centerX" id="Q8j-Ed-oNE"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="oqg-t0-HxV" secondAttribute="trailing" constant="-20" id="eDw-9D-626">
-                                <variation key="widthClass=compact" constant="-20"/>
-                            </constraint>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="Bax-OO-hhU"/>
-                                <exclude reference="oqg-t0-HxV"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="2ED-yi-JB4"/>
                                 <exclude reference="4VZ-tX-PxP"/>
                                 <exclude reference="Q8j-Ed-oNE"/>
-                                <exclude reference="Hax-UU-nmA"/>
-                                <exclude reference="JRL-Ll-oBg"/>
-                                <exclude reference="eDw-9D-626"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="Bax-OO-hhU"/>
-                                <include reference="oqg-t0-HxV"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="2ED-yi-JB4"/>
                                 <include reference="4VZ-tX-PxP"/>
                                 <include reference="Q8j-Ed-oNE"/>
-                                <include reference="Hax-UU-nmA"/>
-                                <include reference="JRL-Ll-oBg"/>
-                                <include reference="eDw-9D-626"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="tableView" destination="oqg-t0-HxV" id="4TA-mx-03d"/>
+                        <outlet property="ctrlBtn" destination="Bax-OO-hhU" id="bU2-RQ-a4L"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xT6-AY-0fJ" userLabel="First Responder" sceneMemberID="firstResponder"/>

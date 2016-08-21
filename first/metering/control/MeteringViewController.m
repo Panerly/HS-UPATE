@@ -14,14 +14,19 @@
 #import "MeterInfoModel.h"
 #import "MeterInfoTableViewCell.h"
 #import <AVFoundation/AVFoundation.h>
+//自定义tableview
+#import "ContextMenuCell.h"
+#import "YALContextMenuTableView.h"
 
 static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
+static NSString *const menuCellIdentifier = @"rotationCell";
 
 @interface MeteringViewController ()
 <
 UITableViewDataSource,
 UITableViewDelegate,
-AVCaptureMetadataOutputObjectsDelegate
+AVCaptureMetadataOutputObjectsDelegate,
+YALContextMenuTableViewDelegate
 >
 
 {
@@ -31,7 +36,8 @@ AVCaptureMetadataOutputObjectsDelegate
     NSString *cellID;
     //扫描确认btn
     UIButton *scanBtn;
-    
+    //弹窗用的tableview，与界面重复，避免加载数据源混乱用BOOL区分
+    BOOL isTap;
 }
 @property (nonatomic, assign) NSInteger num;
 
@@ -39,18 +45,52 @@ AVCaptureMetadataOutputObjectsDelegate
 @property (nonatomic) AVCaptureVideoPreviewLayer *videoPreviewLayer;
 @property (nonatomic) BOOL lastResult;
 
+@property (nonatomic, strong)UITableView *tableView;
+@property (nonatomic, strong) YALContextMenuTableView* contextMenuTableView;
+
+@property (nonatomic, strong) NSArray *menuTitles;
+@property (nonatomic, strong) NSArray *menuIcons;
+
+
 @end
+
+//判断手电开启
+static BOOL flag;
 
 @implementation MeteringViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem *scan = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"qrcode_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(QRcode)];
+//    UIBarButtonItem *scan = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"qrcode_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(QRcode)];
+//    
+//    self.navigationItem.rightBarButtonItems = @[scan];
+
+    flag = YES;
     
-    self.navigationItem.rightBarButtonItems = @[scan];
+    UIBarButtonItem *more = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(presentMenuButtonTapped)];
+    self.navigationItem.rightBarButtonItem = more;
+    
+    [self initiateMenuOptions];
+    if (!self.contextMenuTableView) {
+        
+        self.contextMenuTableView = [[YALContextMenuTableView alloc]initWithTableViewDelegateDataSource:self];
+        self.contextMenuTableView.scrollEnabled = NO;
+        self.contextMenuTableView.animationDuration = 0.1;
+        //optional - implement custom YALContextMenuTableView custom protocol
+        self.contextMenuTableView.yalDelegate = self;
+        //optional - implement menu items layout
+        self.contextMenuTableView.menuItemsSide = Right;
+        self.contextMenuTableView.menuItemsAppearanceDirection = FromTopToBottom;
+        
+        //register nib
+        [self.contextMenuTableView registerNib:[UINib nibWithNibName:@"ContextMenuCell" bundle:nil] forCellReuseIdentifier:menuCellIdentifier];
+        
+    }
     
     isBitMeter = YES;
+    isTap = NO;
+    
     _num = 5;
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
@@ -215,17 +255,23 @@ AVCaptureMetadataOutputObjectsDelegate
 - (void)_createTableView
 {
     cellID = @"meterInfoID";
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.backgroundColor = [UIColor clearColor];
-
-    [_tableView registerNib:[UINib nibWithNibName:@"MeterInfoTableViewCell" bundle:nil] forCellReuseIdentifier:cellID];
-    
-    [_tableView setExclusiveTouch:YES];
-    
-    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(_requestData)];
-    _tableView.mj_header.automaticallyChangeAlpha = YES;
+    if (!_tableView) {
+        
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 50, PanScreenWidth, PanScreenHeight-50) style:UITableViewStylePlain];
+        [self.view addSubview:_tableView];
+        _tableView.backgroundColor = [UIColor clearColor];
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        self.tableView.backgroundColor = [UIColor clearColor];
+        
+        [_tableView registerNib:[UINib nibWithNibName:@"MeterInfoTableViewCell" bundle:nil] forCellReuseIdentifier:cellID];
+        
+        [_tableView setExclusiveTouch:YES];
+        
+        _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(_requestData)];
+        _tableView.mj_header.automaticallyChangeAlpha = YES;
+    }
 }
 
 //初始化加载storyboard
@@ -234,21 +280,21 @@ AVCaptureMetadataOutputObjectsDelegate
     self = [super init];
     if (self) {
         
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
-        imageView.center = self.view.center;
-        UIImage *image = [UIImage sd_animatedGIFNamed:@"cry4"];
-        [imageView setImage:image];
-        [self.view addSubview:imageView];
-        
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, 25)];
-        label.text = @"此功能暂未推出！";
-        label.textColor = [UIColor darkGrayColor];
-        label.textAlignment = NSTextAlignmentCenter;
-        [self.view addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(imageView.mas_bottom).with.offset(10);
-            make.centerX.equalTo(self.view.centerX);
-        }];
+//        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+//        imageView.center = self.view.center;
+//        UIImage *image = [UIImage sd_animatedGIFNamed:@"cry4"];
+//        [imageView setImage:image];
+//        [self.view addSubview:imageView];
+//        
+//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, 25)];
+//        label.text = @"此功能暂未推出！";
+//        label.textColor = [UIColor darkGrayColor];
+//        label.textAlignment = NSTextAlignmentCenter;
+//        [self.view addSubview:label];
+//        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(imageView.mas_bottom).with.offset(10);
+//            make.centerX.equalTo(self.view.centerX);
+//        }];
         
         self = [[UIStoryboard storyboardWithName:@"Metering" bundle:nil] instantiateViewControllerWithIdentifier:@"Metering"];
     }
@@ -367,43 +413,43 @@ AVCaptureMetadataOutputObjectsDelegate
     [task resume];
 
 }
-#pragma mark - UITableView Delegate & DataSource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return _dataArr.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    MeterInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
-
-    cell.backgroundColor = [UIColor clearColor];
-    
-    if (!cell) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"MeterInfoTableViewCell" owner:self options:nil] lastObject];
-    }
-    cell.meterInfoModel= _dataArr[indexPath.row];
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    if (isBitMeter) {
-        
-        MeteringSingleViewController *meteringVC = [[MeteringSingleViewController alloc] init];
-        meteringVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController showViewController:meteringVC sender:nil];
-    }
-    else
-    {
-        SingleViewController *singleVC = [[SingleViewController alloc] init];
-        singleVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController showViewController:singleVC sender:nil];
-    }
-}
+//#pragma mark - UITableView Delegate & DataSource
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//{
+//    return _dataArr.count;
+//}
+//
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    
+//    MeterInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
+//
+//    cell.backgroundColor = [UIColor clearColor];
+//    
+//    if (!cell) {
+//        cell = [[[NSBundle mainBundle] loadNibNamed:@"MeterInfoTableViewCell" owner:self options:nil] lastObject];
+//    }
+//    cell.meterInfoModel= _dataArr[indexPath.row];
+//    return cell;
+//}
+//
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    
+//    if (isBitMeter) {
+//        
+//        MeteringSingleViewController *meteringVC = [[MeteringSingleViewController alloc] init];
+//        meteringVC.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController showViewController:meteringVC sender:nil];
+//    }
+//    else
+//    {
+//        SingleViewController *singleVC = [[SingleViewController alloc] init];
+//        singleVC.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController showViewController:singleVC sender:nil];
+//    }
+//}
 
 #pragma mark - openQrcode
 
@@ -468,7 +514,14 @@ AVCaptureMetadataOutputObjectsDelegate
     // 初始化输入流
     AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
     if (!input) {
-        NSLog(@"%@", [error localizedDescription]);
+        
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"警告！" message:@"设备不支持！请检查" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            [self conformBtn];
+        }];
+        [alertVC addAction:action];
+        [self presentViewController:alertVC animated:YES completion:nil];
+        
         return NO;
     }
     // 创建会话
@@ -558,6 +611,176 @@ AVCaptureMetadataOutputObjectsDelegate
 
     // 以下处理了结果，继续下次扫描
     _lastResult = YES;
+}
+
+
+#pragma mark - Local methods
+
+- (void)initiateMenuOptions {
+    self.menuTitles = @[
+                        @"",
+                        @"大表扫码",
+                        @"小表扫码",
+                        @"开启手电筒",
+                        @"待添加功能",
+                        @"待添加功能"
+                        ];
+    
+    self.menuIcons = @[
+                       [UIImage imageNamed:@"icon_close@3x"],
+                       [UIImage imageNamed:@"icon_qrcode_big@3x"],
+                       [UIImage imageNamed:@"icon_qrcode@3x"],
+                       [UIImage imageNamed:@"light@3x"],
+                       [UIImage imageNamed:@"icon_loca@2x"],
+                       [UIImage imageNamed:@"icon_loca@2x"]
+                       ];
+}
+
+
+#pragma mark - YALContextMenuTableViewDelegate
+
+- (void)contextMenuTableView:(YALContextMenuTableView *)contextMenuTableView didDismissWithIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"Menu dismissed with indexpath = %@", indexPath);
+    isTap = !isTap;
+    if (!isTap) {
+        [self.view addSubview:_tableView];
+        [self.view insertSubview:_tableView belowSubview:_ctrlBtn];
+    }
+}
+
+#pragma mark - UITableViewDataSource, UITableViewDelegate
+
+- (void)tableView:(YALContextMenuTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (isTap) {
+        [tableView dismisWithIndexPath:indexPath];
+        if (indexPath.row == 1|| indexPath.row == 2) {
+            
+            [self QRcode];
+        }
+        if (indexPath.row == 3) {
+            [self systemLightSwitch:flag];
+        }
+    }else {
+        if (isBitMeter) {
+            
+            MeteringSingleViewController *meteringVC = [[MeteringSingleViewController alloc] init];
+            meteringVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController showViewController:meteringVC sender:nil];
+        }
+        else
+        {
+            SingleViewController *singleVC = [[SingleViewController alloc] init];
+            singleVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController showViewController:singleVC sender:nil];
+        }
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (isTap) {
+        return 50;
+    }
+    return 40;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (isTap) {
+        
+        return self.menuTitles.count;
+    }
+    return _dataArr.count;
+}
+
+- (UITableViewCell *)tableView:(YALContextMenuTableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (isTap) {
+        
+        ContextMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:menuCellIdentifier forIndexPath:indexPath];
+        
+        if (cell) {
+            cell.backgroundColor = [UIColor clearColor];
+            cell.menuTitleLabel.text = [self.menuTitles objectAtIndex:indexPath.row];
+            cell.menuImageView.image = [self.menuIcons objectAtIndex:indexPath.row];
+        }
+        return cell;
+    }
+    MeterInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
+    
+    cell.backgroundColor = [UIColor clearColor];
+    
+    if (!cell) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"MeterInfoTableViewCell" owner:self options:nil] lastObject];
+    }
+    cell.meterInfoModel= _dataArr[indexPath.row];
+    return cell;
+}
+
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    //should be called after rotation animation completed
+    if (isTap) {
+        
+        [self.contextMenuTableView reloadData];
+    }
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    if (isTap) {
+        
+        [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+        
+        [self.contextMenuTableView updateAlongsideRotation];
+    }
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size
+       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    if (isTap) {
+        
+        [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+        
+        
+        [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+            //should be called after rotation animation completed
+            [self.contextMenuTableView reloadData];
+        }];
+        [self.contextMenuTableView updateAlongsideRotation];
+    }
+    
+}
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
+- (void)presentMenuButtonTapped {
+    [self.contextMenuTableView showInView:self.navigationController.view withEdgeInsets:UIEdgeInsetsZero animated:YES];
+    isTap = !isTap;
+    if (isTap) {
+        [self.tableView removeFromSuperview];
+    } else {
+        
+        [self _createTableView];
+    }
+    
+}
+
+
+//打开闪光灯
+- (void)systemLightSwitch:(BOOL)open
+{
+    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    if ([device hasTorch]) {
+        [device lockForConfiguration:nil];
+        if (open) {
+            [device setTorchMode:AVCaptureTorchModeOn];
+            flag = !flag;
+        } else {
+            [device setTorchMode:AVCaptureTorchModeOff];
+            flag = !flag;
+        }
+        [device unlockForConfiguration];
+    }
 }
 
 @end

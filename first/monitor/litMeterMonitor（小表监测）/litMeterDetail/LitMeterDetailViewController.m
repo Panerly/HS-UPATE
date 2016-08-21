@@ -44,7 +44,7 @@
     [self.view addSubview:nextBtn];
     
     _data=@[@1,@2,@3,@4,@9,@6,@12];
-    XSChart *chart=[[XSChart alloc]initWithFrame:CGRectMake(0, 284, PanScreenWidth, 220)];
+    XSChart *chart=[[XSChart alloc]initWithFrame:CGRectMake(0, 270, PanScreenWidth, 220)];
     chart.backgroundColor = [UIColor clearColor];
     chart.dataSource=self;
     chart.delegate=self;

@@ -10,8 +10,9 @@
 #import "MeterInfoModel.h"
 
 @interface MeteringViewController : UIViewController
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+//@property (weak, nonatomic) IBOutlet UITableView *tableView;
 - (IBAction)meterTypecOntrol:(UISegmentedControl *)sender;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *ctrlBtn;
 
 @property (nonatomic, strong) MeterInfoModel *meterInfoModel;
 @property (nonatomic, strong) NSMutableArray *dataArr;

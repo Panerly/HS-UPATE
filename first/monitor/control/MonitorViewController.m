@@ -318,7 +318,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    
+    if (_webView) {
+        [self backAction];
+    }
     if (isBigMeter) {
         
         if (!button) {
