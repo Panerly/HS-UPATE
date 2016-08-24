@@ -568,9 +568,14 @@
     LitMeterListViewController *litMeterVC = [[LitMeterListViewController alloc] init];
     CommProViewController *communProfVC = [[CommProViewController alloc] init];
     
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"此功能暂未推出" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-    [alertVC addAction:confirm];
+//    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"此功能暂未推出" preferredStyle:UIAlertControllerStyleAlert];
+//    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+//    [alertVC addAction:confirm];
+    GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"提示" message:@"此功能暂未推出" buttonTitle:@"确定" buttonTouchedAction:^{
+        
+    } dismissAction:^{
+        
+    }];
     
     switch (sender.tag) {//100-103大表监测   200-203小表监测
             
@@ -585,6 +590,7 @@
             
             break;
         case 102:
+            dataVC.isBigMeter = YES;
             [self.navigationController showViewController:dataVC sender:nil];
             
             break;
@@ -605,12 +611,13 @@
             
             break;
         case 202:
-            [self presentViewController:alertVC animated:YES completion:nil];
+            dataVC.isBigMeter = NO;
+            [self.navigationController showViewController:dataVC sender:nil];
             
             break;
         case 203:
-            [self presentViewController:alertVC animated:YES completion:nil];
-            
+//            [self presentViewController:alertVC animated:YES completion:nil];
+            [alertView show];
             break;
             
         default:

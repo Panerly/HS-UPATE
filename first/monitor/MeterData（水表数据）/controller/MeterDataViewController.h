@@ -10,6 +10,7 @@
 
 @interface MeterDataViewController : UIViewController
 
+
 - (IBAction)dateBtn:(UIButton *)sender;
 
 //查询日期
@@ -37,5 +38,7 @@
 @property (nonatomic, strong) NSString *passWord;
 @property (nonatomic, strong) NSString *db;
 @property (nonatomic, strong) NSString *ip;
+
+@property (nonatomic, assign) BOOL isBigMeter;
 
 @end

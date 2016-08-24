@@ -18,6 +18,10 @@
 #import "ContextMenuCell.h"
 #import "YALContextMenuTableView.h"
 
+#import "LocaDBViewController.h"
+#import "CompleteViewController.h"
+#import "FTPopOverMenu.h"
+
 static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
 static NSString *const menuCellIdentifier = @"rotationCell";
 
@@ -62,31 +66,18 @@ static BOOL flag;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    UIBarButtonItem *scan = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"qrcode_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(QRcode)];
-//    
-//    self.navigationItem.rightBarButtonItems = @[scan];
+//    UIBarButtonItem *scan = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"qrcode_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(action)];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
+    [button addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *scan = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.leftBarButtonItem = scan;
 
     flag = YES;
     
-    UIBarButtonItem *more = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(presentMenuButtonTapped)];
+    UIBarButtonItem *more = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_more@2x"] style:UIBarButtonItemStylePlain target:self action:@selector(presentMenuButtonTapped)];
     self.navigationItem.rightBarButtonItem = more;
     
     [self initiateMenuOptions];
-    if (!self.contextMenuTableView) {
-        
-        self.contextMenuTableView = [[YALContextMenuTableView alloc]initWithTableViewDelegateDataSource:self];
-        self.contextMenuTableView.scrollEnabled = NO;
-        self.contextMenuTableView.animationDuration = 0.1;
-        //optional - implement custom YALContextMenuTableView custom protocol
-        self.contextMenuTableView.yalDelegate = self;
-        //optional - implement menu items layout
-        self.contextMenuTableView.menuItemsSide = Right;
-        self.contextMenuTableView.menuItemsAppearanceDirection = FromTopToBottom;
-        
-        //register nib
-        [self.contextMenuTableView registerNib:[UINib nibWithNibName:@"ContextMenuCell" bundle:nil] forCellReuseIdentifier:menuCellIdentifier];
-        
-    }
     
     isBitMeter = YES;
     isTap = NO;
@@ -141,6 +132,21 @@ static BOOL flag;
     
 //    UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(share)];
 //    self.navigationItem.rightBarButtonItems = @[share];
+}
+
+- (void)action :(UIButton *)sender{
+    [FTPopOverMenu showForSender:sender
+                        withMenu:@[@"MenuOne",@"MenuTwo",@"MenuThr"]
+                  imageNameArray:@[@"setting_icon",@"setting_icon",@"setting_icon"]
+                       doneBlock:^(NSInteger selectedIndex) {
+                           
+                           NSLog(@"done block. do something. selectedIndex : %ld", (long)selectedIndex);
+                           
+                       } dismissBlock:^{
+                           
+                           NSLog(@"user canceled. do nothing.");
+                           
+                       }];
 }
 
 //- (void)share{
@@ -271,6 +277,22 @@ static BOOL flag;
         
         _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(_requestData)];
         _tableView.mj_header.automaticallyChangeAlpha = YES;
+    }
+    
+    if (!self.contextMenuTableView) {
+        
+        self.contextMenuTableView = [[YALContextMenuTableView alloc]initWithTableViewDelegateDataSource:self];
+        self.contextMenuTableView.scrollEnabled = NO;
+        self.contextMenuTableView.animationDuration = 0.1;
+        //optional - implement custom YALContextMenuTableView custom protocol
+        self.contextMenuTableView.yalDelegate = self;
+        //optional - implement menu items layout
+        self.contextMenuTableView.menuItemsSide = Right;
+        self.contextMenuTableView.menuItemsAppearanceDirection = FromTopToBottom;
+        
+        //register nib
+        [self.contextMenuTableView registerNib:[UINib nibWithNibName:@"ContextMenuCell" bundle:nil] forCellReuseIdentifier:menuCellIdentifier];
+        
     }
 }
 
@@ -462,14 +484,14 @@ static BOOL flag;
         _scanView.center = self.view.center;
         _scanView.backgroundColor = [UIColor blackColor];
         _scanView.alpha = .8;
-        [self.view addSubview:_scanView];
+        [self.navigationController.view addSubview:_scanView];
     }
 
     if (!scanBtn) {
 
         scanBtn = [[UIButton alloc] init];
     }
-    [scanBtn setTitle:@"确定" forState:UIControlStateNormal];
+    [scanBtn setTitle:@"关闭" forState:UIControlStateNormal];
     scanBtn.backgroundColor = [UIColor redColor];
     scanBtn.clipsToBounds = YES;
     scanBtn.layer.cornerRadius = 5;
@@ -478,7 +500,7 @@ static BOOL flag;
     [scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(CGSizeMake(80, 30));
         make.centerX.equalTo(_scanView.centerX);
-        make.bottom.equalTo(_scanView.bottom).with.offset(-80);
+        make.bottom.equalTo(_scanView.bottom).with.offset(-120);
     }];
     
     [self startReading];
@@ -524,6 +546,30 @@ static BOOL flag;
         
         return NO;
     }
+    
+    //先上锁 设置完属性再解锁
+    if ([captureDevice lockForConfiguration:nil]) {
+        
+        //自动闪光灯
+        if ([captureDevice isFlashModeSupported:AVCaptureFlashModeAuto]) {
+            [captureDevice setFlashMode:AVCaptureFlashModeAuto];
+        }
+        //自动白平衡
+        if ([captureDevice isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance]) {
+            [captureDevice setWhiteBalanceMode:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance];
+        }
+        //自动对焦
+        if ([captureDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
+            [captureDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+        }
+        //自动曝光
+        if ([captureDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]) {
+            [captureDevice setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
+        }
+        [captureDevice unlockForConfiguration];
+    }
+    
+    
     // 创建会话
     _captureSession = [[AVCaptureSession alloc] init];
     // 添加输入流
@@ -546,8 +592,8 @@ static BOOL flag;
         _videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_captureSession];
         _videoPreviewLayer.cornerRadius = 10;
         [_videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-        [_videoPreviewLayer setFrame:CGRectMake(20, _scanView.center.y-PanScreenHeight/6, PanScreenWidth - 40, PanScreenHeight/3)];
-        [self.view.layer addSublayer:_videoPreviewLayer];
+        [_videoPreviewLayer setFrame:CGRectMake(20, _scanView.center.y-PanScreenHeight/4, PanScreenWidth - 40, PanScreenHeight/3)];
+        [self.navigationController.view.layer addSublayer:_videoPreviewLayer];
         // 开始会话
         [_captureSession startRunning];
     }
@@ -595,6 +641,12 @@ static BOOL flag;
         make.top.equalTo(_scanView.mas_top).with.offset(84);
     }];
 
+    [self conformBtn];
+    SingleViewController *singleVC = [[SingleViewController alloc] init];
+    singleVC.meter_id_string = result;
+    singleVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController showViewController:singleVC sender:nil];
+    
     if (!_lastResult) {
         return;
     }
@@ -611,6 +663,8 @@ static BOOL flag;
 
     // 以下处理了结果，继续下次扫描
     _lastResult = YES;
+    
+    
 }
 
 
@@ -622,8 +676,9 @@ static BOOL flag;
                         @"大表扫码",
                         @"小表扫码",
                         @"开启手电筒",
-                        @"待添加功能",
-                        @"待添加功能"
+                        @"请求网络表单",
+                        @"查看本地数据库",
+                        @"已完成抄收列表"
                         ];
     
     self.menuIcons = @[
@@ -631,8 +686,9 @@ static BOOL flag;
                        [UIImage imageNamed:@"icon_qrcode_big@3x"],
                        [UIImage imageNamed:@"icon_qrcode@3x"],
                        [UIImage imageNamed:@"light@3x"],
-                       [UIImage imageNamed:@"icon_loca@2x"],
-                       [UIImage imageNamed:@"icon_loca@2x"]
+                       [UIImage imageNamed:@"icon_db_internet@3x"],
+                       [UIImage imageNamed:@"icon_db@3x"],
+                       [UIImage imageNamed:@"icon_complete@2x"]
                        ];
 }
 
@@ -640,12 +696,37 @@ static BOOL flag;
 #pragma mark - YALContextMenuTableViewDelegate
 
 - (void)contextMenuTableView:(YALContextMenuTableView *)contextMenuTableView didDismissWithIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"Menu dismissed with indexpath = %@", indexPath);
+    NSLog(@"Menu dismissed with indexpath.row = %ld", (long)indexPath.row);
     isTap = !isTap;
     if (!isTap) {
         [self.view addSubview:_tableView];
         [self.view insertSubview:_tableView belowSubview:_ctrlBtn];
     }
+    
+    if (indexPath.row == 1|| indexPath.row == 2) {
+        
+        [self QRcode];
+    }
+    if (indexPath.row == 3) {
+        [self systemLightSwitch:flag];
+    }
+    if (indexPath.row == 4) {
+        GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"提示" message:@"此功能暂未开通！" buttonTitle:@"确定" buttonTouchedAction:^{
+            
+        } dismissAction:^{
+            
+        }];
+        [alertView show];
+    }
+    if (indexPath.row == 5) {
+        LocaDBViewController *locaDB = [[LocaDBViewController alloc] init];
+        [self.navigationController showViewController:locaDB sender:nil];
+    }
+    if (indexPath.row == 6) {
+        CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+        [self.navigationController showViewController:completeVC sender:nil];
+    }
+    
 }
 
 #pragma mark - UITableViewDataSource, UITableViewDelegate
@@ -654,13 +735,7 @@ static BOOL flag;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (isTap) {
         [tableView dismisWithIndexPath:indexPath];
-        if (indexPath.row == 1|| indexPath.row == 2) {
-            
-            [self QRcode];
-        }
-        if (indexPath.row == 3) {
-            [self systemLightSwitch:flag];
-        }
+        
     }else {
         if (isBitMeter) {
             
@@ -765,7 +840,7 @@ static BOOL flag;
     
 }
 
-
+#pragma mark - openSysLight
 //打开闪光灯
 - (void)systemLightSwitch:(BOOL)open
 {

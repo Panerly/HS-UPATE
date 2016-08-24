@@ -8,7 +8,15 @@
 
 #import "MeterEditViewController.h"
 
-@interface MeterEditViewController ()<CLLocationManagerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIScrollViewDelegate>
+@interface MeterEditViewController ()
+<
+CLLocationManagerDelegate,
+UIPickerViewDelegate,
+UIPickerViewDataSource,
+UIScrollViewDelegate,
+UITextFieldDelegate,
+LLSwitchDelegate
+>
 {
     NSMutableArray *alarmNsetList;
     //所属区域
@@ -36,6 +44,16 @@ static int i = 0;
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    self.title = @"水表修改";
+    
+    LLSwitch *customSwitchBtn = [[LLSwitch alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+    [customSwitchBtn setOn:NO];
+    customSwitchBtn.animationDuration = 1.0f;
+    customSwitchBtn.onColor = COLORRGB(75, 218, 91);
+    customSwitchBtn.delegate = self;
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:customSwitchBtn];
+    self.navigationItem.rightBarButtonItem = item;
+    
     
     [self _getCode];
     
@@ -180,6 +198,7 @@ static int i = 0;
     }];
     
     [self _configContent];
+    [self unavailable];
     
     //保存按钮
     _saveBtn = [[UIButton alloc] init];
@@ -1174,4 +1193,63 @@ static int i = 0;
     }
 }
 
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    return  NO;
+}
+#pragma mark - LLSwitchDelegate
+-(void)didTapLLSwitch:(LLSwitch *)llSwitch {
+    if (!llSwitch.on) {
+        [self usable];
+    }else {
+        [self unavailable];
+    }
+}
+//- (void)valueDidChanged:(LLSwitch *)llSwitch on:(BOOL)on {
+//
+//    if (!on) {
+//        [self unavailable];
+//    }else {
+//        [self usable];
+//    }
+//}
+
+- (void)unavailable {
+    _installAddrTextField.delegate = self;
+    _installAddrTextField.textColor = [UIColor lightGrayColor];
+    
+    _meter_idTextField.delegate = self;
+    _meter_idTextField.textColor = [UIColor lightGrayColor];
+    
+    _connectIDTextField.delegate = self;
+    _connectIDTextField.textColor = [UIColor lightGrayColor];
+    
+    _collectIDTextField.delegate = self;
+    _collectIDTextField.textColor = [UIColor lightGrayColor];
+    
+    _installTimeTextField.delegate = self;
+    _installTimeTextField.textColor = [UIColor lightGrayColor];
+    
+    _wheelTypeTextField.delegate = self;
+    _wheelTypeTextField.textColor = [UIColor lightGrayColor];
+}
+- (void)usable {
+    _installAddrTextField.delegate = nil;
+    _installAddrTextField.textColor = [UIColor blackColor];
+    
+    _meter_idTextField.delegate = nil;
+    _meter_idTextField.textColor = [UIColor blackColor];
+    
+    _connectIDTextField.delegate = nil;
+    _connectIDTextField.textColor = [UIColor blackColor];
+    
+    _collectIDTextField.delegate = nil;
+    _collectIDTextField.textColor = [UIColor blackColor];
+    
+    _installTimeTextField.delegate = nil;
+    _installTimeTextField.textColor = [UIColor blackColor];
+    
+    _wheelTypeTextField.delegate = nil;
+    _wheelTypeTextField.textColor = [UIColor blackColor];
+}
 @end

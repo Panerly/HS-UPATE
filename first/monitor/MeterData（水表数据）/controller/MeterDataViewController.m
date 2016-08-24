@@ -33,7 +33,11 @@ UITableViewDataSource
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"水表数据";
+    if (_isBigMeter) {
+        self.title = @"大表数据查询";
+    } else {
+        self.title = @"小表数据查询";
+    }
     
     cellID = @"meterDataID";
     
@@ -261,8 +265,17 @@ UITableViewDataSource
     [_callerLabel resignFirstResponder];
     [_fromDate resignFirstResponder];
     [_toDate resignFirstResponder];
-
-    [self _requestData:_fromDate.text :_toDate.text :_callerLabel.text];
+    if (_isBigMeter) {
+        
+        [self _requestData:_fromDate.text :_toDate.text :_callerLabel.text];
+    } else {
+        GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"提示" message:@"数据库欠缺" buttonTitle:@"确定" buttonTouchedAction:^{
+            
+        } dismissAction:^{
+            
+        }];
+        [alertView show];
+    }
 }
 - (IBAction)dateBtn:(UIButton *)sender {
     

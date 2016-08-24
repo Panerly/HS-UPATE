@@ -11,6 +11,7 @@
                 <outlet property="comm_Id" destination="6EI-Vi-VzJ" id="Pr1-5i-afx"/>
                 <outlet property="firstImage" destination="EnC-cU-DKG" id="X2q-1m-EHu"/>
                 <outlet property="install_Addr" destination="AV8-hh-Hcb" id="tRT-bH-aQ5"/>
+                <outlet property="meter_id" destination="6EI-Vi-VzJ" id="bQZ-3R-WK2"/>
                 <outlet property="meteringExplain" destination="lyr-Ln-fzy" id="GaU-s5-jsx"/>
                 <outlet property="meteringSituation" destination="PHn-aB-TOL" id="vcY-WS-XI8"/>
                 <outlet property="previousReading" destination="JrC-9J-wwm" id="JqU-yf-aaG"/>
@@ -31,10 +32,10 @@
                     <animations/>
                     <constraints>
                         <constraint firstAttribute="width" constant="80" id="fye-S3-ZFK">
-                            <variation key="widthClass=compact" constant="70"/>
+                            <variation key="widthClass=compact" constant="55"/>
                         </constraint>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                     <variation key="default">
@@ -54,7 +55,7 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="100" id="Br0-Sl-paz"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                     <variation key="default">
@@ -853,11 +854,11 @@
                         </mask>
                     </variation>
                 </textField>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="用户名：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AV8-hh-Hcb">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="张三" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AV8-hh-Hcb">
                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HNi-j7-UN7">
@@ -901,7 +902,9 @@
                 <constraint firstItem="6EI-Vi-VzJ" firstAttribute="centerY" secondItem="Roz-tL-3Kc" secondAttribute="centerY" id="8FC-Qm-DPV"/>
                 <constraint firstItem="HNi-j7-UN7" firstAttribute="width" secondItem="AV8-hh-Hcb" secondAttribute="width" id="8g7-4H-h4C"/>
                 <constraint firstAttribute="trailing" secondItem="cee-37-HiI" secondAttribute="trailing" id="9ep-b6-m9h"/>
-                <constraint firstItem="E9a-lp-AG0" firstAttribute="top" secondItem="Roz-tL-3Kc" secondAttribute="bottom" constant="20" id="AJ1-nH-34B"/>
+                <constraint firstItem="E9a-lp-AG0" firstAttribute="top" secondItem="Roz-tL-3Kc" secondAttribute="bottom" constant="20" id="AJ1-nH-34B">
+                    <variation key="widthClass=compact" constant="20"/>
+                </constraint>
                 <constraint firstItem="wKu-98-Q13" firstAttribute="top" secondItem="9B3-Du-b6H" secondAttribute="bottom" constant="10" id="API-gN-svp"/>
                 <constraint firstItem="hv2-54-l1J" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="70" id="AQX-0o-OKu"/>
                 <constraint firstItem="cm1-9B-I42" firstAttribute="centerY" secondItem="9B3-Du-b6H" secondAttribute="centerY" id="Acn-bu-oPj"/>

@@ -23,6 +23,8 @@ CLLocationManagerDelegate
 - (IBAction)savePhoto:(id)sender;
 - (IBAction)uploadPhoto:(id)sender;
 
+@property (nonatomic, strong) NSString *meter_id_string;
+@property (weak, nonatomic) IBOutlet UILabel *meter_id;
 
 //上期抄表度数
 @property (weak, nonatomic) IBOutlet UITextField *previousReading;

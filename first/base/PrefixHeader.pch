@@ -14,6 +14,7 @@
 
 
 #define  PanRandomColor [UIColor colorWithRed:arc4random_uniform(256)/255.0 green:arc4random_uniform(256)/255.0 blue:arc4random_uniform(256)/255.0 alpha:1];
+#define COLORRGB(r,g,b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
 
 #define PanScreenWidth [UIScreen mainScreen].bounds.size.width
 #define PanScreenHeight [UIScreen mainScreen].bounds.size.height
@@ -53,4 +54,7 @@
 #import "MJRefresh.h"
 #import "SCToastView.h"
 #import "UIImage+GIF.h"
+#import "GUAAlertView.h"
+#import "FMDB.h"
+#import "LLSwitch.h"
 #endif

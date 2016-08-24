@@ -45,7 +45,10 @@ static BOOL flag;
     
     self.navigationItem.rightBarButtonItems = @[loca];
     
-    [self _requestData];
+//    [self _requestData];
+    if (self.meter_id_string) {
+        self.meter_id.text = self.meter_id_string;
+    }
 }
 
 - (void)_makeImageTouchLess

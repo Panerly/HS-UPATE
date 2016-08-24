@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface UserInfoViewController : UIViewController
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
 - (IBAction)userImage:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *userIcon;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+
 @end
