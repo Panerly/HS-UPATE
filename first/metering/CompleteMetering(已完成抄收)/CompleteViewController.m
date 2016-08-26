@@ -32,18 +32,23 @@
 }
 
 - (void)updateDB {
-    FMResultSet *restultSet = [self.db executeQuery:@"SELECT * FROM meter_info order by user_id"];
+    [self.db open];
+    
+    FMResultSet *restultSet = [self.db executeQuery:@"SELECT * FROM meter_complete order by user_id"];
+    
     _dataArr = [NSMutableArray array];
     [_dataArr removeAllObjects];
     
     while ([restultSet next]) {
         NSString *meter_id = [restultSet stringForColumn:@"meter_id"];
-        int user_id = [restultSet intForColumn:@"user_id"];
+        NSString *user_id = [restultSet stringForColumn:@"user_id"];
         NSLog(@"meter_id = %@ user_id = %ld",meter_id,(long)user_id);
+        NSData *imageData =[restultSet dataForColumn:@"Collect_img_name1"];
 
         CompleteModel *completeModel = [[CompleteModel alloc] init];
         completeModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
-        completeModel.user_id =[NSString stringWithFormat:@"%d",user_id];
+        completeModel.user_id =[NSString stringWithFormat:@"%@",user_id];
+        completeModel.image = [UIImage imageWithData:imageData];
         [_dataArr addObject:completeModel];
     }
     [self.db close];
@@ -54,23 +59,7 @@
     NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
     NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
     
-    NSLog(@"控制器中文件路径：%@",fileName);
-    
     FMDatabase *db = [FMDatabase databaseWithPath:fileName];
-    
-    if ([db open]) {
-        
-        BOOL result = [db executeUpdate:@"CREATE TABLE IF NOT EXISTS meter_info (id integer PRIMARY KEY AUTOINCREMENT,meter_id text NOT NULL, user_id integer NOT NULL);"];
-        
-        if (result) {
-            NSLog(@"创建小表成功");
-        } else {
-            NSLog(@"创建失败！");
-            [SCToastView showInView:_tableView text:@"创建小表失败" duration:.5 autoHide:YES];
-        }
-        
-    }
-    
     self.db = db;
 }
 

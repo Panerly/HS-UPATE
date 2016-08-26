@@ -158,6 +158,7 @@
 		456D19581D5C1F2E0038C442 /* 数据交换.png in Resources */ = {isa = PBXBuildFile; fileRef = 456D19541D5C1F2E0038C442 /* 数据交换.png */; };
 		456D195C1D5C6DFA0038C442 /* refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 456D195B1D5C6DFA0038C442 /* refresh@2x.png */; };
 		456D19601D5C70F70038C442 /* 定位@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 456D195F1D5C70F70038C442 /* 定位@3x.png */; };
+		456F72E31D6EC60800CC8504 /* icon_back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 456F72E21D6EC60800CC8504 /* icon_back@3x.png */; };
 		45771F8D1D0E3B5C006BF7F3 /* AppIcon29x29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771F871D0E3B5C006BF7F3 /* AppIcon29x29@2x.png */; };
 		45771F8E1D0E3B5C006BF7F3 /* AppIcon29x29@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771F881D0E3B5C006BF7F3 /* AppIcon29x29@3x.png */; };
 		45771F8F1D0E3B5C006BF7F3 /* AppIcon40x40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771F891D0E3B5C006BF7F3 /* AppIcon40x40@2x.png */; };
@@ -351,6 +352,7 @@
 		45E26C151D505C2B00820EC3 /* bg_雷阵雨.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 45E26C141D505C2B00820EC3 /* bg_雷阵雨.jpg */; };
 		45E26C191D5073CE00820EC3 /* PayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E26C181D5073CE00820EC3 /* PayViewController.m */; };
 		45E26C1B1D50746C00820EC3 /* Pay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E26C1A1D50746C00820EC3 /* Pay.xib */; };
+		45E26FA51D6E98C200DEAB9D /* ScanImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E26FA31D6E98C200DEAB9D /* ScanImageViewController.m */; };
 		45E7DB181D1B975A0011340D /* userInfor.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45E7DB171D1B975A0011340D /* userInfor.storyboard */; };
 		45EB0C0A1D3E01E70062AE52 /* me_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45EB0C021D3E01E70062AE52 /* me_selected@2x.png */; };
 		45EB0C0B1D3E01E70062AE52 /* me@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45EB0C031D3E01E70062AE52 /* me@2x.png */; };
@@ -653,6 +655,7 @@
 		456D19541D5C1F2E0038C442 /* 数据交换.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "数据交换.png"; sourceTree = "<group>"; };
 		456D195B1D5C6DFA0038C442 /* refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh@2x.png"; sourceTree = "<group>"; };
 		456D195F1D5C70F70038C442 /* 定位@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "定位@3x.png"; sourceTree = "<group>"; };
+		456F72E21D6EC60800CC8504 /* icon_back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_back@3x.png"; sourceTree = "<group>"; };
 		45771F871D0E3B5C006BF7F3 /* AppIcon29x29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon29x29@2x.png"; sourceTree = "<group>"; };
 		45771F881D0E3B5C006BF7F3 /* AppIcon29x29@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon29x29@3x.png"; sourceTree = "<group>"; };
 		45771F891D0E3B5C006BF7F3 /* AppIcon40x40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon40x40@2x.png"; sourceTree = "<group>"; };
@@ -974,6 +977,8 @@
 		45E26C171D5073CE00820EC3 /* PayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayViewController.h; sourceTree = "<group>"; };
 		45E26C181D5073CE00820EC3 /* PayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayViewController.m; sourceTree = "<group>"; };
 		45E26C1A1D50746C00820EC3 /* Pay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Pay.xib; sourceTree = "<group>"; };
+		45E26FA21D6E98C200DEAB9D /* ScanImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanImageViewController.h; sourceTree = "<group>"; };
+		45E26FA31D6E98C200DEAB9D /* ScanImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanImageViewController.m; sourceTree = "<group>"; };
 		45E7DB171D1B975A0011340D /* userInfor.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = userInfor.storyboard; sourceTree = "<group>"; };
 		45EB0C021D3E01E70062AE52 /* me_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "me_selected@2x.png"; sourceTree = "<group>"; };
 		45EB0C031D3E01E70062AE52 /* me@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "me@2x.png"; sourceTree = "<group>"; };
@@ -2262,6 +2267,8 @@
 				45DCA30C1CEEDF3D00E42468 /* controller */,
 				45DCA30D1CEEDF3D00E42468 /* model */,
 				45DCA30E1CEEDF3D00E42468 /* view */,
+				45E26FA21D6E98C200DEAB9D /* ScanImageViewController.h */,
+				45E26FA31D6E98C200DEAB9D /* ScanImageViewController.m */,
 			);
 			name = "metering(抄表)";
 			path = metering;
@@ -2456,6 +2463,7 @@
 				45F42BB61D6BD3DF006E2412 /* icon_more@2x.png */,
 				45F42BB81D6BE494006E2412 /* icon_complete@2x.png */,
 				45F42BC61D6BE70B006E2412 /* icon_upload@2x.png */,
+				456F72E21D6EC60800CC8504 /* icon_back@3x.png */,
 			);
 			path = image;
 			sourceTree = "<group>";
@@ -2890,6 +2898,7 @@
 				4519564B1D51C9A500E0409E /* bg_tabbar2.jpg in Resources */,
 				45771F921D0E3B5C006BF7F3 /* AppIcon60x60@3x.png in Resources */,
 				451794321D6AE30500433921 /* TableViewCell.xib in Resources */,
+				456F72E31D6EC60800CC8504 /* icon_back@3x.png in Resources */,
 				45771F9F1D0E5724006BF7F3 /* user.png in Resources */,
 				45BF599C1D1A4C3A00F3EFBD /* line.png in Resources */,
 				45EDA2171D1101D70074B786 /* DetailViewController.xib in Resources */,
@@ -3077,6 +3086,7 @@
 				451794291D6ADCE400433921 /* FMDatabaseAdditions.m in Sources */,
 				4555A2331D45E169009D1DC6 /* MJRefreshGifHeader.m in Sources */,
 				453F2CAF1D263E170048A4DB /* MeterEditModel.m in Sources */,
+				45E26FA51D6E98C200DEAB9D /* ScanImageViewController.m in Sources */,
 				45DCA3201CEEF22A00E42468 /* ServerViewController.m in Sources */,
 				45F42BBD1D6BE5A3006E2412 /* CompleteViewController.m in Sources */,
 				45901B781D41E13100E6249C /* MASViewAttribute.m in Sources */,

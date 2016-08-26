@@ -18,12 +18,17 @@
 
 #define PanScreenWidth [UIScreen mainScreen].bounds.size.width
 #define PanScreenHeight [UIScreen mainScreen].bounds.size.height
-#define waterInfoAPI @"http://192.168.3.156:8080/waterweb/servlet/LServlet"
-#import "AFNetworking.h"
+
+
 #import "SCChart.h"
+#import "SCToastView.h"
+#import "GUAAlertView.h"
+#import "LLSwitch.h"
+
 #define weatherAPIkey @"87aa67335bd8e0739a06cfccc6edecb5"
 #define weatherAPI @"http://apis.baidu.com/apistore/weatherservice/cityname"
 #define hisWeatherAPI @"http://apis.baidu.com/apistore/weatherservice/recentweathers"
+//杭水简介
 #define introduction @"http://www.hzsberp.com:9999/hzsb"
 //http://chenshenlu.jios.org:8888
 //#import "Masonry.h"
@@ -51,10 +56,9 @@
 #import <MapKit/MKPlacemark.h>
 #import <MapKit/MKMapItem.h>
 #import "SVProgressHUD.h"
-#import "MJRefresh.h"
-#import "SCToastView.h"
-#import "UIImage+GIF.h"
-#import "GUAAlertView.h"
 #import "FMDB.h"
-#import "LLSwitch.h"
+#import "UIImage+GIF.h"
+#import "AFNetworking.h"
+#import "MJRefresh.h"
+
 #endif

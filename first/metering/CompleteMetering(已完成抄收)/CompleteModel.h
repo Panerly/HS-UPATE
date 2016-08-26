@@ -12,5 +12,5 @@
 
 @property (nonatomic, strong) NSString *meter_id;
 @property (nonatomic, strong) NSString *user_id;
-
+@property (nonatomic, strong) UIImage *image;
 @end

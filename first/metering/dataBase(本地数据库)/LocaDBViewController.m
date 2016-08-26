@@ -66,8 +66,8 @@
     FMDatabase *db = [FMDatabase databaseWithPath:fileName];
     
     if ([db open]) {
-        
-        BOOL result = [db executeUpdate:@"CREATE TABLE IF NOT EXISTS meter_info (id integer PRIMARY KEY AUTOINCREMENT,meter_id text NOT NULL, user_id integer NOT NULL);"];
+//        [db executeUpdate:@"drop table meter_info"];
+        BOOL result = [db executeUpdate:@"CREATE TABLE IF NOT EXISTS meter_info (id integer PRIMARY KEY AUTOINCREMENT,meter_id text not null, user_id integer not null,Collect_img_name1 BLOB null, Collect_img_name2 BLOB null, Collect_img_name3 BLOB null);"];
         
         if (result) {
             NSLog(@"创建小表成功");
@@ -206,7 +206,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     SingleViewController *singleVC = [[SingleViewController alloc] init];
+    singleVC.meter_id_string = ((DBModel *)_dataArr[indexPath.row]).meter_id;
+    singleVC.meter_id.text = ((DBModel *)_dataArr[indexPath.row]).user_id;
     singleVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController showViewController:singleVC sender:nil];
 }

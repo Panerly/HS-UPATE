@@ -20,8 +20,9 @@ CLLocationManagerDelegate
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
-- (IBAction)savePhoto:(id)sender;
+
 - (IBAction)uploadPhoto:(id)sender;
+- (IBAction)saveToLocal:(id)sender;
 
 @property (nonatomic, strong) NSString *meter_id_string;
 @property (weak, nonatomic) IBOutlet UILabel *meter_id;
@@ -58,9 +59,10 @@ CLLocationManagerDelegate
 @property (nonatomic, strong) NSString *x;
 @property (nonatomic, strong) NSString *y;
 
-@property (weak, nonatomic) IBOutlet UILabel *comm_Id;
-
-@property (weak, nonatomic) IBOutlet UILabel *install_Addr;
+//用户名
+@property (weak, nonatomic) IBOutlet UILabel *user_name;
+//安装地址
+@property (weak, nonatomic) IBOutlet UILabel *install_addr;
 
 @property (nonatomic, strong) NSMutableArray *dataArr;
 

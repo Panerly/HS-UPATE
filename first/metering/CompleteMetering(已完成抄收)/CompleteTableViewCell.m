@@ -19,7 +19,8 @@
     [super layoutSubviews];
     self.meter_id.text = [NSString stringWithFormat:@"meter_id:%@",self.completeModel.meter_id];
     self.user_id.text = [NSString stringWithFormat:@"user_id:%@",self.completeModel.user_id];
-    _click = self.completeModel.meter_id;
+    self.compImage.image = self.completeModel.image;
+    _click = self.completeModel.user_id;
 }
 
 
@@ -55,17 +56,17 @@
     
     FMDatabase *db = [FMDatabase databaseWithPath:fileName];
     [db open];
-    [db executeUpdate:[NSString stringWithFormat:@"delete from meter_info where meter_id = '%@'",_click]];
+    [db executeUpdate:[NSString stringWithFormat:@"delete from meter_complete where user_id = '%@'",_click]];
     
-    FMResultSet *restultSet = [db executeQuery:@"SELECT * FROM meter_info order by user_id"];
+    FMResultSet *restultSet = [db executeQuery:@"SELECT * FROM meter_complete order by user_id"];
     [((CompleteViewController *)[self findVC]).dataArr removeAllObjects];
     while ([restultSet next]) {
         NSString *meter_id = [restultSet stringForColumn:@"meter_id"];
-        int user_id = [restultSet intForColumn:@"user_id"];
+        NSString *user_id = [restultSet stringForColumn:@"user_id"];
 
         CompleteModel *completeModel = [[CompleteModel alloc] init];
         completeModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
-        completeModel.user_id =[NSString stringWithFormat:@"%d",user_id];
+        completeModel.user_id =[NSString stringWithFormat:@"%@",user_id];
         [((CompleteViewController *)[self findVC]).dataArr addObject:completeModel];
     }
     [db close];

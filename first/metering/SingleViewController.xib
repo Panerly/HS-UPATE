@@ -8,9 +8,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SingleViewController">
             <connections>
-                <outlet property="comm_Id" destination="6EI-Vi-VzJ" id="Pr1-5i-afx"/>
                 <outlet property="firstImage" destination="EnC-cU-DKG" id="X2q-1m-EHu"/>
-                <outlet property="install_Addr" destination="AV8-hh-Hcb" id="tRT-bH-aQ5"/>
+                <outlet property="install_addr" destination="hv2-54-l1J" id="dho-Pr-RWN"/>
                 <outlet property="meter_id" destination="6EI-Vi-VzJ" id="bQZ-3R-WK2"/>
                 <outlet property="meteringExplain" destination="lyr-Ln-fzy" id="GaU-s5-jsx"/>
                 <outlet property="meteringSituation" destination="PHn-aB-TOL" id="vcY-WS-XI8"/>
@@ -19,6 +18,7 @@
                 <outlet property="secondImage" destination="jau-bB-w7h" id="kUY-KX-Sb6"/>
                 <outlet property="thirdImage" destination="kIm-pf-VOz" id="1G9-IH-AFf"/>
                 <outlet property="thisPeriodValue" destination="4bp-Kk-BjZ" id="Pdy-Di-svd"/>
+                <outlet property="user_name" destination="AV8-hh-Hcb" id="iWB-FE-WM3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -552,7 +552,7 @@
                         </mask>
                     </variation>
                     <connections>
-                        <action selector="savePhoto:" destination="-1" eventType="touchUpInside" id="3Gi-Tr-E82"/>
+                        <action selector="saveToLocal:" destination="-1" eventType="touchUpInside" id="R7z-To-6eB"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="上期抄表度数：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Bj-dj-6IN">
@@ -854,7 +854,7 @@
                         </mask>
                     </variation>
                 </textField>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="张三" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AV8-hh-Hcb">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="张三" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AV8-hh-Hcb" userLabel="user_name">
                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1248,7 +1248,7 @@
                     <include reference="yAT-22-NwG"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="464" y="365"/>
+            <point key="canvasLocation" x="534" y="365"/>
         </view>
     </objects>
     <resources>

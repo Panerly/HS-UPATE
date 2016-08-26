@@ -263,10 +263,6 @@ static BOOL flag;
 
 
 
-- (IBAction)savePhoto:(id)sender {
-    NSLog(@"保存照片");
-}
-
 - (void)_getCode
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -325,6 +321,71 @@ static BOOL flag;
         NSLog(@"上传失败：%@",error);
     }];
     [task resume];
+}
+
+//保存到本地数据库
+- (IBAction)saveToLocal:(id)sender {
+    
+    NSLog(@"保存照片");
+    
+    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    
+    NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+    
+    if ([db open]) {
+//        [db executeUpdate:@"drop table meter_complete"];
+        
+        BOOL result = [db executeUpdate:@"create table if not exists meter_complete (id integer PRIMARY KEY AUTOINCREMENT,user_name text not null,install_addr text not null, meter_id text null,Collect_img_name1 text null, Collect_img_name2 nvarchar(50) null, Collect_img_name3 nvarchar(50) null, x decimal(18, 5) null, y decimal(18, 5) null, remark nvarchar(100) null, install_time datetime null, collect_num numeric(18, 2) not null, user_id text null);"];
+        
+        if (result) {
+            NSLog(@"创建抄收完成表成功");
+        } else {
+            NSLog(@"创建抄收完成表失败！");
+            [SCToastView showInView:self.view text:@"创建抄收完成表失败" duration:.5 autoHide:YES];
+            
+        }
+    }
+    
+//    if (!_user_name.text) {
+//        [GUAAlertView alertViewWithTitle:@"用户名不能为空" message:nil buttonTitle:@"确定" buttonTouchedAction:^{
+//            
+//        } dismissAction:^{
+//            
+//        }];
+//    }
+//    if (!_install_addr.text) {
+//        [GUAAlertView alertViewWithTitle:@"安装地址不能为空" message:nil buttonTitle:@"确定" buttonTouchedAction:^{
+//            
+//        } dismissAction:^{
+//            
+//        }];
+//    }
+//    if (!_thisPeriodValue.text) {
+//        [GUAAlertView alertViewWithTitle:@"抄表值不能为空" message:nil buttonTitle:@"确定" buttonTouchedAction:^{
+//            
+//        } dismissAction:^{
+//            
+//        }];
+//    }
+    
+    NSData *imageData = UIImageJPEGRepresentation(_firstImage.image, .4);
+    NSData *imageData2 = UIImageJPEGRepresentation(_secondImage.image, 1);
+    NSData *imageData3 = UIImageJPEGRepresentation(_thirdImage.image, 1);
+    
+    [db executeUpdate:@"insert into meter_complete (user_name, install_addr, meter_id, collect_num, remark, Collect_img_name1, Collect_img_name2, Collect_img_name3, user_id) values (?,?,?,?,?,?,?,?,?);",_user_name.text, _install_addr.text, _thisPeriodValue.text,_meter_id.text, _meteringExplain.text, imageData, imageData2, imageData3, _meter_id_string];
+    
+    if ([db open]) {
+        
+        [db executeUpdate:[NSString stringWithFormat:@"delete from meter_info where meter_id = '%@'",_meter_id_string]];
+        
+        [db close];
+    } else {
+        [SCToastView showInView:self.view text:@"数据库打开失败" duration:.5 autoHide:YES];
+    }
+    
+    [SCToastView showInView:self.view text:@"保存成功" duration:.5 autoHide:YES];
 }
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {

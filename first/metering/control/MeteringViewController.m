@@ -22,6 +22,8 @@
 #import "CompleteViewController.h"
 #import "FTPopOverMenu.h"
 
+#import "ScanImageViewController.h"
+
 static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
 static NSString *const menuCellIdentifier = @"rotationCell";
 
@@ -59,20 +61,19 @@ YALContextMenuTableViewDelegate
 @end
 
 //判断手电开启
-static BOOL flag;
+static BOOL flashIsOn;
 
 @implementation MeteringViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    UIBarButtonItem *scan = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"qrcode_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(action)];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
     [button addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *scan = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.navigationItem.leftBarButtonItem = scan;
 
-    flag = YES;
+    flashIsOn = YES;
     
     UIBarButtonItem *more = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_more@2x"] style:UIBarButtonItemStylePlain target:self action:@selector(presentMenuButtonTapped)];
     self.navigationItem.rightBarButtonItem = more;
@@ -139,7 +140,10 @@ static BOOL flag;
                         withMenu:@[@"MenuOne",@"MenuTwo",@"MenuThr"]
                   imageNameArray:@[@"setting_icon",@"setting_icon",@"setting_icon"]
                        doneBlock:^(NSInteger selectedIndex) {
-                           
+                           if (selectedIndex == 0) {
+                               ScanImageViewController *scanVC = [[ScanImageViewController alloc] init];
+                               [self.navigationController showViewController:scanVC sender:nil];
+                           }
                            NSLog(@"done block. do something. selectedIndex : %ld", (long)selectedIndex);
                            
                        } dismissBlock:^{
@@ -284,9 +288,7 @@ static BOOL flag;
         self.contextMenuTableView = [[YALContextMenuTableView alloc]initWithTableViewDelegateDataSource:self];
         self.contextMenuTableView.scrollEnabled = NO;
         self.contextMenuTableView.animationDuration = 0.1;
-        //optional - implement custom YALContextMenuTableView custom protocol
         self.contextMenuTableView.yalDelegate = self;
-        //optional - implement menu items layout
         self.contextMenuTableView.menuItemsSide = Right;
         self.contextMenuTableView.menuItemsAppearanceDirection = FromTopToBottom;
         
@@ -301,22 +303,6 @@ static BOOL flag;
 {
     self = [super init];
     if (self) {
-        
-//        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
-//        imageView.center = self.view.center;
-//        UIImage *image = [UIImage sd_animatedGIFNamed:@"cry4"];
-//        [imageView setImage:image];
-//        [self.view addSubview:imageView];
-//        
-//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, 25)];
-//        label.text = @"此功能暂未推出！";
-//        label.textColor = [UIColor darkGrayColor];
-//        label.textAlignment = NSTextAlignmentCenter;
-//        [self.view addSubview:label];
-//        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(imageView.mas_bottom).with.offset(10);
-//            make.centerX.equalTo(self.view.centerX);
-//        }];
         
         self = [[UIStoryboard storyboardWithName:@"Metering" bundle:nil] instantiateViewControllerWithIdentifier:@"Metering"];
     }
@@ -626,15 +612,17 @@ static BOOL flag;
     }
 }
 //处理结果
-- (void)reportScanResult:(NSString *)result
-{
+- (void)reportScanResult:(NSString *)result {
+    
     [self stopReading];
     NSLog(@"扫描结果：%@",result);
+    
     UILabel *resultLabel = [[UILabel alloc] init];
     resultLabel.text = result;
     resultLabel.textColor = [UIColor whiteColor];
     resultLabel.textAlignment = NSTextAlignmentCenter;
     [_scanView addSubview:resultLabel];
+    
     [resultLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(CGSizeMake(200, 25));
         make.centerX.equalTo(_scanView.centerX);
@@ -642,6 +630,7 @@ static BOOL flag;
     }];
 
     [self conformBtn];
+    
     SingleViewController *singleVC = [[SingleViewController alloc] init];
     singleVC.meter_id_string = result;
     singleVC.hidesBottomBarWhenPushed = YES;
@@ -708,7 +697,7 @@ static BOOL flag;
         [self QRcode];
     }
     if (indexPath.row == 3) {
-        [self systemLightSwitch:flag];
+        [self systemLightSwitch:flashIsOn];
     }
     if (indexPath.row == 4) {
         GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"提示" message:@"此功能暂未开通！" buttonTitle:@"确定" buttonTouchedAction:^{
@@ -830,6 +819,7 @@ static BOOL flag;
 
 - (void)presentMenuButtonTapped {
     [self.contextMenuTableView showInView:self.navigationController.view withEdgeInsets:UIEdgeInsetsZero animated:YES];
+    
     isTap = !isTap;
     if (isTap) {
         [self.tableView removeFromSuperview];
@@ -842,17 +832,17 @@ static BOOL flag;
 
 #pragma mark - openSysLight
 //打开闪光灯
-- (void)systemLightSwitch:(BOOL)open
-{
+- (void)systemLightSwitch:(BOOL)open {
+    
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     if ([device hasTorch]) {
         [device lockForConfiguration:nil];
         if (open) {
             [device setTorchMode:AVCaptureTorchModeOn];
-            flag = !flag;
+            flashIsOn = !flashIsOn;
         } else {
             [device setTorchMode:AVCaptureTorchModeOff];
-            flag = !flag;
+            flashIsOn = !flashIsOn;
         }
         [device unlockForConfiguration];
     }

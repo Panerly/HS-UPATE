@@ -15,6 +15,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *meter_id;
 
+@property (weak, nonatomic) IBOutlet UIImageView *compImage;
+
 @property (nonatomic, strong) CompleteModel *completeModel;
 
 - (IBAction)upload:(id)sender;
