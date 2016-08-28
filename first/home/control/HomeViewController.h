@@ -15,6 +15,9 @@
 @property (nonatomic, strong) NSString *tomorrow;
 
 @property (weak, nonatomic) IBOutlet UIImageView *weatherPicImage;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *heightC;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *widthC;
+
 @property (weak, nonatomic) IBOutlet UIImageView *yesterdayImage;
 @property (weak, nonatomic) IBOutlet UIImageView *todayImage;
 @property (weak, nonatomic) IBOutlet UIImageView *tomorrowImage;
@@ -37,11 +40,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *yestodayWeather;
 @property (weak, nonatomic) IBOutlet UILabel *tomorrowWeather;
 @property (weak, nonatomic) IBOutlet UILabel *todayWeatherInfo;
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIImageView *weather_bg;
+
 @property (weak, nonatomic) IBOutlet UILabel *yesLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *yestodayLeftConstraint;
 @property (weak, nonatomic) IBOutlet UILabel *todLabel;
 @property (weak, nonatomic) IBOutlet UILabel *tomLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tommoRightConstraint;
 
 @property (nonatomic, strong) NSString *locaCity;
 

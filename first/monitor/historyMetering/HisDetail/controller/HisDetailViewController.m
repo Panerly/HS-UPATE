@@ -44,6 +44,7 @@ static CGFloat i = 0;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd"];
     NSString *time = [formatter stringFromDate:[NSDate date]];

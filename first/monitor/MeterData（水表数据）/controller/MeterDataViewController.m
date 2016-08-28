@@ -138,6 +138,8 @@ UITableViewDataSource
         
         AFHTTPResponseSerializer *serializer = manager.responseSerializer;
         
+        manager.requestSerializer.timeoutInterval = 5;
+        
         serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/plain"];
         
         __weak typeof(self) weakSelf = self;
@@ -191,6 +193,7 @@ UITableViewDataSource
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     [self.userNumLabel removeFromSuperview];
     [self.userNameLabel removeFromSuperview];
     [self.dataNum removeFromSuperview];
@@ -198,6 +201,8 @@ UITableViewDataSource
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [SVProgressHUD dismiss];
+    [super viewWillDisappear:animated];
     [self.userNumLabel removeFromSuperview];
     [self.userNameLabel removeFromSuperview];
     [self.dataNum removeFromSuperview];
@@ -219,6 +224,8 @@ UITableViewDataSource
 {
     MeterDataTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+//    cell.backgroundColor = COLORRGB(244, 244, 244);
     if (!cell) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"MeterDataTableViewCell" owner:self options:nil] lastObject];
     }
@@ -226,6 +233,7 @@ UITableViewDataSource
     cell.serialNum.font = [UIFont systemFontOfSize:10];
     cell.serialNum.textColor = [UIColor redColor];
     cell.meterDataModel = _dataArr[indexPath.row];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
     return cell;
 }
 

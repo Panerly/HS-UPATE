@@ -36,13 +36,6 @@
 //以下是微信SDK的依赖库：
 //libsqlite3.dylib
 
-//新浪微博SDK头文件
-#import "WeiboSDK.h"
-//新浪微博SDK需要在项目Build Settings中的Other Linker Flags添加"-ObjC"
-//以下是新浪微博SDK的依赖库：
-//1、ImageIO.framework
-//2、libsqlite3.dylib
-//3、AdSupport.framework
 
 ////Pinterest SDK头文件
 //#import <Pinterest/Pinterest.h>

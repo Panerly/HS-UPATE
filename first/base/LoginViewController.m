@@ -406,6 +406,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     _userName.delegate = self;
     _passWord.delegate = self;
     _userName.returnKeyType = UIReturnKeyNext;

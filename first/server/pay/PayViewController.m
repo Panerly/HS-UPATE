@@ -24,6 +24,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd  HH:mm:ss"];
     NSString *time = [formatter stringFromDate:[NSDate date]];

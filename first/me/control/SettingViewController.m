@@ -42,11 +42,10 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    
+    [super viewWillAppear:animated];
     fileSize = [[SDImageCache sharedImageCache] getDiskCount];
     [_tableView reloadData];
  
-    
 }
 
 - (void)_createTableView

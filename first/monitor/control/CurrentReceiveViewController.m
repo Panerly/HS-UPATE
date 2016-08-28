@@ -320,6 +320,7 @@ UINavigationControllerDelegate
     
     NSMutableArray *arr = [NSMutableArray array];
     NSMutableArray *arr2 = [NSMutableArray array];
+    [arr2 removeAllObjects];
     
     for (CRModel *crModel in self.dataArr) {
         [arr addObject:crModel.meter_name];

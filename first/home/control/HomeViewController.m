@@ -23,9 +23,22 @@
 @implementation HomeViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
+    
+    //适配3.5寸
+    if (PanScreenHeight == 480) {
+        
+        [self performSelector:@selector(modifyConstant) withObject:nil afterDelay:0.1];
+        
+    }
+    //适配6以上机型
+    [self performSelector:@selector(modifyWeatherConstant) withObject:nil afterDelay:0.001];
+    
+    
     self.weatherDetailEffectView.clipsToBounds = YES;
     self.weatherDetailEffectView.layer.cornerRadius = 10;
+ 
     
     self.dataArray = [NSMutableArray array];
 
@@ -35,6 +48,27 @@
 //    [self locationCurrentCity];
 
     [self _createTableView];
+    
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [SVProgressHUD dismiss];
+}
+
+- (void)modifyWeatherConstant {
+    [UIView animateWithDuration:.001 animations:^{
+        
+        self.yestodayLeftConstraint.constant = PanScreenWidth/6;
+        self.tommoRightConstraint.constant = PanScreenWidth/6;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (void)modifyConstant {
+    self.widthC.constant = 80;
+    self.heightC.constant = 60;
 }
 
 
@@ -103,6 +137,7 @@
 - (void)_requestWeatherData:(NSString *)cityName
 {
 //    [SVProgressHUD showWithStatus:@"正在加载天气信息"];
+    
     
     self.city.text = [NSString stringWithFormat:@"城市:  %@市",cityName];
     self.locaCity = cityName;
@@ -222,6 +257,7 @@
 
         }
         else{
+            [timer invalidate];
             [SVProgressHUD showErrorWithStatus:@"天气加载失败"];
             self.weather.text = [NSString stringWithFormat:@"天气:  加载失败^_^!"];
             self.temLabel.text = [NSString stringWithFormat:@"气温:  加载失败^_^!"];
@@ -282,17 +318,44 @@
 //    UIImage *image = [UIImage sd_animatedGIFNamed:@"定位图"];
     
 //    [loading setImage:image];
-
+    if (timer) {
+        
+        [timer invalidate];
+    }
     timer = [NSTimer scheduledTimerWithTimeInterval:.5 target:self selector:@selector(locatStatue) userInfo:nil repeats:YES];
     
     [self locationCurrentCity];
 }
 - (void)locatStatue {
-    [UIView animateWithDuration:.5 animations:^{
-        _positionBtn.transform = CGAffineTransformMakeScale(.5, .5);
-    } completion:^(BOOL finished) {
-        _positionBtn.transform = CGAffineTransformIdentity;
-    }];
+    [self animationWithView:_positionBtn duration:.5];
+//    [UIView animateWithDuration:.5 animations:^{
+//        _positionBtn.transform = CGAffineTransformMakeScale(.5, .5);
+//    } completion:^(BOOL finished) {
+//        _positionBtn.transform = CGAffineTransformIdentity;
+//    }];
+}
+
+- (void)animationWithView:(UIView *)view duration:(CFTimeInterval)duration{
+    
+    CAKeyframeAnimation * animation;
+    animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    animation.duration = duration;
+    animation.removedOnCompletion = NO;
+    
+    animation.fillMode = kCAFillModeForwards;
+    
+    NSMutableArray *values = [NSMutableArray array];
+    
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1.0)]];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)]];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(.9, .9, 1.0)]];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.1, 1.1, 1.0)]];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)]];
+    
+    animation.values = values;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName: @"easeInEaseOut"];
+    
+    [view.layer addAnimation:animation forKey:nil];
 }
 
 - (void)timesOut{
@@ -312,6 +375,7 @@
 //定位失败
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
+    [timer invalidate];
     [SVProgressHUD showErrorWithStatus:@"定位失败!"];
 }
 
@@ -321,9 +385,14 @@
     
     CLGeocoder* geocoder = [[CLGeocoder alloc] init];
     [geocoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (timer) {
+            [timer invalidate];
+        }
+        
         if(error || placemarks.count == 0){
             [SVProgressHUD showErrorWithStatus:@"定位失败"];
         }else{
+            
             [SVProgressHUD showInfoWithStatus:@"定位成功"];
             
             if ([loading isKindOfClass:[self.view class]]) {
@@ -336,16 +405,18 @@
             
             self.city.text = [NSString stringWithFormat:@"城市:  %@",[[placemark addressDictionary] objectForKey:@"City"]];
             
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"你的位置" message:[[placemark addressDictionary] objectForKey:@"City"] preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"你的位置" message:[[placemark addressDictionary] objectForKey:@"City"] preferredStyle:UIAlertControllerStyleAlert];
+//            
+//            UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//                
+//            }];
+//            
+//            [alertVC addAction:action];
+//            [self presentViewController:alertVC animated:YES completion:^{
+//                
+//            }];
+            [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"当前城市：%@",[[placemark addressDictionary] objectForKey:@"City"]]];
             
-            UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                
-            }];
-            
-            [alertVC addAction:action];
-            [self presentViewController:alertVC animated:YES completion:^{
-                
-            }];
             NSString *cityName = [[placemark addressDictionary] objectForKey:@"City"];
             
             //去除“市” 百度天气不允许带市、自治区等后缀
@@ -397,7 +468,9 @@
 
 
 - (IBAction)refresh:(UIButton *)sender {
-    
+    if (timer) {
+        [timer invalidate];
+    }
     timer = [NSTimer scheduledTimerWithTimeInterval:.1 target:self selector:@selector(refreshStatus) userInfo:nil repeats:YES];
     
     [self _requestWeatherData:self.locaCity];

@@ -54,7 +54,9 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated
-{  
+{
+    [super viewWillAppear:animated];
+    
     imageData = [[NSUserDefaults standardUserDefaults] objectForKey:@"image"];
     if (imageData != nil) {
         [_userIcon setImage:[NSKeyedUnarchiver unarchiveObjectWithData:imageData] forState:UIControlStateNormal];
@@ -72,7 +74,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    
+    [super viewWillDisappear:animated];
     [UIView animateWithDuration:0.5 animations:^{
         
         _userIcon.transform = CGAffineTransformMakeScale(0.1, 0.1);

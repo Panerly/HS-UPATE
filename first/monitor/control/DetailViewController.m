@@ -69,6 +69,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     _userNum.transform = CGAffineTransformMakeScale(.1, .1);
     _meterNum.transform = CGAffineTransformMakeScale(.1, .1);
     _userName.transform = CGAffineTransformMakeScale(.1, .1);

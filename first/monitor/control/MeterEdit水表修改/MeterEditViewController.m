@@ -981,6 +981,7 @@ static int i = 0;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    [super viewDidDisappear:animated];
     [_scrollView removeFromSuperview];
 }
 

@@ -9,32 +9,21 @@
 #import "MonitorViewController.h"
 #import "CurrentReceiveViewController.h"
 #import "MeterDataViewController.h"
-#import "BHInfiniteScrollView.h"
 #import "IntroductionViewController.h"
 #import "LitMeterListViewController.h"
 #import "CommProViewController.h"
+//滚动视图
+#import "NewPagedFlowView.h"
+#import "PGIndexBannerSubiew.h"
+#import "UIImageView+WebCache.h"
 
-//typedef enum : NSUInteger {
-//    Fade = 1,                   //淡入淡出
-//    Push,                       //推挤
-//    Reveal,                     //揭开
-//    MoveIn,                     //覆盖
-//    Cube,                       //立方体
-//    SuckEffect,                 //吮吸
-//    OglFlip,                    //翻转
-//    RippleEffect,               //波纹
-//    PageCurl,                   //翻页
-//    PageUnCurl,                 //反翻页
-//    CameraIrisHollowOpen,       //开镜头
-//    CameraIrisHollowClose,      //关镜头
-//    CurlDown,                   //下翻页
-//    CurlUp,                     //上翻页
-//    FlipFromLeft,               //左翻转
-//    FlipFromRight,              //右翻转
-//
-//} AnimationType;
 
-@interface MonitorViewController ()<BHInfiniteScrollViewDelegate, UIWebViewDelegate>
+@interface MonitorViewController ()
+<
+NewPagedFlowViewDelegate,
+NewPagedFlowViewDataSource,
+UIWebViewDelegate
+>
 {
     UIButton *button;
     UIButton *litButton;
@@ -44,8 +33,10 @@
     UIImageView *loading;
     UISegmentedControl *segmentedCtl;
     BOOL isBigMeter;
+    UIPageControl *pageControl;
 }
-@property (nonatomic, strong) BHInfiniteScrollView* infinitePageView;
+@property (nonatomic, strong) NewPagedFlowView *pageFlowView;
+@property (nonatomic, strong) NSMutableArray *imageArray;
 @end
 
 @implementation MonitorViewController
@@ -86,7 +77,7 @@
         [(UIButton *)litBtnArr[j-200] removeFromSuperview];
     }
     
-    if (!_infinitePageView) {
+    if (!_pageFlowView) {
         //添加大表及滚动视图
         [self _createButton];
         [self _createPicPlay];
@@ -146,13 +137,13 @@
                         break;
                 }
                 
-                _infinitePageView.frame = CGRectMake(0, -[UIScreen mainScreen].bounds.size.height/3, PanScreenWidth, [UIScreen mainScreen].bounds.size.height/3);
+                _pageFlowView.frame = CGRectMake(0, -[UIScreen mainScreen].bounds.size.height/3, PanScreenWidth, [UIScreen mainScreen].bounds.size.height/3);
                 
             } completion:^(BOOL finished) {
                 
                 [(UIButton *)arr[i-100] removeFromSuperview];
-                [_infinitePageView removeFromSuperview];
-                _infinitePageView = nil;
+                [_pageFlowView removeFromSuperview];
+                _pageFlowView = nil;
                 
             }];
         }
@@ -268,13 +259,16 @@
                             break;
                     }
                     
-                    _infinitePageView.frame = CGRectMake(0, -[UIScreen mainScreen].bounds.size.height/3, PanScreenWidth, [UIScreen mainScreen].bounds.size.height/3);
+                    _pageFlowView.frame = CGRectMake(0, -[UIScreen mainScreen].bounds.size.height/3, PanScreenWidth, [UIScreen mainScreen].bounds.size.height/3);
                     
                 } completion:^(BOOL finished) {
                     
                     [(UIButton *)arr[i-100] removeFromSuperview];
-                    [_infinitePageView removeFromSuperview];
-                    _infinitePageView = nil;
+                    [self.imageArray removeAllObjects];
+                    [pageControl removeFromSuperview];
+                    pageControl = nil;
+                    [_pageFlowView removeFromSuperview];
+                    _pageFlowView = nil;
                     
                 }];
             }
@@ -318,6 +312,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
     if (_webView) {
         [self backAction];
     }
@@ -365,44 +361,53 @@
                            @"http://60.191.39.206:8000/waterweb/IMAGE/ios_image/02.png",
                            @"http://60.191.39.206:8000/waterweb/IMAGE/ios_image/01.png",
                            ];
-    //    NSArray *titleArray = @[@"第一张",@"第二张",@"第三张",@"第四章",@"第五章"];
-    CGFloat viewHeight = [UIScreen mainScreen].bounds.size.height/3;
-    if (!_infinitePageView) {
+
+    [self.imageArray addObjectsFromArray:urlsArray];
+    
+    CGFloat viewHeight = [UIScreen mainScreen].bounds.size.height/2.7;
+    if (!_pageFlowView) {
         
-        _infinitePageView = [BHInfiniteScrollView infiniteScrollViewWithFrame:CGRectMake(0, 49, PanScreenWidth, viewHeight) Delegate:self ImagesArray:urlsArray PlageHolderImage:[UIImage imageNamed:@"bg_weather3.jpg"] InfiniteLoop:YES];
+        _pageFlowView = [[NewPagedFlowView alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height-10, PanScreenWidth, viewHeight)];
+        if (PanScreenHeight == 480) {
+            _pageFlowView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.size.height, PanScreenWidth, viewHeight);
+        }
         
+        //初始化pageControl
+        if (!pageControl) {
+            pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, _pageFlowView.frame.size.height*3.8/5, PanScreenWidth, 8)];
+            _pageFlowView.pageControl = pageControl;
+        }
+        [_pageFlowView addSubview:pageControl];
+        _pageFlowView.delegate = self;
+        _pageFlowView.dataSource = self;
     }
-    _infinitePageView.dotSize = 10;
-    _infinitePageView.pageControlAlignmentOffset = CGSizeMake(0, 10);
-    _infinitePageView.dotColor = [UIColor whiteColor];
-    _infinitePageView.selectedDotColor = [UIColor colorWithRed:91.0f/255 green:154.0f/255 blue:227.0f/255 alpha:.9];
-    //    _infinitePageView.titleView.textColor = [UIColor whiteColor];
-    //    _infinitePageView.titleView.margin = 30;
-    //    _infinitePageView.titleView.hidden = NO;
-    //    _infinitePageView.titleView.center = _infinitePageView.center;
-    //    _infinitePageView.titlesArray = titleArray;
-    _infinitePageView.scrollTimeInterval = 2;
-    _infinitePageView.autoScrollToNextPage = YES;
-    _infinitePageView.delegate = self;
-    [self.view addSubview:_infinitePageView];
-    [self performSelector:@selector(stop) withObject:nil afterDelay:5];
-    [self performSelector:@selector(start) withObject:nil afterDelay:10];
+    _pageFlowView.backgroundColor = [UIColor clearColor];
+    _pageFlowView.minimumPageAlpha = 0.4;
+    _pageFlowView.minimumPageScale = 0.83;
+    _pageFlowView.orginPageCount = urlsArray.count;
+    _pageFlowView.autoTime = 3.5f;
+    
+    [_pageFlowView startTimer];
+    [self.view addSubview:_pageFlowView];
+}
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    // Return YES for supported orientations
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
-- (void)stop {
-    [_infinitePageView stopAutoScrollPage];
+
+#pragma mark NewPagedFlowView Delegate
+- (CGSize)sizeForPageInFlowView:(NewPagedFlowView *)flowView {
+    return CGSizeMake(PanScreenWidth - 84, (PanScreenWidth - 84) * 9 / 16);
 }
 
-- (void)start {
-    [_infinitePageView startAutoScrollPage];
-}
-- (void)infiniteScrollView:(BHInfiniteScrollView *)infiniteScrollView didScrollToIndex:(NSInteger)index {
-}
 //点击图片做出的响应
-- (void)infiniteScrollView:(BHInfiniteScrollView *)infiniteScrollView didSelectItemAtIndex:(NSInteger)index
-{
+- (void)didSelectCell:(UIView *)subView withSubViewIndex:(NSInteger)subIndex {
+    
+    NSLog(@"点击了第%ld张图",(long)subIndex + 1);
+    
     UIButton *backBtn;
-    if (index == 0) {
+    if (subIndex == 0) {
         if (!_webView) {
             
             _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 64, PanScreenWidth, PanScreenHeight-64-49)];
@@ -436,6 +441,49 @@
         [self.navigationController showViewController:intrVC sender:nil];
     }
 }
+
+#pragma mark NewPagedFlowView Datasource
+- (NSInteger)numberOfPagesInFlowView:(NewPagedFlowView *)flowView {
+    
+    return self.imageArray.count;
+    
+}
+
+- (UIView *)flowView:(NewPagedFlowView *)flowView cellForPageAtIndex:(NSInteger)index{
+    PGIndexBannerSubiew *bannerView = (PGIndexBannerSubiew *)[flowView dequeueReusableCell];
+    if (!bannerView) {
+        bannerView = [[PGIndexBannerSubiew alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth - 50, (PanScreenWidth - 50) * 9 / 10)];
+        bannerView.layer.cornerRadius = 4;
+        bannerView.layer.masksToBounds = YES;
+    }
+    //在这里下载网络图片
+    NSInteger currentIndex;
+    currentIndex = index;
+    if (self.imageArray.count != 0) {
+        if (currentIndex>(self.imageArray.count-1)) {
+            currentIndex = 3;
+        }
+        
+        [bannerView.mainImageView sd_setImageWithURL:[NSURL URLWithString:self.imageArray[currentIndex]] placeholderImage:[UIImage imageNamed:@"lunchImage.jpg"]];
+    }
+    
+    return bannerView;
+}
+
+- (void)didScrollToPage:(NSInteger)pageNumber inFlowView:(NewPagedFlowView *)flowView {
+    
+//    NSLog(@"ViewController 滚动到了第%ld页",pageNumber);
+}
+
+#pragma mark --懒加载
+- (NSMutableArray *)imageArray {
+    if (_imageArray == nil) {
+        _imageArray = [NSMutableArray array];
+    }
+    return _imageArray;
+}
+
+
 //webview返回btn
 - (void)backAction
 {
@@ -481,7 +529,7 @@
     
     NSArray *titleArr = @[@"实时抄见",@"历史抄见",@"水表数据",@"水表修改"];
     NSArray *imageArr = @[@"now",@"his",@"message",@"edit"];
-    CGFloat viewHeight = [UIScreen mainScreen].bounds.size.height/3;
+    CGFloat viewHeight = [UIScreen mainScreen].bounds.size.height/3.5;
     
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
@@ -567,10 +615,7 @@
     MeterDataViewController *dataVC = [[MeterDataViewController alloc] init];
     LitMeterListViewController *litMeterVC = [[LitMeterListViewController alloc] init];
     CommProViewController *communProfVC = [[CommProViewController alloc] init];
-    
-//    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"此功能暂未推出" preferredStyle:UIAlertControllerStyleAlert];
-//    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-//    [alertVC addAction:confirm];
+
     GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"提示" message:@"此功能暂未推出" buttonTitle:@"确定" buttonTouchedAction:^{
         
     } dismissAction:^{
@@ -629,5 +674,18 @@
     if (self.view.window == nil && [self isViewLoaded]) {
         self.view = nil;
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.pageFlowView stopTimer];
+}
+- (void)dealloc {
+    
+    /****************************
+     在dealloc或者返回按钮里停止定时器
+     ****************************/
+    NSLog(@"停止定时器");
+    [self.pageFlowView stopTimer];
 }
 @end

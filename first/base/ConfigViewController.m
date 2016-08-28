@@ -62,6 +62,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     _userCountLabel.text = [NSString stringWithFormat:@"%@",[defaults objectForKey:@"unit"]];
 }
 //从storyboard加载
