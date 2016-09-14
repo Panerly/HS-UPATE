@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -495,36 +495,36 @@
                                     </mask>
                                     <mask key="constraints">
                                         <exclude reference="yTe-iv-pWw"/>
-                                        <exclude reference="0ta-Ai-9af"/>
-                                        <exclude reference="HmA-P9-H3P"/>
-                                        <exclude reference="i5S-4d-1wc"/>
-                                        <exclude reference="egy-eS-vxH"/>
-                                        <exclude reference="gvr-rX-7Md"/>
-                                        <exclude reference="hBs-sx-d2N"/>
-                                        <exclude reference="o6b-Cq-q0s"/>
-                                        <exclude reference="48F-Ti-Sc7"/>
-                                        <exclude reference="Ofm-ta-RRB"/>
-                                        <exclude reference="gRM-Ds-DAZ"/>
-                                        <exclude reference="L3S-Br-k7v"/>
-                                        <exclude reference="Twb-LE-Ef3"/>
-                                        <exclude reference="xAh-Fn-hVb"/>
-                                        <exclude reference="XQv-A1-jFl"/>
-                                        <exclude reference="vod-U9-q9P"/>
                                         <exclude reference="0EK-sc-wMU"/>
                                         <exclude reference="APK-3m-DDt"/>
                                         <exclude reference="B3r-0c-IaR"/>
                                         <exclude reference="FhV-Bn-hLQ"/>
                                         <exclude reference="bqe-mu-5DN"/>
+                                        <exclude reference="L3S-Br-k7v"/>
+                                        <exclude reference="Twb-LE-Ef3"/>
+                                        <exclude reference="xAh-Fn-hVb"/>
+                                        <exclude reference="48F-Ti-Sc7"/>
+                                        <exclude reference="Ofm-ta-RRB"/>
+                                        <exclude reference="gRM-Ds-DAZ"/>
+                                        <exclude reference="egy-eS-vxH"/>
+                                        <exclude reference="gvr-rX-7Md"/>
+                                        <exclude reference="hBs-sx-d2N"/>
+                                        <exclude reference="o6b-Cq-q0s"/>
                                         <exclude reference="Gru-Wh-slj"/>
                                         <exclude reference="ZLA-hc-H2x"/>
                                         <exclude reference="dwK-MK-PM3"/>
-                                        <exclude reference="D2Q-rr-Cpe"/>
-                                        <exclude reference="bpi-7V-WyY"/>
-                                        <exclude reference="xHr-hf-rTR"/>
                                         <exclude reference="EaM-6h-2No"/>
                                         <exclude reference="Fas-cX-Uc8"/>
                                         <exclude reference="QfP-9f-O7l"/>
                                         <exclude reference="baE-2G-veL"/>
+                                        <exclude reference="XQv-A1-jFl"/>
+                                        <exclude reference="vod-U9-q9P"/>
+                                        <exclude reference="D2Q-rr-Cpe"/>
+                                        <exclude reference="bpi-7V-WyY"/>
+                                        <exclude reference="xHr-hf-rTR"/>
+                                        <exclude reference="0ta-Ai-9af"/>
+                                        <exclude reference="HmA-P9-H3P"/>
+                                        <exclude reference="i5S-4d-1wc"/>
                                     </mask>
                                 </variation>
                                 <variation key="widthClass=compact">
@@ -541,36 +541,36 @@
                                     </mask>
                                     <mask key="constraints">
                                         <include reference="yTe-iv-pWw"/>
-                                        <exclude reference="0ta-Ai-9af"/>
-                                        <include reference="HmA-P9-H3P"/>
-                                        <include reference="i5S-4d-1wc"/>
-                                        <exclude reference="egy-eS-vxH"/>
-                                        <include reference="gvr-rX-7Md"/>
-                                        <include reference="hBs-sx-d2N"/>
-                                        <exclude reference="o6b-Cq-q0s"/>
-                                        <include reference="48F-Ti-Sc7"/>
-                                        <include reference="Ofm-ta-RRB"/>
-                                        <exclude reference="gRM-Ds-DAZ"/>
-                                        <include reference="L3S-Br-k7v"/>
-                                        <exclude reference="Twb-LE-Ef3"/>
-                                        <include reference="xAh-Fn-hVb"/>
-                                        <include reference="XQv-A1-jFl"/>
-                                        <include reference="vod-U9-q9P"/>
                                         <exclude reference="0EK-sc-wMU"/>
                                         <include reference="APK-3m-DDt"/>
                                         <include reference="B3r-0c-IaR"/>
                                         <exclude reference="FhV-Bn-hLQ"/>
                                         <exclude reference="bqe-mu-5DN"/>
+                                        <include reference="L3S-Br-k7v"/>
+                                        <exclude reference="Twb-LE-Ef3"/>
+                                        <include reference="xAh-Fn-hVb"/>
+                                        <include reference="48F-Ti-Sc7"/>
+                                        <include reference="Ofm-ta-RRB"/>
+                                        <exclude reference="gRM-Ds-DAZ"/>
+                                        <exclude reference="egy-eS-vxH"/>
+                                        <include reference="gvr-rX-7Md"/>
+                                        <include reference="hBs-sx-d2N"/>
+                                        <exclude reference="o6b-Cq-q0s"/>
                                         <include reference="Gru-Wh-slj"/>
                                         <exclude reference="ZLA-hc-H2x"/>
                                         <include reference="dwK-MK-PM3"/>
-                                        <include reference="D2Q-rr-Cpe"/>
-                                        <include reference="bpi-7V-WyY"/>
-                                        <exclude reference="xHr-hf-rTR"/>
                                         <exclude reference="EaM-6h-2No"/>
                                         <exclude reference="Fas-cX-Uc8"/>
                                         <include reference="QfP-9f-O7l"/>
                                         <include reference="baE-2G-veL"/>
+                                        <include reference="XQv-A1-jFl"/>
+                                        <include reference="vod-U9-q9P"/>
+                                        <include reference="D2Q-rr-Cpe"/>
+                                        <include reference="bpi-7V-WyY"/>
+                                        <exclude reference="xHr-hf-rTR"/>
+                                        <exclude reference="0ta-Ai-9af"/>
+                                        <include reference="HmA-P9-H3P"/>
+                                        <include reference="i5S-4d-1wc"/>
                                     </mask>
                                 </variation>
                             </view>

@@ -56,6 +56,12 @@
         dbModel.user_id =[NSString stringWithFormat:@"%d",user_id];
         [_dataArr addObject:dbModel];
     }
+    if (_dataArr.count == 0) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 50)];
+        label.text = @"暂无数据";
+        label.textAlignment = NSTextAlignmentCenter;
+        label.center = _tableView.center;
+    }
     [_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 
@@ -70,6 +76,34 @@
     if ([db open]) {
 //        [db executeUpdate:@"drop table meter_info"];
         BOOL result = [db executeUpdate:@"CREATE TABLE IF NOT EXISTS meter_info (id integer PRIMARY KEY AUTOINCREMENT,meter_id text not null, user_id integer not null,Collect_img_name1 BLOB null, Collect_img_name2 BLOB null, Collect_img_name3 BLOB null);"];
+       
+        
+        /**
+         *  meter_info
+         大表基本信息表
+         id int 主键  自动增加
+         meter_id nvarchar(20) 水表编号
+         user_id nvarchar(20) 用户号(单位代码)
+         meter_txm nvarchar(20)条形码号
+         meter_wid nvarchar(20) 表位号
+         collector_area nvarchar(2) 所属小区或区域
+         install_time datetime 安装时间
+         install_addr nvarchar(50) 安装地点
+         comm_id nvarchar(20) 通讯联络号
+         water_kind nvarchar(20) 用水性质
+         meter_cali int 水表口径
+         meter_name varchar(50) 水表类型
+         x decimal(18, 5) 经度坐标
+         y decimal(18, 5) 纬度坐标
+         remark nvarchar(100) 备注
+         bs nvarchar(2) 标识
+         Collect_img_name1 nvarchar(50) 照片名称1 
+         Collect_img_name2 nvarchar(50) 照片名称2
+         Collect_img_name3 照片名称3
+         */
+        
+        
+        BOOL createBigMeter = [db executeUpdate:@"create table if not exists bigmeter_info (id integer primary key autoincrement, meter_id text not null, user_id text null, meter_txm nvarchar(20) null, meter_wid nvarchar(20) null, collector_area nvarchar(2) null, install_time datetime null, install_addr nvarchar(50) null, install_addr nvarchar(50) not null, comm_id nvarchar(20) null, water_kind nvarchar(20) null, meter_cali int null, meter_name varchar(50) null, x decimal(18, 5) null, y decimal(18, 5) null, remark nvarchar(100) null, bs nvarchar(2) null, Collect_img_name1 nvarchar(50) null, Collect_img_name2 nvarchar(50) null, Collect_img_name3 nvarchar(50) null);"];
         
         if (result) {
             NSLog(@"创建小表成功");
@@ -78,9 +112,27 @@
             [SCToastView showInView:_tableView text:@"创建小表失败" duration:.5 autoHide:YES];
         }
         
+        if (createBigMeter) {
+            NSLog(@"创建大表成功");
+        } else {
+            NSLog(@"创建大表失败！");
+            [SCToastView showInView:_tableView text:@"创建大表失败" duration:.5 autoHide:YES];
+        }
+        
     }
     
     self.db = db;
+    
+    UISegmentedControl *segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"小表待抄",@"大表待抄"]];
+    [segmentCtrl setSelectedSegmentIndex:0];
+    [segmentCtrl addTarget:self action:@selector(segmentCtrlAction:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:segmentCtrl];
+    [segmentCtrl mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.top).with.offset(CGRectGetMaxY(self.navigationController.navigationBar.frame)+10);
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.size.equalTo(CGSizeMake(PanScreenWidth/3, 30));
+    }];
+    
     
     UIButton *insertBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, 64+10, 60, 25)];
     insertBtn.backgroundColor = [UIColor cyanColor];
@@ -90,21 +142,26 @@
     [self.view addSubview:insertBtn];
     
     
-    UIButton *deleBtn = [[UIButton alloc] initWithFrame:CGRectMake((PanScreenWidth-50)/2, 64+10, 60, 25)];
-    [deleBtn setBackgroundColor:[UIColor blueColor]];
-    deleBtn.layer.cornerRadius = 8;
-    [deleBtn setTitle:@"删除" forState:UIControlStateNormal];
-    [deleBtn addTarget:self action:@selector(delete) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:deleBtn];
     
     UIButton *queryBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 20 - 50, 64+10, 60, 25)];
     [queryBtn setBackgroundColor:[UIColor lightGrayColor]];
     queryBtn.layer.cornerRadius = 8;
-    [queryBtn setTitle:@"查询" forState:UIControlStateNormal];
-    [queryBtn addTarget:self action:@selector(query) forControlEvents:UIControlEventTouchUpInside];
+    [queryBtn setTitle:@"删除" forState:UIControlStateNormal];
+    [queryBtn addTarget:self action:@selector(delete) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:queryBtn];
 }
 
+/**
+ *  大小表切换
+ */
+- (void)segmentCtrlAction:(UISegmentedControl *)sender {
+    
+}
+
+
+/**
+ *  数据插入
+ */
 - (void)insert {
     for (int i = 0; i < 10; i++) {
         NSString *meter_id = [NSString stringWithFormat:@"杭州水表%d",arc4random_uniform(100)];
@@ -182,9 +239,10 @@
 
 - (void)createTableView {
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 100, PanScreenWidth, PanScreenHeight - 100 - 49) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 45, PanScreenWidth, PanScreenHeight - 45 - 49) style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:_tableView];
 }
 

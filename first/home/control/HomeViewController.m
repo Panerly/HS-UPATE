@@ -79,7 +79,7 @@
     _tableView.dataSource = self;
     _tableView.scrollEnabled = NO;
 #warning mark - disappear tableView
-    _tableView.alpha = 0;
+//    _tableView.alpha = 0;
 }
 
 - (void)locationCurrentCity
@@ -444,14 +444,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [[UITableViewCell alloc] init];
 #warning mark - disappear tableViewCell
-    cell.backgroundColor = [UIColor colorWithWhite:.5 alpha:.0];
+    cell.backgroundColor = [UIColor colorWithWhite:.5 alpha:.5];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = [NSString stringWithFormat:@"待抄收 10 家"];
     cell.textLabel.textColor = [UIColor whiteColor];

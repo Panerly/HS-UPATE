@@ -381,6 +381,10 @@ UIWebViewDelegate
         _pageFlowView.delegate = self;
         _pageFlowView.dataSource = self;
     }
+    _pageFlowView.layer.shadowColor = [[UIColor darkGrayColor] CGColor];
+    _pageFlowView.layer.shadowRadius = 5;
+    _pageFlowView.layer.shadowOffset = CGSizeMake(1, 1.25);
+    _pageFlowView.layer.shadowOpacity = 0.8f;
     _pageFlowView.backgroundColor = [UIColor clearColor];
     _pageFlowView.minimumPageAlpha = 0.4;
     _pageFlowView.minimumPageScale = 0.83;
@@ -401,7 +405,7 @@ UIWebViewDelegate
     return CGSizeMake(PanScreenWidth - 84, (PanScreenWidth - 84) * 9 / 16);
 }
 
-//点击图片做出的响应
+//点击轮播图片做出的响应
 - (void)didSelectCell:(UIView *)subView withSubViewIndex:(NSInteger)subIndex {
     
     NSLog(@"点击了第%ld张图",(long)subIndex + 1);

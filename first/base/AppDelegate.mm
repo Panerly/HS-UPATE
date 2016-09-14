@@ -54,6 +54,30 @@ BMKMapManager* _mapManager;
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     
+    //判断网络
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        // 一共有四种状态
+        switch (status) {
+            case AFNetworkReachabilityStatusNotReachable:
+                NSLog(@"AFNetworkReachability Not Reachable");
+                
+                [SVProgressHUD showInfoWithStatus:@"请检查网络设置" maskType:SVProgressHUDMaskTypeGradient];
+                break;
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+                NSLog(@"AFNetworkReachability Reachable via WWAN");
+                break;
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                NSLog(@"AFNetworkReachability Reachable via WiFi");
+                break;
+            case AFNetworkReachabilityStatusUnknown:
+            default:
+                NSLog(@"AFNetworkReachability Unknown");
+                break;
+        }
+    }];
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    
+    
     // 要使用百度地图，请先启动BaiduMapManager
     _mapManager = [[BMKMapManager alloc]init];
     // 如果要关注网络及授权验证事件，请设定     generalDelegate参数
@@ -65,8 +89,6 @@ BMKMapManager* _mapManager;
     
     LoginViewController *loginVC = [[LoginViewController alloc] init];
     self.window.rootViewController = loginVC;
-//    self.window.rootViewController = [[HSTabBarController alloc] init];
-    
     [self.window makeKeyAndVisible];
     
     //多个控件接受事件时的排他性

@@ -153,7 +153,7 @@
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 5, PanScreenWidth-40, 40)];
         view.backgroundColor = [UIColor redColor];
         view.userInteractionEnabled = NO;
-        view.layer.cornerRadius = 10;
+        view.layer.cornerRadius = 20;
         [cell addSubview:view];
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((view.frame.size.width-70)/2, (40-25)/2, 70, 25)];

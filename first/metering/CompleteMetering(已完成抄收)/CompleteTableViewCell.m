@@ -9,6 +9,7 @@
 #import "CompleteTableViewCell.h"
 #import "CompleteViewController.h"
 
+
 @implementation CompleteTableViewCell
 
 - (void)awakeFromNib {
@@ -44,12 +45,12 @@
 
 }
 
+//上传数据
 - (IBAction)upload:(id)sender {
     
     [self createDB];
     
 }
-
 - (void)createDB {
     NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
     NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];

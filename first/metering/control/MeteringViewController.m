@@ -68,10 +68,10 @@ static BOOL flashIsOn;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
-    [button addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *scan = [[UIBarButtonItem alloc] initWithCustomView:button];
-    self.navigationItem.leftBarButtonItem = scan;
+//    UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
+//    [button addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *scan = [[UIBarButtonItem alloc] initWithCustomView:button];
+//    self.navigationItem.leftBarButtonItem = scan;
 
     flashIsOn = YES;
     

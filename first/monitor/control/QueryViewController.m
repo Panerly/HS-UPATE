@@ -354,6 +354,8 @@ static CGFloat i = 1.0;
 //查询月流量
 - (void)requestData:(NSString *)fromDate :(NSString *)toDate
 {
+//    [SVProgressHUD setBackgroundColor:[UIColor blackColor]];
+    [SVProgressHUD setForegroundColor:[UIColor blackColor]];
     [SVProgressHUD showWithStatus:@"加载中"];
     
     NSString *url = [NSString stringWithFormat:@"http://%@/waterweb/DosServlet",self.ip];

@@ -145,7 +145,7 @@ UINavigationControllerDelegate
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
-    
+
     NSDictionary *parameters = @{@"username":self.userNameLabel,
                                  @"password":self.passWordLabel,
                                  @"db":self.dbLabel,
@@ -179,7 +179,7 @@ UINavigationControllerDelegate
                 CRModel *crModel = [[CRModel alloc] initWithDictionary:dic error:&error];
                 
                 [self.dataArr addObject:crModel];
-
+                
             }
             
             [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -246,6 +246,9 @@ UINavigationControllerDelegate
 
 
 #pragma mark - UITableViewDelegate UITableViewDataSource
+
+
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -375,5 +378,6 @@ UINavigationControllerDelegate
 {
     [self.navigationController setDelegate:nil];
 }
+
 
 @end
