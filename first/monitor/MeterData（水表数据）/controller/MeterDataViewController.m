@@ -17,7 +17,8 @@
 
 <
 UITableViewDelegate,
-UITableViewDataSource
+UITableViewDataSource,
+UITextFieldDelegate
 >
 //MSSCalendarViewControllerDelegate
 
@@ -117,12 +118,12 @@ UITableViewDataSource
 
 - (void)_requestData:(NSString *)fromDate :(NSString *)toDate :(NSString *)callerLabel
 {
-    
+    self.tableView.hidden = YES;
     if ([fromDate caseInsensitiveCompare:toDate]<=0) {
         
         [SVProgressHUD showWithStatus:@"加载中"];
         
-        NSString *logInUrl = [NSString stringWithFormat:@"http://%@/waterweb/MessageServlet",self.ip];
+        NSString *url = [NSString stringWithFormat:@"http://%@/waterweb/MessageServlet",self.ip];
         
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
         
@@ -144,7 +145,7 @@ UITableViewDataSource
         
         __weak typeof(self) weakSelf = self;
         
-        NSURLSessionTask *task =[manager POST:logInUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        NSURLSessionTask *task =[manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
@@ -157,7 +158,7 @@ UITableViewDataSource
                 
                 if ([[responseObject objectForKey:@"count"] integerValue] == 0) {
                     
-                    [SCToastView showInView:self.view text:@"暂无数据!" duration:1.5 autoHide:YES];
+                    [SVProgressHUD showErrorWithStatus:@"暂无数据!" maskType:SVProgressHUDMaskTypeGradient];
                     
                 } else {
 
@@ -175,7 +176,7 @@ UITableViewDataSource
                         MeterDataModel *meterDataModel = [[MeterDataModel alloc] initWithDictionary:dic error:&error];
                         [_dataArr addObject:meterDataModel];
                     }
-                    
+                    weakSelf.tableView.hidden = NO;
                     [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
                 }
             }
@@ -187,7 +188,7 @@ UITableViewDataSource
         }];
         [task resume];
     } else {
-        [SCToastView showInView:self.view text:@"错误的选择区间!" duration:1.5 autoHide:YES];
+        [SVProgressHUD showErrorWithStatus:@"错误的选择区间!" maskType:SVProgressHUDMaskTypeGradient];
     }
 }
 
@@ -197,6 +198,9 @@ UITableViewDataSource
     [self.userNumLabel removeFromSuperview];
     [self.userNameLabel removeFromSuperview];
     [self.dataNum removeFromSuperview];
+    
+    _callerLabel.delegate = self;
+    _callerLabel.returnKeyType = UIReturnKeyDone;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -289,6 +293,7 @@ UITableViewDataSource
     
     [_fromDate resignFirstResponder];
     [_toDate resignFirstResponder];
+    [_callerLabel resignFirstResponder];
     
     KSDatePicker* picker = [[KSDatePicker alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 40, 300)];
     

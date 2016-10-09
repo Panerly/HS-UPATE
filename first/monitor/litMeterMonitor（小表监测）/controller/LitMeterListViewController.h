@@ -13,6 +13,6 @@
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong)NSMutableArray *dataArray;//数据
-@property (nonatomic, strong)NSMutableArray<NSNumber *> *isExpland;//这里用到泛型，防止存入非数字类型
+//@property (nonatomic, strong)NSMutableArray<NSNumber *> *isExpland;//这里用到泛型，防止存入非数字类型
 
 @end

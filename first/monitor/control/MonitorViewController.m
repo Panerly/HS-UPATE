@@ -13,20 +13,18 @@
 #import "LitMeterListViewController.h"
 #import "CommProViewController.h"
 //滚动视图
-#import "NewPagedFlowView.h"
-#import "PGIndexBannerSubiew.h"
+#import "SDCycleScrollView.h"
 #import "UIImageView+WebCache.h"
 
 
 @interface MonitorViewController ()
 <
-NewPagedFlowViewDelegate,
-NewPagedFlowViewDataSource,
+SDCycleScrollViewDelegate,
 UIWebViewDelegate
 >
 {
-    UIButton *button;
-    UIButton *litButton;
+    UIButton *button;//大表监测平台btn
+    UIButton *litButton;//小表监测平台btn
     NSMutableArray *arr;
     NSMutableArray *litBtnArr;
     UIWebView *_webView;
@@ -35,7 +33,7 @@ UIWebViewDelegate
     BOOL isBigMeter;
     UIPageControl *pageControl;
 }
-@property (nonatomic, strong) NewPagedFlowView *pageFlowView;
+@property (nonatomic, strong) SDCycleScrollView *cycleScrollView;
 @property (nonatomic, strong) NSMutableArray *imageArray;
 @end
 
@@ -77,11 +75,15 @@ UIWebViewDelegate
         [(UIButton *)litBtnArr[j-200] removeFromSuperview];
     }
     
-    if (!_pageFlowView) {
+    if (!_cycleScrollView) {
         //添加大表及滚动视图
         [self _createButton];
         [self _createPicPlay];
-        
+        [UIView animateWithDuration:.5 animations:^{
+            
+            _cycleScrollView.transform = CGAffineTransformIdentity;
+        }];
+    
         for (int i = 100; i < 104; i++) {
             
             ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeScale(.01, .01);
@@ -137,13 +139,16 @@ UIWebViewDelegate
                         break;
                 }
                 
-                _pageFlowView.frame = CGRectMake(0, -[UIScreen mainScreen].bounds.size.height/3, PanScreenWidth, [UIScreen mainScreen].bounds.size.height/3);
+                [UIView animateWithDuration:.5 animations:^{
+                    
+                    _cycleScrollView.transform = CGAffineTransformTranslate(_cycleScrollView.transform, 0, -[UIScreen mainScreen].bounds.size.height/3);
+                }];
                 
             } completion:^(BOOL finished) {
                 
                 [(UIButton *)arr[i-100] removeFromSuperview];
-                [_pageFlowView removeFromSuperview];
-                _pageFlowView = nil;
+                [_cycleScrollView removeFromSuperview];
+                _cycleScrollView = nil;
                 
             }];
         }
@@ -206,8 +211,12 @@ UIWebViewDelegate
         }
         //添加大表及滚动视图
         [self _createButton];
-        [self _createPicPlay];
         
+        [self _createPicPlay];
+        [UIView animateWithDuration:.5 animations:^{
+            
+            _cycleScrollView.transform = CGAffineTransformIdentity;
+        }];
         
         for (int i = 100; i < 104; i++) {
             
@@ -259,7 +268,11 @@ UIWebViewDelegate
                             break;
                     }
                     
-                    _pageFlowView.frame = CGRectMake(0, -[UIScreen mainScreen].bounds.size.height/3, PanScreenWidth, [UIScreen mainScreen].bounds.size.height/3);
+                    _cycleScrollView.frame = CGRectMake(0, -[UIScreen mainScreen].bounds.size.height/3, PanScreenWidth, [UIScreen mainScreen].bounds.size.height/3);
+                    [UIView animateWithDuration:.5 animations:^{
+                        
+                        _cycleScrollView.transform = CGAffineTransformTranslate(_cycleScrollView.transform, 0, -[UIScreen mainScreen].bounds.size.height/3);
+                    }];
                     
                 } completion:^(BOOL finished) {
                     
@@ -267,9 +280,8 @@ UIWebViewDelegate
                     [self.imageArray removeAllObjects];
                     [pageControl removeFromSuperview];
                     pageControl = nil;
-                    [_pageFlowView removeFromSuperview];
-                    _pageFlowView = nil;
-                    
+                    [_cycleScrollView removeFromSuperview];
+                    _cycleScrollView = nil;
                 }];
             }
         }
@@ -352,6 +364,7 @@ UIWebViewDelegate
     
 }
 
+
 //轮播图
 - (void)_createPicPlay
 {
@@ -364,35 +377,20 @@ UIWebViewDelegate
 
     [self.imageArray addObjectsFromArray:urlsArray];
     
-    CGFloat viewHeight = [UIScreen mainScreen].bounds.size.height/2.7;
-    if (!_pageFlowView) {
-        
-        _pageFlowView = [[NewPagedFlowView alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height-10, PanScreenWidth, viewHeight)];
-        if (PanScreenHeight == 480) {
-            _pageFlowView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.size.height, PanScreenWidth, viewHeight);
-        }
-        
-        //初始化pageControl
-        if (!pageControl) {
-            pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, _pageFlowView.frame.size.height*3.8/5, PanScreenWidth, 8)];
-            _pageFlowView.pageControl = pageControl;
-        }
-        [_pageFlowView addSubview:pageControl];
-        _pageFlowView.delegate = self;
-        _pageFlowView.dataSource = self;
-    }
-    _pageFlowView.layer.shadowColor = [[UIColor darkGrayColor] CGColor];
-    _pageFlowView.layer.shadowRadius = 5;
-    _pageFlowView.layer.shadowOffset = CGSizeMake(1, 1.25);
-    _pageFlowView.layer.shadowOpacity = 0.8f;
-    _pageFlowView.backgroundColor = [UIColor clearColor];
-    _pageFlowView.minimumPageAlpha = 0.4;
-    _pageFlowView.minimumPageScale = 0.83;
-    _pageFlowView.orginPageCount = urlsArray.count;
-    _pageFlowView.autoTime = 3.5f;
+    CGFloat viewHeight = [UIScreen mainScreen].bounds.size.height/3;
     
-    [_pageFlowView startTimer];
-    [self.view addSubview:_pageFlowView];
+    if (!_cycleScrollView) {
+        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height+10, PanScreenWidth, viewHeight) shouldInfiniteLoop:YES imageNamesGroup:urlsArray];
+        _cycleScrollView.delegate = self;
+        _cycleScrollView.pageControlStyle = SDCycleScrollViewPageContolStyleAnimated;
+        [self.view addSubview:_cycleScrollView];
+        _cycleScrollView.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        
+        _cycleScrollView.transform = CGAffineTransformTranslate(_cycleScrollView.transform, 0, -[UIScreen mainScreen].bounds.size.height/3);
+        [UIView animateWithDuration:.5 animations:^{
+            _cycleScrollView.transform = CGAffineTransformIdentity;
+        }];
+    }
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
@@ -400,83 +398,48 @@ UIWebViewDelegate
 }
 
 
-#pragma mark NewPagedFlowView Delegate
-- (CGSize)sizeForPageInFlowView:(NewPagedFlowView *)flowView {
-    return CGSizeMake(PanScreenWidth - 84, (PanScreenWidth - 84) * 9 / 16);
-}
 
-//点击轮播图片做出的响应
-- (void)didSelectCell:(UIView *)subView withSubViewIndex:(NSInteger)subIndex {
+#pragma mark - SDCycleScrollViewDelegate
+
+- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
+{
+    NSLog(@"---点击了第%ld张图片", (long)index);
     
-    NSLog(@"点击了第%ld张图",(long)subIndex + 1);
     
-    UIButton *backBtn;
-    if (subIndex == 0) {
-        if (!_webView) {
-            
-            _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 64, PanScreenWidth, PanScreenHeight-64-49)];
-            _webView.delegate = self;
-            backBtn = [[UIButton alloc] init];
+        UIButton *backBtn;
+        if (index == 0) {
+            if (!_webView) {
+    
+                _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 64, PanScreenWidth, PanScreenHeight-64-49)];
+                _webView.delegate = self;
+                backBtn = [[UIButton alloc] init];
+            }
+            [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:introduction]]];
+            backBtn.tintColor = [UIColor redColor];
+            [backBtn setImage:[UIImage imageNamed:@"close@2x"] forState:UIControlStateNormal];
+            [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [backBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+            [_webView addSubview:backBtn];
+            _webView.transform = CGAffineTransformMakeScale(.01, .01);
+            [UIView animateWithDuration:.3 animations:^{
+                _webView.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished) {
+            }];
+    
+            [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(_webView.mas_left);
+                make.top.equalTo(_webView.mas_top);
+                make.size.equalTo(CGSizeMake(50, 50));
+            }];
+    
+            UIScreenEdgePanGestureRecognizer *gesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(backAction)];
+            [_webView addGestureRecognizer:gesture];
+    
+            [self.view addSubview:_webView];
+        } else {
+            IntroductionViewController *intrVC = [[IntroductionViewController alloc] init];
+            [self.navigationController showViewController:intrVC sender:nil];
         }
-        [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:introduction]]];
-        backBtn.tintColor = [UIColor redColor];
-        [backBtn setImage:[UIImage imageNamed:@"close@2x"] forState:UIControlStateNormal];
-        [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [backBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-        [_webView addSubview:backBtn];
-        _webView.transform = CGAffineTransformMakeScale(.01, .01);
-        [UIView animateWithDuration:.3 animations:^{
-            _webView.transform = CGAffineTransformIdentity;
-        } completion:^(BOOL finished) {
-        }];
-        
-        [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_webView.mas_left);
-            make.top.equalTo(_webView.mas_top);
-            make.size.equalTo(CGSizeMake(50, 50));
-        }];
-        
-        UIScreenEdgePanGestureRecognizer *gesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(backAction)];
-        [_webView addGestureRecognizer:gesture];
-        
-        [self.view addSubview:_webView];
-    } else {
-        IntroductionViewController *intrVC = [[IntroductionViewController alloc] init];
-        [self.navigationController showViewController:intrVC sender:nil];
-    }
-}
-
-#pragma mark NewPagedFlowView Datasource
-- (NSInteger)numberOfPagesInFlowView:(NewPagedFlowView *)flowView {
-    
-    return self.imageArray.count;
-    
-}
-
-- (UIView *)flowView:(NewPagedFlowView *)flowView cellForPageAtIndex:(NSInteger)index{
-    PGIndexBannerSubiew *bannerView = (PGIndexBannerSubiew *)[flowView dequeueReusableCell];
-    if (!bannerView) {
-        bannerView = [[PGIndexBannerSubiew alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth - 50, (PanScreenWidth - 50) * 9 / 10)];
-        bannerView.layer.cornerRadius = 4;
-        bannerView.layer.masksToBounds = YES;
-    }
-    //在这里下载网络图片
-    NSInteger currentIndex;
-    currentIndex = index;
-    if (self.imageArray.count != 0) {
-        if (currentIndex>(self.imageArray.count-1)) {
-            currentIndex = 3;
-        }
-        
-        [bannerView.mainImageView sd_setImageWithURL:[NSURL URLWithString:self.imageArray[currentIndex]] placeholderImage:[UIImage imageNamed:@"lunchImage.jpg"]];
-    }
-    
-    return bannerView;
-}
-
-- (void)didScrollToPage:(NSInteger)pageNumber inFlowView:(NewPagedFlowView *)flowView {
-    
-//    NSLog(@"ViewController 滚动到了第%ld页",pageNumber);
 }
 
 #pragma mark --懒加载
@@ -533,7 +496,7 @@ UIWebViewDelegate
     
     NSArray *titleArr = @[@"实时抄见",@"历史抄见",@"水表数据",@"水表修改"];
     NSArray *imageArr = @[@"now",@"his",@"message",@"edit"];
-    CGFloat viewHeight = [UIScreen mainScreen].bounds.size.height/3.5;
+    CGFloat viewHeight = [UIScreen mainScreen].bounds.size.height/3;
     
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
@@ -682,14 +645,6 @@ UIWebViewDelegate
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self.pageFlowView stopTimer];
-}
-- (void)dealloc {
-    
-    /****************************
-     在dealloc或者返回按钮里停止定时器
-     ****************************/
-    NSLog(@"停止定时器");
-    [self.pageFlowView stopTimer];
+//    [self.pageFlowView stopTimer];
 }
 @end

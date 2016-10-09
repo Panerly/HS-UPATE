@@ -26,8 +26,10 @@
     [super viewDidLoad];
 
     self.title = @"本地数据";
+    
     [self createTableView];
   
+    [self setupUI];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -39,6 +41,35 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.db close];
+}
+
+- (void)setupUI {
+    UISegmentedControl *segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"小表待抄",@"大表待抄"]];
+    //    [segmentCtrl setSelectedSegmentIndex:0];
+    segmentCtrl.selectedSegmentIndex = 0;
+    [segmentCtrl addTarget:self action:@selector(segmentCtrlAction:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:segmentCtrl];
+    [segmentCtrl mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.top).with.offset(CGRectGetMaxY(self.navigationController.navigationBar.frame)+10);
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.size.equalTo(CGSizeMake(PanScreenWidth/2.5, 30));
+    }];
+    
+    UIButton *insertBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, 64+10, 60, 25)];
+    insertBtn.backgroundColor = [UIColor cyanColor];
+    insertBtn.layer.cornerRadius = 8;
+    [insertBtn setTitle:@"插入" forState:UIControlStateNormal];
+    [insertBtn addTarget:self action:@selector(insert) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:insertBtn];
+    
+    
+    
+    UIButton *queryBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 20 - 50, 64+10, 60, 25)];
+    [queryBtn setBackgroundColor:[UIColor lightGrayColor]];
+    queryBtn.layer.cornerRadius = 8;
+    [queryBtn setTitle:@"删除" forState:UIControlStateNormal];
+    [queryBtn addTarget:self action:@selector(delete) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:queryBtn];
 }
 
 - (void)updateDB {
@@ -103,7 +134,7 @@
          */
         
         
-        BOOL createBigMeter = [db executeUpdate:@"create table if not exists bigmeter_info (id integer primary key autoincrement, meter_id text not null, user_id text null, meter_txm nvarchar(20) null, meter_wid nvarchar(20) null, collector_area nvarchar(2) null, install_time datetime null, install_addr nvarchar(50) null, install_addr nvarchar(50) not null, comm_id nvarchar(20) null, water_kind nvarchar(20) null, meter_cali int null, meter_name varchar(50) null, x decimal(18, 5) null, y decimal(18, 5) null, remark nvarchar(100) null, bs nvarchar(2) null, Collect_img_name1 nvarchar(50) null, Collect_img_name2 nvarchar(50) null, Collect_img_name3 nvarchar(50) null);"];
+        BOOL createBigMeter = [db executeUpdate:@"create table if not exists bigmeter_info (id integer primary key autoincrement, meter_id text not null, user_id text null, meter_txm nvarchar(20) null, meter_wid nvarchar(20) null, collector_area nvarchar(2) null, install_time datetime null, install_addr nvarchar(50) null, comm_id nvarchar(20) null, water_kind nvarchar(20) null, meter_cali int null, meter_name varchar(50) null, x decimal(18, 5) null, y decimal(18, 5) null, remark nvarchar(100) null, bs nvarchar(2) null, Collect_img_name1 nvarchar(50) null, Collect_img_name2 nvarchar(50) null, Collect_img_name3 nvarchar(50) null);"];
         
         if (result) {
             NSLog(@"创建小表成功");
@@ -123,32 +154,6 @@
     
     self.db = db;
     
-    UISegmentedControl *segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"小表待抄",@"大表待抄"]];
-    [segmentCtrl setSelectedSegmentIndex:0];
-    [segmentCtrl addTarget:self action:@selector(segmentCtrlAction:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:segmentCtrl];
-    [segmentCtrl mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.top).with.offset(CGRectGetMaxY(self.navigationController.navigationBar.frame)+10);
-        make.centerX.equalTo(self.view.mas_centerX);
-        make.size.equalTo(CGSizeMake(PanScreenWidth/3, 30));
-    }];
-    
-    
-    UIButton *insertBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, 64+10, 60, 25)];
-    insertBtn.backgroundColor = [UIColor cyanColor];
-    insertBtn.layer.cornerRadius = 8;
-    [insertBtn setTitle:@"插入" forState:UIControlStateNormal];
-    [insertBtn addTarget:self action:@selector(insert) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:insertBtn];
-    
-    
-    
-    UIButton *queryBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 20 - 50, 64+10, 60, 25)];
-    [queryBtn setBackgroundColor:[UIColor lightGrayColor]];
-    queryBtn.layer.cornerRadius = 8;
-    [queryBtn setTitle:@"删除" forState:UIControlStateNormal];
-    [queryBtn addTarget:self action:@selector(delete) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:queryBtn];
 }
 
 /**

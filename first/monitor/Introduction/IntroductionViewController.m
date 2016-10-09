@@ -19,7 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     self.title = @"杭水简介";
     _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, PanScreenHeight+30)];
     _webView.delegate = self;
@@ -29,7 +29,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
     if (self.view.window == nil && [self isViewLoaded]) {
         self.view = nil;
     }
@@ -54,24 +53,26 @@
         make.size.equalTo(CGSizeMake(100, 50));
     }];
 }
+
+/**
+ *  加载失败
+ *
+ */
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [loading removeFromSuperview];
     [SCToastView showInView:self.view text:@"加载失败！请重试" duration:2.0f autoHide:YES];
 }
+
+/**
+ *  加载完去除
+ *
+ */
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     [loading removeFromSuperview];
     [loadingLabel removeFromSuperview];
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

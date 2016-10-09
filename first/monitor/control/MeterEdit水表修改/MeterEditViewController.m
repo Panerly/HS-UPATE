@@ -79,7 +79,7 @@ static int i = 0;
 - (void)_requestData
 {
     
-     NSString *logInUrl = [NSString stringWithFormat:@"http://%@/waterweb/EditServlet",self.ipLabel];
+     NSString *url = [NSString stringWithFormat:@"http://%@/waterweb/EditServlet",self.ipLabel];
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSDictionary *parameters = @{@"username":self.userNameLabel,
                                  @"password":self.passWordLabel,
@@ -91,7 +91,7 @@ static int i = 0;
     
     serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
     
-    NSURLSessionTask *task =[manager POST:logInUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSURLSessionTask *task =[manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

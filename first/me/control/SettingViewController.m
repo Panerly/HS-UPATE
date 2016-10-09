@@ -8,7 +8,6 @@
 
 #import "SettingViewController.h"
 #import "SettingTableViewCell.h"
-#import "LoginViewController.h"
 #import "UserInfoViewController.h"
 #import "UIImageView+WebCache.h"
 
@@ -81,6 +80,13 @@
 {
     if (indexPath.section == 0 && indexPath.row == 0) {
         return 70;
+    }
+    return 50;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 2) {
+        return PanScreenWidth/3;
     }
     return 50;
 }
@@ -214,15 +220,23 @@
         [tableView cellForRowAtIndexPath:indexPath].selected = NO;
         
     }
-    if (indexPath.section == 2 && indexPath.row == 0) {
+    if (indexPath.section == 2) {
+        /**
+         *  退出登出
+         *
+         *  @param logOut 登出
+         *
+         *  @return 退回至登录界面
+         */
+        [self performSelector:@selector(logOut) withObject:nil afterDelay:0.01];
         
-        LoginViewController *loginVC = [[LoginViewController alloc] init];
-        loginVC.flag = 1;
-        [self presentViewController:loginVC animated:YES completion:nil];
-        loginVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
     }
 }
-
+- (void)logOut {
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     if (self.view.window == nil && [self isViewLoaded]) {

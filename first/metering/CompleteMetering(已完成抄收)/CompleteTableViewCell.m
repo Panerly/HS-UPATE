@@ -54,7 +54,7 @@
 - (void)createDB {
     NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
     NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
-    
+    NSLog(@"大表数据库路径%@",fileName);
     FMDatabase *db = [FMDatabase databaseWithPath:fileName];
     [db open];
     [db executeUpdate:[NSString stringWithFormat:@"delete from meter_complete where user_id = '%@'",_click]];

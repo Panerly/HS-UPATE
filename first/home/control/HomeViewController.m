@@ -13,7 +13,6 @@
 
 @interface HomeViewController ()<CLLocationManagerDelegate,UITableViewDelegate, UITableViewDataSource>
 {
-    UIImageView *loading;
     NSTimer *timer;
 }
 @property (nonatomic, strong) CLLocationManager* locationManager;
@@ -56,6 +55,11 @@
     [SVProgressHUD dismiss];
 }
 
+
+
+/**
+ *  适配6以上机型
+ */
 - (void)modifyWeatherConstant {
     [UIView animateWithDuration:.001 animations:^{
         
@@ -66,6 +70,10 @@
     }];
 }
 
+
+/**
+ *  3.5寸
+ */
 - (void)modifyConstant {
     self.widthC.constant = 80;
     self.heightC.constant = 60;
@@ -82,6 +90,10 @@
 //    _tableView.alpha = 0;
 }
 
+
+/**
+ *  定位当前城市🏙
+ */
 - (void)locationCurrentCity
 {
     //检测定位功能是否开启
@@ -103,7 +115,6 @@
         [self.locationManager setDistanceFilter:5];
         //开始定位
         [self.locationManager startUpdatingLocation];
-        [self.view addSubview:loading];
         //设置开始识别方向
         [self.locationManager startUpdatingHeading];
     }else{
@@ -121,6 +132,9 @@
     }
 }
 
+/**
+ *  天气加载期间
+ */
 - (void)loadingInfo
 {
     self.weather.text = [NSString stringWithFormat:@"天气:  正在加载"];
@@ -136,9 +150,6 @@
 //请求天气信息
 - (void)_requestWeatherData:(NSString *)cityName
 {
-//    [SVProgressHUD showWithStatus:@"正在加载天气信息"];
-    
-    
     self.city.text = [NSString stringWithFormat:@"城市:  %@市",cityName];
     self.locaCity = cityName;
     
@@ -268,16 +279,6 @@
             self.todayWeatherInfo.text = [NSString stringWithFormat:@"加载失败!"];
             self.tomorrowWeather.text = [NSString stringWithFormat:@"加载失败!"];
             
-//            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"天气信息加载失败，请重新定位^_^!" preferredStyle:UIAlertControllerStyleAlert];
-//            
-//            UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//                
-//            }];
-//            
-//            [alertVC addAction:action];
-//            [self presentViewController:alertVC animated:YES completion:^{
-//                
-//            }];
         }
         
     }];
@@ -306,18 +307,6 @@
 //定位当前城市
 - (IBAction)position:(id)sender {
     
-//    [SCToastView showInView:[UIApplication sharedApplication].keyWindow text:@"定位中..." duration:2 autoHide:YES];
-    
-//    //设置加载圆点转圈动画
-//    if (!loading) {
-//        
-//        loading = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 50, 50)];
-//    }
-//    loading.center = self.view.center;
-    
-//    UIImage *image = [UIImage sd_animatedGIFNamed:@"定位图"];
-    
-//    [loading setImage:image];
     if (timer) {
         
         [timer invalidate];
@@ -326,15 +315,30 @@
     
     [self locationCurrentCity];
 }
+
+/**
+ *  超时操作
+ */
+static int timesOut = 0;
 - (void)locatStatue {
+    timesOut ++;
+    if (timesOut >= 10 && _locationManager) {
+        [timer invalidate];
+        [_locationManager stopUpdatingLocation];
+        _locationManager = nil;
+        [self timesOut];
+        timesOut = 0;
+    }
     [self animationWithView:_positionBtn duration:.5];
-//    [UIView animateWithDuration:.5 animations:^{
-//        _positionBtn.transform = CGAffineTransformMakeScale(.5, .5);
-//    } completion:^(BOOL finished) {
-//        _positionBtn.transform = CGAffineTransformIdentity;
-//    }];
 }
 
+
+/**
+ *  缩放动画
+ *
+ *  @param view     button
+ *  @param duration 0.5s
+ */
 - (void)animationWithView:(UIView *)view duration:(CFTimeInterval)duration{
     
     CAKeyframeAnimation * animation;
@@ -358,6 +362,11 @@
     [view.layer addAnimation:animation forKey:nil];
 }
 
+
+
+/**
+ *  定位超时
+ */
 - (void)timesOut{
     [SVProgressHUD showErrorWithStatus:@"定位超时！"];
     [_locationManager stopUpdatingLocation];
@@ -375,7 +384,13 @@
 //定位失败
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
+    NSLog(@"%@",error);
     [timer invalidate];
+    if (_locationManager) {
+        
+        [_locationManager stopUpdatingLocation];
+        _locationManager = nil;
+    }
     [SVProgressHUD showErrorWithStatus:@"定位失败!"];
 }
 
@@ -391,30 +406,16 @@
         
         if(error || placemarks.count == 0){
             [SVProgressHUD showErrorWithStatus:@"定位失败"];
-        }else{
+        }else {
             
             [SVProgressHUD showInfoWithStatus:@"定位成功"];
             
-            if ([loading isKindOfClass:[self.view class]]) {
-                
-                [loading removeFromSuperview];
-            }
             CLPlacemark* placemark = placemarks.firstObject;
             
-            NSLog(@"定位城市:%@",[[placemark addressDictionary] objectForKey:@"City"]);
+            NSLog(@"当前城市:%@",[[placemark addressDictionary] objectForKey:@"City"]);
             
             self.city.text = [NSString stringWithFormat:@"城市:  %@",[[placemark addressDictionary] objectForKey:@"City"]];
             
-//            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"你的位置" message:[[placemark addressDictionary] objectForKey:@"City"] preferredStyle:UIAlertControllerStyleAlert];
-//            
-//            UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//                
-//            }];
-//            
-//            [alertVC addAction:action];
-//            [self presentViewController:alertVC animated:YES completion:^{
-//                
-//            }];
             [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"当前城市：%@",[[placemark addressDictionary] objectForKey:@"City"]]];
             
             NSString *cityName = [[placemark addressDictionary] objectForKey:@"City"];
@@ -422,7 +423,7 @@
             //去除“市” 百度天气不允许带市、自治区等后缀
             if ([cityName rangeOfString:@"市"].location != NSNotFound) {
                  NSInteger index = [cityName rangeOfString:@"市"].location;
-                                    cityName = [cityName substringToIndex:index];
+                 cityName = [cityName substringToIndex:index];
             }
             if ([cityName rangeOfString:@"自治区"].location != NSNotFound) {
                 NSInteger index = [cityName rangeOfString:@"自治区"].location;
@@ -460,6 +461,9 @@
     return cell;
 }
 
+/**
+ *  转跳至抄表界面
+ */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MeteringViewController *meteringVC = [[MeteringViewController alloc] init];
@@ -476,6 +480,9 @@
     [self _requestWeatherData:self.locaCity];
 }
 
+/**
+ *  刷新时btn转圈
+ */
 - (void)refreshStatus {
     
     [UIView animateWithDuration:.1 animations:^{

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -174,8 +174,7 @@
                             </mask>
                         </variation>
                         <connections>
-                            <outletCollection property="gestureRecognizers" destination="YTp-30-Bdo" appends="YES" id="aRR-ZO-1mP"/>
-                            <outletCollection property="gestureRecognizers" destination="ZjN-pe-0YC" appends="YES" id="nik-cR-57e"/>
+                            <outletCollection property="gestureRecognizers" destination="uBX-QH-1aW" appends="YES" id="m3D-B0-oBu"/>
                         </connections>
                     </view>
                     <connections>
@@ -183,16 +182,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YVM-q5-PAX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="YTp-30-Bdo">
+                <swipeGestureRecognizer direction="right" id="uBX-QH-1aW">
                     <connections>
-                        <action selector="tapAction:" destination="Zir-wR-04a" id="a4Z-eK-d4I"/>
+                        <action selector="swipe:" destination="Zir-wR-04a" id="9uw-S1-Tcb"/>
                     </connections>
-                </tapGestureRecognizer>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="ZjN-pe-0YC">
-                    <connections>
-                        <action selector="PanPopAction:" destination="Zir-wR-04a" id="8cA-d7-iGJ"/>
-                    </connections>
-                </panGestureRecognizer>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1038" y="470"/>
         </scene>

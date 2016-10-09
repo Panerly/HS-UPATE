@@ -41,19 +41,8 @@
     _imageViewForSecond.userInteractionEnabled = NO;
     
     _interactive = [[AMWaveTransition alloc] init];
-    
-//    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scaleAction:)];
-//    [self.view addGestureRecognizer:pinch];
 
 }
-//- (void)scaleAction :(UIPinchGestureRecognizer *)pinchs
-//{
-////    if (pinchs.velocity>0) {
-//    
-//        _imageViewForSecond.frame = CGRectMake(_imageViewForSecond.frame.origin.x, _imageViewForSecond.frame.origin.y, _imageViewForSecond.frame.size.width*pinchs.scale, _imageViewForSecond.frame.size.height*pinchs.scale);
-//        [_imageViewForSecond setNeedsDisplay];
-////    }
-//}
 
 -(void)edgePanGesture:(UIScreenEdgePanGestureRecognizer *)recognizer{
     //计算手指滑的物理距离（滑了多远，与起始位置无关）
@@ -80,7 +69,9 @@
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    if (self.view.window == nil && [self isViewLoaded]) {
+        self.view = nil;
+    }
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -100,12 +91,7 @@
     if (operation != UINavigationControllerOperationNone) {
         return [AMWaveTransition transitionWithOperation:operation];
     }
-    //    if ([toVC isKindOfClass:[FirstCollectionViewController class]]) {
-    //        MagicMoveInverseTransition *inverseTransition = [[MagicMoveInverseTransition alloc]init];
-    //        return inverseTransition;
-    //    }else{
     return nil;
-    //    }
 }
 
 - (id <UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
@@ -118,16 +104,13 @@
 }
 
 
-- (IBAction)tapAction:(id)sender {
-    
-//    _isHide = !_isHide;
-//    [self.navigationController setNavigationBarHidden:_isHide animated:YES];
-//    self.tabBarController.tabBar.hidden = _isHide;
-    
-}
+- (IBAction)swipe:(UISwipeGestureRecognizer *)sender {
 
-- (IBAction)PanPopAction:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (sender.direction == UISwipeGestureRecognizerDirectionRight) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        return;
+    }
 }
 
 @end

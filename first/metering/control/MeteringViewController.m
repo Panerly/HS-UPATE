@@ -24,6 +24,7 @@
 
 #import "ScanImageViewController.h"
 
+
 static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
 static NSString *const menuCellIdentifier = @"rotationCell";
 
@@ -44,6 +45,7 @@ YALContextMenuTableViewDelegate
     UIButton *scanBtn;
     //弹窗用的tableview，与界面重复，避免加载数据源混乱用BOOL区分
     BOOL isTap;
+    NSURLSessionTask *task;
 }
 @property (nonatomic, assign) NSInteger num;
 
@@ -56,6 +58,8 @@ YALContextMenuTableViewDelegate
 
 @property (nonatomic, strong) NSArray *menuTitles;
 @property (nonatomic, strong) NSArray *menuIcons;
+
+@property (nonatomic, strong) FMDatabase *db;
 
 
 @end
@@ -89,7 +93,7 @@ static BOOL flashIsOn;
     
     [self _createTableView];
     
-    [self _requestData];
+    [self loadInterNetData];
     
 //    UIButton *btn = [[UIButton alloc] init];
 //    btn.clipsToBounds = YES;
@@ -134,6 +138,44 @@ static BOOL flashIsOn;
 //    UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(share)];
 //    self.navigationItem.rightBarButtonItems = @[share];
 }
+
+- (void)loadInterNetData {
+    //检测网络
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        
+        if (status == AFNetworkReachabilityStatusNotReachable) {
+            [SVProgressHUD showInfoWithStatus:@"似乎已断开与互联网的连接" maskType:SVProgressHUDMaskTypeGradient];
+            
+            if ([self.db open]) {
+                FMResultSet *restultSet = [self.db executeQuery:@"SELECT * FROM bigmeter_info order by meter_wid"];
+                _dataArr = [NSMutableArray array];
+                [_dataArr removeAllObjects];
+                
+                while ([restultSet next]) {
+                    NSString *install_addr = [restultSet stringForColumn:@"install_addr"];
+
+                    MeterInfoModel *meterinfoModel = [[MeterInfoModel alloc] init];
+                    meterinfoModel.install_Addr = install_addr;
+                    [_dataArr addObject:meterinfoModel];
+                }
+                [_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+            }
+            [self.db close];
+            [_tableView.mj_header endRefreshing];
+            
+        } else {
+            [self _requestData];
+        }
+    }];
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    if (task.state == MJRefreshStateRefreshing) {
+        [task cancel];
+    }
+}
+
 
 - (void)action :(UIButton *)sender{
     [FTPopOverMenu showForSender:sender
@@ -204,7 +246,9 @@ static BOOL flashIsOn;
 //    
 //}
 
-
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)push
 {
@@ -279,7 +323,7 @@ static BOOL flashIsOn;
         
         [_tableView setExclusiveTouch:YES];
         
-        _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(_requestData)];
+        _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadInterNetData)];
         _tableView.mj_header.automaticallyChangeAlpha = YES;
     }
     
@@ -310,24 +354,20 @@ static BOOL flashIsOn;
 }
 
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    if (self.view.window == nil && [self isViewLoaded]) {
-        self.view = nil;
-    }
-}
-
-
+/**
+ *  大小表切换
+ *
+ *  @param sender <#sender description#>
+ */
 - (IBAction)meterTypecOntrol:(UISegmentedControl *)sender {
     
     switch (sender.selectedSegmentIndex) {
-        case 0:
+        case 0://小表
             _num = 5;
             isBitMeter = YES;
             [self _requestData];
             break;
-        case 1:
+        case 1://大表
             _num = 10;
             isBitMeter = NO;
             [self _requestData];
@@ -364,26 +404,34 @@ static BOOL flashIsOn;
     
     __weak typeof(self) weakSelf = self;
     
-    NSURLSessionTask *task =[manager POST:logInUrl parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    task =[manager POST:logInUrl parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         if (responseObject) {
             
-//            [SVProgressHUD showInfoWithStatus:@"加载成功"];
+//            [weakSelf.tableView.mj_header endRefreshing];
             
-            [weakSelf.tableView.mj_header endRefreshing];
+//            _dataArr = [NSMutableArray array];
+//            [_dataArr removeAllObjects];
             
-            _dataArr = [NSMutableArray array];
-            [_dataArr removeAllObjects];
+//            NSError *error;
             
-            NSError *error;
+            [weakSelf createDB];
             
             for (NSDictionary *dic in responseObject) {
-                MeterInfoModel *meterInfoModel = [[MeterInfoModel alloc] initWithDictionary:dic error:&error];
-                [_dataArr addObject:meterInfoModel];
-            } 
-            [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+//                MeterInfoModel *meterInfoModel = [[MeterInfoModel alloc] initWithDictionary:dic error:&error];
+//                [_dataArr addObject:meterInfoModel];
+                
+                if ([self.db open]) {
+                    [self.db executeUpdate:@"replace into bigmeter_info (collect_Img_Name1, collect_Img_Name2, collect_Img_Name3, collector_Area, comm_Id, id, install_Addr, install_Time, meter_Cali, meter_Id, meter_Name, meter_Txm, meter_Wid, remark, user_Id, water_Kind, x, y) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[dic objectForKey:@"collect_Img_Name1"], [dic objectForKey:@"collect_Img_Name2"], [dic objectForKey:@"collect_Img_Name3"], [dic objectForKey:@"collector_Area"], [dic objectForKey:@"comm_Id"], [dic objectForKey:@"id"], [dic objectForKey:@"install_Addr"], [dic objectForKey:@"install_Time"], [dic objectForKey:@"meter_Cali"], [dic objectForKey:@"meter_Id"], [dic objectForKey:@"meter_Name"], [dic objectForKey:@"meter_Txm"], [dic objectForKey:@"meter_Wid"], [dic objectForKey:@"remark"], [dic objectForKey:@"user_Id"], [dic objectForKey:@"water_Kind"], [dic objectForKey:@"x"], [dic objectForKey:@"y"]];
+                }
+            }
+            [weakSelf.db close];
+
+        
+            
+//            [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             
             [loading removeFromSuperview];
         }
@@ -400,7 +448,7 @@ static BOOL flashIsOn;
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请求超时!" preferredStyle:UIAlertControllerStyleAlert];
             
             [alertVC addAction:confir];
-            [self presentViewController:alertVC animated:YES completion:^{
+            [weakSelf presentViewController:alertVC animated:YES completion:^{
                 
             }];
         }
@@ -412,7 +460,7 @@ static BOOL flashIsOn;
         }];
         
         [alertVC addAction:action];
-        [self presentViewController:alertVC animated:YES completion:^{
+        [weakSelf presentViewController:alertVC animated:YES completion:^{
             
         }];
         
@@ -845,6 +893,37 @@ static BOOL flashIsOn;
             flashIsOn = !flashIsOn;
         }
         [device unlockForConfiguration];
+    }
+}
+#pragma mark - create dataBase 
+- (void)createDB {
+    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
+    NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+    
+    NSLog(@"文件路径：%@",fileName);
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+    
+    if ([db open]) {
+        BOOL createBigMeter = [db executeUpdate:@"create table if not exists bigmeter_info (id integer PRIMARY key AUTOINCREMENT, meter_id text not null, user_id text null, meter_txm nvarchar(20) null, meter_wid nvarchar(20) null, collector_area nvarchar(2) null, install_time datetime null, install_addr nvarchar(50) null, comm_id nvarchar(20) null, water_kind nvarchar(20) null, meter_cali int null, meter_name varchar(50) null, x decimal(18, 5) null, y decimal(18, 5) null, remark nvarchar(100) null, bs nvarchar(2) null, Collect_img_name1 nvarchar(50) null, Collect_img_name2 nvarchar(50) null, Collect_img_name3 nvarchar(50) null);"];
+        
+        if (createBigMeter) {
+            NSLog(@"创建大表成功");
+        } else {
+            NSLog(@"创建大表失败！");
+            [SCToastView showInView:_tableView text:@"创建大表失败" duration:.5 autoHide:YES];
+        }
+        
+    }
+    
+    self.db = db;
+    
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    if (self.view.window == nil && [self isViewLoaded]) {
+        self.view = nil;
     }
 }
 

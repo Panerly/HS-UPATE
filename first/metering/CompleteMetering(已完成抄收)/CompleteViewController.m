@@ -57,9 +57,9 @@
     _uploadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _uploadBtn.backgroundColor = [UIColor lightGrayColor];
     [_uploadBtn setTitle:@"上传" forState:UIControlStateNormal];
-    _uploadBtn.frame = CGRectMake(25, self.view.frame.size.height - 60 - 49, self.view.frame.size.width - 50, 50);
+    _uploadBtn.frame = CGRectMake(25, PanScreenHeight - 60 - 49, PanScreenWidth - 50, (PanScreenWidth - 50)/7);
     _uploadBtn.clipsToBounds = YES;
-    _uploadBtn.layer.cornerRadius = 25;
+    _uploadBtn.layer.cornerRadius = (PanScreenWidth - 50)/7/2;
     [_uploadBtn addTarget:self action:@selector(uploadClick:) forControlEvents:UIControlEventTouchUpInside];
     _uploadBtn.enabled = NO;
     [self.view addSubview:_uploadBtn];
@@ -176,7 +176,10 @@
             break;
     }
 }
-
+/**
+ *  查询数据库更新表格
+ *
+ */
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self createDB];

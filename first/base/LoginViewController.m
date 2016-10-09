@@ -31,15 +31,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
     UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     bgImageView.image = [UIImage imageNamed:@"bg_weater2.jpg"];
     [self.view addSubview:bgImageView];
     
-    defaults = [NSUserDefaults standardUserDefaults];
     _flag = 1;
     
-    [self _getCode];
-//    [self configKeyChainItemWrapper];
+    //    [self configKeyChainItemWrapper];
     
     //判断机型
     if (PanScreenHeight == 736) {
@@ -54,7 +53,7 @@
     else {
         device = @"4";
     }
-
+    
     //创建杭水logo
     [self _createLogoImage];
     
@@ -63,8 +62,8 @@
     
     //创建登录btn
     [self _createLogBtn];
-    
 }
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
@@ -188,7 +187,9 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-
+    if (self.view.window == nil && [self isViewLoaded]) {
+        self.view = nil;
+    }
 }
 
 
@@ -310,7 +311,6 @@
                 else {
                     
                     //保存用户名和密码
-                    defaults = [NSUserDefaults standardUserDefaults];
                     
                     [defaults setObject:weakSelf.userName.text forKey:@"userName"];
                     
@@ -338,7 +338,7 @@
                         tabBarCtrl.transitioningDelegate = self;
                         
                         [weakSelf presentViewController:tabBarCtrl animated:YES completion:^{
-                            
+                            tabBarCtrl.modalPresentationStyle = UIModalPresentationPageSheet;
                         }];
                     
                     }];
@@ -407,6 +407,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    defaults = [NSUserDefaults standardUserDefaults];
+    [self _getCode];
+    
     _userName.delegate = self;
     _passWord.delegate = self;
     _userName.returnKeyType = UIReturnKeyNext;
@@ -472,4 +476,7 @@
     
     return YES;
 }
+
+
+
 @end

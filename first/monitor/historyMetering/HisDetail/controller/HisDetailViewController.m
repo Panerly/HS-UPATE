@@ -79,7 +79,7 @@ static CGFloat i = 0;
     [self.view addSubview:loading];
     [self.view addSubview:loadingLabel];
     
-    NSString *logInUrl = [NSString stringWithFormat:@"http://%@/waterweb/His5Servlet",self.ipLabel];
+    NSString *historyUrl = [NSString stringWithFormat:@"http://%@/waterweb/His5Servlet",self.ipLabel];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -99,7 +99,7 @@ static CGFloat i = 0;
     
     __weak typeof(self) weakSelf = self;
     
-    NSURLSessionTask *task =[manager POST:logInUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSURLSessionTask *task =[manager POST:historyUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

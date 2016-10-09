@@ -12,7 +12,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewForSecond;
 
-- (IBAction)tapAction:(id)sender;
-- (IBAction)PanPopAction:(id)sender;
+//- (IBAction)tapAction:(id)sender;
+//- (IBAction)PanPopAction:(id)sender;
+- (IBAction)swipe:(UISwipeGestureRecognizer *)sender;
 
 @end

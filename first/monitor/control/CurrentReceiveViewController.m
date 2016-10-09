@@ -164,6 +164,7 @@ UINavigationControllerDelegate
         
         if (responseObject) {
 
+            NSLog(@"%@",responseObject);
             [SVProgressHUD showInfoWithStatus:@"加载成功"];
             
             [_tableView.mj_header endRefreshing];
@@ -190,6 +191,7 @@ UINavigationControllerDelegate
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         [loading removeFromSuperview];
+        [_tableView.mj_header endRefreshing];
         
         UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"服务器连接失败" preferredStyle:UIAlertControllerStyleAlert];
         

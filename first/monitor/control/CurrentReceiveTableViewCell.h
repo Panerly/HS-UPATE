@@ -10,6 +10,7 @@
 #import "CRModel.h"
 
 @interface CurrentReceiveTableViewCell : UITableViewCell
+
 @property (weak, nonatomic) IBOutlet UIImageView *userImage;
 @property (weak, nonatomic) IBOutlet UILabel *userName;
 @property (nonatomic, strong) CRModel *CRModel;
@@ -20,4 +21,5 @@
 @property (nonatomic, strong) NSString *x;
 @property (nonatomic, strong) NSString *y;
 @property (nonatomic, strong) NSString *userNameStr;
+
 @end

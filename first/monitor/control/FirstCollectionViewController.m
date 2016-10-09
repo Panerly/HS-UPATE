@@ -14,7 +14,8 @@
 
 @interface FirstCollectionViewController ()<UINavigationControllerDelegate>
 
-@property (strong, nonatomic) IBOutlet AMWaveTransition *interactive;
+@property (strong, nonatomic) AMWaveTransition *interactive;
+
 @end
 
 @implementation FirstCollectionViewController
@@ -57,7 +58,9 @@ static NSString * const reuseIdentifier = @"CollectionCell";
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    if (self.view.window == nil && [self isViewLoaded]) {
+        self.view = nil;
+    }
 }
 
 #pragma mark <UINavigationControllerDelegate>

@@ -84,6 +84,8 @@
 
 - (void)_setTableView
 {
+    self.tableView.clipsToBounds = YES;
+    self.tableView.layer.cornerRadius = 5;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.scrollEnabled = NO;

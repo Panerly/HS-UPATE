@@ -93,7 +93,6 @@
     identy = @"queryIdenty";
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    
 }
 
 //创建曲线图
@@ -281,8 +280,8 @@ static CGFloat i = 1.0;
 }
 //请求一天每小时水表抄收数据
 - (void)requestHourData:(NSString *)date {
-    
-    [SVProgressHUD showWithStatus:@"加载中"];
+    NSLog(@"一天每小时水表抄收数据 %@",date);
+    [SVProgressHUD showWithStatus:@"加载中" maskType:SVProgressHUDMaskTypeGradient];
     
     NSString *url = [NSString stringWithFormat:@"http://%@/waterweb/DateServlet",self.ip];
     
@@ -291,14 +290,8 @@ static CGFloat i = 1.0;
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
     
-//    NSDictionary *parameters = @{@"meter_id":self.meter_id,
-//                                 @"date1":date,
-//                                 @"username":self.userName,
-//                                 @"db":self.db,
-//                                 @"password":self.passWord
-//                                 };
     NSDictionary *parameters = @{@"meter_id":self.meter_id,
-                                 @"date":@"2016-7-21",
+                                 @"date":date,
                                  @"db":self.db
                                  };
     
@@ -313,7 +306,7 @@ static CGFloat i = 1.0;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (responseObject) {
 
-            [SVProgressHUD showInfoWithStatus:@"加载成功"];
+            [SVProgressHUD showInfoWithStatus:@"加载成功" maskType:SVProgressHUDMaskTypeGradient];
             
             [_dataArr removeAllObjects];
             [_xArr removeAllObjects];
@@ -345,7 +338,7 @@ static CGFloat i = 1.0;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
 
-        [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"请求失败：%@",error]];
+        [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"请求失败：%@",error] maskType:SVProgressHUDMaskTypeGradient];
     }];
     
     [task resume];
@@ -356,7 +349,7 @@ static CGFloat i = 1.0;
 {
 //    [SVProgressHUD setBackgroundColor:[UIColor blackColor]];
     [SVProgressHUD setForegroundColor:[UIColor blackColor]];
-    [SVProgressHUD showWithStatus:@"加载中"];
+    [SVProgressHUD showWithStatus:@"加载中" maskType:SVProgressHUDMaskTypeGradient];
     
     NSString *url = [NSString stringWithFormat:@"http://%@/waterweb/DosServlet",self.ip];
     
@@ -465,14 +458,14 @@ static CGFloat i = 1.0;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         if (responseObject) {
-            [SVProgressHUD showInfoWithStatus:@"加载成功"];
+            [SVProgressHUD showInfoWithStatus:@"加载成功" maskType:SVProgressHUDMaskTypeGradient];
             
             [yFlowArr removeAllObjects];
             [_yArr removeAllObjects];
             
             NSString *count = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"count"]];
             if ([count isEqualToString:@"0"]) {
-                [SVProgressHUD showInfoWithStatus:@"暂无数据"];
+                [SVProgressHUD showInfoWithStatus:@"暂无数据" maskType:SVProgressHUDMaskTypeGradient];
             }
             
             NSDictionary *meter1Dic = [responseObject objectForKey:@"meters"];
@@ -499,7 +492,7 @@ static CGFloat i = 1.0;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"请求失败：%@",error]];
+        [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"请求失败：%@",error] maskType:SVProgressHUDMaskTypeGradient];
         
     }];
     
