@@ -41,7 +41,7 @@ UIWebViewDelegate
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self setNavColor];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
     
     isBigMeter = YES;
@@ -49,6 +49,28 @@ UIWebViewDelegate
     [self setSegmentedCtl];
     
     [self addGesture];
+}
+
+/**
+ *  设置导航栏的颜色，返回按钮和标题为白色
+ */
+-(void)setNavColor{
+    NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
+    if ([[ver objectAtIndex:0] intValue] >= 7) {
+        // iOS 7.0 or later
+        [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorFromHexString:@"12baaa"]];
+        
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+        
+        self.navigationController.navigationBar.translucent = YES;
+        
+        
+    }else {
+        // iOS 6.1 or earlier
+        self.navigationController.navigationBar.tintColor =[UIColor colorFromHexString:@"12baaa"];
+        
+    }
 }
 
 - (void)addGesture {
@@ -377,14 +399,15 @@ UIWebViewDelegate
 
     [self.imageArray addObjectsFromArray:urlsArray];
     
-    CGFloat viewHeight = [UIScreen mainScreen].bounds.size.height/3;
+    CGFloat viewHeight = [UIScreen mainScreen].bounds.size.height/3.5;
     
     if (!_cycleScrollView) {
-        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height+10, PanScreenWidth, viewHeight) shouldInfiniteLoop:YES imageNamesGroup:urlsArray];
+        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 64, PanScreenWidth, viewHeight) shouldInfiniteLoop:YES imageNamesGroup:urlsArray];
         _cycleScrollView.delegate = self;
         _cycleScrollView.pageControlStyle = SDCycleScrollViewPageContolStyleAnimated;
         [self.view addSubview:_cycleScrollView];
         _cycleScrollView.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        _cycleScrollView.autoScrollTimeInterval = 2.5;
         
         _cycleScrollView.transform = CGAffineTransformTranslate(_cycleScrollView.transform, 0, -[UIScreen mainScreen].bounds.size.height/3);
         [UIView animateWithDuration:.5 animations:^{
@@ -403,9 +426,6 @@ UIWebViewDelegate
 
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
 {
-    NSLog(@"---点击了第%ld张图片", (long)index);
-    
-    
         UIButton *backBtn;
         if (index == 0) {
             if (!_webView) {
@@ -538,7 +558,7 @@ UIWebViewDelegate
     litBtnArr = [[NSMutableArray alloc] init];
     [litBtnArr removeAllObjects];
     
-    NSArray *titleArr = @[@"用户浏览",@"小区概览",@"数据查询",@"历史查询"];
+    NSArray *titleArr = @[@"小区浏览",@"小区概览",@"数据查询",@"undefined"];
     NSArray *imageArr = @[@"userScan",@"日盘点",@"光电直读",@"数据交换"];
     
     CGFloat viewHeight = [UIScreen mainScreen].bounds.size.height/5;
@@ -583,12 +603,6 @@ UIWebViewDelegate
     LitMeterListViewController *litMeterVC = [[LitMeterListViewController alloc] init];
     CommProViewController *communProfVC = [[CommProViewController alloc] init];
 
-    GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"提示" message:@"此功能暂未推出" buttonTitle:@"确定" buttonTouchedAction:^{
-        
-    } dismissAction:^{
-        
-    }];
-    
     switch (sender.tag) {//100-103大表监测   200-203小表监测
             
         case 100:
@@ -615,20 +629,21 @@ UIWebViewDelegate
             [self.navigationController showViewController:litMeterVC sender:nil];
             
             break;
-        case 201:
+        case 201://小区概览
             communProfVC.hidesBottomBarWhenPushed = YES;
             communProfVC.view.backgroundColor = [UIColor whiteColor];
             
             [self.navigationController showViewController:communProfVC sender:nil];
             
             break;
-        case 202:
+        case 202://数据查询
             dataVC.isBigMeter = NO;
             [self.navigationController showViewController:dataVC sender:nil];
             
             break;
-        case 203:
-            [alertView show];
+        case 203://历史查询
+            litMeterVC.isHisData = @"历史查询";
+//            [self.navigationController showViewController:litMeterVC sender:nil];
             break;
             
         default:

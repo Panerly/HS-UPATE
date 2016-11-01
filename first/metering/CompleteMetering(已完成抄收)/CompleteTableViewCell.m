@@ -13,15 +13,30 @@
 @implementation CompleteTableViewCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     // Initialization code
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.meter_id.text = [NSString stringWithFormat:@"meter_id:%@",self.completeModel.meter_id];
-    self.user_id.text = [NSString stringWithFormat:@"user_id:%@",self.completeModel.user_id];
-    self.compImage.image = self.completeModel.image;
+    
+    if (self.completeModel.meter_id) {
+        self.meter_id.text = [NSString stringWithFormat:@"本期抄收值： %@ m³",self.completeModel.meter_id];
+    }
+    if (self.completeModel.user_id) {
+        self.user_id.text = [NSString stringWithFormat:@"%@",self.completeModel.user_id];
+    }
+    if (self.completeModel.image) {
+        self.compImage.image = self.completeModel.image;
+    }
     _click = self.completeModel.user_id;
+    
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    
+        self.meter_id.textColor = [UIColor blackColor];
+    
+        self.meter_id.font = [UIFont systemFontOfSize:17];
+    }];
 }
 
 

@@ -18,11 +18,13 @@
  *  地址
  *
  */
+@property (weak, nonatomic) IBOutlet UILabel *meter_status;
 - (IBAction)navi:(id)sender;
 
 /**
  *  model
  */
 @property (nonatomic, strong) LitMeterDetailModel *litMeterDetailModel;
+- (IBAction)scanHisBtn:(id)sender;
 
 @end

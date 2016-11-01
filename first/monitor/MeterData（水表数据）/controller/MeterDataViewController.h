@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *toDate;
 
 //主叫方
+@property (weak, nonatomic) IBOutlet UILabel *callerName;
 @property (weak, nonatomic) IBOutlet UITextField *callerLabel;
 //用户号
 @property (weak, nonatomic) IBOutlet UILabel *userNumLabel;
@@ -40,5 +41,7 @@
 @property (nonatomic, strong) NSString *ip;
 
 @property (nonatomic, assign) BOOL isBigMeter;
+
+@property (nonatomic, strong) NSString *user_id_str;
 
 @end

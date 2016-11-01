@@ -11,6 +11,7 @@
 @implementation HisDetailTableViewCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     // Initialization code
 }
 

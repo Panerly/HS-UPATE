@@ -11,6 +11,7 @@
 @implementation MeterInfoTableViewCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     // Initialization code
 }
 
@@ -22,10 +23,21 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.area.text = _meterInfoModel.install_Addr;
-    
-    _x = self.meterInfoModel.x;
-    _y = self.meterInfoModel.y;
+    if (_meterInfoModel.area_Name) {
+        
+        self.area.text = _meterInfoModel.area_Name;
+    }
+    if (_meterInfoModel.install_Addr) {
+        self.area.text = _meterInfoModel.install_Addr;
+    }
+    if (_meterInfoModel.x) {
+        
+        _x = self.meterInfoModel.x;
+    }
+    if (_meterInfoModel.y) {
+        
+        _y = self.meterInfoModel.y;
+    }
 }
 
 - (IBAction)naviBtn:(id)sender {

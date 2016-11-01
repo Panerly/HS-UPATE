@@ -203,7 +203,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
     _isAnimating = YES;
     // faceLayer
     CABasicAnimation *moveAnimation = [_animationManager moveAnimationWithFromPosition:_circleFaceLayer.position toPosition:_on ? CGPointMake(_circleFaceLayer.position.x - _moveDistance, _circleFaceLayer.position.y) : CGPointMake(_circleFaceLayer.position.x + _moveDistance, _circleFaceLayer.position.y)];
-    moveAnimation.delegate = self;
+    moveAnimation.delegate = (id)self;
     [_circleFaceLayer addAnimation:moveAnimation forKey:FaceMoveAnimationKey];
     
     // backfroundView
@@ -212,7 +212,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
     
     // eyesLayer
     CABasicAnimation *rotationAnimation = [_animationManager eyeMoveAnimationFromValue:@(0) toValue:@(_on ? -_faceLayerWidth : _faceLayerWidth)];
-    rotationAnimation.delegate = self;
+    rotationAnimation.delegate = (id)self;
     [_eyesLayer addAnimation:rotationAnimation forKey:EyesMoveStartAnimationKey];
     _circleFaceLayer.masksToBounds = YES;
     if (_on) {
@@ -296,7 +296,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
             _eyesLayer.isLiking = !_on;
             [_eyesLayer setNeedsDisplay];
             CABasicAnimation *rotationAnimation = [_animationManager eyeMoveAnimationFromValue:@(_on ? _faceLayerWidth : -_faceLayerWidth) toValue:@(_on ? -_faceLayerWidth / 6 :  _faceLayerWidth / 6)];
-            rotationAnimation.delegate = self;
+            rotationAnimation.delegate = (id)self;
             [_eyesLayer addAnimation:rotationAnimation forKey:EyesMoveEndAnimationKey];
             
             if (!_on) {
@@ -307,7 +307,7 @@ NSString * const EyesCloseAndOpenAnimationKey = @"EyesCloseAndOpenAnimationKey";
         // start eyes back animation
         if (anim == [_eyesLayer animationForKey:EyesMoveEndAnimationKey]) {
             CABasicAnimation *rotationAnimation = [_animationManager eyeMoveAnimationFromValue:@(_on ? -_faceLayerWidth / 6 :  _faceLayerWidth / 6) toValue:@(0)];
-            rotationAnimation.delegate = self;
+            rotationAnimation.delegate = (id)self;
             [_eyesLayer addAnimation:rotationAnimation forKey:EyesMoveBackAnimationKey];
             
             if (!_on) {

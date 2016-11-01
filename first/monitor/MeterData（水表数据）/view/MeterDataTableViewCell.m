@@ -11,15 +11,31 @@
 @implementation MeterDataTableViewCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     // Initialization code
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _message.text = [NSString stringWithFormat:@"水表数据: %@",_meterDataModel.message];
-    _collect_dt.text = [NSString stringWithFormat:@"收发时间: %@",_meterDataModel.collect_dt];
+    if (_meterDataModel.message) {
+        
+        _message.text = [NSString stringWithFormat:@"水表数据: %@",_meterDataModel.message];
+    }else {
+        _message.text = @"";
+    }
+    
+    
+    if (_meterDataModel.collect_dt) {
+        
+        _collect_dt.text = [NSString stringWithFormat:@"抄收时间: %@",_meterDataModel.collect_dt];
+    } else {
+        _collect_dt.text = [NSString stringWithFormat:@"抄收时间: %@", _meterDataModel.collect_data];
+    }
+    
+    
     _collect_num.text = [NSString stringWithFormat:@"参考读数: %@",_meterDataModel.collect_num];
+   
     
     _messageFlg.text = [self isNormol:_meterDataModel.messageFlg];
     
@@ -27,14 +43,25 @@
 
 - (NSString *)isNormol :(NSString *)messageFlg
 {
-    if ([messageFlg isEqualToString:@"0"]) {
+    if ([messageFlg isEqualToString:@"0"] || [messageFlg isEqualToString:@"1"]) {
         
-        return @"处理状态: 已处理";
-    }else
-    {
-        return @"处理状态: 未处理";
+        if ([messageFlg isEqualToString:@"0"]) {
+            
+            return @"处理状态: 已处理";
+        }else
+        {
+            return @"处理状态: 未处理";
+        }
+    }else {
+        NSString *str = [NSString stringWithFormat:@"水表状态：%@",_meterDataModel.meter_status?_meterDataModel.meter_status : _meterDataModel.collect_Status];
+        if (![str isEqualToString:@"水表状态：正常"]) {
+            _messageFlg.textColor = [UIColor redColor];
+        } else {
+            _messageFlg.textColor = [UIColor blackColor];
+        }
+        return [NSString stringWithFormat:@"水表状态：%@",_meterDataModel.meter_status?_meterDataModel.meter_status : _meterDataModel.collect_Status];
     }
-    
+    return nil;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

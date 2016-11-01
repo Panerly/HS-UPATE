@@ -57,12 +57,11 @@
     _uploadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _uploadBtn.backgroundColor = [UIColor lightGrayColor];
     [_uploadBtn setTitle:@"上传" forState:UIControlStateNormal];
-    _uploadBtn.frame = CGRectMake(25, PanScreenHeight - 60 - 49, PanScreenWidth - 50, (PanScreenWidth - 50)/7);
+    _uploadBtn.frame = CGRectMake(25, PanScreenHeight - 50 - 49, PanScreenWidth - 50, (PanScreenWidth - 50)/7);
     _uploadBtn.clipsToBounds = YES;
     _uploadBtn.layer.cornerRadius = (PanScreenWidth - 50)/7/2;
     [_uploadBtn addTarget:self action:@selector(uploadClick:) forControlEvents:UIControlEventTouchUpInside];
     _uploadBtn.enabled = NO;
-    [self.view addSubview:_uploadBtn];
 }
 //上传按钮点击事件
 - (void)uploadClick:(UIButton *) button {
@@ -114,24 +113,28 @@
         _selectAllBtn.hidden = NO;
         [button setTitle:@"完成" forState:UIControlStateNormal];
         [self.uploadArr removeAllObjects];
+        [self refreshBtnState];
     }else{
         _selectAllBtn.hidden = YES;
         _uploadBtn.backgroundColor = [UIColor lightGrayColor];
         [button setTitle:@"选择" forState:UIControlStateNormal];
         _uploadBtn.enabled = NO;
+        [self.uploadArr removeAllObjects];
+        [self refreshBtnState];
     }
     
 }
 
 //全选
 - (void)selectAllBtnClick:(UIButton *)button {
-    _uploadBtn.backgroundColor = [UIColor redColor];
+//    _uploadBtn.backgroundColor = [UIColor redColor];
     for (int i = 0; i < self.dataArr.count; i ++) {
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
         [self.uploadArr addObjectsFromArray:self.dataArr];
     }
+    [self refreshBtnState];
     NSLog(@"self.deleteArr:%@  %@", self.uploadArr,self.dataArr);
 }
 
@@ -139,12 +142,20 @@
 
 //刷新上传按钮的状态
 - (void)refreshBtnState{
-    if (self.uploadArr.count>0) {
-        
+    if (self.uploadArr.count >= 1) {
+            [self.view addSubview:_uploadBtn];
+//            _uploadBtn.transform = CGAffineTransformMakeScale(.01, .01);
+//            [UIView animateWithDuration:.35 animations:^{
+//                _uploadBtn.transform = CGAffineTransformIdentity;
+//            } completion:^(BOOL finished) {
+//                
+//            }];
         _uploadBtn.backgroundColor = [UIColor redColor];
     }else {
-        
-        _uploadBtn.backgroundColor = [UIColor lightGrayColor];
+        if (self.uploadArr.count < 1) {
+            _uploadBtn.backgroundColor = [UIColor lightGrayColor];
+            [_uploadBtn removeFromSuperview];
+        }
     }
 }
 
@@ -169,7 +180,7 @@
             [self.uploadArr removeAllObjects];
             break;
         case 1:
-            [self updateDB];
+            [self updateBigMeterDB];
             [self.uploadArr removeAllObjects];
             break;
         default:
@@ -190,7 +201,7 @@
 - (void)updateDB {
     [self.db open];
     
-    FMResultSet *resultSet = [self.db executeQuery:@"SELECT * FROM meter_complete order by user_id"];
+    FMResultSet *resultSet = [self.db executeQuery:@"SELECT * FROM meter_complete where collect_area = '01' order by user_id"];
     
     _dataArr = [NSMutableArray array];
     [_dataArr removeAllObjects];
@@ -201,6 +212,30 @@
         NSLog(@"meter_id = %@ user_id = %ld",meter_id,(long)user_id);
         NSData *imageData =[resultSet dataForColumn:@"Collect_img_name1"];
 
+        CompleteModel *completeModel = [[CompleteModel alloc] init];
+        completeModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
+        completeModel.user_id =[NSString stringWithFormat:@"%@",user_id];
+        completeModel.image = [UIImage imageWithData:imageData];
+        [_dataArr addObject:completeModel];
+    }
+    [self.db close];
+    [_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)updateBigMeterDB {
+    [self.db open];
+    
+    FMResultSet *resultSet = [self.db executeQuery:@"SELECT * FROM meter_complete where collect_area = '02' order by user_id"];
+    
+    _dataArr = [NSMutableArray array];
+    [_dataArr removeAllObjects];
+    
+    while ([resultSet next]) {
+        NSString *meter_id = [resultSet stringForColumn:@"meter_id"];
+        NSString *user_id = [resultSet stringForColumn:@"user_id"];
+        NSLog(@"meter_id = %@ user_id = %ld",meter_id,(long)user_id);
+        NSData *imageData =[resultSet dataForColumn:@"Collect_img_name1"];
+        
         CompleteModel *completeModel = [[CompleteModel alloc] init];
         completeModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
         completeModel.user_id =[NSString stringWithFormat:@"%@",user_id];
@@ -225,6 +260,7 @@
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 50, PanScreenWidth, PanScreenHeight - 50) style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.backgroundColor = COLORRGB(227, 230, 255);
     [_tableView registerNib:[UINib nibWithNibName:@"CompleteTableViewCell" bundle:nil] forCellReuseIdentifier:@"completeID"];
     [self.view addSubview:_tableView];
 }
@@ -271,7 +307,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 60;
+    return 65;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -281,7 +317,7 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:@"CompleteTableViewCell" owner:self options:nil] lastObject];
     }
     cell.completeModel = _dataArr[indexPath.row];
-    
+    cell.backgroundColor = [UIColor clearColor];
 //    //长按手势
 //    UILongPressGestureRecognizer *longPressed = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressedAct:)];
 //    longPressed.minimumPressDuration = 1;

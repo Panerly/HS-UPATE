@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WeatherModel.h"
+//#import "WeatherModel.h"
 
 @interface HomeViewController : UIViewController
 
@@ -18,9 +18,33 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *heightC;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *widthC;
 
-@property (weak, nonatomic) IBOutlet UIImageView *yesterdayImage;
-@property (weak, nonatomic) IBOutlet UIImageView *todayImage;
-@property (weak, nonatomic) IBOutlet UIImageView *tomorrowImage;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
+@property (strong, nonatomic)  UIImageView *day1Image;
+@property (strong, nonatomic)  UIImageView *day2Image;
+@property (strong, nonatomic)  UIImageView *day3Image;
+@property (strong, nonatomic)  UIImageView *day4Image;
+@property (strong, nonatomic)  UIImageView *day5Image;
+@property (strong, nonatomic)  UIImageView *day6Image;
+@property (strong, nonatomic)  UIImageView *day7Image;
+
+@property (strong, nonatomic)  UILabel *day1Label;
+@property (strong, nonatomic)  UILabel *day2Label;
+@property (strong, nonatomic)  UILabel *day3Label;
+@property (strong, nonatomic)  UILabel *day4Label;
+@property (strong, nonatomic)  UILabel *day5Label;
+@property (strong, nonatomic)  UILabel *day6Label;
+@property (strong, nonatomic)  UILabel *day7Label;
+
+@property (strong, nonatomic)  UILabel *time1Label;
+@property (strong, nonatomic)  UILabel *time2Label;
+@property (strong, nonatomic)  UILabel *time3Label;
+@property (strong, nonatomic)  UILabel *time4Label;
+@property (strong, nonatomic)  UILabel *time5Label;
+@property (strong, nonatomic)  UILabel *time6Label;
+@property (strong, nonatomic)  UILabel *time7Label;
+
+
 
 @property (weak, nonatomic) IBOutlet UIVisualEffectView *weatherDetailEffectView;
 
@@ -37,18 +61,12 @@
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
-@property (weak, nonatomic) IBOutlet UILabel *yestodayWeather;
-@property (weak, nonatomic) IBOutlet UILabel *tomorrowWeather;
-@property (weak, nonatomic) IBOutlet UILabel *todayWeatherInfo;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIImageView *weather_bg;
 
-@property (weak, nonatomic) IBOutlet UILabel *yesLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *yestodayLeftConstraint;
-@property (weak, nonatomic) IBOutlet UILabel *todLabel;
-@property (weak, nonatomic) IBOutlet UILabel *tomLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tommoRightConstraint;
+
+
 
 @property (nonatomic, strong) NSString *locaCity;
 

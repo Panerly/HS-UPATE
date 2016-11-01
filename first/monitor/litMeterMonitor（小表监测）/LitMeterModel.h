@@ -14,7 +14,7 @@
 /**
  *  小区名
  */
-@property (nonatomic, strong) NSString *village_name;
+@property (nonatomic, strong) NSString *small_name;
 ///**
 // *  用户地址
 // */
@@ -35,6 +35,6 @@
 /**
  *  每个小区里面的户数
  */
-@property (nonatomic, strong) NSString *village_num;
+@property (nonatomic, strong) NSString *count;
 
 @end

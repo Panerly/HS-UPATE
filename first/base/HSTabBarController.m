@@ -24,6 +24,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+//    [[UITabBar appearance] setBarTintColor:[UIColor colorFromHexString:@"12baaa"]];
+    
     //添加子控制器
     HomeViewController *home = [[HomeViewController alloc] init];
     [self addOneChlildVc:home title:@"首页" imageName:@"home2@2x" selectedImageName:@"home_selected2@2x"];

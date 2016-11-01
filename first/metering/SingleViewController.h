@@ -66,12 +66,13 @@ CLLocationManagerDelegate
 
 @property (nonatomic, strong) NSMutableArray *dataArr;
 
+@property (nonatomic, strong) NSString *collect_area;
 
 #pragma mark - 测试第二版样张
 //用户名
 //@property (weak, nonatomic) IBOutlet UILabel *userName;
 
-
+@property (nonatomic, assign) BOOL isBigMeter;
 
 
 

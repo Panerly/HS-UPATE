@@ -10,35 +10,41 @@
 
 @interface MeterInfoModel : JSONModel
 //小区名
-@property (nonatomic, strong) NSString *install_Addr;
+@property (nonatomic, strong) NSString<Optional> *install_Addr;
 //照片名称1
-@property (nonatomic, strong) NSString *collect_Img_Name1;
+@property (nonatomic, strong) NSString<Optional> *collect_Img_Name1;
 //照片名称2
-@property (nonatomic, strong) NSString *collect_Img_Name2;
+@property (nonatomic, strong) NSString<Optional> *collect_Img_Name2;
 //照片名称3
-@property (nonatomic, strong) NSString *collect_Img_Name3;
+@property (nonatomic, strong) NSString<Optional> *collect_Img_Name3;
 //所属小区或区域
-@property (nonatomic, strong) NSString *collector_Area;
+@property (nonatomic, strong) NSString<Optional> *collector_Area;
 //通讯联络号
-@property (nonatomic, strong) NSString *comm_Id;
+@property (nonatomic, strong) NSString<Optional> *comm_Id;
 //安装时间
-@property (nonatomic, strong) NSString *install_Time;
+@property (nonatomic, strong) NSString<Optional> *install_Time;
 //水表口径
-@property (nonatomic, strong) NSString *meter_Cali;
-@property (nonatomic, strong) NSString *meter_Id;
-@property (nonatomic, strong) NSString *meter_Name;
-@property (nonatomic, strong) NSString *meter_Txm;
-@property (nonatomic, strong) NSString *meter_Wid;
-@property (nonatomic, strong) NSString *remark;
-@property (nonatomic, strong) NSString *user_Id;
-@property (nonatomic, strong) NSString *water_Kind;
+@property (nonatomic, strong) NSString<Optional> *meter_Cali;
+@property (nonatomic, strong) NSString<Optional> *meter_Id;
+@property (nonatomic, strong) NSString<Optional> *meter_Name;
+@property (nonatomic, strong) NSString<Optional> *meter_Txm;
+@property (nonatomic, strong) NSString<Optional> *meter_Wid;
+@property (nonatomic, strong) NSString<Optional> *remark;
+@property (nonatomic, strong) NSString<Optional> *user_Id;
+@property (nonatomic, strong) NSString<Optional> *water_Kind;
 //标示
-@property (nonatomic, strong) NSString *bs;
+@property (nonatomic, strong) NSString<Optional> *bs;
 
 //经纬度
-@property (nonatomic, strong) NSString *x;
-@property (nonatomic, strong) NSString *y;
+@property (nonatomic, strong) NSString<Optional> *x;
+@property (nonatomic, strong) NSString<Optional> *y;
 
-@property (nonatomic, strong) NSString *id;
+@property (nonatomic, strong) NSString<Optional> *id;
+
+
+//区域编码
+@property (nonatomic, strong) NSString<Optional> *area_Id;
+//小区
+@property (nonatomic, strong) NSString<Optional> *area_Name;
 
 @end

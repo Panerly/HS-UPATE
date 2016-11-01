@@ -11,10 +11,18 @@
 
 @interface MeteringSingleViewController : UIViewController
 
+- (IBAction)segmentCtrl:(UISegmentedControl *)sender;
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) MeterInfoModel *meterInfoModel;
 
 @property (nonatomic, strong) NSMutableArray *dataArr;
+
+@property (nonatomic, strong) NSString *area_id;
+
+//任务数量
+@property (weak, nonatomic) IBOutlet UILabel *messionCount;
+@property (weak, nonatomic) IBOutlet UILabel *completeNum;
 
 @end

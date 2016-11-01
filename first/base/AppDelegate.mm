@@ -41,7 +41,6 @@
 ////Pinterest SDK头文件
 //#import <Pinterest/Pinterest.h>
 
-
 BMKMapManager* _mapManager;
 
 @interface AppDelegate ()
@@ -59,6 +58,7 @@ BMKMapManager* _mapManager;
     defaults = [NSUserDefaults standardUserDefaults];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    
     
     //检测网络
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
@@ -126,7 +126,7 @@ BMKMapManager* _mapManager;
             notification.fireDate=[now dateByAddingTimeInterval:0];
             //使用本地时区
             notification.timeZone=[NSTimeZone defaultTimeZone];
-            notification.alertBody=[NSString stringWithFormat:@"小表待抄%ld小区", alertNum];
+            notification.alertBody=[NSString stringWithFormat:@"小表待抄%ld小区", (long)alertNum];
             //通知提示音 使用默认的
             notification.soundName= UILocalNotificationDefaultSoundName;
             notification.alertAction=NSLocalizedString(@"滑动屏幕进行抄收", nil);

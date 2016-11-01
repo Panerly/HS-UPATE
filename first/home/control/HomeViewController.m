@@ -10,10 +10,16 @@
 #import "City.h"
 #import "WeatherModel.h"
 #import "MeteringViewController.h"
+#import "FTPopOverMenu.h"
+#import "TLCityPickerController.h"
+
+
 
 @interface HomeViewController ()<CLLocationManagerDelegate,UITableViewDelegate, UITableViewDataSource>
 {
     NSTimer *timer;
+    int litMeterCount;
+    int bigMeterCount;
 }
 @property (nonatomic, strong) CLLocationManager* locationManager;
 @property (nonatomic, strong) NSDictionary *areaidDic;
@@ -24,16 +30,13 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    
+    [self setNavColor];
     //适配3.5寸
     if (PanScreenHeight == 480) {
         
         [self performSelector:@selector(modifyConstant) withObject:nil afterDelay:0.1];
         
     }
-    //适配6以上机型
-    [self performSelector:@selector(modifyWeatherConstant) withObject:nil afterDelay:0.001];
-    
     
     self.weatherDetailEffectView.clipsToBounds = YES;
     self.weatherDetailEffectView.layer.cornerRadius = 10;
@@ -50,24 +53,273 @@
     
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [SVProgressHUD dismiss];
+/**
+ *  设置导航栏的颜色，返回按钮和标题为白色
+ */
+-(void)setNavColor{
+    NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
+    if ([[ver objectAtIndex:0] intValue] >= 7) {
+        // iOS 7.0 or later
+        [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorFromHexString:@"12baaa"]];
+        
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+        
+        
+        self.navigationController.navigationBar.translucent = YES;
+        
+        
+    }else {
+        // iOS 6.1 or earlier
+        self.navigationController.navigationBar.tintColor =[UIColor colorFromHexString:@"12baaa"];
+        
+    }
 }
 
-
-
-/**
- *  适配6以上机型
- */
-- (void)modifyWeatherConstant {
-    [UIView animateWithDuration:.001 animations:^{
+#pragma mark - setScrollView & setUI
+- (void)setScrollView {
+    _scrollView.contentSize= CGSizeMake(610, 0);
+    _scrollView.scrollEnabled = YES;
+    _scrollView.alwaysBounceHorizontal = YES;
+    _scrollView.pagingEnabled = NO;
+    _scrollView.showsVerticalScrollIndicator = NO;
+    _scrollView.showsHorizontalScrollIndicator = NO;
+    _scrollView.backgroundColor = [UIColor clearColor];
+    
+//    NSArray *labelArr = [NSArray arrayWithObjects:_day1Label,_day2Label,_day3Label,_day4Label,_day5Label,_day6Label,_day7Label, nil];
+//    NSArray *imageViewArr = [NSArray arrayWithObjects:_day1Image,_day2Image,_day3Image,_day4Image,_day5Image,_day6Image,_day7Image, nil];
+//    
+//    for (int i = 1; i<8; i++) {
+//        (UILabel *)labelArr[i] = [[UILabel alloc] init];
+//        (UIImageView *)imageViewArr[i] = [[UIImageView alloc] init];
+//    }
+    if (!_day1Label) {
+        _day1Label = [[UILabel alloc] init];
+        _day2Label = [[UILabel alloc] init];
+        _day3Label = [[UILabel alloc] init];
+        _day4Label = [[UILabel alloc] init];
+        _day5Label = [[UILabel alloc] init];
+        _day6Label = [[UILabel alloc] init];
+        _day7Label = [[UILabel alloc] init];
+        _day1Label.textAlignment = NSTextAlignmentCenter;
+        _day2Label.textAlignment = NSTextAlignmentCenter;
+        _day3Label.textAlignment = NSTextAlignmentCenter;
+        _day4Label.textAlignment = NSTextAlignmentCenter;
+        _day5Label.textAlignment = NSTextAlignmentCenter;
+        _day6Label.textAlignment = NSTextAlignmentCenter;
+        _day7Label.textAlignment = NSTextAlignmentCenter;
+        _day1Label.textColor = [UIColor whiteColor];
+        _day2Label.textColor = [UIColor whiteColor];
+        _day3Label.textColor = [UIColor whiteColor];
+        _day4Label.textColor = [UIColor whiteColor];
+        _day5Label.textColor = [UIColor whiteColor];
+        _day6Label.textColor = [UIColor whiteColor];
+        _day7Label.textColor = [UIColor whiteColor];
+        [_scrollView addSubview:_day1Label];
+        [_scrollView addSubview:_day2Label];
+        [_scrollView addSubview:_day3Label];
+        [_scrollView addSubview:_day4Label];
+        [_scrollView addSubview:_day5Label];
+        [_scrollView addSubview:_day6Label];
+        [_scrollView addSubview:_day7Label];
         
-        self.yestodayLeftConstraint.constant = PanScreenWidth/6;
-        self.tommoRightConstraint.constant = PanScreenWidth/6;
-    } completion:^(BOOL finished) {
+        _day1Image = [[UIImageView alloc] init];
+        _day2Image = [[UIImageView alloc] init];
+        _day3Image = [[UIImageView alloc] init];
+        _day4Image = [[UIImageView alloc] init];
+        _day5Image = [[UIImageView alloc] init];
+        _day6Image = [[UIImageView alloc] init];
+        _day7Image = [[UIImageView alloc] init];
+        [_scrollView addSubview:_day1Image];
+        [_scrollView addSubview:_day2Image];
+        [_scrollView addSubview:_day3Image];
+        [_scrollView addSubview:_day4Image];
+        [_scrollView addSubview:_day5Image];
+        [_scrollView addSubview:_day6Image];
+        [_scrollView addSubview:_day7Image];
         
+        _time1Label = [[UILabel alloc] init];
+        _time2Label = [[UILabel alloc] init];
+        _time3Label = [[UILabel alloc] init];
+        _time4Label = [[UILabel alloc] init];
+        _time5Label = [[UILabel alloc] init];
+        _time6Label = [[UILabel alloc] init];
+        _time7Label = [[UILabel alloc] init];
+        _time1Label.textAlignment = NSTextAlignmentCenter;
+        _time2Label.textAlignment = NSTextAlignmentCenter;
+        _time3Label.textAlignment = NSTextAlignmentCenter;
+        _time4Label.textAlignment = NSTextAlignmentCenter;
+        _time5Label.textAlignment = NSTextAlignmentCenter;
+        _time6Label.textAlignment = NSTextAlignmentCenter;
+        _time7Label.textAlignment = NSTextAlignmentCenter;
+        _time1Label.textColor = [UIColor whiteColor];
+        _time2Label.textColor = [UIColor whiteColor];
+        _time3Label.textColor = [UIColor whiteColor];
+        _time4Label.textColor = [UIColor whiteColor];
+        _time5Label.textColor = [UIColor whiteColor];
+        _time6Label.textColor = [UIColor whiteColor];
+        _time7Label.textColor = [UIColor whiteColor];
+        [_scrollView addSubview:_time1Label];
+        [_scrollView addSubview:_time2Label];
+        [_scrollView addSubview:_time3Label];
+        [_scrollView addSubview:_time4Label];
+        [_scrollView addSubview:_time5Label];
+        [_scrollView addSubview:_time6Label];
+        [_scrollView addSubview:_time7Label];
+    }
+    
+    [_day1Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_scrollView.mas_left).with.offset(20);
+        make.top.equalTo(_scrollView.mas_top).with.offset(-50);
+        make.size.equalTo(CGSizeMake(65, 20));
     }];
+    [_day1Image mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day1Label.centerX);
+        make.top.equalTo(_day1Label.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(50, 50));
+    }];
+    [_time1Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day1Label.centerX);
+        make.top.equalTo(_day1Image.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(100, 20));
+    }];
+    
+    [_day2Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_day1Label.mas_right).with.offset(20);
+        make.top.equalTo(_scrollView.mas_top).with.offset(-50);
+        make.size.equalTo(CGSizeMake(65, 20));
+    }];
+    [_day2Image mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day2Label.centerX);
+        make.top.equalTo(_day1Label.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(50, 50));
+    }];
+    [_time2Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day2Label.centerX);
+        make.top.equalTo(_day2Image.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(100, 20));
+    }];
+    
+    [_day3Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_day2Label.mas_right).with.offset(20);
+        make.top.equalTo(_scrollView.mas_top).with.offset(-50);
+        make.size.equalTo(CGSizeMake(65, 20));
+    }];
+    [_day3Image mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day3Label.centerX);
+        make.top.equalTo(_day1Label.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(50, 50));
+    }];
+    [_time3Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day3Label.centerX);
+        make.top.equalTo(_day2Image.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(100, 20));
+    }];
+    
+    [_day4Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_day3Label.mas_right).with.offset(20);
+        make.top.equalTo(_scrollView.mas_top).with.offset(-50);
+        make.size.equalTo(CGSizeMake(65, 20));
+    }];
+    [_day4Image mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day4Label.centerX);
+        make.top.equalTo(_day1Label.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(50, 50));
+    }];
+    [_time4Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day4Label.centerX);
+        make.top.equalTo(_day2Image.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(100, 20));
+    }];
+    
+    [_day5Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_day4Label.mas_right).with.offset(20);
+        make.top.equalTo(_scrollView.mas_top).with.offset(-50);
+        make.size.equalTo(CGSizeMake(65, 20));
+    }];
+    [_day5Image mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day5Label.centerX);
+        make.top.equalTo(_day1Label.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(50, 50));
+    }];
+    [_time5Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day5Label.centerX);
+        make.top.equalTo(_day2Image.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(100, 20));
+    }];
+    
+    [_day6Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_day5Label.mas_right).with.offset(20);
+        make.top.equalTo(_scrollView.mas_top).with.offset(-50);
+        make.size.equalTo(CGSizeMake(65, 20));
+    }];
+    [_day6Image mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day6Label.centerX);
+        make.top.equalTo(_day1Label.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(50, 50));
+    }];
+    [_time6Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day6Label.centerX);
+        make.top.equalTo(_day2Image.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(100, 20));
+    }];
+    
+    [_day7Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_day6Label.mas_right).with.offset(20);
+        make.top.equalTo(_scrollView.mas_top).with.offset(-50);
+        make.size.equalTo(CGSizeMake(65, 20));
+    }];
+    [_day7Image mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day7Label.centerX);
+        make.top.equalTo(_day1Label.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(50, 50));
+    }];
+    [_time7Label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(_day7Label.centerX);
+        make.top.equalTo(_day2Image.mas_bottom).with.offset(5);
+        make.size.equalTo(CGSizeMake(100, 20));
+    }];
+    
+    
+    self.scrollView.transform = CGAffineTransformTranslate(self.scrollView.transform, PanScreenWidth, 1);
+    [UIView animateWithDuration:.5 animations:^{
+        self.scrollView.transform = CGAffineTransformIdentity;
+    }];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    litMeterCount = [[defaults objectForKey:@"litMeterCount"] intValue];
+//    bigMeterCount = [[defaults objectForKey:@"bigMeterCount"] intValue];
+//    [self.tableView reloadData];
+    
+    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
+    NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+    FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+    if ([db open]) {
+        
+        FMResultSet *restultSet = [db executeQuery:@"select * from litMeter_info"];
+        int litMeterCountNum = 0;
+        int bigMeterCountNum = 0;
+        while ([restultSet next]) {
+            if ([[restultSet stringForColumn:@"collector_area"] isEqualToString:@"01"]) {
+                litMeterCountNum++;
+            }
+            if ([[restultSet stringForColumn:@"collector_area"] isEqualToString:@"02"]) {
+                bigMeterCountNum++;
+            }
+        }
+        litMeterCount = litMeterCountNum;
+        bigMeterCount = bigMeterCountNum;
+        
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+    }
+
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [SVProgressHUD dismiss];
 }
 
 
@@ -86,8 +338,6 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.scrollEnabled = NO;
-#warning mark - disappear tableView
-//    _tableView.alpha = 0;
 }
 
 
@@ -137,20 +387,34 @@
  */
 - (void)loadingInfo
 {
-    self.weather.text = [NSString stringWithFormat:@"天气:  正在加载"];
-    self.temLabel.text = [NSString stringWithFormat:@"气温:  正在加载"];
-    self.windDriection.text = [NSString stringWithFormat:@"风向:  正在加载"];
-    self.windForceScale.text = [NSString stringWithFormat:@"风力:  正在加载"];
-    self.time.text = [NSString stringWithFormat:@"日期:  正在加载"];
-    self.yestodayWeather.text = [NSString stringWithFormat:@"正在加载"];
-    self.todayWeatherInfo.text = [NSString stringWithFormat:@"正在加载"];
-    self.tomorrowWeather.text = [NSString stringWithFormat:@"正在加载"];
+    NSString *loadingStr = @"loading";
+    self.weather.text = [NSString stringWithFormat:@"天气:  %@",loadingStr];
+    self.temLabel.text = [NSString stringWithFormat:@"气温:  %@",loadingStr];
+    self.windDriection.text = [NSString stringWithFormat:@"风向:  %@",loadingStr];
+    self.windForceScale.text = [NSString stringWithFormat:@"风力:  %@",loadingStr];
+    self.time.text = [NSString stringWithFormat:@"日期:  %@",loadingStr];
+    self.day1Label.text = loadingStr;
+    self.day2Label.text = loadingStr;
+    self.day3Label.text = loadingStr;
+    self.day4Label.text = loadingStr;
+    self.day5Label.text = loadingStr;
+    self.day6Label.text = loadingStr;
+    self.day7Label.text = loadingStr;
+}
+
+//将汉字转换成拼音
+- (NSString *)transform:(NSString *)chinese
+{
+    NSMutableString *pinyin = [chinese mutableCopy];
+    CFStringTransform((__bridge CFMutableStringRef)pinyin, NULL, kCFStringTransformMandarinLatin, NO);
+    CFStringTransform((__bridge CFMutableStringRef)pinyin, NULL, kCFStringTransformStripCombiningMarks, NO);
+    return [pinyin uppercaseString];
 }
 
 //请求天气信息
 - (void)_requestWeatherData:(NSString *)cityName
 {
-    self.city.text = [NSString stringWithFormat:@"城市:  %@市",cityName];
+    self.city.text = [NSString stringWithFormat:@"城市:  %@",cityName];
     self.locaCity = cityName;
     
     [self loadingInfo];
@@ -158,13 +422,15 @@
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
-        
-    NSString *cityNameStr = [cityName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
-    NSString *httpArg = [NSString stringWithFormat:@"cityname=%@",cityNameStr];
+    NSString *cityNameStr = [self transform:cityName];
     
-    NSMutableURLRequest *requestHistory = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@",hisWeatherAPI,httpArg]]];
+    NSString *replacedCityNameStr = [cityNameStr stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *httpArg = [NSString stringWithFormat:@"city=%@",replacedCityNameStr];
     
+    
+    NSMutableURLRequest *requestHistory = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@",weatherAPI,httpArg]]];
+    NSLog(@"天气请求URL：%@",[NSString stringWithFormat:@"%@?%@",weatherAPI,httpArg]);
     requestHistory.HTTPMethod = @"GET";
     
     requestHistory.timeoutInterval = 10;
@@ -174,6 +440,8 @@
     AFHTTPResponseSerializer *serializer = manager.responseSerializer;
     
     serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    
+    __weak typeof(self) weakSelf = self;
 
     NSURLSessionTask *hisTask = [manager dataTaskWithRequest:requestHistory uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -186,104 +454,135 @@
         _refreshBtn.transform = CGAffineTransformIdentity;
         _positionBtn.transform = CGAffineTransformIdentity;
         
+        if (error) {
+            NSLog(@"错误信息：%@",error);
+        }
+        
         if (responseObject) {
-            [SVProgressHUD showInfoWithStatus:@"加载成功"];
+        
+            [weakSelf setScrollView];
             
-            NSDictionary *responseDic = [responseObject objectForKey:@"retData"];
-            
-            self.windDriection.text = [NSString stringWithFormat:@"风向:  %@",[[responseDic objectForKey:@"today"] objectForKey:@"fengxiang"]];
-            self.temLabel.text = [NSString stringWithFormat:@"气温:  最高%@   最低%@",[[responseDic objectForKey:@"today"] objectForKey:@"hightemp"],[[responseDic objectForKey:@"today"] objectForKey:@"lowtemp"]];
-            self.time.text = [NSString stringWithFormat:@"日期:  %@",[[responseDic objectForKey:@"today"] objectForKey:@"week"]];
-            self.windForceScale.text = [NSString stringWithFormat:@"风力:  %@",[[responseDic objectForKey:@"today"] objectForKey:@"fengli"]];
-            self.yestodayWeather.text = [NSString stringWithFormat:@"%@",[[[responseDic objectForKey:@"history"] objectAtIndex:6] objectForKey:@"type"]];
-            self.tomorrowWeather.text = [NSString stringWithFormat:@"%@",[[[responseDic objectForKey:@"forecast"] objectAtIndex:0] objectForKey:@"type"]];
-            self.todayWeatherInfo.text = [NSString stringWithFormat:@"%@",[[responseDic objectForKey:@"today"] objectForKey:@"type"]];
-            self.weather.text  = [NSString stringWithFormat:@"天气:  %@",self.todayWeatherInfo.text];
-            
-            if ([UIImage imageNamed:[NSString stringWithFormat:@"bg_%@.jpg",self.todayWeatherInfo.text]] == nil) {
-                [self.weather_bg setImage:[UIImage imageNamed:@"bg_weather3.jpg"]];
-            }else {
-                //此张图为深色背景 将文字颜色变为白色
-//                if ([[NSString stringWithFormat:@"bg_%@.jpg",self.todayWeatherInfo.text] isEqualToString:@"bg_小到中雨.jpg"]) {
-//                    _yestodayWeather.textColor = [UIColor whiteColor];
-//                    _todayWeatherInfo.textColor = [UIColor whiteColor];
-//                    _tomorrowWeather.textColor = [UIColor whiteColor];
-//                    _yesLabel.textColor = [UIColor whiteColor];
-//                    _todLabel.textColor = [UIColor whiteColor];
-//                    _tomLabel.textColor = [UIColor whiteColor];
-//                }
-//                else {
-//                    _yestodayWeather.textColor = [UIColor blackColor];
-//                    _todayWeatherInfo.textColor = [UIColor blackColor];
-//                    _tomorrowWeather.textColor = [UIColor blackColor];
-//                    _yesLabel.textColor = [UIColor blackColor];
-//                    _todLabel.textColor = [UIColor blackColor];
-//                    _tomLabel.textColor = [UIColor blackColor];
-//                }
-                [_weather_bg setImage:[UIImage imageNamed:[NSString stringWithFormat:@"bg_%@.jpg",self.todayWeatherInfo.text]]];
-                CATransition *trans = [[CATransition alloc] init];
-                trans.type = @"rippleEffect";
-                trans.duration = .5;
-                [_weather_bg.layer addAnimation:trans forKey:@"transition"];
-            }
-            
-            NSLog(@"今日天气：%@",self.todayWeatherInfo.text);
-            
-            self.yesterdayImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.yestodayWeather.text]];
-            self.tomorrowImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.tomorrowWeather.text]];
-            self.weatherPicImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.todayWeatherInfo.text]];
-            self.todayImage.image = self.weatherPicImage.image;
-            
-            
-            //typedef enum : NSUInteger {
-            //    Fade = 1,                   //淡入淡出
-            //    Push,                       //推挤
-            //    Reveal,                     //揭开
-            //    MoveIn,                     //覆盖
-            //    Cube,                       //立方体
-            //    SuckEffect,                 //吮吸
-            //    OglFlip,                    //翻转
-            //    RippleEffect,               //波纹
-            //    PageCurl,                   //翻页
-            //    PageUnCurl,                 //反翻页
-            //    CameraIrisHollowOpen,       //开镜头
-            //    CameraIrisHollowClose,      //关镜头
-            //    CurlDown,                   //下翻页
-            //    CurlUp,                     //上翻页
-            //    FlipFromLeft,               //左翻转
-            //    FlipFromRight,              //右翻转
-            //    
-            //} AnimationType;
-            
-            CATransition *transition = [[CATransition alloc] init];
-            CATransition *transition2 = [[CATransition alloc] init];
-            transition.type = @"rippleEffect";
-            transition2.type = @"cube";
-            transition.duration = .5;
-            transition2.duration = .5;
-            [_weatherPicImage.layer addAnimation:transition forKey:@"transition"];
-            [_yesterdayImage.layer addAnimation:transition2 forKey:@"transition"];
-            [_todayImage.layer addAnimation:transition2 forKey:@"transition"];
-            [_tomorrowImage.layer addAnimation:transition2 forKey:@"transition"];
+            if ([responseObject objectForKey:@"HeWeather data service 3.0"] ) {
+                [SVProgressHUD showInfoWithStatus:@"加载成功"];
 
+                NSDictionary *responseDic = [responseObject objectForKey:@"HeWeather data service 3.0"];
+                
+                for (NSDictionary *arr in responseDic) {
+                    weakSelf.windDriection.text     = [NSString stringWithFormat:@"风向:  %@",[[[arr objectForKey:@"now"] objectForKey:@"wind"] objectForKey:@"dir"]];
+                    weakSelf.temLabel.text          = [NSString stringWithFormat:@"气温:  %@℃   体感温度:  %@℃",[[arr objectForKey:@"now"] objectForKey:@"tmp"],[[arr objectForKey:@"now"] objectForKey:@"fl"]];
+                    weakSelf.time.text              = [NSString stringWithFormat:@"更新时间:  %@",[[[arr objectForKey:@"basic"] objectForKey:@"update"] objectForKey:@"loc"]];
+                    weakSelf.windForceScale.text    = [NSString stringWithFormat:@"风力:  %@级",[[[arr objectForKey:@"now"] objectForKey:@"wind"] objectForKey:@"sc"]];
+                    //今天
+                    weakSelf.day1Label.text   = [NSString stringWithFormat:@"%@",[[[arr objectForKey:@"now"] objectForKey:@"cond"] objectForKey:@"txt"]];
+                    //明天
+                    weakSelf.day2Label.text  = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:1] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                    //后天
+                    weakSelf.day3Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:2] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                    weakSelf.day4Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:3] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                    weakSelf.day5Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:4] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                    weakSelf.day6Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:5] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                    weakSelf.day7Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:6] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                    weakSelf.weather.text           = [NSString stringWithFormat:@"天气:  %@",self.day1Label.text];
+                    
+                    weakSelf.time1Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"basic"] objectForKey:@"update"] objectForKey:@"loc"]] substringWithRange:NSMakeRange(5, 6)];
+                    weakSelf.time2Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:1] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                    weakSelf.time3Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:2] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                    weakSelf.time4Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:3] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                    weakSelf.time5Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:4] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                    weakSelf.time6Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:5] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                    weakSelf.time7Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:6] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                }
+                
+                
+                                if ([UIImage imageNamed:[NSString stringWithFormat:@"bg_%@.jpg",self.day1Label.text]] == nil) {
+                                    [weakSelf.weather_bg setImage:[UIImage imageNamed:@"bg_weather3.jpg"]];
+                                }else {
+                                    //此张图为深色背景 将文字颜色变为白色
+                                    //                if ([[NSString stringWithFormat:@"bg_%@.jpg",self.todayWeatherInfo.text] isEqualToString:@"bg_小到中雨.jpg"]) {
+                                    //                    _yestodayWeather.textColor = [UIColor whiteColor];
+                                    //                    _todayWeatherInfo.textColor = [UIColor whiteColor];
+                                    //                    _tomorrowWeather.textColor = [UIColor whiteColor];
+                                    //                    _yesLabel.textColor = [UIColor whiteColor];
+                                    //                    _todLabel.textColor = [UIColor whiteColor];
+                                    //                    _tomLabel.textColor = [UIColor whiteColor];
+                                    //                }
+                                    //                else {
+                                    //                    _yestodayWeather.textColor = [UIColor blackColor];
+                                    //                    _todayWeatherInfo.textColor = [UIColor blackColor];
+                                    //                    _tomorrowWeather.textColor = [UIColor blackColor];
+                                    //                    _yesLabel.textColor = [UIColor blackColor];
+                                    //                    _todLabel.textColor = [UIColor blackColor];
+                                    //                    _tomLabel.textColor = [UIColor blackColor];
+                                    //                }
+                                    [_weather_bg setImage:[UIImage imageNamed:[NSString stringWithFormat:@"bg_%@.jpg",self.day1Label.text]]];
+                                    CATransition *trans = [[CATransition alloc] init];
+                                    trans.type = @"rippleEffect";
+                                    trans.duration = .5;
+                                    [_weather_bg.layer addAnimation:trans forKey:@"transition"];
+                                }
+                                NSLog(@"今日天气：%@",self.day1Label.text);
+                
+                                weakSelf.day1Image.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.day1Label.text]];
+                                weakSelf.day2Image.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.day2Label.text]];
+                                weakSelf.day3Image.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.day3Label.text]];
+                                weakSelf.day4Image.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.day4Label.text]];
+                                weakSelf.day5Image.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.day5Label.text]];
+                                weakSelf.day6Image.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.day6Label.text]];
+                                weakSelf.day7Image.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.day7Label.text]];
+                                weakSelf.weatherPicImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.day1Label.text]];
+//                                self.todayImage.image = self.weatherPicImage.image;
+                                //typedef enum : NSUInteger {
+                                //    Fade = 1,                   //淡入淡出
+                                //    Push,                       //推挤
+                                //    Reveal,                     //揭开
+                                //    MoveIn,                     //覆盖
+                                //    Cube,                       //立方体
+                                //    SuckEffect,                 //吮吸
+                                //    OglFlip,                    //翻转
+                                //    RippleEffect,               //波纹
+                                //    PageCurl,                   //翻页
+                                //    PageUnCurl,                 //反翻页
+                                //    CameraIrisHollowOpen,       //开镜头
+                                //    CameraIrisHollowClose,      //关镜头
+                                //    CurlDown,                   //下翻页
+                                //    CurlUp,                     //上翻页
+                                //    FlipFromLeft,               //左翻转
+                                //    FlipFromRight,              //右翻转
+                                //
+                                //} AnimationType;
+                                
+                                CATransition *transition = [[CATransition alloc] init];
+                                transition.type = @"rippleEffect";
+                                transition.duration = .5;
+                                [_weatherPicImage.layer addAnimation:transition forKey:@"transition"];
+            }
         }
         else{
             [timer invalidate];
-            [SVProgressHUD showErrorWithStatus:@"天气加载失败"];
-            self.weather.text = [NSString stringWithFormat:@"天气:  加载失败^_^!"];
-            self.temLabel.text = [NSString stringWithFormat:@"气温:  加载失败^_^!"];
-            self.windDriection.text = [NSString stringWithFormat:@"风向:  加载失败^_^!"];
-            self.windForceScale.text = [NSString stringWithFormat:@"风力:  加载失败^_^!"];
-            self.time.text = [NSString stringWithFormat:@"日期:  加载失败^_^!"];
-            self.yestodayWeather.text = [NSString stringWithFormat:@"加载失败!"];
-            self.todayWeatherInfo.text = [NSString stringWithFormat:@"加载失败!"];
-            self.tomorrowWeather.text = [NSString stringWithFormat:@"加载失败!"];
             
+            [weakSelf weatherLoadfailed];
         }
         
     }];
     
     [hisTask resume];
+}
+
+- (void)weatherLoadfailed {
+    [SVProgressHUD showErrorWithStatus:@"天气加载失败"];
+    self.weather.text = [NSString stringWithFormat:@"天气:  加载失败^_^!"];
+    self.temLabel.text = [NSString stringWithFormat:@"气温:  加载失败^_^!"];
+    self.windDriection.text = [NSString stringWithFormat:@"风向:  加载失败^_^!"];
+    self.windForceScale.text = [NSString stringWithFormat:@"风力:  加载失败^_^!"];
+    self.time.text = [NSString stringWithFormat:@"日期:  加载失败^_^!"];
+    NSString *loadFail = @"failed！";
+    self.day1Label.text = loadFail;
+    self.day2Label.text = loadFail;
+    self.day3Label.text = loadFail;
+    self.day4Label.text = loadFail;
+    self.day5Label.text = loadFail;
+    self.day6Label.text = loadFail;
+    self.day7Label.text = loadFail;
 }
 
 //从storyboard中加载
@@ -307,13 +606,87 @@
 //定位当前城市
 - (IBAction)position:(id)sender {
     
+    [FTPopOverMenu showForSender:sender
+                        withMenu:@[@"选择城市",@"定位当前城市"]
+                  imageNameArray:@[@"icon_city",@"定位2"]
+                       doneBlock:^(NSInteger selectedIndex) {
+                           if (selectedIndex == 0) {
+                               TLCityPickerController *cityPickerVC = [[TLCityPickerController alloc] init];
+                               [cityPickerVC setDelegate:(id)self];
+                               
+                               cityPickerVC.locationCityID = [self transCityNameIntoCityCode:self.city.text];
+                                   cityPickerVC.commonCitys = [[NSMutableArray alloc] initWithArray: @[@"1400010000", @"100010000"]];        // 最近访问城市，如果不设置，将自动管理
+                               cityPickerVC.hotCitys = @[@"100010000", @"200010000", @"300210000", @"600010000", @"300110000"];
+                               
+                               [self presentViewController:[[UINavigationController alloc] initWithRootViewController:cityPickerVC] animated:YES completion:^{
+                                   
+                               }];
+                               
+                               
+                           }else if (selectedIndex == 1) {
+                               if (timer) {
+                                   
+                                   [timer invalidate];
+                               }
+                               timer = [NSTimer scheduledTimerWithTimeInterval:.5 target:self selector:@selector(locatStatue) userInfo:nil repeats:YES];
+                               
+                               [self locationCurrentCity];
+                           }
+                           
+                       } dismissBlock:^{
+                           
+                           NSLog(@"user canceled. do nothing.");
+                           
+                       }];
+    
+    
+}
+
+//将城市名转换成城市代码
+- (NSString *)transCityNameIntoCityCode:(NSString *)cityNameString {
+    NSArray *array = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"CityData" ofType:@"plist"]];
+    for (NSDictionary *groupDic in array) {
+        TLCityGroup *group = [[TLCityGroup alloc] init];
+        group.groupName = [groupDic objectForKey:@"initial"];
+        for (NSDictionary *dic in [groupDic objectForKey:@"citys"]) {
+            if (cityNameString == [dic objectForKey:@"city_name"]) {
+                NSLog(@"%@",[dic objectForKey:@"city_name"]);
+                return [dic objectForKey:@"city_key"];
+            }
+        }
+    }
+    return @"600010000";
+}
+
+#pragma mark - TLCityPickerDelegate
+- (void) cityPickerController:(TLCityPickerController *)cityPickerViewController didSelectCity:(TLCity *)city
+{
     if (timer) {
         
         [timer invalidate];
     }
-    timer = [NSTimer scheduledTimerWithTimeInterval:.5 target:self selector:@selector(locatStatue) userInfo:nil repeats:YES];
     
-    [self locationCurrentCity];
+    //去除“市” 百度天气不允许带市、自治区等后缀
+    if ([city.cityName rangeOfString:@"市"].location != NSNotFound) {
+        NSInteger index = [city.cityName rangeOfString:@"市"].location;
+        city.cityName = [city.cityName substringToIndex:index];
+    }
+    if ([city.cityName rangeOfString:@"县"].location != NSNotFound) {
+        NSInteger index = [city.cityName rangeOfString:@"县"].location;
+        city.cityName = [city.cityName substringToIndex:index];
+    }
+    [self _requestWeatherData:city.cityName];
+
+    [cityPickerViewController dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
+- (void) cityPickerControllerDidCancel:(TLCityPickerController *)cityPickerViewController
+{
+    [cityPickerViewController dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
 
 /**
@@ -429,6 +802,14 @@ static int timesOut = 0;
                 NSInteger index = [cityName rangeOfString:@"自治区"].location;
                 cityName = [cityName substringToIndex:index];
             }
+            if ([cityName rangeOfString:@"自治洲"].location != NSNotFound) {
+                NSInteger index = [cityName rangeOfString:@"自治洲"].location;
+                cityName = [cityName substringToIndex:index];
+            }
+            if ([cityName rangeOfString:@"县"].location != NSNotFound) {
+                NSInteger index = [cityName rangeOfString:@"县"].location;
+                cityName = [cityName substringToIndex:index];
+            }
             self.locaCity = cityName;
             [self _requestWeatherData:cityName];
             
@@ -451,17 +832,28 @@ static int timesOut = 0;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [[UITableViewCell alloc] init];
-#warning mark - disappear tableViewCell
     cell.backgroundColor = [UIColor colorWithWhite:.5 alpha:.5];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text = [NSString stringWithFormat:@"待抄收 10 家"];
+    if (litMeterCount == 0) {
+        cell.textLabel.text = [NSString stringWithFormat:@"大表待抄收 %d 个", bigMeterCount];
+    }
+    if (bigMeterCount == 0) {
+        cell.textLabel.text = [NSString stringWithFormat:@"小表待抄收 %d 户", litMeterCount];
+    }
+    if (litMeterCount == 0 && bigMeterCount == 0) {
+        _tableView.hidden = YES;
+        cell.backgroundColor = [UIColor clearColor];
+    }else {
+        _tableView.hidden = NO;
+    }
+    cell.textLabel.text = [NSString stringWithFormat:@"小表待抄收 %d 户     大表待抄收 %d 个",litMeterCount, bigMeterCount];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     
     return cell;
 }
 
-/**
+/*
  *  转跳至抄表界面
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

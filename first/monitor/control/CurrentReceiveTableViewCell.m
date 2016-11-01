@@ -14,6 +14,7 @@
 @implementation CurrentReceiveTableViewCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
 }
 
 - (void)layoutSubviews
@@ -24,6 +25,8 @@
     _x = self.CRModel.x;
     _y = self.CRModel.y;
     _userImage.image = [self isnormal:self.CRModel.alarm];
+    _userImage.clipsToBounds = YES;
+    _userImage.layer.cornerRadius = 25;
 }
 
 //是否显示警报图片

@@ -352,7 +352,7 @@
             
         }];
         if (error.code == -1001) {
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"请求超时!" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录超时!" preferredStyle:UIAlertControllerStyleAlert];
             
             [alertVC addAction:action];
             [self presentViewController:alertVC animated:YES completion:^{

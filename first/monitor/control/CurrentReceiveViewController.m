@@ -32,6 +32,7 @@ UINavigationControllerDelegate
 @property (nonatomic, strong) UISearchController *searchController;
 
 @property(nonatomic,retain)NSMutableArray *searchResults;//接收数据源结果
+
 @end
 
 @implementation CurrentReceiveViewController
@@ -164,7 +165,7 @@ UINavigationControllerDelegate
         
         if (responseObject) {
 
-            NSLog(@"%@",responseObject);
+//            NSLog(@"%@",responseObject);
             [SVProgressHUD showInfoWithStatus:@"加载成功"];
             
             [_tableView.mj_header endRefreshing];
@@ -219,6 +220,7 @@ UINavigationControllerDelegate
     
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(_requestData)];
     _tableView.mj_header.automaticallyChangeAlpha = YES;
+    _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     
     //调用初始化searchController
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];

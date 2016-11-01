@@ -10,8 +10,6 @@
 #import "MeterDataTableViewCell.h"
 #import "MeterDataModel.h"
 #import "KSDatePicker.h"
-//#import "MSSCalendarViewController.h"
-//#import "MSSCalendarDefine.h"
 
 @interface MeterDataViewController ()
 
@@ -20,12 +18,11 @@ UITableViewDelegate,
 UITableViewDataSource,
 UITextFieldDelegate
 >
-//MSSCalendarViewControllerDelegate
-
 {
     NSString *cellID;
     NSUserDefaults *defaults;
-//    MSSCalendarViewController *cvc;
+    NSURLSessionTask *bigMeterTask;
+    NSURLSessionTask *litMeterTask;
 }
 @end
 
@@ -36,8 +33,14 @@ UITextFieldDelegate
     
     if (_isBigMeter) {
         self.title = @"大表数据查询";
+        _callerName.text = @"主叫方：";
+        _callerLabel.placeholder = @"例如：57178794";
     } else {
+        
         self.title = @"小表数据查询";
+        _callerName.text = @"户 号：";
+        _callerLabel.placeholder = @"请输入户号";
+        _callerLabel.text = self.user_id_str;
     }
     
     cellID = @"meterDataID";
@@ -48,45 +51,7 @@ UITextFieldDelegate
     
     [self _setTableView];
     
-//    UIBarButtonItem *calender = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"calendar@2x"] style:UIBarButtonItemStylePlain target:self action:@selector(openCalender)];
-//    self.navigationItem.rightBarButtonItems = @[calender];
 }
-
-//- (void)openCalender
-//{
-//    cvc = [[MSSCalendarViewController alloc] init];
-//    cvc.limitMonth = 12 * 15;// 显示几个月的日历
-//    /*
-//     MSSCalendarViewControllerLastType 只显示当前月之前
-//     MSSCalendarViewControllerMiddleType 前后各显示一半
-//     MSSCalendarViewControllerNextType 只显示当前月之后
-//     */
-//    cvc.type = MSSCalendarViewControllerLastType;
-//    cvc.beforeTodayCanTouch = YES;// 今天之后的日期是否可以点击
-//    cvc.afterTodayCanTouch = NO;// 今天之前的日期是否可以点击
-//    cvc.startDate = [self.fromDate.text integerValue];// 选中开始时间
-//    cvc.endDate = [self.toDate.text integerValue];// 选中结束时间
-//    /*以下两个属性设为YES,计算中国农历非常耗性能（在5s加载15年以内的数据没有影响）*/
-//    cvc.showChineseHoliday = YES;// 是否展示农历节日
-//    cvc.showChineseCalendar = YES;// 是否展示农历
-//    cvc.showHolidayDifferentColor = YES;// 节假日是否显示不同的颜色
-//    cvc.showAlertView = YES;// 是否显示提示弹窗
-//    cvc.delegate = self;
-//    [self presentViewController:cvc animated:YES completion:nil];
-//}
-//
-//- (void)calendarViewConfirmClickWithStartDate:(NSInteger)startDate endDate:(NSInteger)endDate
-//{
-//    _fromDate.text = [NSString stringWithFormat:@"%ld",(long)startDate];
-//    _toDate.text = [NSString stringWithFormat:@"%ld",(long)endDate];
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
-//    [dateFormatter setDateFormat: @"yyyy-MM-dd"];
-//    NSString *startDateString = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:[_fromDate.text integerValue]]];
-//    NSString *endDateString = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:[_toDate.text integerValue]]];
-//    _fromDate.text = [NSString stringWithFormat:@"%@",startDateString];
-//    _toDate.text = [NSString stringWithFormat:@"%@",endDateString];
-//}
-
 
 
 - (void)_setTableView
@@ -115,7 +80,13 @@ UITextFieldDelegate
     self.ip = [defaults objectForKey:@"ip"];
     self.db = [defaults objectForKey:@"db"];
 }
-
+/**
+ *  大表数据查询
+ *
+ *  @param fromDate    <#fromDate description#>
+ *  @param toDate      <#toDate description#>
+ *  @param callerLabel <#callerLabel description#>
+ */
 - (void)_requestData:(NSString *)fromDate :(NSString *)toDate :(NSString *)callerLabel
 {
     self.tableView.hidden = YES;
@@ -145,7 +116,7 @@ UITextFieldDelegate
         
         __weak typeof(self) weakSelf = self;
         
-        NSURLSessionTask *task =[manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        bigMeterTask =[manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
@@ -166,12 +137,12 @@ UITextFieldDelegate
                     
                     NSDictionary *dicResponse = [responseObject objectForKey:@"meters"];
                     
-                    self.dataNum.text = [NSString stringWithFormat:@"数    量: %@",[responseObject objectForKey:@"count"]];
+                    weakSelf.dataNum.text = [NSString stringWithFormat:@"数    量: %@",[responseObject objectForKey:@"count"]];
                     
                     for (NSDictionary *dic in dicResponse) {
                         
-                        self.userNameLabel.text = [NSString stringWithFormat:@"用户名: %@",[dic objectForKey:@"user_name"]];
-                        self.userNumLabel.text = [NSString stringWithFormat:@"用户号: %@",[dic objectForKey:@"meter_id"]];
+                        weakSelf.userNameLabel.text = [NSString stringWithFormat:@"用户名: %@",[dic objectForKey:@"user_name"]];
+                        weakSelf.userNumLabel.text = [NSString stringWithFormat:@"用户号: %@",[dic objectForKey:@"meter_id"]];
                         
                         MeterDataModel *meterDataModel = [[MeterDataModel alloc] initWithDictionary:dic error:&error];
                         [_dataArr addObject:meterDataModel];
@@ -186,7 +157,7 @@ UITextFieldDelegate
             [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"加载失败:%@",error]];
             
         }];
-        [task resume];
+        [bigMeterTask resume];
     } else {
         [SVProgressHUD showErrorWithStatus:@"错误的选择区间!" maskType:SVProgressHUDMaskTypeGradient];
     }
@@ -205,11 +176,17 @@ UITextFieldDelegate
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [SVProgressHUD dismiss];
     [super viewWillDisappear:animated];
+    [SVProgressHUD dismiss];
     [self.userNumLabel removeFromSuperview];
     [self.userNameLabel removeFromSuperview];
     [self.dataNum removeFromSuperview];
+    if (bigMeterTask) {
+        [bigMeterTask cancel];
+    }
+    if (litMeterTask) {
+        [litMeterTask cancel];
+    }
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
@@ -229,7 +206,6 @@ UITextFieldDelegate
     MeterDataTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-//    cell.backgroundColor = COLORRGB(244, 244, 244);
     if (!cell) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"MeterDataTableViewCell" owner:self options:nil] lastObject];
     }
@@ -246,14 +222,24 @@ UITextFieldDelegate
     [SCToastView showInView:self.view text:@"加载中" duration:0.5 autoHide:YES];
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"水表数据" message:[NSString stringWithFormat:@"%@",((MeterDataModel *)_dataArr[indexPath.row]).message] preferredStyle:UIAlertControllerStyleAlert];
     
+    UIAlertController *alertVC2 = [UIAlertController alertControllerWithTitle:@"参考读数" message:[NSString stringWithFormat:@"%@",((MeterDataModel *)_dataArr[indexPath.row]).collect_num] preferredStyle:UIAlertControllerStyleAlert];
+    
     UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
     }];
     
-    [alertVC addAction:action];
-    [self presentViewController:alertVC animated:YES completion:^{
+    if (_isBigMeter) {
         
-    }];
+        [alertVC addAction:action];
+        [self presentViewController:alertVC animated:YES completion:^{
+            
+        }];
+    } else {
+        [alertVC2 addAction:action];
+        [self presentViewController:alertVC2 animated:YES completion:^{
+            
+        }];
+    }
 
 }
 
@@ -281,16 +267,103 @@ UITextFieldDelegate
         
         [self _requestData:_fromDate.text :_toDate.text :_callerLabel.text];
     } else {
-        GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"提示" message:@"数据库欠缺" buttonTitle:@"确定" buttonTouchedAction:^{
-            
-        } dismissAction:^{
-            
-        }];
-        [alertView show];
+//        GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"提示" message:@"数据库欠缺" buttonTitle:@"确定" buttonTouchedAction:^{
+//            
+//        } dismissAction:^{
+//            
+//        }];
+//        [alertView show];
+        
+        [self requestLitMeterData:_fromDate.text :_toDate.text :_callerLabel.text];
     }
 }
+/**
+ *  请求小表历史数据
+ *
+ *  @param fromDate <#fromDate description#>
+ *  @param toDate   <#toDate description#>
+ *  @param meter_id <#meter_id description#>
+ */
+- (void)requestLitMeterData:(NSString *)fromDate :(NSString *)toDate :(NSString *)meter_id {
+    self.tableView.hidden = YES;
+    if ([fromDate caseInsensitiveCompare:toDate]<=0) {
+        
+        [SVProgressHUD showWithStatus:@"查询中"];
+        
+        NSString *url = [NSString stringWithFormat:@"http://192.168.3.175:8080/Small_Meter_Reading/HisDateSelectServlet"];
+        
+        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+        
+        AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+        
+        NSDictionary *parameters = @{
+                                     @"fromDate":fromDate,
+                                     @"toDate":toDate,
+                                     @"user_id":meter_id
+                                     };
+        
+        AFHTTPResponseSerializer *serializer = manager.responseSerializer;
+        
+        manager.requestSerializer.timeoutInterval = 60;
+        
+        serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+        
+        __weak typeof(self) weakSelf = self;
+        
+        litMeterTask =[manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            if (responseObject) {
+                NSLog(@"小表数据查询：%@",responseObject);
+                [SVProgressHUD dismiss];
+                
+                NSError *error;
+                
+                _dataArr = [NSMutableArray array];
+                [_dataArr removeAllObjects];
+                
+                for (NSDictionary *dic in responseObject) {
+                    
+                    weakSelf.userNameLabel.text = [NSString stringWithFormat:@"地址: %@",[dic objectForKey:@"user_addr"]];
+                    weakSelf.userNumLabel.text = [NSString stringWithFormat:@"所属区域: %@",[dic objectForKey:@"collector_area"]];
+                    
+                    MeterDataModel *meterDataModel = [[MeterDataModel alloc] initWithDictionary:dic error:&error];
+                    [_dataArr addObject:meterDataModel];
+                    
+                }
+                weakSelf.dataNum.text = [NSString stringWithFormat:@"数量：%ld",(long)_dataArr.count];
+                if ([weakSelf.dataNum.text isEqualToString:@"数量：0"]) {
+                    [SVProgressHUD showInfoWithStatus:@"此时间区间暂无数据" maskType:SVProgressHUDMaskTypeGradient];
+                }
+                weakSelf.tableView.hidden = NO;
+                [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                
+            }
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+            NSLog(@"错误信息：%@",error);
+            
+            if (error.code == -1001) {
+                
+                [SVProgressHUD showInfoWithStatus:@"请求超时" maskType:SVProgressHUDMaskTypeGradient];
+            }
+        }];
+        
+        [litMeterTask resume];
+        
+    } else {
+            GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"提示" message:@"错误的日期选择区间！" buttonTitle:@"确定" buttonTouchedAction:^{
+        
+            } dismissAction:^{
+        
+            }];
+            [alertView show];
+    }
+}
+
 - (IBAction)dateBtn:(UIButton *)sender {
-    
     [_fromDate resignFirstResponder];
     [_toDate resignFirstResponder];
     [_callerLabel resignFirstResponder];

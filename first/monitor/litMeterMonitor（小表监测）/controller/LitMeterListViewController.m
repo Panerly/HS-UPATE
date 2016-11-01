@@ -11,10 +11,26 @@
 #import "LitMeterListTableViewCell.h"
 #import "LitMeterModel.h"
 
-@interface LitMeterListViewController ()<UITableViewDelegate, UITableViewDataSource>
-//{
-//    NSMutableArray *villageNameArr;
-//}
+@interface LitMeterListViewController ()
+<
+UITableViewDelegate,
+UITableViewDataSource,
+UISearchBarDelegate,
+UISearchResultsUpdating
+>
+{
+    UIImageView *loadingView;
+    BOOL flag;//判断滑动的方向
+    NSURLSessionTask *task;
+    BOOL isNormal;
+    UIButton *selectedBtn;
+}
+
+//创建搜索栏
+@property (nonatomic, strong) UISearchController *searchController;
+
+@property(nonatomic,retain)NSMutableArray *searchResults;//接收数据源结果
+
 @end
 
 @implementation LitMeterListViewController
@@ -22,7 +38,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"小区列表";
+    self.title = _isHisData?_isHisData:@"小区浏览";
+    
     self.view.backgroundColor = [UIColor cyanColor];
     
     [self setEffectView];
@@ -30,13 +47,58 @@
     [self initTableView];
 
     [self requestCommunityData];
+    [self requestAbnormalCommunityData];
+    
+    //切换按钮
+    selectedBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    selectedBtn.frame = CGRectMake(0, 0, 60, 30);
+    [selectedBtn setTitle:@"异常" forState:UIControlStateNormal];
+    [selectedBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    isNormal = YES;
+    [selectedBtn addTarget:self action:@selector(_selectDataSource:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *selectItem = [[UIBarButtonItem alloc] initWithCustomView:selectedBtn];
+    self.navigationItem.rightBarButtonItems = @[selectItem];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [SVProgressHUD dismiss];
+//选择全部数据还是抄收有异常的小区
+- (void)_selectDataSource :(BOOL)DataSourceFlag {
+    if (isNormal == YES) {
+        if (!_dataArray) {
+            [self requestCommunityData];
+        }
+        [selectedBtn setTitle:@"全部" forState:UIControlStateNormal];
+        [selectedBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        isNormal = !isNormal;
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+    }else {
+        if (!_abnormalDataArray) {
+            [self requestAbnormalCommunityData];
+        }
+        [selectedBtn setTitle:@"异常" forState:UIControlStateNormal];
+        [selectedBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        isNormal = !isNormal;
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [task cancel];
+}
+
+- (void)startLoading {
+    //刷新控件
+    loadingView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+    loadingView.center = self.view.center;
+    UIImage *image = [UIImage sd_animatedGIFNamed:@"刷新5"];
+    [loadingView setImage:image];
+    [self.view addSubview:loadingView];
+}
+
+/**
+ *  设置玻璃模糊效果
+ */
 - (void)setEffectView {
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     [imageView setImage:[UIImage imageNamed:@"bg_server.jpg"]];
@@ -54,19 +116,24 @@
 /**
  *  请求小区数据
  */
+#pragma mark - normal meter dataSource
 - (void)requestCommunityData {
     
-    [SVProgressHUD showWithStatus:@"加载中"];
+    [self startLoading];
+    
+    if (self.tableView.mj_header.state == MJRefreshStateRefreshing) {
+        [loadingView removeFromSuperview];
+    }
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
     AFHTTPResponseSerializer *serializer = manager.responseSerializer;
     manager.requestSerializer.timeoutInterval = 60;
-    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/plain"];
-    NSString *communityURL = [NSString stringWithFormat:@"http://192.168.3.156:8080/Hzsb/HzsbServlet"];
+    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    NSString *communityURL = [NSString stringWithFormat:@"http://192.168.3.175:8080/Small_Meter_Reading/Small_NumberServlet"];
     __weak typeof(self) weekSelf = self;
     
-    NSURLSessionTask *task = [manager POST:communityURL parameters:NULL progress:^(NSProgress * _Nonnull uploadProgress) {
+    task = [manager POST:communityURL parameters:NULL progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -74,60 +141,129 @@
         if (!weekSelf.dataArray) {
             weekSelf.dataArray = [NSMutableArray array];
         }
-        [SVProgressHUD showInfoWithStatus:@"加载成功"];
         if (responseObject) {
+            [weekSelf.tableView.mj_header endRefreshing];
             NSError *error = nil;
-            for (NSDictionary *dic in [responseObject objectForKey:@"village"]) {
+            for (NSDictionary *dic in responseObject) {
                 LitMeterModel *litMeterModel = [[LitMeterModel alloc] initWithDictionary:dic error:&error];
                 [weekSelf.dataArray addObject:litMeterModel];
             }
         }
         [weekSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [SVProgressHUD showInfoWithStatus:@"加载成功"];
+        if (loadingView) {
+            [UIView animateWithDuration:.3 animations:^{
+                loadingView.transform = CGAffineTransformMakeScale(.01, .01);
+            } completion:^(BOOL finished) {
+                
+                [loadingView removeFromSuperview];
+            }];
+        }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (loadingView) {
+            [loadingView removeFromSuperview];
+            
+        }
+        [weekSelf.tableView.mj_header endRefreshing];
+        [SVProgressHUD showInfoWithStatus:@"加载失败" maskType:SVProgressHUDMaskTypeGradient];
         
-        [SVProgressHUD showInfoWithStatus:@"加载失败"];
-        NSLog(@"%@",error);
+        NSLog(@"小区浏览页请求数据失败：\n%@",error);
     }];
+    
     [task resume];
 }
 
+#pragma mark - abnormal meter dataSource
+//请求异常小区
+- (void)requestAbnormalCommunityData {
+    if (!loadingView) {
+        
+        [self startLoading];
+    }
+    
+    if (self.tableView.mj_header.state == MJRefreshStateRefreshing) {
+        [loadingView removeFromSuperview];
+    }
+    
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
+    manager.requestSerializer.timeoutInterval = 60;
+    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    NSString *communityURL = [NSString stringWithFormat:@"http://192.168.3.175:8080/Small_Meter_Reading/NotNormalServlet"];
+    __weak typeof(self) weekSelf = self;
+    
+    task = [manager POST:communityURL parameters:NULL progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        if (!weekSelf.abnormalDataArray) {
+            weekSelf.abnormalDataArray = [NSMutableArray array];
+        }
+        if (responseObject) {
+            [weekSelf.tableView.mj_header endRefreshing];
+            NSError *error = nil;
+            for (NSDictionary *dic in responseObject) {
+                LitMeterModel *litMeterModel = [[LitMeterModel alloc] initWithDictionary:dic error:&error];
+                [weekSelf.abnormalDataArray addObject:litMeterModel];
+            }
+        }
+        
+        [SVProgressHUD showInfoWithStatus:@"加载成功"];
+        if (loadingView) {
+            
+            [loadingView removeFromSuperview];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (loadingView) {
+            
+            [loadingView removeFromSuperview];
+        }
+        [weekSelf.tableView.mj_header endRefreshing];
+        [SVProgressHUD showInfoWithStatus:@"加载失败" maskType:SVProgressHUDMaskTypeGradient];
+        
+        NSLog(@"小区浏览页请求数据失败：\n%@",error);
+    }];
+    
+    [task resume];
+}
+
+
+
+//初始化tableview
 - (void)initTableView {
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, PanScreenWidth, PanScreenHeight - 64 - 49)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
-//    _tableView.backgroundColor = [UIColor colorWithRed:44/255.0f green:147/255.0f blue:209/255.0f alpha:1];
     _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     
-//    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    _tableView.mj_header = [MJRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(requestCommunityData)];
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(requestCommunityData)];
     _tableView.mj_header.automaticallyChangeAlpha = YES;
+    
+    //调用初始化searchController
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchBar.frame = CGRectMake(0, 0, 0, 44);
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.hidesNavigationBarDuringPresentation = YES;
+    self.searchController.searchBar.barTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
+    self.searchController.searchBar.placeholder = @"搜索";
+    
+    self.searchController.searchBar.delegate = self;
+    self.searchController.searchResultsUpdater = (id)self;
+    //搜索栏表头视图
+    self.tableView.tableHeaderView = self.searchController.searchBar;
+    [self.searchController.searchBar sizeToFit];
+    
     
     [_tableView registerNib:[UINib nibWithNibName:@"LitMeterListTableViewCell" bundle:nil] forCellReuseIdentifier:@"LitMeterListID"];
     
     [self.view addSubview:_tableView];
 }
 
-///**
-// *  测试（假数据）
-// */
-//- (void)loadData {
-//    if (!self.dataArray) {
-//        self.dataArray = [NSMutableArray array];
-//    }
-//    if (!self.isExpland) {
-//        self.isExpland = [NSMutableArray array];
-//    }
-//    
-//    self.dataArray = [NSArray arrayWithObjects:@[@"xx幢xx单元xx号",@"xx幢xx单元xx号",@"xx幢xx单元xx号",@"xx幢xx单元xx号"],@[@"xx幢xx单元xx号",@"vxx幢xx单元xx号",@"xx幢xx单元xx号"],@[@"xx幢xx单元xx号",@"xx幢xx单元xx号",@"xx幢xx单元xx号",@"xx幢xx单元xx号",@"xx幢xx单元xx号"],nil].mutableCopy;
-//    //用0代表收起，非0代表展开，默认都是收起的
-//    for (int i = 0; i < self.dataArray.count; i++) {
-//        [self.isExpland addObject:@0];
-//    }
-//    [self.tableView reloadData];
-//}
 
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -135,7 +271,13 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    return self.dataArray.count;
+    if (isNormal) {
+        
+        return (!self.searchController.active)?self.dataArray.count : self.searchResults.count;
+    }else {
+        return (!self.searchController.active)?self.abnormalDataArray.count : self.searchResults.count;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -145,18 +287,69 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:@"LitMeterListTableViewCell" owner:self options:nil] lastObject];
     }
     cell.backgroundColor = [UIColor clearColor];
-    cell.litMeterModel = self.dataArray[indexPath.row];
+    
+    if (self.searchResults == nil) {
+        
+        tableView.separatorStyle = YES;
+    }
+    if (isNormal) {
+        cell.litMeterModel = (!self.searchController.active)?_dataArray[indexPath.row] : self.searchResults[indexPath.row];
+    } else {
+        cell.litMeterModel = (!self.searchController.active)?_abnormalDataArray[indexPath.row] : self.searchResults[indexPath.row];
+    }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     LitMeterDetailListViewController *detail = [[LitMeterDetailListViewController alloc] init];
-    detail.village_name = ((LitMeterModel *)_dataArray[indexPath.row]).village_name;
+    if (isNormal) {
+        detail.village_name = (!self.searchController.active)?((LitMeterModel *)_dataArray[indexPath.row]).small_name:((LitMeterModel *)_searchResults[indexPath.row]).small_name;
+    }else {
+        detail.village_name = (!self.searchController.active)?((LitMeterModel *)_abnormalDataArray[indexPath.row]).small_name:((LitMeterModel *)_searchResults[indexPath.row]).small_name;
+    }
+    detail.isNormal = isNormal ? @"正常" : @"异常";
     detail.hidesBottomBarWhenPushed = YES;
+    [SVProgressHUD dismiss];
     [self.navigationController showViewController:detail sender:nil];
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if (flag) {
+        
+        cell.layer.transform = CATransform3DMakeTranslation(-PanScreenWidth, 1, 1);
+        
+    } else {
+        
+        cell.layer.transform = CATransform3DMakeTranslation(PanScreenWidth, 1, 1);
+        
+    }
+    //设置动画时间为0.25秒,xy方向缩放的最终值为1
+    [UIView animateWithDuration:.35 animations:^{
+        cell.layer.transform = CATransform3DMakeScale(1, 1, 1);
+    } completion:nil];
+    
+}
+
+float _oldY;
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if ([scrollView isEqual: self.tableView]) {
+        if (self.tableView.contentOffset.y > _oldY) {
+            flag = YES;
+        }
+        else{
+            flag = NO;
+        }
+    }
+}
+
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    // 获取开始拖拽时tableview偏移量
+    _oldY = self.tableView.contentOffset.y;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -164,6 +357,61 @@
         self.view = nil;
     }
 }
+#pragma mark - searchController delegate
 
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController{
+    self.searchResults= [NSMutableArray array];
+    [self.searchResults removeAllObjects];
+    
+    //NSPredicate 谓词
+    NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@",searchController.searchBar.text];
+    
+    NSMutableArray *arr = [NSMutableArray array];
+    NSMutableArray *arr2 = [NSMutableArray array];
+    [arr2 removeAllObjects];
+    
+    if (isNormal) {
+        for (LitMeterModel *litMeterModel in self.dataArray) {
+            [arr addObject:litMeterModel.small_name];
+        }
+        arr2 = [[arr filteredArrayUsingPredicate:searchPredicate] mutableCopy];
+        for (LitMeterModel *litMeterModel in self.dataArray) {
+            if ([arr2 containsObject:litMeterModel.small_name]) {
+                [self.searchResults addObject:litMeterModel];
+            }
+        }
+    } else {
+        for (LitMeterModel *litMeterModel in self.abnormalDataArray) {
+            [arr addObject:litMeterModel.small_name];
+        }
+        arr2 = [[arr filteredArrayUsingPredicate:searchPredicate] mutableCopy];
+        for (LitMeterModel *litMeterModel in self.abnormalDataArray) {
+            if ([arr2 containsObject:litMeterModel.small_name]) {
+                [self.searchResults addObject:litMeterModel];
+            }
+        }
+    }
+    //刷新表格
+    [self.tableView reloadData];
+}
+
+
+//移除搜索栏
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (self.searchController.active) {
+        self.searchController.active = NO;
+        [self.searchController.searchBar removeFromSuperview];
+    }
+}
+
+#pragma mark - searchBarDelegate
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:YES animated:YES];
+    UIButton *btn=[searchBar valueForKey:@"_cancelButton"];
+    [btn setTitle:@"取消" forState:UIControlStateNormal];
+}
 
 @end

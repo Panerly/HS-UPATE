@@ -27,8 +27,9 @@
 #import "LLSwitch.h"
 
 #define weatherAPIkey @"87aa67335bd8e0739a06cfccc6edecb5"
-#define weatherAPI @"http://apis.baidu.com/apistore/weatherservice/cityname"
-#define hisWeatherAPI @"http://apis.baidu.com/apistore/weatherservice/recentweathers"
+
+#define weatherAPI @"http://apis.baidu.com/heweather/weather/free"
+//#define hisWeatherAPI @"http://apis.baidu.com/apistore/weatherservice/recentweathers"
 //杭水简介
 #define introduction @"http://www.hzsberp.com:9999/hzsb"
 //http://chenshenlu.jios.org:8888
@@ -61,5 +62,9 @@
 #import "UIImage+GIF.h"
 #import "AFNetworking.h"
 #import "MJRefresh.h"
+#import "AnimationView.h"
+
+#import "UIColor+WHE.h"
+#import "UINavigationBar+Awesome.h"
 
 #endif

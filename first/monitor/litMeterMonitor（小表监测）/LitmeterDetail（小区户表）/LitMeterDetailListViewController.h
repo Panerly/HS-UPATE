@@ -12,11 +12,14 @@ typedef void(^ReturnTextBlock)(NSString *showText);
 
 @interface LitMeterDetailListViewController : UIViewController
 
-@property (nonatomic, strong) NSMutableArray *dataArr;
+@property (nonatomic, strong) NSMutableArray *dataArr;//所有数据
+@property (nonatomic, strong) NSMutableArray *abnormalDataArr;//异常数据
 
 @property (nonatomic, strong) NSString *village_name;
 
 @property (nonatomic, strong) ReturnTextBlock returnTextBlock;
+
+@property (nonatomic, strong) NSString *isNormal;
 
 - (void)ReturnTextBlock:(ReturnTextBlock)block;
 

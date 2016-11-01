@@ -40,6 +40,7 @@ static NSString * const reuseIdentifier = @"CollectionCell";
     
     [self.navigationController setDelegate:self];
     [self.interactive attachInteractiveGestureToNavigationController:self.navigationController];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -52,7 +53,7 @@ static NSString * const reuseIdentifier = @"CollectionCell";
     [super viewDidLoad];
     
     _interactive = [[AMWaveTransition alloc] init];
-    
+    [SCToastView showInView:self.view text:@"测试数据" duration:1 autoHide:YES];
 }
 
 

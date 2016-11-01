@@ -180,6 +180,8 @@
         
         UserInfoViewController *userInfoVC = [[UserInfoViewController alloc] init];
         
+        userInfoVC.hidesBottomBarWhenPushed = YES;
+        
         [self.navigationController showViewController:userInfoVC sender:nil];
     }
     if (indexPath.section == 1 && indexPath.row == 0) {

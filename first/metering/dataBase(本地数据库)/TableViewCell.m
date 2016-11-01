@@ -11,13 +11,14 @@
 @implementation TableViewCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     // Initialization code
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.meter_id.text = [NSString stringWithFormat:@"meter_id:%@",self.DBModel.meter_id];
-    self.user_id.text = [NSString stringWithFormat:@"user_id:%@",self.DBModel.user_id];
+    self.meter_id.text = [NSString stringWithFormat:@"户号:%@",self.DBModel.meter_id];
+    self.user_id.text = [NSString stringWithFormat:@"地址:%@",self.DBModel.user_addr];
 }
 
 

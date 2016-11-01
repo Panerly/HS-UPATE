@@ -225,7 +225,7 @@
     animation.duration  = _duration;
     animation.fromValue = @0;
     animation.toValue   = @1;
-    animation.delegate  = self;
+    animation.delegate  = (id)self;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     animation.removedOnCompletion = YES;
     [maskLayer addAnimation:animation forKey:@"circleAnimation"];

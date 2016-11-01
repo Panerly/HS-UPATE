@@ -12,13 +12,16 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    [super awakeFromNib];
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    _village_name.text = self.litMeterModel.village_name;
-    _village_num.text = [NSString stringWithFormat:@"%@户",self.litMeterModel.village_num];
+    _village_name.text = self.litMeterModel.small_name;
+    _village_num.text = [NSString stringWithFormat:@"%@户",self.litMeterModel.count];
 }
+
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

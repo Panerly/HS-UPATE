@@ -9,7 +9,7 @@
 #import "UserInfoViewController.h"
 #import "UserNameViewController.h"
 #import "DateView.h"
-
+#import "TZPopInputView.h"
 
 @interface UserInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
@@ -18,6 +18,8 @@
     NSUserDefaults *defaults;
     UIDatePicker *datePicker;
 }
+@property (nonatomic, strong) TZPopInputView *inputView;    // 输入框
+
 @end
 
 @implementation UserInfoViewController
@@ -72,13 +74,24 @@
     }
 }
 
+//设置输入框并赋值上次预设值
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (!_inputView) {
+        self.inputView = [[TZPopInputView alloc] init];
+    }
+    if (![defaults objectForKey:@"litMeterAlarmValue"]) {
+        _inputView.textFiled1.text = [defaults objectForKey:@"litMeterAlarmValue"];
+    }
+    if (![defaults objectForKey:@"bigMeterAlarmValue"]) {
+        _inputView.textFiled2.text = [defaults objectForKey:@"bigMeterAlarmValue"];
+    }
+}
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [UIView animateWithDuration:0.5 animations:^{
-        
         _userIcon.transform = CGAffineTransformMakeScale(0.1, 0.1);
-
     }];
 }
 
@@ -112,7 +125,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -121,23 +134,18 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row == 0) {
         cell.textLabel.text = @"修改昵称";
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-//    if (indexPath.row == 1) {
-//        if (![defaults objectForKey:@"bornDate"]) {
-//            
-//            cell.textLabel.text = @"生日";
-//        }
-//        cell.textLabel.text = [NSString stringWithFormat:@"生日 : %@",[defaults objectForKey:@"bornDate"]];
-//        
-//    }
     if (indexPath.row == 1) {
+        cell.textLabel.text = @"修改警报参数";
+    }
+    if (indexPath.row == 2) {
         
-        if (![defaults objectForKey:@"sex"]) {
+        if (![[defaults objectForKey:@"sex"] isEqualToString:@"男"] && ![[defaults objectForKey:@"sex"] isEqualToString:@"女"]) {
             cell.textLabel.text = @"性别 : 男";
         }
         cell.textLabel.text = [NSString stringWithFormat:@"性别 ：%@",[defaults objectForKey:@"sex"]];
     }
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 
@@ -148,7 +156,28 @@
         
         UserNameViewController *userNameVC = [[UserNameViewController alloc] init];
         [self showViewController:userNameVC sender:nil];
-    }else if (indexPath.row == 1){
+    }
+    if (indexPath.row == 1){
+        
+        self.inputView.titleLable.text = @"设置增幅警报";
+        [self.inputView setItems:@[@"大表警报增幅值设置",@"小表警报增幅值设置"]];
+        
+        [self.inputView show];
+        
+        self.inputView.textFiled1.text = [defaults objectForKey:@"bigMeterAlarmValue"]?[defaults objectForKey:@"bigMeterAlarmValue"]:@"请输入";
+        self.inputView.textFiled2.text = [defaults objectForKey:@"litMeterAlarmValue"]?[defaults objectForKey:@"litMeterAlarmValue"]:@"请输入";
+        
+        __weak typeof(self) weakSelf = self;
+        __weak typeof(defaults) weakDefaults = defaults;
+        self.inputView.okButtonClickBolck = ^(NSMutableArray *arr){
+            [weakSelf.inputView hide];
+            [weakDefaults setObject:weakSelf.inputView.textFiled1.text forKey:@"bigMeterAlarmValue"];
+            [weakDefaults setObject:weakSelf.inputView.textFiled2.text forKey:@"litMeterAlarmValue"];
+            [weakDefaults synchronize];
+        };
+        
+    }
+    if (indexPath.row == 2) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NULL message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *boy = [UIAlertAction actionWithTitle:@"男" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
@@ -180,7 +209,7 @@
     imageData = [NSKeyedArchiver archivedDataWithRootObject:image];
     [[NSUserDefaults standardUserDefaults] setObject:imageData forKey:@"image"];
     
-    [picker dismissModalViewControllerAnimated:YES];
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -219,15 +248,5 @@
         [datePicker removeFromSuperview];
     }];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
