@@ -9,8 +9,13 @@
 #import "CommProViewController.h"
 #import "LitMeterDetailViewController.h"
 
+#import "LitMeterModel.h"
+#import "LitMeterDetailModel.h"
+#import "CommProTableViewCell.h"
+
 #import <BaiduMapAPI_Map/BMKPointAnnotation.h>
 #import <BaiduMapAPI_Map/BMKPinAnnotationView.h>
+#import "MLTransition.h"
 
 @interface CommProViewController ()
 <
@@ -21,7 +26,14 @@ UITableViewDataSource
 {
     BOOL map_type;
     UIView *paopaoBgView;
+    NSURLSessionTask *task;
+    NSString *titleStr;
+    int bmkViewTag;
 }
+
+@property (nonatomic, strong) NSMutableArray *dataArray;//存小区名
+
+
 @end
 
 @implementation CommProViewController
@@ -31,21 +43,31 @@ UITableViewDataSource
     self.title = @"小表概览";
     
     map_type = YES;
+    [MLTransition invalidate];
     
     [self initMapView];
-    
+    [self requestCommunityData];
 }
 - (void)initTableView {
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(5, 75, 290, 150)];
-    
-    _tableView.backgroundColor = [UIColor clearColor];
+//    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(5, 75, 290, 150)];
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(PanScreenWidth-295, 75, 290, 150)];
+        _tableView.clipsToBounds = YES;
+        _tableView.layer.cornerRadius = 8;
+        _tableView.alpha = .8f;
+        
+        _tableView.backgroundColor = [UIColor clearColor];
+    }
     
     _tableView.delegate = self;
     
     _tableView.dataSource = self;
     
-    [paopaoBgView addSubview:_tableView];
+    [_tableView registerNib:[UINib nibWithNibName:@"CommProTableViewCell" bundle:nil] forCellReuseIdentifier:@"commProIdenty"];
+    
+//    [paopaoBgView addSubview:_tableView];
+    [self.view addSubview:_tableView];
 }
 
 //初始化地图
@@ -73,6 +95,105 @@ UITableViewDataSource
     [self initDirectionBtn];
     [self initlayerBtn];
 }
+
+//请求小区数据(小区)
+- (void)requestCommunityData {
+    
+    [AnimationView showInView:self.view];
+    
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
+    manager.requestSerializer.timeoutInterval = 20;
+    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    NSString *communityURL = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_NumberServlet",litMeterApi];
+    __weak typeof(self) weekSelf = self;
+    
+    task = [manager POST:communityURL parameters:NULL progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        if (!weekSelf.dataArray) {
+            weekSelf.dataArray = [NSMutableArray array];
+        }
+        if (responseObject) {
+
+            NSError *error = nil;
+            for (NSDictionary *dic in responseObject) {
+                LitMeterModel *litMeterModel = [[LitMeterModel alloc] initWithDictionary:dic error:&error];
+                [weekSelf.dataArray addObject:litMeterModel];
+            }
+        }
+//        [weekSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [AnimationView dismiss];
+        // 添加一个PointAnnotation
+        for (int i = 0; i < _dataArray.count; i++) {
+            
+            BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
+            CLLocationCoordinate2D coor;
+            coor.latitude = [((LitMeterModel *)_dataArray[i]).y integerValue];
+            coor.longitude = [((LitMeterModel *)_dataArray[i]).x integerValue];
+            annotation.coordinate = coor;
+            NSLog(@"%lf -- %lf",coor.longitude,coor.latitude);
+            [_mapView addAnnotation:annotation];
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [AnimationView dismiss];
+
+        [SVProgressHUD showInfoWithStatus:@"小区列表加载失败" maskType:SVProgressHUDMaskTypeGradient];
+        
+        NSLog(@"小区列表数据请求失败：\n%@",error);
+    }];
+    
+    [task resume];
+}
+#pragma mark - request household data
+- (void)requestHouseholdData :(NSString *)village_name {
+    
+    [AnimationView showInView:self.view];
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
+    manager.requestSerializer.timeoutInterval = 60;
+    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    NSString *communityURL = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_New_DataServlet",litMeterApi];
+    __weak typeof(self) weekSelf = self;
+    
+    NSDictionary *parameters = @{
+                                 @"name":village_name
+                                 };
+    
+    NSURLSessionTask *houseHoldTask = [manager POST:communityURL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        if (responseObject) {
+
+            NSError *error = nil;
+            [AnimationView dismiss];
+            
+            self.houseHoldArray = [NSMutableArray array];
+            [self.houseHoldArray removeAllObjects];
+            
+            for (NSDictionary *dic in responseObject) {
+                LitMeterDetailModel *model = [[LitMeterDetailModel alloc] initWithDictionary:dic error:&error];
+                [self.houseHoldArray addObject:model];
+            }
+            weekSelf.tableView.hidden = NO;
+            [weekSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+        }
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+
+        [AnimationView dismiss];
+        [SVProgressHUD showInfoWithStatus:@"加载失败" maskType:SVProgressHUDMaskTypeGradient];
+        NSLog(@"户列表数据请求失败：\n%@",error);
+    }];
+    [houseHoldTask resume];
+}
+
 
 //切换视角
 - (void)initDirectionBtn {
@@ -130,20 +251,31 @@ UITableViewDataSource
     [_mapView viewWillAppear];
     _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
     _locService.delegate = self;
+    bmkViewTag = 200;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     // 添加一个PointAnnotation
-    for (int i = 0; i < 10; i++) {
-        
-        BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
-        CLLocationCoordinate2D coor;
-        coor.latitude = 30.289077 + i*.005;
-        coor.longitude = 120.350810 + i*.005;
-        annotation.coordinate = coor;
-        [_mapView addAnnotation:annotation];
-    }
+//    for (int i = 0; i < 10; i++) {
+//        
+//        BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
+//        CLLocationCoordinate2D coor;
+//        coor.latitude = 30.289077 + i*.005;
+//        coor.longitude = 120.350810 + i*.005;
+//        annotation.coordinate = coor;
+//        [_mapView addAnnotation:annotation];
+//    }
+//    for (int i = 0; i < _dataArray.count; i++) {
+//        
+//        BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
+//        CLLocationCoordinate2D coor;
+//        coor.latitude = [((LitMeterModel *)_dataArray[i]).x integerValue];
+//        coor.longitude = [((LitMeterModel *)_dataArray[i]).y integerValue];
+//        annotation.coordinate = coor;
+//        [_mapView addAnnotation:annotation];
+//    }
+    
 }
 
 
@@ -166,9 +298,13 @@ UITableViewDataSource
 {
     [_mapView updateLocationData:userLocation];
 }
+
+
 // Override
+
 - (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id <BMKAnnotation>)annotation
 {
+    
     if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
 
         BMKPinAnnotationView *newAnnotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"myAnnotation"];
@@ -180,7 +316,8 @@ UITableViewDataSource
 
         newAnnotationView.leftCalloutAccessoryView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"1"]];
 
-        paopaoBgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 240)];
+//        paopaoBgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 240)];
+        paopaoBgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 80)];
         
         paopaoBgView.layer.cornerRadius = 10;
 
@@ -198,20 +335,16 @@ UITableViewDataSource
 
         [paopaoBgView addSubview:v2];
 
-//        UITextView *textV = [[UITextView alloc]initWithFrame:CGRectMake(5, 85, 290, 140)];
-//        textV.font = [UIFont systemFontOfSize:12];
-//        textV.text = @"具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n\n具体：11幢2单元301\n条码号：110110110\n姓名：张三\n抄收时间：2016-8-18\n";
-//        
-//        textV.backgroundColor = [UIColor clearColor];
-//        textV.textAlignment = NSTextAlignmentLeft;
-//        textV.editable = NO;
-//        [paopaoBgView addSubview:textV];
-        
         [self initTableView];
 
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(75, 15, 215, 25)];
 
-        label.text = @"杭州市江干区下沙xxxx小区";
+        if (bmkViewTag-200 >= _dataArray.count) {
+            label.text = ((LitMeterModel *)_dataArray[_dataArray.count-1]).small_name;
+        }else {
+            
+            label.text = ((LitMeterModel *)_dataArray[bmkViewTag - 200]).small_name;
+        }
         [paopaoBgView addSubview:label];
 
         UIView *v1 = [[UIView alloc]initWithFrame:CGRectMake(75, 41, 210, 1)];
@@ -222,7 +355,12 @@ UITableViewDataSource
 
         UITextView *addressLbl = [[UITextView alloc]initWithFrame:CGRectMake(75, 40, 215, 40)];
         addressLbl.font = [UIFont systemFontOfSize:12];
-        addressLbl.text = @"地址：浙江省杭州市下沙江干区";
+        if (bmkViewTag-200 >= _dataArray.count) {
+            addressLbl.text = [NSString stringWithFormat:@"地址：%@",((LitMeterModel *)_dataArray[_dataArray.count-1]).small_name];
+        }else {
+            addressLbl.text = [NSString stringWithFormat:@"地址：%@",((LitMeterModel *)_dataArray[bmkViewTag - 200]).small_name];
+            NSLog(@"bmkViewTag:%d, 地址信息：%@", bmkViewTag, ((LitMeterModel *)_dataArray[bmkViewTag - 200]).small_name);
+        }
         addressLbl.backgroundColor = [UIColor clearColor];
         addressLbl.textAlignment = NSTextAlignmentLeft;
         addressLbl.userInteractionEnabled = NO;
@@ -232,16 +370,55 @@ UITableViewDataSource
 
         newAnnotationView.paopaoView = paopaoView;
 
+        newAnnotationView.paopaoView.tag = bmkViewTag;
+        bmkViewTag++;
+
         return newAnnotationView;
     }
     return nil;
 }
 
+- (void)mapView:(BMKMapView *)mapView didSelectAnnotationView:(BMKAnnotationView *)view {
+
+    if (view.paopaoView.tag-200 >= _dataArray.count) {
+        
+        [self requestHouseholdData:((LitMeterDetailModel *)_dataArray[_dataArray.count-1]).small_name];
+        titleStr = ((LitMeterDetailModel *)_dataArray[_dataArray.count-1]).small_name;
+    }else {
+        
+        [self requestHouseholdData:((LitMeterDetailModel *)_dataArray[view.paopaoView.tag - 200]).small_name];
+        titleStr = ((LitMeterDetailModel *)_dataArray[view.paopaoView.tag - 200]).small_name;
+    }
+}
+
+- (void)mapView:(BMKMapView *)mapView annotationView:(BMKAnnotationView *)view didChangeDragState:(BMKAnnotationViewDragState)newState fromOldState:(BMKAnnotationViewDragState)oldState {
+    _tableView.hidden = YES;
+    
+}
+- (void)mapStatusDidChanged:(BMKMapView *)mapView {
+    _tableView.hidden = YES;
+    [AnimationView dismiss];
+    //检测地图的放大倍率
+    if (mapView.getMapStatus.fLevel >13.0f) {
+        
+    }
+    
+}
+
+
 #pragma mark - UITableViewDelegate && UITableViewDataSource
+
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+//    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 290, 25)];
+//    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 290, 20)];
+//    title.text = titleStr;
+//    [headerView addSubview:title];
+//    return headerView;
+//}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return 10;
+    return self.houseHoldArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -251,22 +428,47 @@ UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellID"];
-    cell.backgroundColor = [UIColor clearColor];
-    cell.textLabel.font = [UIFont systemFontOfSize:13];
-    cell.textLabel.numberOfLines = 0;
-    cell.textLabel.text = [NSString stringWithFormat:@"条码号：110110110\n抄收时间：216-8-18\n浙江省杭州市江干区XXX小区%ld号%ld单元",(long)indexPath.row,(long)indexPath.row];
-    
+//    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellID"];
+//    cell.backgroundColor = [UIColor clearColor];
+//    cell.textLabel.font = [UIFont systemFontOfSize:13];
+//    cell.textLabel.numberOfLines = 0;
+//    cell.textLabel.text = [NSString stringWithFormat:@"条码号：110110110\n抄收时间：216-8-18\n浙江省杭州市江干区XXX小区%ld号%ld单元",(long)indexPath.row,(long)indexPath.row];
+    CommProTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"commProIdenty" forIndexPath:indexPath];
+    if (!cell) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"CommProTableViewCell" owner:self options:nil] lastObject];
+    }
+    cell.litMeterDetailModel = self.houseHoldArray[indexPath.row];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    
+//    LitMeterDetailViewController *householdDetail = [[LitMeterDetailViewController alloc] init];
+//    
+//    [self.navigationController showViewController:householdDetail sender:nil];
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    LitMeterDetailViewController *detailVC = [[LitMeterDetailViewController alloc] init];
     
-    LitMeterDetailViewController *householdDetail = [[LitMeterDetailViewController alloc] init];
+    detailVC.meter_ID              = ((LitMeterDetailModel *)_houseHoldArray[indexPath.row]).user_Id;
+    detailVC.user_addr_str         = [NSString stringWithFormat:@"地址:%@",((LitMeterDetailModel *)_houseHoldArray[indexPath.row]).user_addr];
+    detailVC.user_name_str         = [NSString stringWithFormat:@"户号:%@",((LitMeterDetailModel *)_houseHoldArray[indexPath.row]).user_Id];
+    detailVC.collect_id_str        = [NSString stringWithFormat:@"采集编号：%@",((LitMeterDetailModel *)_houseHoldArray[indexPath.row]).collect_no];
     
-    [self.navigationController showViewController:householdDetail sender:nil];
+    detailVC.location_str          = [NSString stringWithFormat:@"所属区域：%@",((LitMeterDetailModel *)_houseHoldArray[indexPath.row]).collector_area];
+    detailVC.meter_condition_str   = [NSString stringWithFormat:@"表况：%@",((LitMeterDetailModel *)_houseHoldArray[indexPath.row]).collect_Status];
+    detailVC.previous_reading_str  = [NSString stringWithFormat:@"上期读数：%@",((LitMeterDetailModel *)_houseHoldArray[indexPath.row]).up_collect_num];
+    detailVC.current_reading_str   = [NSString stringWithFormat:@"本期读数：%@",((LitMeterDetailModel *)_houseHoldArray[indexPath.row]).collect_num];
+    detailVC.usage_str             = [NSString stringWithFormat:@"用量：%@",((LitMeterDetailModel *)_houseHoldArray[indexPath.row]).collect_yl];
+    
+    detailVC.remark_str            = [NSString stringWithFormat:@"备注：暂无"];
+    detailVC.water_type_str        = [NSString stringWithFormat:@"用水类型：居民用水"];
+    detailVC.phone_num_str         = [NSString stringWithFormat:@"手机：暂无"];
+    
+    [SVProgressHUD dismiss];
+    [self.navigationController showViewController:detailVC sender:nil];
 }
 
 - (void)didReceiveMemoryWarning {

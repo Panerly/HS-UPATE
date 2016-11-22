@@ -37,7 +37,4 @@
     
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
-
-
-
 @end

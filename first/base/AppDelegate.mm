@@ -11,6 +11,7 @@
 #import "LoginViewController.h"
 #import "SingleViewController.h"
 #import <BaiduMapAPI_Map/BMKMapComponent.h>
+#import "MLTransition.h"
 
 //ShareSDK头文件
 #import <ShareSDK/ShareSDK.h>
@@ -46,6 +47,7 @@ BMKMapManager* _mapManager;
 @interface AppDelegate ()
 {
     NSUserDefaults *defaults;
+    LoginViewController *loginVC;
 }
 @end
 
@@ -54,6 +56,9 @@ BMKMapManager* _mapManager;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    //c侧滑返回
+    [MLTransition validatePanBackWithMLTransitionGestureRecognizerType:(MLTransitionGestureRecognizerTypePan)];
     
     defaults = [NSUserDefaults standardUserDefaults];
     
@@ -83,7 +88,6 @@ BMKMapManager* _mapManager;
     }];
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
-    
     // 要使用百度地图，请先启动BaiduMapManager
     _mapManager = [[BMKMapManager alloc]init];
     // 如果要关注网络及授权验证事件，请设定     generalDelegate参数
@@ -93,7 +97,7 @@ BMKMapManager* _mapManager;
     }
     
     
-    LoginViewController *loginVC = [[LoginViewController alloc] init];
+    loginVC = [[LoginViewController alloc] init];
     self.window.rootViewController = loginVC;
     [self.window makeKeyAndVisible];
     
@@ -110,8 +114,6 @@ BMKMapManager* _mapManager;
     return YES;
 }
 
-
-
 /**
  *  添加通知
  */
@@ -122,19 +124,19 @@ BMKMapManager* _mapManager;
         UILocalNotification *notification=[[UILocalNotification alloc] init];
         if (notification!=nil) {
             NSDate *now = [NSDate date];
-            //从现在开始，10秒以后通知
-            notification.fireDate=[now dateByAddingTimeInterval:0];
+            //从现在开始，0秒以后通知
+            notification.fireDate=[now dateByAddingTimeInterval:5];
             //使用本地时区
             notification.timeZone=[NSTimeZone defaultTimeZone];
-            notification.alertBody=[NSString stringWithFormat:@"小表待抄%ld小区", (long)alertNum];
+            notification.alertBody=[NSString stringWithFormat:@"小表待抄  %ld  小区", (long)alertNum];
             //通知提示音 使用默认的
             notification.soundName= UILocalNotificationDefaultSoundName;
             notification.alertAction=NSLocalizedString(@"滑动屏幕进行抄收", nil);
             //这个通知到时间时，你的应用程序右上角显示的数字。
-            notification.applicationIconBadgeNumber = 1;
+            notification.applicationIconBadgeNumber = alertNum;
             //add key  给这个通知增加key 便于半路取消。nfkey这个key是我自己随便起的。
             // 假如你的通知不会在还没到时间的时候手动取消 那下面的两行代码你可以不用写了。
-            NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:0],@"nfkey",nil];
+            NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:(int)alertNum],@"nfkey",nil];
             [notification setUserInfo:dict];
             //启动这个通知
             [[UIApplication sharedApplication] scheduleLocalNotification:notification];
@@ -157,8 +159,26 @@ BMKMapManager* _mapManager;
 
 - (void)showMeteringVC {
     
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    
     [[[LoginViewController alloc] init] showDetailViewController:[[SingleViewController alloc] init] sender:nil];
+    HSTabBarController *tabBarCtrl = [[HSTabBarController alloc] init];
+    
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"passWord"] && [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"]) {
+        
+        [loginVC presentViewController:tabBarCtrl animated:YES completion:^{
+            [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+            tabBarCtrl.modalPresentationStyle = UIModalPresentationPageSheet;
+        }];
+    } else {
+        GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"提示" message:@"请输入账户、密码" buttonTitle:@"确定" buttonTouchedAction:^{
+            
+        } dismissAction:^{
+            
+        }];
+        [alertView show];
+    }
+    
+
 }
 
 - (void)initializePlat
@@ -238,7 +258,7 @@ BMKMapManager* _mapManager;
 
 #pragma mark -获取推送消息
 - (void)getPushMessage {
-    NSString *pushUrl = [NSString stringWithFormat:@"http://192.168.3.175:8080/Meter_Reading/Meter_areaServlet"];
+    NSString *pushUrl = [NSString stringWithFormat:@"%@/Meter_Reading/Meter_areaServlet",litMeterApi];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -248,7 +268,7 @@ BMKMapManager* _mapManager;
     
     manager.requestSerializer.timeoutInterval = 8;
     
-    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/plain"];
+    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
     
     __weak typeof(self) weakSelf = self;
     
@@ -268,7 +288,7 @@ BMKMapManager* _mapManager;
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+        NSLog(@"%@",error);
     }];
     [task resume];
 }

@@ -11,7 +11,8 @@
 
 @interface SingleViewController ()
 <
-AVCaptureMetadataOutputObjectsDelegate
+AVCaptureMetadataOutputObjectsDelegate,
+UITextFieldDelegate
 >
 {
     UIImagePickerController *_imagePickerController;
@@ -19,6 +20,8 @@ AVCaptureMetadataOutputObjectsDelegate
     NSInteger num;
 
     UIImageView *loading;
+    
+    NSString *time;
 }
 
 
@@ -34,7 +37,8 @@ static BOOL flag;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = _isBigMeter?@"大表抄收页":@"小表抄收也";
+    self.title = _isBigMeter?@"大表抄收页":@"小表抄收页";
+    
     flag = YES;
     
     [self _getCode];
@@ -51,6 +55,11 @@ static BOOL flag;
         [self getInfo:self.meter_id_string];
         
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    _thisPeriodValue.delegate = self;
 }
 
 /**
@@ -208,11 +217,16 @@ static BOOL flag;
     
     [AnimationView showInView:self.view];
     
-    NSString *uploadUrl = [NSString stringWithFormat:@"http://192.168.3.175:8080/Meter_Reading/Reading_nowServlet"];
+    NSString *uploadUrl = [NSString stringWithFormat:@"http://192.168.3.175:8080/Meter_Reading/Reading_nowServlet1"];
+    
+    AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
+    [securityPolicy setAllowInvalidCertificates:YES];
 
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    
+    [manager setSecurityPolicy:securityPolicy];
     
     NSData *data = UIImageJPEGRepresentation(_firstImage.image, .1f);
     NSData *data2 = UIImageJPEGRepresentation(_secondImage.image, .1f);
@@ -247,15 +261,13 @@ static BOOL flag;
                 }];
             }else {//通过水表逆流监测 开始上传
                 NSString *dataRE = @"nil";
-                if ([_meteringSituation.text isEqualToString:@""]) {
-                    _meteringSituation.text = @"正常";
-                }
+                
                 NSDictionary *parameters = @{
                                              @"meter_id"      : _meter_id.text,
                                              @"collect_dt"    : currentTime,
                                              @"collect_num"   : _thisPeriodValue.text,
                                              @"collect_avg"   : [NSString stringWithFormat:@"%ld",[_thisPeriodValue.text integerValue] - [_previousReading.text integerValue]],
-                                             @"collect_status": _meteringSituation.text,
+                                             @"collect_status": _meteringSituation.text?_meteringSituation.text:@"正常",
                                              @"bs"            : @"1",
                                              @"msg"           : arr?arr:dataRE
                                              };
@@ -288,6 +300,22 @@ static BOOL flag;
                     } else {
                         [SCToastView showInView:self.view text:@"数据库打开失败" duration:.5 autoHide:YES];
                     }
+                    if ([db open]) {
+                        BOOL result = [db executeUpdate:@"create table if not exists meter_complete (id integer PRIMARY KEY AUTOINCREMENT,user_name text not null,install_addr text not null, meter_id text null, collect_area text null,Collect_img_name1 text null, Collect_img_name2 text null, Collect_img_name3 text null, x decimal(18, 5) null, y decimal(18, 5) null, remark nvarchar(100) null, install_time datetime null, collect_num text not null, user_id text null, collect_time text null, metering_status text null, collect_avg text null);"];
+                        
+                        if (result) {
+                            NSLog(@"创建抄收完成表成功");
+                        } else {
+                            NSLog(@"创建抄收完成表失败！");
+                            [SCToastView showInView:self.view text:@"创建抄收完成表失败" duration:.5 autoHide:YES];
+                        }
+                    }
+                    NSData *imageData = UIImageJPEGRepresentation(_firstImage.image, .4);
+                    NSData *imageData2 = UIImageJPEGRepresentation(_secondImage.image, 1);
+                    NSData *imageData3 = UIImageJPEGRepresentation(_thirdImage.image, 1);
+                    
+                    [db executeUpdate:@"insert into meter_complete (user_name, install_addr, collect_num, meter_id, remark, Collect_img_name1, Collect_img_name2, Collect_img_name3, user_id, collect_area, collect_time, metering_status, collect_avg) values (?,?,?,?,?,?,?,?,?,?,?,?,?);",_user_name.text, _install_addr.text, _thisPeriodValue.text,_meter_id.text, _meteringExplain.text, imageData, imageData2, imageData3, _meter_id_string,_collect_area, time, _meteringSituation.text?_meteringSituation.text:@"正常", [NSString stringWithFormat:@"%ld",[_thisPeriodValue.text integerValue] - [_previousReading.text integerValue]]];
+                    
                     //成功后退出
                     [self.navigationController popViewControllerAnimated:YES];
                     
@@ -303,7 +331,7 @@ static BOOL flag;
     }else{
         [AnimationView dismiss];
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"预设增幅警报值不能为0，\n进入设置修改预设增幅警报值" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"未设置增幅警报" message:@"预设增幅警报值不能为0，\n进入设置修改预设增幅警报值" preferredStyle:UIAlertControllerStyleAlert];
         [alertVC addAction:action];
         [self presentViewController:alertVC animated:YES completion:^{
             
@@ -313,6 +341,21 @@ static BOOL flag;
 
 //保存到本地数据库
 - (IBAction)saveToLocal:(id)sender {
+    
+    //获取系统当前时间
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+    NSString *timeForNow = [formatter stringFromDate:[NSDate date]];
+    time = timeForNow;
+    
+    if (_thisPeriodValue.text == nil) {
+        GUAAlertView *alert = [GUAAlertView alertViewWithTitle:@"提示" message:@"本期抄表值不能为空！" buttonTitle:@"确定" buttonTouchedAction:^{
+            
+        } dismissAction:^{
+            
+        }];
+        [alert show];
+    }
     if ([_thisPeriodValue.text intValue] < [_previousReading.text intValue]) {
         if ([_thisPeriodValue.text intValue] < [_previousReading.text intValue]) {
             
@@ -323,62 +366,183 @@ static BOOL flag;
                 
             }];
         }
-        
-        
     } else {
-        if (!_x || !_y) {
-            UIAlertAction *conformBtn = [UIAlertAction actionWithTitle:@"定位" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [self locaBtn];
-            }];
-            UIAlertAction *cancelBtn = [UIAlertAction actionWithTitle:@"不使用" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        int increase = [_thisPeriodValue.text intValue] - [_previousReading.text intValue];
+        int increaseAlarm = _isBigMeter?[[[NSUserDefaults standardUserDefaults] objectForKey:@"bigMeterAlarmValue"] intValue]:[[[NSUserDefaults standardUserDefaults] objectForKey:@"litMeterAlarmValue"] intValue];
+        
+        if (increaseAlarm>0) {//判断是否有预设值
+            if (increase > increaseAlarm) {//如果增幅大于增幅警报值
+                [AnimationView dismiss];
+                UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    
+                }];
+                UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"忽略" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    if (!_x || !_y) {//无坐标信息
+                        UIAlertAction *conformBtn = [UIAlertAction actionWithTitle:@"定位" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            [self locaBtn];
+                        }];
+                        UIAlertAction *cancelBtn = [UIAlertAction actionWithTitle:@"不使用" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                            NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+                            NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+                            FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+                            if ([db open]) {
+                                
+                                BOOL result = [db executeUpdate:@"create table if not exists meter_complete (id integer PRIMARY KEY AUTOINCREMENT,user_name text not null,install_addr text not null, meter_id text null, collect_area text null,Collect_img_name1 text null, Collect_img_name2 text null, Collect_img_name3 text null, x decimal(18, 5) null, y decimal(18, 5) null, remark nvarchar(100) null, install_time datetime null, collect_num text not null, user_id text null, collect_time text null, metering_status text null, collect_avg text null);"];
+                                
+                                if (result) {
+                                    NSLog(@"创建抄收完成表成功");
+                                } else {
+                                    NSLog(@"创建抄收完成表失败！");
+                                    [SCToastView showInView:self.view text:@"创建抄收完成表失败" duration:.5 autoHide:YES];
+                                }
+                            }
+                            NSData *imageData = UIImageJPEGRepresentation(_firstImage.image, .4);
+                            NSData *imageData2 = UIImageJPEGRepresentation(_secondImage.image, 1);
+                            NSData *imageData3 = UIImageJPEGRepresentation(_thirdImage.image, 1);
+                            
+                            [db executeUpdate:@"insert into meter_complete (user_name, install_addr, collect_num, meter_id, remark, Collect_img_name1, Collect_img_name2, Collect_img_name3, user_id, collect_area, collect_time, metering_status, collect_avg) values (?,?,?,?,?,?,?,?,?,?,?,?,?);",_user_name.text, _install_addr.text, _thisPeriodValue.text,_meter_id.text, _meteringExplain.text, imageData, imageData2, imageData3, _meter_id_string,_collect_area, time, _meteringSituation.text?_meteringSituation.text:@"正常", [NSString stringWithFormat:@"%ld",[_thisPeriodValue.text integerValue] - [_previousReading.text integerValue]]];
+                            
+                            if ([db open]) {
+                                [db executeUpdate:[NSString stringWithFormat:@"delete from litMeter_info where install_addr = '%@'",_meter_id_string]];
+                                [db close];
+                            } else {
+                                [SCToastView showInView:self.view text:@"数据库打开失败" duration:.5 autoHide:YES];
+                            }
+                            
+                            [SCToastView showInView:self.view text:@"保存成功" duration:.5 autoHide:YES];
+                            [self.navigationController popViewControllerAnimated:YES];
+                            
+                        }];
+                        UIAlertController *alertVC2 = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定不使用当前地理坐标?" preferredStyle:UIAlertControllerStyleAlert];
+                        [alertVC2 addAction:cancelBtn];
+                        [alertVC2 addAction:conformBtn];
+                        [self presentViewController:alertVC2 animated:YES completion:^{
+                            
+                        }];
+                    }else{//有坐标信息
+                        NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+                        NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+                        FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+                        if ([db open]) {
+                            BOOL result = [db executeUpdate:@"create table if not exists meter_complete (id integer PRIMARY KEY AUTOINCREMENT,user_name text not null,install_addr text not null, meter_id text null, collect_area text null,Collect_img_name1 text null, Collect_img_name2 text null, Collect_img_name3 text null, x decimal(18, 5) null, y decimal(18, 5) null, remark nvarchar(100) null, install_time datetime null, collect_num text not null, user_id text null, collect_time text null, metering_status text null, collect_avg text null);"];
+                            
+                            if (result) {
+                                NSLog(@"创建抄收完成表成功");
+                            } else {
+                                NSLog(@"创建抄收完成表失败！");
+                                [SCToastView showInView:self.view text:@"创建抄收完成表失败" duration:.5 autoHide:YES];
+                            }
+                        }
+                        NSData *imageData = UIImageJPEGRepresentation(_firstImage.image, .4);
+                        NSData *imageData2 = UIImageJPEGRepresentation(_secondImage.image, 1);
+                        NSData *imageData3 = UIImageJPEGRepresentation(_thirdImage.image, 1);
+                        
+                        [db executeUpdate:@"insert into meter_complete (user_name, install_addr, collect_num, meter_id, remark, Collect_img_name1, Collect_img_name2, Collect_img_name3, user_id, collect_area, collect_time, metering_status, collect_avg) values (?,?,?,?,?,?,?,?,?,?,?,?,?);",_user_name.text, _install_addr.text, _thisPeriodValue.text,_meter_id.text, _meteringExplain.text, imageData, imageData2, imageData3, _meter_id_string,_collect_area, time, _meteringSituation.text?_meteringSituation.text:@"正常", [NSString stringWithFormat:@"%ld",[_thisPeriodValue.text integerValue] - [_previousReading.text integerValue]]];
+                        
+                        if ([db open]) {
+                            [db executeUpdate:[NSString stringWithFormat:@"delete from litMeter_info where install_addr = '%@'",_meter_id_string]];
+                            [db close];
+                        } else {
+                            [SCToastView showInView:self.view text:@"数据库打开失败" duration:.5 autoHide:YES];
+                        }
+                        
+                        [SCToastView showInView:self.view text:@"保存成功" duration:.5 autoHide:YES];
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+                }];
+                UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"本期抄表增幅值大于警报增幅值！\n请核实后重新填入，或进入设置修改预设增幅警报值" preferredStyle:UIAlertControllerStyleAlert];
+                [alertVC addAction:action];
+                [alertVC addAction:confirm];
+                [self presentViewController:alertVC animated:YES completion:^{
+                }];
+            }else{//通过增幅监测
                 
-            }];
-            UIAlertController *alertVC2 = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定不使用当前地理坐标?" preferredStyle:UIAlertControllerStyleAlert];
-            [alertVC2 addAction:cancelBtn];
-            [alertVC2 addAction:conformBtn];
-            [self presentViewController:alertVC2 animated:YES completion:^{
-                
-            }];
-        }
-        
-        NSLog(@"保存照片");
-        
-        NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-        
-        NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
-        
-        FMDatabase *db = [FMDatabase databaseWithPath:fileName];
-        
-        if ([db open]) {
-            
-            BOOL result = [db executeUpdate:@"create table if not exists meter_complete (id integer PRIMARY KEY AUTOINCREMENT,user_name text not null,install_addr text not null, meter_id text null, collect_area text null,Collect_img_name1 text null, Collect_img_name2 nvarchar(50) null, Collect_img_name3 nvarchar(50) null, x decimal(18, 5) null, y decimal(18, 5) null, remark nvarchar(100) null, install_time datetime null, collect_num numeric(18, 2) not null, user_id text null);"];
-            
-            if (result) {
-                NSLog(@"创建抄收完成表成功");
-            } else {
-                NSLog(@"创建抄收完成表失败！");
-                [SCToastView showInView:self.view text:@"创建抄收完成表失败" duration:.5 autoHide:YES];
+                if (!_x || !_y) {//如果有地理坐标
+                    UIAlertAction *conformBtn = [UIAlertAction actionWithTitle:@"定位" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [self locaBtn];
+                    }];
+                    UIAlertAction *cancelBtn = [UIAlertAction actionWithTitle:@"不使用" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                        NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+                        NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+                        FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+                        if ([db open]) {
+                            
+                            BOOL result = [db executeUpdate:@"create table if not exists meter_complete (id integer PRIMARY KEY AUTOINCREMENT,user_name text not null,install_addr text not null, meter_id text null, collect_area text null,Collect_img_name1 text null, Collect_img_name2 text null, Collect_img_name3 text null, x decimal(18, 5) null, y decimal(18, 5) null, remark nvarchar(100) null, install_time datetime null, collect_num text not null, user_id text null, collect_time text null ,metering_status text null, collect_avg text null);"];
+                            
+                            if (result) {
+                                NSLog(@"创建抄收完成表成功");
+                            } else {
+                                NSLog(@"创建抄收完成表失败！");
+                                [SCToastView showInView:self.view text:@"创建抄收完成表失败" duration:.5 autoHide:YES];
+                            }
+                        }
+                        NSData *imageData = UIImageJPEGRepresentation(_firstImage.image, .4);
+                        NSData *imageData2 = UIImageJPEGRepresentation(_secondImage.image, 1);
+                        NSData *imageData3 = UIImageJPEGRepresentation(_thirdImage.image, 1);
+                        
+                        [db executeUpdate:@"insert into meter_complete (user_name, install_addr, collect_num, meter_id, remark, Collect_img_name1, Collect_img_name2, Collect_img_name3, user_id, collect_area, collect_time, metering_status, collect_avg) values (?,?,?,?,?,?,?,?,?,?,?,?,?);",_user_name.text, _install_addr.text, _thisPeriodValue.text,_meter_id.text, _meteringExplain.text, imageData, imageData2, imageData3, _meter_id_string,_collect_area, time, _meteringSituation.text?_meteringSituation.text:@"正常", [NSString stringWithFormat:@"%ld",[_thisPeriodValue.text integerValue] - [_previousReading.text integerValue]]];
+                        
+                        if ([db open]) {
+                            
+                            [db executeUpdate:[NSString stringWithFormat:@"delete from litMeter_info where install_addr = '%@'",_meter_id_string]];
+                            
+                            [db close];
+                        } else {
+                            [SCToastView showInView:self.view text:@"数据库打开失败" duration:.5 autoHide:YES];
+                        }
+                        [SCToastView showInView:self.view text:@"保存成功" duration:.5 autoHide:YES];
+                        [self.navigationController popViewControllerAnimated:YES];
+                        
+                    }];
+                    UIAlertController *alertVC2 = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定不使用当前地理坐标?" preferredStyle:UIAlertControllerStyleAlert];
+                    [alertVC2 addAction:cancelBtn];
+                    [alertVC2 addAction:conformBtn];
+                    [self presentViewController:alertVC2 animated:YES completion:^{
+                        
+                    }];
+                }else{//没有坐标信息
+                    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+                    NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+                    FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+                    if ([db open]) {
+                        
+                        BOOL result = [db executeUpdate:@"create table if not exists meter_complete (id integer PRIMARY KEY AUTOINCREMENT,user_name text not null,install_addr text not null, meter_id text null, collect_area text null,Collect_img_name1 text null, Collect_img_name2 text null, Collect_img_name3 text null, x decimal(18, 5) null, y decimal(18, 5) null, remark nvarchar(100) null, install_time datetime null, collect_num text not null, user_id text null, collect_time text null, metering_status text null, collect_avg text null);"];
+                        
+                        if (result) {
+                            NSLog(@"创建抄收完成表成功");
+                        } else {
+                            NSLog(@"创建抄收完成表失败！");
+                            [SCToastView showInView:self.view text:@"创建抄收完成表失败" duration:.5 autoHide:YES];
+                        }
+                    }
+                    NSData *imageData = UIImageJPEGRepresentation(_firstImage.image, .4);
+                    NSData *imageData2 = UIImageJPEGRepresentation(_secondImage.image, 1);
+                    NSData *imageData3 = UIImageJPEGRepresentation(_thirdImage.image, 1);
+                    
+                    [db executeUpdate:@"insert into meter_complete (user_name, install_addr, collect_num, meter_id, remark, Collect_img_name1, Collect_img_name2, Collect_img_name3, user_id, collect_area, collect_time, metering_status, collect_avg) values (?,?,?,?,?,?,?,?,?,?,?,?,?);",_user_name.text, _install_addr.text, _thisPeriodValue.text,_meter_id.text, _meteringExplain.text, imageData, imageData2, imageData3, _meter_id_string,_collect_area, time, _meteringSituation.text?_meteringSituation.text:@"正常", [NSString stringWithFormat:@"%d",[_thisPeriodValue.text intValue] - [_previousReading.text intValue]]];
+                    
+                    if ([db open]) {
+                        
+                        [db executeUpdate:[NSString stringWithFormat:@"delete from litMeter_info where install_addr = '%@'",_meter_id_string]];
+                        
+                        [db close];
+                    } else {
+                        [SCToastView showInView:self.view text:@"数据库打开失败" duration:.5 autoHide:YES];
+                    }
+                    
+                    [SCToastView showInView:self.view text:@"保存成功" duration:.5 autoHide:YES];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
             }
+        }else{
+            GUAAlertView *alert = [GUAAlertView alertViewWithTitle:@"增幅警报不能为空！" message:@"请到设置页面设置增幅警报！" buttonTitle:@"确定" buttonTouchedAction:^{
+                
+            } dismissAction:^{
+                
+            }];
+            [alert show];
         }
-        NSData *imageData = UIImageJPEGRepresentation(_firstImage.image, .4);
-        NSData *imageData2 = UIImageJPEGRepresentation(_secondImage.image, 1);
-        NSData *imageData3 = UIImageJPEGRepresentation(_thirdImage.image, 1);
-        
-        [db executeUpdate:@"insert into meter_complete (user_name, install_addr, meter_id, collect_num, remark, Collect_img_name1, Collect_img_name2, Collect_img_name3, user_id, collect_area) values (?,?,?,?,?,?,?,?,?,?);",_user_name.text, _install_addr.text, _thisPeriodValue.text,_meter_id.text, _meteringExplain.text, imageData, imageData2, imageData3, _meter_id_string,_collect_area];
-        
-        if ([db open]) {
-            
-            [db executeUpdate:[NSString stringWithFormat:@"delete from litMeter_info where install_addr = '%@'",_meter_id_string]];
-            
-            [db close];
-        } else {
-            [SCToastView showInView:self.view text:@"数据库打开失败" duration:.5 autoHide:YES];
-        }
-        
-        [SCToastView showInView:self.view text:@"保存成功" duration:.5 autoHide:YES];
-        [self.navigationController popViewControllerAnimated:YES];
     }
-    
 }
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
@@ -423,5 +587,73 @@ static BOOL flag;
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+- (IBAction)meterStatuesBtn:(UIButton *)sender {
+    [FTPopOverMenu showForSender:sender
+                        withMenu:@[@"正常",@"水表破损",@"水表倒装",@"人工估表",@"水表停走",@"周检换表",@"用水异常"]
+                  imageNameArray:@[@"icon_normal",@"icon_demage",@"icon_reversal",@"icon_compute",@"icon_meter_stop",@"icon_changemeter",@"icon_abnormal"]
+                       doneBlock:^(NSInteger selectedIndex) {
+                           switch (selectedIndex) {
+                               case 0:
+                                   _meteringSituation.text = @"正常";
+                                   _meteringSituation.textColor = [UIColor greenColor];
+                                   break;
+                               case 1:
+                                   _meteringSituation.text = @"水表破损";
+                                   _meteringSituation.textColor = [UIColor redColor];
+                                   break;
+                               case 2:
+                                   _meteringSituation.text = @"水表倒装";
+                                   _meteringSituation.textColor = [UIColor redColor];
+                                   break;
+                               case 3:
+                                   _meteringSituation.text = @"人工估表";
+                                   _meteringSituation.textColor = [UIColor redColor];
+                                   break;
+                               case 4:
+                                   _meteringSituation.text = @"水表停走";
+                                   _meteringSituation.textColor = [UIColor redColor];
+                                   break;
+                               case 5:
+                                   _meteringSituation.text = @"周检换表";
+                                   _meteringSituation.textColor = [UIColor redColor];
+                                   break;
+                               case 6:
+                                   _meteringSituation.text = @"用水异常";
+                                   _meteringSituation.textColor = [UIColor redColor];
+                                   break;
+                                   
+                               default:
+                                   _meteringSituation.text = @"正常";
+                                   _meteringSituation.textColor = [UIColor greenColor];
+                                   break;
+                           }
+                           
+                       } dismissBlock:^{
+                           
+                           NSLog(@"user canceled. do nothing.");
+                           
+                       }];
 
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    return [self validateNumber:string];
+}
+- (BOOL)validateNumber:(NSString*)number {
+    BOOL res = YES;
+    NSCharacterSet* tmpSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
+    int i = 0;
+    while (i < number.length) {
+        NSString * string = [number substringWithRange:NSMakeRange(i, 1)];
+        NSRange range = [string rangeOfCharacterFromSet:tmpSet];
+        if (range.length == 0) {
+            res = NO;
+            break;
+        }
+        i++;
+    }
+    return res;
+}
 @end

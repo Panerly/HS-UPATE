@@ -97,7 +97,7 @@
     TLCityHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"TLCityHeaderView"];
     NSString *title = [_arraySection objectAtIndex:section + 1];
     [headerView setTitle:title];
-    headerView.contentView.backgroundColor = [UIColor clearColor];
+    headerView.contentView.backgroundColor = COLORRGB(57, 118, 170);
     return headerView;
 }
 

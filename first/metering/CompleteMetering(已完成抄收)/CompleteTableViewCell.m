@@ -26,6 +26,9 @@
     if (self.completeModel.user_id) {
         self.user_id.text = [NSString stringWithFormat:@"%@",self.completeModel.user_id];
     }
+    if (self.completeModel.collect_time) {
+        self.collect_time.text = [NSString stringWithFormat:@"抄表时间：%@",self.completeModel.collect_time];
+    }
     if (self.completeModel.image) {
         self.compImage.image = self.completeModel.image;
     }

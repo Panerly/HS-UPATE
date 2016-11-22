@@ -7,7 +7,6 @@
 //
 
 #import "LitMeterDetailViewController.h"
-//#import "XSChart.h"
 #import "LitMeterDetailDataModel.h"
 #import "WYLineChartView.h"
 #import "WYLineChartPoint.h"
@@ -131,7 +130,7 @@ WYLineChartViewDatasource
     self.meter_condition.text = [NSString stringWithFormat:@"表况：无法获取"];
     self.previous_reading.text =[NSString stringWithFormat:@"上期读数：无法获取"];
     self.current_reading.text = [NSString stringWithFormat:@"本期读数：无法获取"];
-    self.usage.text = [NSString stringWithFormat:@"用量：无法获取"];
+    self.usage.text = [NSString stringWithFormat:@"本期用量：无法获取"];
     self.remark.text = [NSString stringWithFormat:@"备注：无法获取"];
     self.user_addr.text = @"地址：无";
 }
@@ -159,7 +158,7 @@ WYLineChartViewDatasource
     AFHTTPResponseSerializer *serializer = manager.responseSerializer;
     manager.requestSerializer.timeoutInterval = 60;
     serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    NSString *litMeterDetailURL = [NSString stringWithFormat:@"http://192.168.3.175:8080/Small_Meter_Reading/HisSmall_DataServlet"];
+    NSString *litMeterDetailURL = [NSString stringWithFormat:@"%@/Small_Meter_Reading/HisSmall_DataServlet",litMeterApi];
     
     NSDictionary *parameters = @{
                                  @"user_id" : meterID
@@ -186,11 +185,11 @@ WYLineChartViewDatasource
             NSMutableArray *arr = [NSMutableArray array];
             if (dataArr.count != 0) {
                 
-                for (int i = 5 ; i>=0; i--) {
+                for (int i = (int)dataArr.count-1 ; i>=0; i--) {
                     [arr addObject:dataArr[i]];
                 }
                 [dataArr removeAllObjects];
-                for (int i = 0 ; i<=5; i++) {
+                for (int i = 0 ; i<=arr.count-1; i++) {
                     [dataArr addObject:arr[i]];
                 }
             }

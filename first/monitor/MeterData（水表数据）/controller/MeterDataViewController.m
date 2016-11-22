@@ -290,7 +290,7 @@ UITextFieldDelegate
         
         [SVProgressHUD showWithStatus:@"查询中"];
         
-        NSString *url = [NSString stringWithFormat:@"http://192.168.3.175:8080/Small_Meter_Reading/HisDateSelectServlet"];
+        NSString *url = [NSString stringWithFormat:@"%@/Small_Meter_Reading/HisDateSelectServlet",litMeterApi];
         
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
         
@@ -390,5 +390,41 @@ UITextFieldDelegate
     // 显示
     [picker show];
 
+}
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField;
+{
+    if (textField.returnKeyType == UIReturnKeyDone) {
+        //用户结束输入
+        [textField resignFirstResponder];
+        if (_isBigMeter) {
+            
+            [self _requestData:_fromDate.text :_toDate.text :_callerLabel.text];
+        } else {
+            
+            [self requestLitMeterData:_fromDate.text :_toDate.text :_callerLabel.text];
+        }
+    }
+    
+    return YES;
+}
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    return [self validateNumber:string];
+}
+- (BOOL)validateNumber:(NSString*)number {
+    BOOL res = YES;
+    NSCharacterSet* tmpSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
+    int i = 0;
+    while (i < number.length) {
+        NSString * string = [number substringWithRange:NSMakeRange(i, 1)];
+        NSRange range = [string rangeOfCharacterFromSet:tmpSet];
+        if (range.length == 0) {
+            res = NO;
+            break;
+        }
+        i++;
+    }
+    return res;
 }
 @end

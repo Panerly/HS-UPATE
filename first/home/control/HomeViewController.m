@@ -30,7 +30,7 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    [self setNavColor];
+    [self setNavColor];//设置导航栏颜色
     //适配3.5寸
     if (PanScreenHeight == 480) {
         
@@ -57,23 +57,28 @@
  *  设置导航栏的颜色，返回按钮和标题为白色
  */
 -(void)setNavColor{
-    NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
-    if ([[ver objectAtIndex:0] intValue] >= 7) {
-        // iOS 7.0 or later
-        [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorFromHexString:@"12baaa"]];
-        
-        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-        
-        
-        self.navigationController.navigationBar.translucent = YES;
-        
-        
-    }else {
-        // iOS 6.1 or earlier
-        self.navigationController.navigationBar.tintColor =[UIColor colorFromHexString:@"12baaa"];
-        
-    }
+//    NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
+//    if ([[ver objectAtIndex:0] intValue] >= 7) {
+//        // iOS 7.0 or later
+//        [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorFromHexString:@"12baaa"]];
+//        
+//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+//        
+//        
+//        self.navigationController.navigationBar.translucent = YES;
+//        
+//        
+//    }else {
+//        // iOS 6.1 or earlier
+//        self.navigationController.navigationBar.tintColor =[UIColor colorFromHexString:@"12baaa"];
+//        
+//    }
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleDefault;
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    self.navigationController.navigationBar.barTintColor = COLORRGB(226, 107, 16);
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    
 }
 
 #pragma mark - setScrollView & setUI
@@ -303,10 +308,10 @@
         int litMeterCountNum = 0;
         int bigMeterCountNum = 0;
         while ([restultSet next]) {
-            if ([[restultSet stringForColumn:@"collector_area"] isEqualToString:@"01"]) {
+            if (![[restultSet stringForColumn:@"collector_area"] isEqualToString:@"00"]) {
                 litMeterCountNum++;
             }
-            if ([[restultSet stringForColumn:@"collector_area"] isEqualToString:@"02"]) {
+            if ([[restultSet stringForColumn:@"collector_area"] isEqualToString:@"00"]) {
                 bigMeterCountNum++;
             }
         }
@@ -468,29 +473,40 @@
                 NSDictionary *responseDic = [responseObject objectForKey:@"HeWeather data service 3.0"];
                 
                 for (NSDictionary *arr in responseDic) {
-                    weakSelf.windDriection.text     = [NSString stringWithFormat:@"风向:  %@",[[[arr objectForKey:@"now"] objectForKey:@"wind"] objectForKey:@"dir"]];
-                    weakSelf.temLabel.text          = [NSString stringWithFormat:@"气温:  %@℃   体感温度:  %@℃",[[arr objectForKey:@"now"] objectForKey:@"tmp"],[[arr objectForKey:@"now"] objectForKey:@"fl"]];
-                    weakSelf.time.text              = [NSString stringWithFormat:@"更新时间:  %@",[[[arr objectForKey:@"basic"] objectForKey:@"update"] objectForKey:@"loc"]];
-                    weakSelf.windForceScale.text    = [NSString stringWithFormat:@"风力:  %@级",[[[arr objectForKey:@"now"] objectForKey:@"wind"] objectForKey:@"sc"]];
-                    //今天
-                    weakSelf.day1Label.text   = [NSString stringWithFormat:@"%@",[[[arr objectForKey:@"now"] objectForKey:@"cond"] objectForKey:@"txt"]];
-                    //明天
-                    weakSelf.day2Label.text  = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:1] objectForKey:@"cond"] objectForKey:@"txt_d"]];
-                    //后天
-                    weakSelf.day3Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:2] objectForKey:@"cond"] objectForKey:@"txt_d"]];
-                    weakSelf.day4Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:3] objectForKey:@"cond"] objectForKey:@"txt_d"]];
-                    weakSelf.day5Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:4] objectForKey:@"cond"] objectForKey:@"txt_d"]];
-                    weakSelf.day6Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:5] objectForKey:@"cond"] objectForKey:@"txt_d"]];
-                    weakSelf.day7Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:6] objectForKey:@"cond"] objectForKey:@"txt_d"]];
-                    weakSelf.weather.text           = [NSString stringWithFormat:@"天气:  %@",self.day1Label.text];
-                    
-                    weakSelf.time1Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"basic"] objectForKey:@"update"] objectForKey:@"loc"]] substringWithRange:NSMakeRange(5, 6)];
-                    weakSelf.time2Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:1] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
-                    weakSelf.time3Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:2] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
-                    weakSelf.time4Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:3] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
-                    weakSelf.time5Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:4] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
-                    weakSelf.time6Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:5] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
-                    weakSelf.time7Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:6] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                    if ([[arr objectForKey:@"status"] isEqualToString:@"unknown city"]) {
+//                        GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"查询失败" message:@"查询不到当前城市天气信息" buttonTitle:@"确定" buttonTouchedAction:^{
+//                            
+//                        } dismissAction:^{
+//                            
+//                        }];
+//                        [alertView show];
+                        [self weatherLoadfailed];
+                    } else {
+                        
+                        weakSelf.windDriection.text     = [NSString stringWithFormat:@"风向:  %@",[[[arr objectForKey:@"now"] objectForKey:@"wind"] objectForKey:@"dir"]];
+                        weakSelf.temLabel.text          = [NSString stringWithFormat:@"气温:  %@℃   体感温度:  %@℃",[[arr objectForKey:@"now"] objectForKey:@"tmp"],[[arr objectForKey:@"now"] objectForKey:@"fl"]];
+                        weakSelf.time.text              = [NSString stringWithFormat:@"更新时间:  %@",[[[arr objectForKey:@"basic"] objectForKey:@"update"] objectForKey:@"loc"]];
+                        weakSelf.windForceScale.text    = [NSString stringWithFormat:@"风力:  %@级",[[[arr objectForKey:@"now"] objectForKey:@"wind"] objectForKey:@"sc"]];
+                        //今天
+                        weakSelf.day1Label.text   = [NSString stringWithFormat:@"%@",[[[arr objectForKey:@"now"] objectForKey:@"cond"] objectForKey:@"txt"]];
+                        //明天
+                        weakSelf.day2Label.text  = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:1] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                        //后天
+                        weakSelf.day3Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:2] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                        weakSelf.day4Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:3] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                        weakSelf.day5Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:4] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                        weakSelf.day6Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:5] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                        weakSelf.day7Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:6] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                        weakSelf.weather.text     = [NSString stringWithFormat:@"天气:  %@",self.day1Label.text];
+                        
+                        weakSelf.time1Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"basic"] objectForKey:@"update"] objectForKey:@"loc"]] substringWithRange:NSMakeRange(5, 6)];
+                        weakSelf.time2Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:1] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                        weakSelf.time3Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:2] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                        weakSelf.time4Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:3] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                        weakSelf.time5Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:4] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                        weakSelf.time6Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:5] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                        weakSelf.time7Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:6] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
+                    }
                 }
                 
                 
@@ -570,12 +586,12 @@
 
 - (void)weatherLoadfailed {
     [SVProgressHUD showErrorWithStatus:@"天气加载失败"];
-    self.weather.text = [NSString stringWithFormat:@"天气:  加载失败^_^!"];
-    self.temLabel.text = [NSString stringWithFormat:@"气温:  加载失败^_^!"];
-    self.windDriection.text = [NSString stringWithFormat:@"风向:  加载失败^_^!"];
-    self.windForceScale.text = [NSString stringWithFormat:@"风力:  加载失败^_^!"];
-    self.time.text = [NSString stringWithFormat:@"日期:  加载失败^_^!"];
-    NSString *loadFail = @"failed！";
+    self.weather.text = [NSString stringWithFormat:@"天气:  N/A"];
+    self.temLabel.text = [NSString stringWithFormat:@"气温:  N/A"];
+    self.windDriection.text = [NSString stringWithFormat:@"风向:  N/A"];
+    self.windForceScale.text = [NSString stringWithFormat:@"风力:  N/A"];
+    self.time.text = [NSString stringWithFormat:@"日期:  N/A"];
+    NSString *loadFail = @"N/A";
     self.day1Label.text = loadFail;
     self.day2Label.text = loadFail;
     self.day3Label.text = loadFail;
@@ -723,7 +739,7 @@ static int timesOut = 0;
     
     NSMutableArray *values = [NSMutableArray array];
     
-    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1.0)]];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(.5, .5, 1.0)]];
     [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)]];
     [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(.9, .9, 1.0)]];
     [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.1, 1.1, 1.0)]];

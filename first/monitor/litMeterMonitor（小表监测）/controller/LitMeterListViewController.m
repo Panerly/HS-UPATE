@@ -128,9 +128,9 @@ UISearchResultsUpdating
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
     AFHTTPResponseSerializer *serializer = manager.responseSerializer;
-    manager.requestSerializer.timeoutInterval = 60;
+    manager.requestSerializer.timeoutInterval = 30;
     serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    NSString *communityURL = [NSString stringWithFormat:@"http://192.168.3.175:8080/Small_Meter_Reading/Small_NumberServlet"];
+    NSString *communityURL = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_NumberServlet",litMeterApi];
     __weak typeof(self) weekSelf = self;
     
     task = [manager POST:communityURL parameters:NULL progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -191,7 +191,7 @@ UISearchResultsUpdating
     AFHTTPResponseSerializer *serializer = manager.responseSerializer;
     manager.requestSerializer.timeoutInterval = 60;
     serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    NSString *communityURL = [NSString stringWithFormat:@"http://192.168.3.175:8080/Small_Meter_Reading/NotNormalServlet"];
+    NSString *communityURL = [NSString stringWithFormat:@"%@/Small_Meter_Reading/NotNormalServlet",litMeterApi];
     __weak typeof(self) weekSelf = self;
     
     task = [manager POST:communityURL parameters:NULL progress:^(NSProgress * _Nonnull uploadProgress) {

@@ -25,16 +25,19 @@
 #import "SCToastView.h"
 #import "GUAAlertView.h"
 #import "LLSwitch.h"
+#import "FTPopOverMenu.h"
 
 #define weatherAPIkey @"87aa67335bd8e0739a06cfccc6edecb5"
 
 #define weatherAPI @"http://apis.baidu.com/heweather/weather/free"
-//#define hisWeatherAPI @"http://apis.baidu.com/apistore/weatherservice/recentweathers"
 //杭水简介
 #define introduction @"http://www.hzsberp.com:9999/hzsb"
-//http://chenshenlu.jios.org:8888
-//#import "Masonry.h"
 
+//小表数据平台
+#define litMeterApi @"http://120.199.12.110:6060"
+
+//抄表数据上传接口
+#define uploadApi @"http://192.168.3.175:8080/Meter_Reading/Reading_nowServlet1";
 
 
 #endif /* PrefixHeader_pch */
@@ -66,5 +69,7 @@
 
 #import "UIColor+WHE.h"
 #import "UINavigationBar+Awesome.h"
+
+#import "GCD.h"
 
 #endif

@@ -11,7 +11,12 @@
 #import "CompleteModel.h"
 
 @interface CompleteViewController ()<UITableViewDelegate, UITableViewDataSource>
-
+{
+    BOOL _isBigMeter;
+    UIImage *_firstImage;
+    UIImage *_secondImage;
+    UIImage *_thirdImage;
+}
 @property (nonatomic, strong) FMDatabase *db;
 @property(nonatomic, strong) UIButton *selectAllBtn;//全选按钮
 //@property (nonatomic, strong) UIView *coverView;
@@ -73,34 +78,35 @@
 }
 
 - (void)uploadDB {
-    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
-    NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
-    
-    FMDatabase *db = [FMDatabase databaseWithPath:fileName];
-    [db open];
-    NSLog(@"需要上传的：%@",self.uploadArr);
-    
-    for (int i = 0; i < self.uploadArr.count; i++) {
-        [db executeUpdate:[NSString stringWithFormat:@"delete from meter_complete where user_id = '%@'",((CompleteModel *)self.uploadArr[i]).user_id]];
-        
-    }
-    
-    
-    FMResultSet *restultSet = [db executeQuery:@"SELECT * FROM meter_complete order by user_id"];
-    [self.dataArr removeAllObjects];
-    while ([restultSet next]) {
-        NSString *meter_id = [restultSet stringForColumn:@"meter_id"];
-        NSString *user_id = [restultSet stringForColumn:@"user_id"];
-        
-        CompleteModel *completeModel = [[CompleteModel alloc] init];
-        completeModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
-        completeModel.user_id =[NSString stringWithFormat:@"%@",user_id];
-        [self.dataArr addObject:completeModel];
-    }
-    [db close];
-    
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-    [SCToastView showInView:self.tableView text:@"上传成功" duration:.5 autoHide:YES];
+//    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
+//    NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+//    
+//    FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+//    [db open];
+//    NSLog(@"需要上传的：%@",self.uploadArr);
+//    
+//    for (int i = 0; i < self.uploadArr.count; i++) {
+//        [db executeUpdate:[NSString stringWithFormat:@"delete from meter_complete where user_id = '%@'",((CompleteModel *)self.uploadArr[i]).user_id]];
+//        
+//    }
+//    
+//    
+//    FMResultSet *restultSet = [db executeQuery:@"SELECT * FROM meter_complete order by user_id"];
+//    [self.dataArr removeAllObjects];
+//    while ([restultSet next]) {
+//        NSString *meter_id = [restultSet stringForColumn:@"meter_id"];
+//        NSString *user_id = [restultSet stringForColumn:@"user_id"];
+//        
+//        CompleteModel *completeModel = [[CompleteModel alloc] init];
+//        completeModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
+//        completeModel.user_id =[NSString stringWithFormat:@"%@",user_id];
+//        [self.dataArr addObject:completeModel];
+//    }
+//    [db close];
+//    
+//    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+//    [SCToastView showInView:self.tableView text:@"上传成功" duration:.5 autoHide:YES];
+    [self uploadData:nil];
 }
 //选择按钮点击响应事件
 - (void)selectedBtn:(UIButton *)button {
@@ -128,11 +134,14 @@
 //全选
 - (void)selectAllBtnClick:(UIButton *)button {
 //    _uploadBtn.backgroundColor = [UIColor redColor];
-    for (int i = 0; i < self.dataArr.count; i ++) {
+    if (!self.uploadArr) {
+        self.uploadArr = [NSMutableArray arrayWithCapacity:self.dataArr.count];
+    }
+    for (int i = 0; i < self.dataArr.count; i++) {
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
-        [self.uploadArr addObjectsFromArray:self.dataArr];
+        [self.uploadArr addObject:self.dataArr[i]];
     }
     [self refreshBtnState];
     NSLog(@"self.deleteArr:%@  %@", self.uploadArr,self.dataArr);
@@ -164,6 +173,7 @@
 - (void)setSegmentedCtrl {
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"小表完成",@"大表完成"]];
     [segmentedControl setSelectedSegmentIndex:0];
+    _isBigMeter = NO;
     [segmentedControl addTarget:self action:@selector(segmentedCtrlAction:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:segmentedControl];
     [segmentedControl mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -177,10 +187,12 @@
     switch (sender.selectedSegmentIndex) {
         case 0:
             [self updateDB];
+            _isBigMeter = NO;
             [self.uploadArr removeAllObjects];
             break;
         case 1:
             [self updateBigMeterDB];
+            _isBigMeter = YES;
             [self.uploadArr removeAllObjects];
             break;
         default:
@@ -207,16 +219,45 @@
     [_dataArr removeAllObjects];
     
     while ([resultSet next]) {
+        
         NSString *meter_id = [resultSet stringForColumn:@"meter_id"];
         NSString *user_id = [resultSet stringForColumn:@"user_id"];
-        NSLog(@"meter_id = %@ user_id = %ld",meter_id,(long)user_id);
-        NSData *imageData =[resultSet dataForColumn:@"Collect_img_name1"];
-
+        NSString *collect_time = [resultSet stringForColumn:@"collect_time"];
+        NSString *remark = [resultSet stringForColumn:@"remark"];
+        NSString *collecTime = [resultSet stringForColumn:@"collect_time"];
+        NSString *collect_num = [resultSet stringForColumn:@"collect_num"];
+        NSString *user_name = [resultSet stringForColumn:@"user_name"];
+        NSString *collect_area = [resultSet stringForColumn:@"collect_area"];
+        NSString *install_addr = [resultSet stringForColumn:@"install_addr"];
+        NSString *collect_avg = [resultSet stringForColumn:@"collect_avg"];
+        NSString *metering_status = [resultSet stringForColumn:@"metering_status"];
+        NSString *x = [resultSet stringForColumn:@"x"];
+        NSString *y = [resultSet stringForColumn:@"y"];
+        
+        NSData *first_image = [resultSet dataForColumn:@"Collect_img_name1"];
+        NSData *second_image = [resultSet dataForColumn:@"Collect_img_name2"];
+        NSData *third_image = [resultSet dataForColumn:@"Collect_img_name3"];
+        
         CompleteModel *completeModel = [[CompleteModel alloc] init];
         completeModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
         completeModel.user_id =[NSString stringWithFormat:@"%@",user_id];
-        completeModel.image = [UIImage imageWithData:imageData];
-        [_dataArr addObject:completeModel];
+        completeModel.collect_time = collecTime;
+        completeModel.remark = remark;
+        completeModel.collect_num = collect_num;
+        completeModel.user_name = user_name;
+        completeModel.collect_area = collect_area;
+        completeModel.install_addr = install_addr;
+        completeModel.collect_avg = collect_avg;
+        completeModel.metering_status = metering_status;
+        completeModel.x = x;
+        completeModel.y = y;
+        completeModel.collect_time = [NSString stringWithFormat:@"%@",collect_time];
+        completeModel.image = [UIImage imageWithData:first_image];
+        completeModel.second_img = [UIImage imageWithData:second_image];
+        completeModel.third_img = [UIImage imageWithData:third_image];
+        
+        [self.dataArr addObject:completeModel];
+
     }
     [self.db close];
     [_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
@@ -231,15 +272,53 @@
     [_dataArr removeAllObjects];
     
     while ([resultSet next]) {
+//        NSString *meter_id = [resultSet stringForColumn:@"meter_id"];
+//        NSString *user_id = [resultSet stringForColumn:@"user_id"];
+//        NSString *collect_time = [resultSet stringForColumn:@"collect_time"];
+//        NSLog(@"meter_id = %@ user_id = %ld",meter_id,(long)user_id);
+//        NSData *imageData = [resultSet dataForColumn:@"Collect_img_name1"];
+//        
+//        CompleteModel *completeModel = [[CompleteModel alloc] init];
+//        completeModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
+//        completeModel.user_id =[NSString stringWithFormat:@"%@",user_id];
+//        completeModel.collect_time = [NSString stringWithFormat:@"%@",collect_time];
+//        completeModel.image = [UIImage imageWithData:imageData];
+//        [_dataArr addObject:completeModel];
         NSString *meter_id = [resultSet stringForColumn:@"meter_id"];
         NSString *user_id = [resultSet stringForColumn:@"user_id"];
-        NSLog(@"meter_id = %@ user_id = %ld",meter_id,(long)user_id);
-        NSData *imageData =[resultSet dataForColumn:@"Collect_img_name1"];
+        NSString *collect_time = [resultSet stringForColumn:@"collect_time"];
+        NSString *remark = [resultSet stringForColumn:@"remark"];
+        NSString *collecTime = [resultSet stringForColumn:@"collect_time"];
+        NSString *collect_num = [resultSet stringForColumn:@"collect_num"];
+        NSString *user_name = [resultSet stringForColumn:@"user_name"];
+        NSString *collect_area = [resultSet stringForColumn:@"collect_area"];
+        NSString *install_addr = [resultSet stringForColumn:@"install_addr"];
+        NSString *collect_avg = [resultSet stringForColumn:@"collect_avg"];
+        NSString *metering_status = [resultSet stringForColumn:@"metering_status"];
+        NSString *x = [resultSet stringForColumn:@"x"];
+        NSString *y = [resultSet stringForColumn:@"y"];
+        
+        NSData *first_image = [resultSet dataForColumn:@"Collect_img_name1"];
+        NSData *second_image = [resultSet dataForColumn:@"Collect_img_name2"];
+        NSData *third_image = [resultSet dataForColumn:@"Collect_img_name3"];
         
         CompleteModel *completeModel = [[CompleteModel alloc] init];
         completeModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
         completeModel.user_id =[NSString stringWithFormat:@"%@",user_id];
-        completeModel.image = [UIImage imageWithData:imageData];
+        completeModel.collect_time = collecTime;
+        completeModel.remark = remark;
+        completeModel.collect_num = collect_num;
+        completeModel.user_name = user_name;
+        completeModel.collect_area = collect_area;
+        completeModel.install_addr = install_addr;
+        completeModel.collect_avg = collect_avg;
+        completeModel.metering_status = metering_status;
+        completeModel.x = x;
+        completeModel.y = y;
+        completeModel.collect_time = [NSString stringWithFormat:@"%@",collect_time];
+        completeModel.image = [UIImage imageWithData:first_image];
+        completeModel.second_img = [UIImage imageWithData:second_image];
+        completeModel.third_img = [UIImage imageWithData:third_image];
         [_dataArr addObject:completeModel];
     }
     [self.db close];
@@ -262,6 +341,8 @@
     _tableView.dataSource = self;
     _tableView.backgroundColor = COLORRGB(227, 230, 255);
     [_tableView registerNib:[UINib nibWithNibName:@"CompleteTableViewCell" bundle:nil] forCellReuseIdentifier:@"completeID"];
+    //去掉自带分割线
+    [_tableView setSeparatorStyle:(UITableViewCellSeparatorStyleNone)];
     [self.view addSubview:_tableView];
 }
 
@@ -307,7 +388,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 65;
+    return 110;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -342,6 +423,134 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)uploadData:(id)sender {
+    
+    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
+    NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+    [db open];
+    NSLog(@"需要上传的：%@",self.uploadArr);
+    
+    [AnimationView showInView:self.view];
+    
+    NSString *uploadUrl = [NSString stringWithFormat:@"http://192.168.3.175:8080/Meter_Reading/Reading_nowServlet1"];
+    
+    AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
+    [securityPolicy setAllowInvalidCertificates:YES];
+    
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    
+    [manager setSecurityPolicy:securityPolicy];
+    
+//    NSMutableArray *img_arr = [NSMutableArray array];
+//    NSMutableArray *img_arr2 = [NSMutableArray array];
+//    NSMutableArray *collect_time_arr = [NSMutableArray arrayWithCapacity:_uploadArr.count];
+//    NSMutableArray *collect_num_arr = [NSMutableArray arrayWithCapacity:_uploadArr.count];
+//    NSMutableArray *collect_avg_arr = [NSMutableArray arrayWithCapacity:_uploadArr.count];
+//    NSMutableArray *meter_id_arr = [NSMutableArray arrayWithCapacity:_uploadArr.count];
+//    NSMutableArray *collect_status_arr = [NSMutableArray arrayWithCapacity:_uploadArr.count];
+    NSMutableArray *install_addr_arr = [NSMutableArray arrayWithCapacity:_uploadArr.count];
+    
+    NSMutableDictionary *paraDic = [NSMutableDictionary dictionaryWithCapacity:_uploadArr.count];
+    NSMutableArray *paraArr = [NSMutableArray arrayWithCapacity:_uploadArr.count];
+    
+    NSMutableDictionary *paraDicAll = [NSMutableDictionary dictionaryWithCapacity:_uploadArr.count];
+
+    for (int i = 0; i < _uploadArr.count; i++) {
+        NSData *data = UIImageJPEGRepresentation(((CompleteModel *)_uploadArr[i]).image, .1f);
+        NSData *data2 = UIImageJPEGRepresentation(((CompleteModel *)_uploadArr[i]).second_img, .1f);
+        
+        [install_addr_arr addObject:((CompleteModel *)_uploadArr[i]).install_addr];
+        
+        [paraDic setObject:((CompleteModel *)_uploadArr[i]).meter_id forKey:@"meter_id"];
+        [paraDic setObject:((CompleteModel *)_uploadArr[i]).collect_time forKey:@"collect_dt"];
+        [paraDic setObject:((CompleteModel *)_uploadArr[i]).collect_num forKey:@"collect_num"];
+        [paraDic setObject:((CompleteModel *)_uploadArr[i]).collect_avg forKey:@"collect_avg"];
+        [paraDic setObject:((CompleteModel *)_uploadArr[i]).metering_status forKey:@"collect_status"];
+        [paraDic setObject:@"1" forKey:@"bs"];
+        [paraDic setObject:data?data:@"nil" forKey:@"msg"];
+        [paraDic setObject:data2?data2:@"nil" forKey:@"msg2"];
+        
+        [paraDicAll setObject:paraDic forKey:@"meter_bs"];
+        [paraArr addObject:paraDicAll];
+    }
+    
+//    NSDictionary *para = [NSDictionary dictionary];
+//    NSArray *arr = @[img_arr?img_arr:@"nil",img_arr2?img_arr2:@"nil"];
+//    
+//    NSDictionary *parameters = @{
+//                                 @"meter_id"      : meter_id_arr,
+//                                 @"collect_dt"    : collect_time_arr,
+//                                 @"collect_num"   : collect_num_arr,
+//                                 @"collect_avg"   : collect_avg_arr,
+//                                 @"collect_status": collect_status_arr,
+//                                 @"bs"            : @"1",
+//                                 @"msg"           : arr
+//                                 };
+//    para = parameters;
+    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
+    
+    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    NSURLSessionTask *task =[manager POST:uploadUrl parameters:paraArr progress:^(NSProgress * _Nonnull uploadProgress) {
+        NSLog(@"--------%@",uploadProgress);
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        [AnimationView dismiss];
+        
+        NSLog(@"上传成功：%@",responseObject);
+        
+        NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+        
+        NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+        
+        FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+        
+        if ([db open]) {
+            for (int i = 0; i < _uploadArr.count; i++) {
+                
+                [db executeUpdate:[NSString stringWithFormat:@"delete from meter_complete where install_addr = '%@'",install_addr_arr[i]]];
+            }
+            
+            [db close];
+        } else {
+            [SCToastView showInView:self.view text:@"数据库打开失败" duration:.5 autoHide:YES];
+        }
+        FMResultSet *restultSet = [db executeQuery:@"SELECT * FROM meter_complete order by user_id"];
+        [self.dataArr removeAllObjects];
+        while ([restultSet next]) {
+            NSString *meter_id = [restultSet stringForColumn:@"meter_id"];
+            NSString *user_id = [restultSet stringForColumn:@"user_id"];
+            NSData *first_image = [restultSet dataForColumn:@"Collect_img_name1"];
+            NSData *second_image = [restultSet dataForColumn:@"Collect_img_name2"];
+            NSData *third_image = [restultSet dataForColumn:@"Collect_img_name3"];
+        
+            CompleteModel *completeModel = [[CompleteModel alloc] init];
+            completeModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
+            completeModel.user_id =[NSString stringWithFormat:@"%@",user_id];
+            completeModel.image = [UIImage imageWithData:first_image];
+            completeModel.second_img = [UIImage imageWithData:second_image];
+            completeModel.third_img = [UIImage imageWithData:third_image];
+            [self.dataArr addObject:completeModel];
+        }
+        [db close];
+        
+        [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+        [SCToastView showInView:weakSelf.tableView text:@"上传成功" duration:.5 autoHide:YES];
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"上传失败：%@",error);
+        [AnimationView dismiss];
+        [SCToastView showInView:self.view text:[NSString stringWithFormat:@"上传失败！\n原因:%@",error] duration:5 autoHide:YES];
+    }];
+    [task resume];
 }
 
 

@@ -164,8 +164,18 @@
         
         [self.inputView show];
         
-        self.inputView.textFiled1.text = [defaults objectForKey:@"bigMeterAlarmValue"]?[defaults objectForKey:@"bigMeterAlarmValue"]:@"请输入";
-        self.inputView.textFiled2.text = [defaults objectForKey:@"litMeterAlarmValue"]?[defaults objectForKey:@"litMeterAlarmValue"]:@"请输入";
+//        self.inputView.textFiled1.placeholder = [defaults objectForKey:@"bigMeterAlarmValue"]?[defaults objectForKey:@"bigMeterAlarmValue"]:@"请输入";
+//        self.inputView.textFiled2.placeholder = [defaults objectForKey:@"litMeterAlarmValue"]?[defaults objectForKey:@"litMeterAlarmValue"]:@"请输入";
+        
+        self.inputView.textFiled1.placeholder = @"请输入";
+        self.inputView.textFiled2.placeholder = @"请输入";
+        
+        if ([defaults objectForKey:@"bigMeterAlarmValue"]) {
+            self.inputView.textFiled1.text = [defaults objectForKey:@"bigMeterAlarmValue"];
+        }
+        if ([defaults objectForKey:@"litMeterAlarmValue"]) {
+            self.inputView.textFiled2.text = [defaults objectForKey:@"litMeterAlarmValue"];
+        }
         
         __weak typeof(self) weakSelf = self;
         __weak typeof(defaults) weakDefaults = defaults;
@@ -222,7 +232,6 @@
 {
     NSString *bornDate;
     if (!datePicker) {
-    
         datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, PanScreenHeight-100-49, PanScreenWidth, 100)];
         datePicker.datePickerMode = UIDatePickerModeDate;
         datePicker.backgroundColor = [UIColor lightGrayColor];

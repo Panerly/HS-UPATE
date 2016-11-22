@@ -273,20 +273,21 @@
                 //用户名或密码错误
                 if ([[responseObject objectForKey:@"type"] isEqualToString:@"0"]) {
                     
-                    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"用户名或密码错误！" preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                        
-                    }];
-                    
-                    [alertVC addAction:action];
-                    [self presentViewController:alertVC animated:YES completion:^{
-                        
-                    }];
-                    
-                    [logInButton ErrorRevertAnimationCompletion:^{
-                        
-                    }];
+//                    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"用户名或密码错误！" preferredStyle:UIAlertControllerStyleAlert];
+//                    
+//                    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//                        
+//                    }];
+//                    
+//                    [alertVC addAction:action];
+//                    [self presentViewController:alertVC animated:YES completion:^{
+//                        
+//                    }];
+//                    
+//                    [logInButton ErrorRevertAnimationCompletion:^{
+//                        
+//                    }];
+                    [self logLitMeter];
                     
                 //数据库配置错误
                 }else if ([[responseObject objectForKey:@"type"] isEqualToString:@"404"]) {
@@ -330,18 +331,19 @@
                     
                     [defaults synchronize];
                     
-                    //成功进入
-                    [logInButton ExitAnimationCompletion:^{
-                        
-                        HSTabBarController *tabBarCtrl = [[HSTabBarController alloc] init];
-                        
-                        tabBarCtrl.transitioningDelegate = self;
-                        
-                        [weakSelf presentViewController:tabBarCtrl animated:YES completion:^{
-                            tabBarCtrl.modalPresentationStyle = UIModalPresentationPageSheet;
-                        }];
-                    
-                    }];
+//                    //成功进入
+//                    [logInButton ExitAnimationCompletion:^{
+//                        
+//                        HSTabBarController *tabBarCtrl = [[HSTabBarController alloc] init];
+//                        
+//                        tabBarCtrl.transitioningDelegate = self;
+//                        
+//                        [weakSelf presentViewController:tabBarCtrl animated:YES completion:^{
+//                            tabBarCtrl.modalPresentationStyle = UIModalPresentationPageSheet;
+//                        }];
+//                    
+//                    }];
+                    [self logLitMeter];
                     
                 }
         
@@ -351,6 +353,14 @@
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             
         }];
+        if (error.code == -1004) {
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"未能连接到服务器!" preferredStyle:UIAlertControllerStyleAlert];
+            
+            [alertVC addAction:action];
+            [self presentViewController:alertVC animated:YES completion:^{
+                
+            }];
+        }
         if (error.code == -1001) {
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录超时!" preferredStyle:UIAlertControllerStyleAlert];
             
@@ -386,8 +396,111 @@
     }
 }
 
+#pragma mark - login litmeter 大表登录检测后登录小表
+- (void)logLitMeter {
+    //登录API 需传入的参数：用户名、密码、数据库名、IP地址
+    NSString *logInUrl = [NSString stringWithFormat:@"%@/Meter_Reading/S_Login_InfoServlet",litMeterApi];
+    
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    manager.requestSerializer.timeoutInterval= 10;
+    
+    NSDictionary *parameters = @{@"name":self.userName.text,
+                                 @"pwd":self.passWord.text,
+                                 };
+    
+    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
+    
+    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    NSURLSessionTask *task =[manager POST:logInUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
+        if ([responseObject objectForKey:@"type"]) {
+            
+            if ([[responseObject objectForKey:@"type"] isEqualToString:@"0"]) {
+                UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"用户名或密码错误！" preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    
+                }];
+                
+                [alertVC addAction:action];
+                [self presentViewController:alertVC animated:YES completion:^{
+                    
+                }];
+                
+                [logInButton ErrorRevertAnimationCompletion:^{
+                    
+                }];
+            }
+            else {//小表登录成功
+                //保存用户名和密码
+                
+                [defaults setObject:weakSelf.userName.text forKey:@"userName"];
+                
+                [defaults setObject:weakSelf.passWord.text forKey:@"passWord"];
+                
+                [defaults setObject:[responseObject objectForKey:@"find_purview"] forKey:@"find_purview"];
+                
+                [defaults synchronize];
+                
+                //成功进入
+                [logInButton ExitAnimationCompletion:^{
+                    
+                    HSTabBarController *tabBarCtrl = [[HSTabBarController alloc] init];
+                    
+                    tabBarCtrl.transitioningDelegate = self;
+                    
+                    [weakSelf presentViewController:tabBarCtrl animated:YES completion:^{
+                        tabBarCtrl.modalPresentationStyle = UIModalPresentationPageSheet;
+                    }];
+                    
+                }];
+            }
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        if (error.code == -1004) {
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"未能连接到服务器!" preferredStyle:UIAlertControllerStyleAlert];
+            
+            [alertVC addAction:action];
+            [self presentViewController:alertVC animated:YES completion:^{
+                
+            }];
+        }
+        if (error.code == -1001) {
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录超时!" preferredStyle:UIAlertControllerStyleAlert];
+            
+            [alertVC addAction:action];
+            [self presentViewController:alertVC animated:YES completion:^{
+                
+            }];
+        }else {
+            
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"服务器连接失败!" preferredStyle:UIAlertControllerStyleAlert];
+            
+            [alertVC addAction:action];
+            [self presentViewController:alertVC animated:YES completion:^{
+                
+            }];
+        }
+        
+        [logInButton ErrorRevertAnimationCompletion:^{
+            
+        }];
+    }];
+    [task resume];
+}
 
+//touch返回原态
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     _flag = 1;
@@ -403,7 +516,7 @@
         [_userName resignFirstResponder];
     }];
 }
-
+//视图出现前准备好密码、布局还原
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

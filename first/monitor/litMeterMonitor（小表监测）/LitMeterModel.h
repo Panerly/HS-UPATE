@@ -23,14 +23,14 @@
 // *  用户id
 // */
 //@property (nonatomic, strong) NSString *user_id;
-///**
-// *  经度
-// */
-//@property (nonatomic, strong) NSString *x;
-///**
-// *  纬度
-// */
-//@property (nonatomic, strong) NSString *y;
+/**
+ *  经度
+ */
+@property (nonatomic, strong) NSString *x;
+/**
+ *  纬度
+ */
+@property (nonatomic, strong) NSString *y;
 
 /**
  *  每个小区里面的户数

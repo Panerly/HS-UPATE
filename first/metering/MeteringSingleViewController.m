@@ -37,6 +37,9 @@ UISearchBarDelegate
 
     self.title = @"任务详情";
     
+    self.navigationController.navigationBar.translucent = YES;
+    
+    
     [self _createTableView];
     [self getDataFromDB];
     isDone = NO;

@@ -15,11 +15,14 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *meter_id;
 
+@property (weak, nonatomic) IBOutlet UILabel *collect_time;
+
+
 @property (weak, nonatomic) IBOutlet UIImageView *compImage;
 
 @property (nonatomic, strong) CompleteModel *completeModel;
 
-- (IBAction)upload:(id)sender;
+//- (IBAction)upload:(id)sender;
 
 @property (nonatomic, strong) NSString *click;
 

@@ -21,4 +21,6 @@ BMKLocationServiceDelegate
 
 @property (nonatomic, strong) UITableView *tableView;
 
+@property (nonatomic, strong) NSMutableArray *houseHoldArray;//存用户地址
+
 @end

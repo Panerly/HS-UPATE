@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,6 +22,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MyE-Cy-th1">
+                                <rect key="frame" x="137.5" y="70" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="a5y-fX-gGq">
                                         <variation key="widthClass=compact" constant="100"/>
@@ -27,7 +31,7 @@
                                         <variation key="widthClass=compact" constant="100"/>
                                     </constraint>
                                 </constraints>
-                                <state key="normal" title="头像" image="u=693362385,3280695814&amp;fm=23&amp;gp=0.jpg"/>
+                                <state key="normal" title="头像" image="icon_thumb_img"/>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="a5y-fX-gGq"/>
@@ -45,6 +49,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_edit@2x" translatesAutoresizingMaskIntoConstraints="NO" id="R9A-7R-N3a">
+                                <rect key="frame" x="172.5" y="147" width="30" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="AMX-qY-hLR">
                                         <variation key="widthClass=compact" constant="20"/>
@@ -67,6 +72,7 @@
                                 </variation>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="杭州水表有限公司" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjk-ru-Y3g">
+                                <rect key="frame" x="26" y="193" width="323" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="NAc-Kk-SaX"/>
                                     <constraint firstAttribute="width" constant="60" id="cQp-EO-mqC"/>
@@ -88,6 +94,7 @@
                                 </variation>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="X6s-TL-n13">
+                                <rect key="frame" x="16" y="238" width="343" height="127"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="W8L-ad-foP">
@@ -99,7 +106,7 @@
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aB7-NZ-zN6" id="Bmh-Gy-2Ge">
-                                            <frame key="frameInset" width="343" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -153,16 +160,16 @@
                             <mask key="constraints">
                                 <exclude reference="XE6-ih-7WZ"/>
                                 <exclude reference="ZCa-eW-Jdr"/>
-                                <exclude reference="IMs-1s-MGX"/>
-                                <exclude reference="Xyr-1l-xUO"/>
-                                <exclude reference="bUR-NR-wl7"/>
-                                <exclude reference="ncy-su-ZRF"/>
                                 <exclude reference="jca-yb-CDN"/>
                                 <exclude reference="osI-lk-UVV"/>
                                 <exclude reference="y5w-ez-W3Z"/>
                                 <exclude reference="AHW-em-Htr"/>
                                 <exclude reference="Ivt-u1-hUn"/>
                                 <exclude reference="p5g-eW-PuS"/>
+                                <exclude reference="IMs-1s-MGX"/>
+                                <exclude reference="Xyr-1l-xUO"/>
+                                <exclude reference="bUR-NR-wl7"/>
+                                <exclude reference="ncy-su-ZRF"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -175,16 +182,16 @@
                             <mask key="constraints">
                                 <include reference="XE6-ih-7WZ"/>
                                 <include reference="ZCa-eW-Jdr"/>
-                                <include reference="IMs-1s-MGX"/>
-                                <include reference="Xyr-1l-xUO"/>
-                                <include reference="bUR-NR-wl7"/>
-                                <include reference="ncy-su-ZRF"/>
                                 <exclude reference="jca-yb-CDN"/>
                                 <include reference="osI-lk-UVV"/>
                                 <include reference="y5w-ez-W3Z"/>
                                 <include reference="AHW-em-Htr"/>
                                 <include reference="Ivt-u1-hUn"/>
                                 <include reference="p5g-eW-PuS"/>
+                                <include reference="IMs-1s-MGX"/>
+                                <include reference="Xyr-1l-xUO"/>
+                                <include reference="bUR-NR-wl7"/>
+                                <include reference="ncy-su-ZRF"/>
                             </mask>
                         </variation>
                     </view>
@@ -201,6 +208,6 @@
     </scenes>
     <resources>
         <image name="icon_edit@2x" width="303" height="300"/>
-        <image name="u=693362385,3280695814&amp;fm=23&amp;gp=0.jpg" width="303" height="300"/>
+        <image name="icon_thumb_img" width="128" height="115"/>
     </resources>
 </document>

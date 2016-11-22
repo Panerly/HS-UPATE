@@ -32,6 +32,8 @@ UISearchBarDelegate
 
 @property (nonatomic, strong) UITableView *tableView;
 
+@property(nonatomic,assign,getter=isTableViewLoadData)BOOL tableViewLoadData;
+
 @end
 
 @implementation LitMeterDetailListViewController
@@ -52,6 +54,7 @@ UISearchBarDelegate
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     [SVProgressHUD dismiss];
     if (self.searchController.active) {
         self.searchController.active = NO;
@@ -114,6 +117,17 @@ UISearchBarDelegate
     self.tableView.tableHeaderView = self.searchController.searchBar;
     [self.searchController.searchBar sizeToFit];
     
+    [GCDQueue executeInMainQueue:^{
+        // Load data.
+        NSMutableArray *indexPaths = [NSMutableArray array];
+        for (int i = 0; i < self.dataArr.count; i++) {
+            
+            [indexPaths addObject:[NSIndexPath indexPathForItem:i inSection:0]];
+        }
+        self.tableViewLoadData = YES;
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+    } afterDelaySecs:0.25f];
+    
     [self.view addSubview:_tableView];
 }
 
@@ -127,7 +141,7 @@ UISearchBarDelegate
     AFHTTPResponseSerializer *serializer = manager.responseSerializer;
     manager.requestSerializer.timeoutInterval = 60;
     serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    NSString *communityURL = [NSString stringWithFormat:@"http://192.168.3.175:8080/Small_Meter_Reading/Small_New_DataServlet"];
+    NSString *communityURL = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_New_DataServlet",litMeterApi];
     __weak typeof(self) weekSelf = self;
 
     NSDictionary *parameters = @{
@@ -209,11 +223,11 @@ UISearchBarDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if ([_isNormal isEqualToString:@"异常"]) {
         
-        return (!self.searchController.active)?self.abnormalDataArr.count : self.searchResults.count;
+        return self.isTableViewLoadData ? ((!self.searchController.active)?self.abnormalDataArr.count : self.searchResults.count):0;
         
     }else {
         
-        return (!self.searchController.active)?self.dataArr.count : self.searchResults.count;
+        return self.isTableViewLoadData ? ((!self.searchController.active)?self.dataArr.count : self.searchResults.count):0;
     }
     return 0;
 }
@@ -253,7 +267,7 @@ UISearchBarDelegate
         detailVC.meter_condition_str   = [NSString stringWithFormat:@"表况：%@",(!self.searchController.active)?((LitMeterDetailModel *)_abnormalDataArr[indexPath.row]).collect_Status:((LitMeterDetailModel *)_searchResults[indexPath.row]).collect_Status];
         detailVC.previous_reading_str  = [NSString stringWithFormat:@"上期读数：%@",(!self.searchController.active)?((LitMeterDetailModel *)_abnormalDataArr[indexPath.row]).up_collect_num:((LitMeterDetailModel *)_searchResults[indexPath.row]).up_collect_num];
         detailVC.current_reading_str   = [NSString stringWithFormat:@"本期读数：%@",(!self.searchController.active)?((LitMeterDetailModel *)_abnormalDataArr[indexPath.row]).collect_num:((LitMeterDetailModel *)_searchResults[indexPath.row]).collect_num];
-        detailVC.usage_str             = [NSString stringWithFormat:@"用量：%@",(!self.searchController.active)?((LitMeterDetailModel *)_abnormalDataArr[indexPath.row]).collect_yl:((LitMeterDetailModel *)_searchResults[indexPath.row]).collect_yl];
+        detailVC.usage_str             = [NSString stringWithFormat:@"本期用量：%@ 吨",(!self.searchController.active)?((LitMeterDetailModel *)_abnormalDataArr[indexPath.row]).collect_yl:((LitMeterDetailModel *)_searchResults[indexPath.row]).collect_yl];
 
     }else {
         detailVC.meter_ID              = [self _clearLineBreak:((LitMeterDetailModel *)_dataArr[indexPath.row]).user_Id];
@@ -264,7 +278,7 @@ UISearchBarDelegate
         detailVC.meter_condition_str   = [NSString stringWithFormat:@"表况：%@",(!self.searchController.active)?((LitMeterDetailModel *)_dataArr[indexPath.row]).collect_Status:((LitMeterDetailModel *)_searchResults[indexPath.row]).collect_Status];
         detailVC.previous_reading_str  = [NSString stringWithFormat:@"上期读数：%@",(!self.searchController.active)?((LitMeterDetailModel *)_dataArr[indexPath.row]).up_collect_num:((LitMeterDetailModel *)_searchResults[indexPath.row]).up_collect_num];
         detailVC.current_reading_str   = [NSString stringWithFormat:@"本期读数：%@",(!self.searchController.active)?((LitMeterDetailModel *)_dataArr[indexPath.row]).collect_num:((LitMeterDetailModel *)_searchResults[indexPath.row]).collect_num];
-        detailVC.usage_str             = [NSString stringWithFormat:@"用量：%@",(!self.searchController.active)?((LitMeterDetailModel *)_dataArr[indexPath.row]).collect_yl:((LitMeterDetailModel *)_searchResults[indexPath.row]).collect_yl];
+        detailVC.usage_str             = [NSString stringWithFormat:@"本期用量：%@ 吨",(!self.searchController.active)?((LitMeterDetailModel *)_dataArr[indexPath.row]).collect_yl:((LitMeterDetailModel *)_searchResults[indexPath.row]).collect_yl];
         
     }
     detailVC.remark_str            = [NSString stringWithFormat:@"备注：暂无"];

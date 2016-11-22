@@ -41,36 +41,46 @@ UIWebViewDelegate
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     [self setNavColor];
+    
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
     
     isBigMeter = YES;
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {
+        
+        [self setSegmentedCtl];
+        
+        [self addGesture];
+    }
     
-    [self setSegmentedCtl];
     
-    [self addGesture];
 }
 
 /**
  *  设置导航栏的颜色，返回按钮和标题为白色
  */
 -(void)setNavColor{
-    NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
-    if ([[ver objectAtIndex:0] intValue] >= 7) {
-        // iOS 7.0 or later
-        [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorFromHexString:@"12baaa"]];
-        
-        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-        
-        self.navigationController.navigationBar.translucent = YES;
-        
-        
-    }else {
-        // iOS 6.1 or earlier
-        self.navigationController.navigationBar.tintColor =[UIColor colorFromHexString:@"12baaa"];
-        
-    }
+//    NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
+//    if ([[ver objectAtIndex:0] intValue] >= 7) {
+//        // iOS 7.0 or later
+//        [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorFromHexString:@"12baaa"]];
+//        
+//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+//        
+//        self.navigationController.navigationBar.translucent = YES;
+//        
+//    }else {
+//        // iOS 6.1 or earlier
+//        self.navigationController.navigationBar.tintColor =[UIColor colorFromHexString:@"12baaa"];
+//        
+//    }
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleDefault;
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    self.navigationController.navigationBar.barTintColor = COLORRGB(226, 107, 16);
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    
 }
 
 - (void)addGesture {
@@ -215,6 +225,7 @@ UIWebViewDelegate
 - (void)setSegmentedCtl {
     segmentedCtl = [[UISegmentedControl alloc] initWithItems:@[@"大表监测",@"小表监测"]];
     segmentedCtl.frame = CGRectMake(0, 0, PanScreenWidth/3, 30);
+//    segmentedCtl.tintColor = COLORRGB(103, 186, 221);
     [segmentedCtl addTarget:self action:@selector(transMeters:) forControlEvents:UIControlEventValueChanged];
     self.navigationItem.titleView = segmentedCtl;
     segmentedCtl.selectedSegmentIndex = 0;
@@ -348,38 +359,46 @@ UIWebViewDelegate
 {
     [super viewWillAppear:animated];
     
-    if (_webView) {
-        [self backAction];
-    }
-    if (isBigMeter) {
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {
         
-        if (!button) {
-            
-            [self _createButton];
+        
+        if (_webView) {
+            [self backAction];
         }
-        [self _createPicPlay];
-        
-        for (int i = 100; i < 104; i++) {
+        if (isBigMeter) {
             
-            ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeScale(.01, .01);
-        }
-        
-        for (int i = 100; i < 104; i++) {
+            if (!button) {
+                
+                [self _createButton];
+            }
+            [self _createPicPlay];
             
-            CGFloat duration = (i - 99) * 0.2;
+            for (int i = 100; i < 104; i++) {
+                
+                ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeScale(.01, .01);
+            }
             
-            [UIView animateWithDuration:duration animations:^{
+            for (int i = 100; i < 104; i++) {
                 
-                ((UIButton *)arr[i-100]).transform = CGAffineTransformIdentity;
+                CGFloat duration = (i - 99) * 0.2;
                 
-            } completion:^(BOOL finished) {
+                [UIView animateWithDuration:duration animations:^{
+                    
+                    ((UIButton *)arr[i-100]).transform = CGAffineTransformIdentity;
+                    
+                } completion:^(BOOL finished) {
+                    
+                }];
+            }
+        } else {
+            
+            if (!litButton) {
                 
-            }];
+                [self createLitBtn];
+            }
         }
     } else {
-        
         if (!litButton) {
-            
             [self createLitBtn];
         }
     }
@@ -403,6 +422,7 @@ UIWebViewDelegate
     
     if (!_cycleScrollView) {
         _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 64, PanScreenWidth, viewHeight) shouldInfiniteLoop:YES imageNamesGroup:urlsArray];
+        _cycleScrollView.placeholderImage = [UIImage imageNamed:@"cycle_placeholder_img"];
         _cycleScrollView.delegate = self;
         _cycleScrollView.pageControlStyle = SDCycleScrollViewPageContolStyleAnimated;
         [self.view addSubview:_cycleScrollView];

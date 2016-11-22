@@ -10,8 +10,16 @@
 #import "DBModel.h"
 #import "TableViewCell.h"
 #import "SingleViewController.h"
+#import "LUNSegmentedControl.h"
 
-@interface LocaDBViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface LocaDBViewController ()
+<
+UITableViewDelegate,
+UITableViewDataSource,
+LUNSegmentedControlDelegate,
+LUNSegmentedControlDataSource
+>
+@property (strong, nonatomic) LUNSegmentedControl *segmentedControl;
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) FMDatabase *db;
@@ -29,11 +37,12 @@
     
     [self createTableView];
   
-    [self setupUI];
+    [self setSegment];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self segmentedControl:self.segmentedControl didScrollWithXOffset:0];
     [self queryDB];
 }
 
@@ -42,17 +51,12 @@
     [self.db close];
 }
 
-- (void)setupUI {
-    UISegmentedControl *segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"小表待抄",@"大表待抄"]];
-    //    [segmentCtrl setSelectedSegmentIndex:0];
-    segmentCtrl.selectedSegmentIndex = 0;
-    [segmentCtrl addTarget:self action:@selector(segmentCtrlAction:) forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:segmentCtrl];
-    [segmentCtrl mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.top).with.offset(CGRectGetMaxY(self.navigationController.navigationBar.frame)+10);
-        make.centerX.equalTo(self.view.mas_centerX);
-        make.size.equalTo(CGSizeMake(PanScreenWidth/2.5, 30));
-    }];
+- (void)setSegment {
+    self.segmentedControl = [[LUNSegmentedControl alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth/2.5, 30)];
+    self.segmentedControl.transitionStyle = LUNSegmentedControlTransitionStyleFade;
+    self.segmentedControl.delegate = self;
+    self.segmentedControl.dataSource = self;
+    self.navigationItem.titleView = self.segmentedControl;
 }
 
 
@@ -93,7 +97,7 @@
     NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
     NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
     
-    NSLog(@"文件路径：%@",fileName);
+//    NSLog(@"文件路径：%@",fileName);
     
     FMDatabase *db = [FMDatabase databaseWithPath:fileName];
     
@@ -122,25 +126,10 @@
     
 }
 
-/**
- *  大小表切换
- */
-- (void)segmentCtrlAction:(UISegmentedControl *)sender {
-    switch (sender.selectedSegmentIndex) {
-        case 0:
-            [self queryDB];
-            break;
-        case 1:
-            [self queryBigMeterDB];
-            break;
-        default:
-            break;
-    }
-}
 
 - (void)createTableView {
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 45, PanScreenWidth, PanScreenHeight - 45 - 49) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, PanScreenHeight - 49) style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.showsVerticalScrollIndicator = NO;
@@ -180,5 +169,78 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - segmentControl delegate & datasource
+- (NSArray<UIColor *> *)segmentedControl:(LUNSegmentedControl *)segmentedControl gradientColorsForStateAtIndex:(NSInteger)index {
+    switch (index) {
+        case 0:
+            return @[[UIColor colorWithRed:160 / 255.0 green:223 / 255.0 blue:56 / 255.0 alpha:1.0], [UIColor colorWithRed:177 / 255.0 green:255 / 255.0 blue:0 / 255.0 alpha:1.0]];
+            
+            break;
+            
+        case 1:
+            return @[[UIColor colorWithRed:178 / 255.0 green:0 / 255.0 blue:235 / 255.0 alpha:1.0], [UIColor colorWithRed:233 / 255.0 green:0 / 255.0 blue:147 / 255.0 alpha:1.0]];
+            break;
+            
+//        case 2:
+//            return @[[UIColor colorWithRed:178 / 255.0 green:0 / 255.0 blue:235 / 255.0 alpha:1.0], [UIColor colorWithRed:233 / 255.0 green:0 / 255.0 blue:147 / 255.0 alpha:1.0]];
+//            break;
+            
+        default:
+            break;
+    }
+    return nil;
+}
 
+- (NSInteger)numberOfStatesInSegmentedControl:(LUNSegmentedControl *)segmentedControl {
+    return 2;
+}
+
+- (NSAttributedString *)segmentedControl:(LUNSegmentedControl *)segmentedControl attributedTitleForStateAtIndex:(NSInteger)index {
+    if (index == 0) {
+       return [[NSAttributedString alloc] initWithString:@"小表抄收" attributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:13]}];
+    }
+    return [[NSAttributedString alloc] initWithString:@"大表抄收" attributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:13]}];
+}
+
+- (NSAttributedString *)segmentedControl:(LUNSegmentedControl *)segmentedControl attributedTitleForSelectedStateAtIndex:(NSInteger)index {
+    switch (index) {
+        case 0:
+            return [[NSAttributedString alloc] initWithString:@"小表抄收" attributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:15]}];
+            break;
+        case 1:
+            return [[NSAttributedString alloc] initWithString:@"大表抄收" attributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:15]}];
+            break;
+            
+        default:
+            break;
+    }
+    return [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"TAB %li",(long)index] attributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:16]}];
+}
+
+
+- (void)segmentedControl:(LUNSegmentedControl *)segmentedControl didScrollWithXOffset:(CGFloat)offset {
+    CGFloat maxOffset = self.segmentedControl.frame.size.width / self.segmentedControl.statesCount * (self.segmentedControl.statesCount - 1);
+    if (offset == 0) {
+        [self queryDB];
+    }
+    if (PanScreenWidth == 414) {//plus
+        
+        if (offset == (NSInteger)maxOffset+1) {
+            [self queryBigMeterDB];
+        }
+    } else {
+        if (offset == (NSInteger)maxOffset) {
+            [self queryBigMeterDB];
+        }
+    }
+//    CGFloat leftDistance = (self.backgroundScrollView.contentSize.width - width) * 0.25;
+//    CGFloat rightDistance = (self.backgroundScrollView.contentSize.width - width) * 0.75;
+//    CGFloat backgroundScrollViewOffset = leftDistance + ((offset / maxOffset) * (self.backgroundScrollView.contentSize.width - rightDistance - leftDistance));
+//    width = self.view.frame.size.width;
+//    leftDistance = -width * 0.75;
+//    rightDistance = width * 0.5;
+//    CGFloat rectangleScrollViewOffset = leftDistance + ((offset / maxOffset) * (self.rectangleScrollView.contentSize.width - rightDistance - leftDistance));
+//    [self.rectangleScrollView setContentOffset:CGPointMake(rectangleScrollViewOffset, 0)];
+//    [self.backgroundScrollView setContentOffset:CGPointMake(backgroundScrollViewOffset,0)];
+}
 @end

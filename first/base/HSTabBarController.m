@@ -23,8 +23,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-//    [[UITabBar appearance] setBarTintColor:[UIColor colorFromHexString:@"12baaa"]];
     
     //添加子控制器
     HomeViewController *home = [[HomeViewController alloc] init];
@@ -66,7 +64,7 @@
     // 声明这张图片用原图(别渲染)
     selectedImage = [selectedImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     childVc.tabBarItem.selectedImage = selectedImage;
-
+    
     // 添加为tabbar控制器的子控制器
     HSNavigationController *nav = [[HSNavigationController alloc] initWithRootViewController:childVc];
     [self addChildViewController:nav];

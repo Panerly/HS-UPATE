@@ -82,6 +82,7 @@ static BOOL flashIsOn;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNavColor];
+    
 //    UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
 //    [button addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
 //    UIBarButtonItem *scan = [[UIBarButtonItem alloc] initWithCustomView:button];
@@ -153,28 +154,34 @@ static BOOL flashIsOn;
  *  设置导航栏的颜色，返回按钮和标题为白色
  */
 -(void)setNavColor{
-    NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
-    if ([[ver objectAtIndex:0] intValue] >= 7) {
-        // iOS 7.0 or later
-        [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorFromHexString:@"12baaa"]];
-        
-        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-        
-        
-        self.navigationController.navigationBar.translucent = YES;
-        
-        
-    }else {
-        // iOS 6.1 or earlier
-        self.navigationController.navigationBar.tintColor =[UIColor colorFromHexString:@"12baaa"];
-        
-    }
+//    NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
+//    if ([[ver objectAtIndex:0] intValue] >= 7) {
+//        // iOS 7.0 or later
+//        [self.navigationController.navigationBar lt_setBackgroundColor:COLORRGB(226, 107, 16)];
+//        
+//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+//        
+//        
+//        self.navigationController.navigationBar.translucent = YES;
+//        
+//        
+//    }else {
+//        // iOS 6.1 or earlier
+//        self.navigationController.navigationBar.tintColor =[UIColor colorFromHexString:@"12baaa"];
+//        
+//    }
+    
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleDefault;
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    self.navigationController.navigationBar.barTintColor = COLORRGB(226, 107, 16);
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
 }
 - (void)setSegmentedCtl {
     segmentedCtl = [[UISegmentedControl alloc] initWithItems:@[@"小表抄收",@"大表抄收"]];
     segmentedCtl.frame = CGRectMake(0, 0, PanScreenWidth/3, 30);
     segmentedCtl.selectedSegmentIndex = 0;
+    segmentedCtl.tintColor = [UIColor whiteColor];
     [segmentedCtl addTarget:self action:@selector(meterTypecOntrol:) forControlEvents:UIControlEventValueChanged];
     self.navigationItem.titleView = segmentedCtl;
     segmentedCtl.selectedSegmentIndex = 0;
@@ -183,9 +190,36 @@ static BOOL flashIsOn;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     if (!isBitMeter) {
         [self loadBigMeterLocalData];
     }
+    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
+    NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+    FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+    if ([db open]) {
+        
+        FMResultSet *restultSet = [db executeQuery:@"select * from litMeter_info"];
+        int litMeterCountNum = 0;
+        int bigMeterCountNum = 0;
+        while ([restultSet next]) {
+            if (![[restultSet stringForColumn:@"collector_area"] isEqualToString:@"00"]) {
+                litMeterCountNum++;
+            }
+            if ([[restultSet stringForColumn:@"collector_area"] isEqualToString:@"00"]) {
+                bigMeterCountNum++;
+            }
+        }
+        if (litMeterCountNum + bigMeterCountNum > 0) {
+            
+            self.tabBarItem.badgeColor = [UIColor redColor];
+            self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",litMeterCountNum+bigMeterCountNum];
+        }else{
+            
+            self.tabBarItem.badgeValue = nil;
+        }
+    }
+    [db close];
 }
 
 /**
@@ -275,7 +309,7 @@ static BOOL flashIsOn;
         [loading removeFromSuperview];
     }
     
-    NSString *litMeterDataUrl = [NSString stringWithFormat:@"http://192.168.3.175:8080/Meter_Reading/Meter_areaServlet"];
+    NSString *litMeterDataUrl = [NSString stringWithFormat:@"%@/Meter_Reading/Meter_areaServlet",litMeterApi];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -304,7 +338,7 @@ static BOOL flashIsOn;
             [loading removeFromSuperview];
             
             for (NSDictionary *dic in responseObject) {
-                if ([[dic objectForKey:@"area_Id"] isEqualToString:@"01"]) {
+                if (![[dic objectForKey:@"area_Id"] isEqualToString:@"00"]) {
                     
                     MeterInfoModel *meterInfoModel = [[MeterInfoModel alloc] initWithDictionary:dic error:&error];
                     [_dataArr addObject:meterInfoModel];
@@ -318,6 +352,7 @@ static BOOL flashIsOn;
                 }
                 [weakSelf.db close];
             }
+            
             [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         }
         
@@ -619,7 +654,7 @@ static BOOL flashIsOn;
         [loading removeFromSuperview];
     }
     
-    NSString *logInUrl = [NSString stringWithFormat:@"http://192.168.3.175:8080/Meter_Reading/Meter_info_1Servlet"];
+    NSString *logInUrl = [NSString stringWithFormat:@"%@/Meter_Reading/Meter_info_1Servlet",litMeterApi];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -893,6 +928,7 @@ static BOOL flashIsOn;
     SingleViewController *singleVC = [[SingleViewController alloc] init];
     singleVC.meter_id_string = result;
     singleVC.hidesBottomBarWhenPushed = YES;
+    
     [self.navigationController showViewController:singleVC sender:nil];
     
     if (!_lastResult) {
@@ -985,6 +1021,7 @@ static BOOL flashIsOn;
                 meteringVC.area_id = [((MeterInfoModel *)_dataArr[indexPath.row]).area_Id isEqualToString:@"1"]?@"01":((MeterInfoModel *)_dataArr[indexPath.row]).area_Id;
             }
             meteringVC.hidesBottomBarWhenPushed = YES;
+            meteringVC.title = @"任务详情";
             [self.navigationController showViewController:meteringVC sender:nil];
         }
         else
