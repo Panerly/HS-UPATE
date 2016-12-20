@@ -39,22 +39,22 @@ WYLineChartViewDatasource
     self.title = @"小表户表信息";
     self.view.backgroundColor = [UIColor colorWithRed:44/255.0f green:147/255.0f blue:209/255.0f alpha:1];
 
-//    UIButton *saveBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, PanScreenHeight - 49 - 20, 100, 35)];
-//    saveBtn.backgroundColor = [UIColor colorWithRed:121/255.0f green:180/255.0f blue:76/255.0f alpha:1];
-//    saveBtn.layer.cornerRadius = 10;
-//    saveBtn.layer.shadowOffset = CGSizeMake(1, 1);
-//    saveBtn.layer.shadowColor = [[UIColor blackColor]CGColor];
-//    saveBtn.layer.shadowOpacity = .80f;
+//    UIButton *saveBtn             = [[UIButton alloc] initWithFrame:CGRectMake(20, PanScreenHeight - 49 - 20, 100, 35)];
+//    saveBtn.backgroundColor       = [UIColor colorWithRed:121/255.0f green:180/255.0f blue:76/255.0f alpha:1];
+//    saveBtn.layer.cornerRadius    = 10;
+//    saveBtn.layer.shadowOffset    = CGSizeMake(1, 1);
+//    saveBtn.layer.shadowColor     = [[UIColor blackColor]CGColor];
+//    saveBtn.layer.shadowOpacity   = .80f;
 //    [saveBtn setTitle:@"保存" forState:UIControlStateNormal];
 //    [saveBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //    [self.view addSubview:saveBtn];
 //    
-//    UIButton *nextBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 100 - 20, PanScreenHeight - 49 - 20, 100, 35)];
-//    nextBtn.backgroundColor = [UIColor colorWithRed:121/255.0f green:180/255.0f blue:76/255.0f alpha:1];
-//    nextBtn.layer.cornerRadius = 10;
-//    nextBtn.layer.shadowOffset = CGSizeMake(1, 1);
-//    nextBtn.layer.shadowColor = [[UIColor blackColor]CGColor];
-//    nextBtn.layer.shadowOpacity = .80f;
+//    UIButton *nextBtn             = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 100 - 20, PanScreenHeight - 49 - 20, 100, 35)];
+//    nextBtn.backgroundColor       = [UIColor colorWithRed:121/255.0f green:180/255.0f blue:76/255.0f alpha:1];
+//    nextBtn.layer.cornerRadius    = 10;
+//    nextBtn.layer.shadowOffset    = CGSizeMake(1, 1);
+//    nextBtn.layer.shadowColor     = [[UIColor blackColor]CGColor];
+//    nextBtn.layer.shadowOpacity   = .80f;
 //    [nextBtn setTitle:@"重置" forState:UIControlStateNormal];
 //    [nextBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //    [self.view addSubview:nextBtn];
@@ -81,58 +81,58 @@ WYLineChartViewDatasource
 
 - (void)initChatView {
     
-    _chartView = [[WYLineChartView alloc] initWithFrame:CGRectMake(0, 260, PanScreenWidth, 230)];
-    _chartView.delegate = self;
-    _chartView.datasource = self;
-    _chartView.gradientColors = @[[UIColor colorWithWhite:1.0 alpha:0.9],
+    _chartView                          = [[WYLineChartView alloc] initWithFrame:CGRectMake(0, 260, PanScreenWidth, 230)];
+    _chartView.delegate                 = self;
+    _chartView.datasource               = self;
+    _chartView.gradientColors           = @[[UIColor colorWithWhite:1.0 alpha:0.9],
                                   [UIColor colorWithWhite:1.0 alpha:0.0]];
-    _chartView.gradientColorsLocation = @[@(0.0), @(0.95)];
-    _chartView.drawGradient = YES;
-    _chartView.scrollable = YES;
-    _chartView.pinchable = YES;
-    _chartView.lineStyle = kWYLineChartMainBezierWaveLine;
-    _chartView.yAxisHeaderPrefix = @"数据";
-    _chartView.yAxisHeaderSuffix = @"日期";
-    _chartView.touchPointColor = [UIColor redColor];
+    _chartView.gradientColorsLocation   = @[@(0.0), @(0.95)];
+    _chartView.drawGradient             = YES;
+    _chartView.scrollable               = YES;
+    _chartView.pinchable                = YES;
+    _chartView.lineStyle                = kWYLineChartMainBezierWaveLine;
+    _chartView.yAxisHeaderPrefix        = @"数据";
+    _chartView.yAxisHeaderSuffix        = @"日期";
+    _chartView.touchPointColor          = [UIColor redColor];
     gap = 100.f;
     
-    _touchLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
-    _touchLabel.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.3];
-    _touchLabel.textColor = [UIColor blackColor];
-    _touchLabel.layer.cornerRadius = 5;
+    _touchLabel                     = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+    _touchLabel.backgroundColor     = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.3];
+    _touchLabel.textColor           = [UIColor blackColor];
+    _touchLabel.layer.cornerRadius  = 5;
     _touchLabel.layer.masksToBounds = YES;
-    _touchLabel.textAlignment = NSTextAlignmentCenter;
-    _touchLabel.font = [UIFont systemFontOfSize:13.f];
-    _chartView.touchView = _touchLabel;
+    _touchLabel.textAlignment       = NSTextAlignmentCenter;
+    _touchLabel.font                = [UIFont systemFontOfSize:13.f];
+    _chartView.touchView            = _touchLabel;
     
     
 }
 
 - (void)getValue {
-    self.user_addr.text = _user_addr_str;
-    self.user_name.text = _user_name_str;
-    self.collect_id.text = _collect_id_str;
-    self.water_type.text = _water_type_str;
-    self.phone_num.text = _phone_num_str;
-    self.location.text = _location_str;
-    self.meter_condition.text = _meter_condition_str;
-    self.previous_reading.text = _previous_reading_str;
-    self.current_reading.text = _current_reading_str;
-    self.usage.text = _usage_str;
-    self.remark.text = _remark_str;
+    self.user_addr.text         = _user_addr_str;
+    self.user_name.text         = _user_name_str;
+    self.collect_id.text        = _collect_id_str;
+    self.water_type.text        = _water_type_str;
+    self.phone_num.text         = _phone_num_str;
+    self.location.text          = _location_str;
+    self.meter_condition.text   = _meter_condition_str;
+    self.previous_reading.text  = _previous_reading_str;
+    self.current_reading.text   = _current_reading_str;
+    self.usage.text             = _usage_str;
+    self.remark.text            = _remark_str;
 }
 - (void)queryFail {
-    self.user_name.text = [NSString stringWithFormat:@"户号：无法获取"];
-    self.collect_id.text = [NSString stringWithFormat:@"采集编号：无法获取"];
-    self.water_type.text = [NSString stringWithFormat:@"用水类型：无法获取"];
-    self.phone_num.text = [NSString stringWithFormat:@"手机：无法获取"];
-    self.location.text = [NSString stringWithFormat:@"位置：无法获取"];
-    self.meter_condition.text = [NSString stringWithFormat:@"表况：无法获取"];
-    self.previous_reading.text =[NSString stringWithFormat:@"上期读数：无法获取"];
-    self.current_reading.text = [NSString stringWithFormat:@"本期读数：无法获取"];
-    self.usage.text = [NSString stringWithFormat:@"本期用量：无法获取"];
-    self.remark.text = [NSString stringWithFormat:@"备注：无法获取"];
-    self.user_addr.text = @"地址：无";
+    self.user_name.text         = [NSString stringWithFormat:@"户号：无法获取"];
+    self.collect_id.text        = [NSString stringWithFormat:@"采集编号：无法获取"];
+    self.water_type.text        = [NSString stringWithFormat:@"用水类型：无法获取"];
+    self.phone_num.text         = [NSString stringWithFormat:@"手机：无法获取"];
+    self.location.text          = [NSString stringWithFormat:@"位置：无法获取"];
+    self.meter_condition.text   = [NSString stringWithFormat:@"表况：无法获取"];
+    self.previous_reading.text  =[NSString stringWithFormat:@"上期读数：无法获取"];
+    self.current_reading.text   = [NSString stringWithFormat:@"本期读数：无法获取"];
+    self.usage.text             = [NSString stringWithFormat:@"本期用量：无法获取"];
+    self.remark.text            = [NSString stringWithFormat:@"备注：无法获取"];
+    self.user_addr.text         = @"地址：无";
 }
 
 - (void)startLoading {
@@ -141,9 +141,9 @@ WYLineChartViewDatasource
     lightDarkView  = [[UIView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, PanScreenHeight)];
     [self.view addSubview:lightDarkView];
     
-    UIImageView *loadingView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
-    loadingView.center = lightDarkView.center;
-    UIImage *image = [UIImage sd_animatedGIFNamed:@"刷新5"];
+    UIImageView *loadingView    = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+    loadingView.center          = lightDarkView.center;
+    UIImage *image              = [UIImage sd_animatedGIFNamed:@"刷新5"];
     [loadingView setImage:image];
     [lightDarkView addSubview:loadingView];
     
@@ -153,12 +153,12 @@ WYLineChartViewDatasource
     
     [self startLoading];
 
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
-    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
-    manager.requestSerializer.timeoutInterval = 60;
-    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    NSString *litMeterDetailURL = [NSString stringWithFormat:@"%@/Small_Meter_Reading/HisSmall_DataServlet",litMeterApi];
+    NSURLSessionConfiguration *config           = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFHTTPSessionManager *manager               = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    AFHTTPResponseSerializer *serializer        = manager.responseSerializer;
+    manager.requestSerializer.timeoutInterval   = 60;
+    serializer.acceptableContentTypes           = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    NSString *litMeterDetailURL                 = [NSString stringWithFormat:@"%@/Small_Meter_Reading/HisSmall_DataServlet",litMeterApi];
     
     NSDictionary *parameters = @{
                                  @"user_id" : meterID
@@ -206,13 +206,13 @@ WYLineChartViewDatasource
             chartDataArr = [NSMutableArray array];
             for (int i = 0; i < dataArr.count; i++) {
                 WYLineChartPoint *point = _points[i];
-                point.value = [((LitMeterDetailDataModel *)dataArr[i]).collect_num integerValue];
+                point.value             = [((LitMeterDetailDataModel *)dataArr[i]).collect_num integerValue];
                 [chartDataArr addObject:@(point.value)];
             }
-            NSInteger maxValue = [[chartDataArr valueForKeyPath:@"@max.intValue"] integerValue];
-            max = maxValue;
+            NSInteger maxValue  = [[chartDataArr valueForKeyPath:@"@max.intValue"] integerValue];
+            max                 = maxValue;
             
-            NSInteger num = 0;
+            NSInteger num       = 0;
             for (int i = 0; i < dataArr.count; i++) {
                 num = num + [((LitMeterDetailDataModel*)dataArr[i]).collect_num integerValue];
             }
@@ -379,7 +379,7 @@ WYLineChartViewDatasource
         default:
             break;
     }
-    return value;
+    return 0;
 }
 
 

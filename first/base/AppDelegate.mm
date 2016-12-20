@@ -60,7 +60,7 @@ BMKMapManager* _mapManager;
     //c侧滑返回
     [MLTransition validatePanBackWithMLTransitionGestureRecognizerType:(MLTransitionGestureRecognizerTypePan)];
     
-    defaults = [NSUserDefaults standardUserDefaults];
+    defaults    = [NSUserDefaults standardUserDefaults];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     
@@ -91,13 +91,13 @@ BMKMapManager* _mapManager;
     // 要使用百度地图，请先启动BaiduMapManager
     _mapManager = [[BMKMapManager alloc]init];
     // 如果要关注网络及授权验证事件，请设定     generalDelegate参数
-    BOOL ret = [_mapManager start:@"UBQFxfj8qazWAtt1gkYZLdKGG2AAb83G"  generalDelegate:nil];
+    BOOL ret    = [_mapManager start:@"UBQFxfj8qazWAtt1gkYZLdKGG2AAb83G"  generalDelegate:nil];
     if (!ret) {
         NSLog(@"mapManager start failed!");
     }
     
     
-    loginVC = [[LoginViewController alloc] init];
+    loginVC                        = [[LoginViewController alloc] init];
     self.window.rootViewController = loginVC;
     [self.window makeKeyAndVisible];
     
@@ -125,18 +125,18 @@ BMKMapManager* _mapManager;
         if (notification!=nil) {
             NSDate *now = [NSDate date];
             //从现在开始，0秒以后通知
-            notification.fireDate=[now dateByAddingTimeInterval:5];
+            notification.fireDate    = [now dateByAddingTimeInterval:5];
             //使用本地时区
-            notification.timeZone=[NSTimeZone defaultTimeZone];
-            notification.alertBody=[NSString stringWithFormat:@"小表待抄  %ld  小区", (long)alertNum];
+            notification.timeZone    = [NSTimeZone defaultTimeZone];
+            notification.alertBody   = [NSString stringWithFormat:@"小表待抄  %ld  小区", (long)alertNum];
             //通知提示音 使用默认的
-            notification.soundName= UILocalNotificationDefaultSoundName;
-            notification.alertAction=NSLocalizedString(@"滑动屏幕进行抄收", nil);
+            notification.soundName   = UILocalNotificationDefaultSoundName;
+            notification.alertAction = NSLocalizedString(@"滑动屏幕进行抄收", nil);
             //这个通知到时间时，你的应用程序右上角显示的数字。
             notification.applicationIconBadgeNumber = alertNum;
             //add key  给这个通知增加key 便于半路取消。nfkey这个key是我自己随便起的。
             // 假如你的通知不会在还没到时间的时候手动取消 那下面的两行代码你可以不用写了。
-            NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:(int)alertNum],@"nfkey",nil];
+            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:(int)alertNum],@"nfkey",nil];
             [notification setUserInfo:dict];
             //启动这个通知
             [[UIApplication sharedApplication] scheduleLocalNotification:notification];
@@ -153,7 +153,7 @@ BMKMapManager* _mapManager;
  */
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    [self showMeteringVC];
+//    [self showMeteringVC];
     
 }
 
@@ -200,12 +200,13 @@ BMKMapManager* _mapManager;
 //    [ShareSDK connectQQWithQZoneAppKey:@"100371282"
 //                     qqApiInterfaceCls:[QQApiInterface class]
 //                       tencentOAuthCls:[TencentOAuth class]];
+    [ShareSDK connectQQWithAppId:@"QQ075BCD15" qqApiCls:[QQApiInterface class]];
     
     //连接邮件
     [ShareSDK connectMail];
     
-//    //连接打印
-//    [ShareSDK connectAirPrint];
+    //连接打印
+    [ShareSDK connectAirPrint];
     
     //连接拷贝
     [ShareSDK connectCopy];
@@ -258,11 +259,12 @@ BMKMapManager* _mapManager;
 
 #pragma mark -获取推送消息
 - (void)getPushMessage {
-    NSString *pushUrl = [NSString stringWithFormat:@"%@/Meter_Reading/Meter_areaServlet",litMeterApi];
+    
+    NSString *pushUrl                 = [NSString stringWithFormat:@"%@/Meter_Reading/Meter_areaServlet",litMeterApi];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    AFHTTPSessionManager *manager     = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
     
     AFHTTPResponseSerializer *serializer = manager.responseSerializer;
     
@@ -270,9 +272,9 @@ BMKMapManager* _mapManager;
     
     serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
     
-    __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf      = self;
     
-    NSURLSessionTask *task =[manager POST:pushUrl parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSURLSessionTask *task            = [manager POST:pushUrl parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -280,6 +282,7 @@ BMKMapManager* _mapManager;
         
         if (responseObject) {
             for (NSDictionary *dic in responseObject) {
+                
                 [dataArr addObject:[dic objectForKey:@"area_Name"]];
             }
         }

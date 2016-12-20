@@ -12,24 +12,40 @@
 #import "MeteringViewController.h"
 #import "FTPopOverMenu.h"
 #import "TLCityPickerController.h"
+#import "FBShimmeringView.h"
 
+@interface HomeViewController ()
 
+<
+CLLocationManagerDelegate,
+UITableViewDelegate,
+UITableViewDataSource
+>
 
-@interface HomeViewController ()<CLLocationManagerDelegate,UITableViewDelegate, UITableViewDataSource>
 {
     NSTimer *timer;
     int litMeterCount;
     int bigMeterCount;
 }
+
 @property (nonatomic, strong) CLLocationManager* locationManager;
 @property (nonatomic, strong) NSDictionary *areaidDic;
+
 @end
 
 @implementation HomeViewController
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
+    
+    UILabel *titleLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, 44)];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.textColor       = [UIColor whiteColor];
+    titleLabel.textAlignment   = NSTextAlignmentCenter;
+    [titleLabel setFont:[UIFont systemFontOfSize:17.0]];
+    [titleLabel setText:@"移动互联抄表系统"];
+    self.navigationItem.titleView = titleLabel;
+    
     [self setNavColor];//设置导航栏颜色
     //适配3.5寸
     if (PanScreenHeight == 480) {
@@ -49,7 +65,12 @@
     [self _requestWeatherData:@"杭州"];
 //    [self locationCurrentCity];
 
-    [self _createTableView];
+    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {
+        
+        [self _createTableView];
+    }else{
+        self.tableView.hidden = YES;
+    }
     
 }
 
@@ -74,7 +95,7 @@
 //        self.navigationController.navigationBar.tintColor =[UIColor colorFromHexString:@"12baaa"];
 //        
 //    }
-    self.navigationController.navigationBar.barStyle = UIStatusBarStyleDefault;
+    self.navigationController.navigationBar.barStyle     = UIStatusBarStyleDefault;
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     self.navigationController.navigationBar.barTintColor = COLORRGB(226, 107, 16);
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
@@ -83,13 +104,13 @@
 
 #pragma mark - setScrollView & setUI
 - (void)setScrollView {
-    _scrollView.contentSize= CGSizeMake(610, 0);
-    _scrollView.scrollEnabled = YES;
-    _scrollView.alwaysBounceHorizontal = YES;
-    _scrollView.pagingEnabled = NO;
-    _scrollView.showsVerticalScrollIndicator = NO;
+    _scrollView.contentSize                    = CGSizeMake(610, 0);
+    _scrollView.scrollEnabled                  = YES;
+    _scrollView.alwaysBounceHorizontal         = YES;
+    _scrollView.pagingEnabled                  = NO;
+    _scrollView.showsVerticalScrollIndicator   = NO;
     _scrollView.showsHorizontalScrollIndicator = NO;
-    _scrollView.backgroundColor = [UIColor clearColor];
+    _scrollView.backgroundColor                = [UIColor clearColor];
     
 //    NSArray *labelArr = [NSArray arrayWithObjects:_day1Label,_day2Label,_day3Label,_day4Label,_day5Label,_day6Label,_day7Label, nil];
 //    NSArray *imageViewArr = [NSArray arrayWithObjects:_day1Image,_day2Image,_day3Image,_day4Image,_day5Image,_day6Image,_day7Image, nil];
@@ -294,10 +315,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//    litMeterCount = [[defaults objectForKey:@"litMeterCount"] intValue];
-//    bigMeterCount = [[defaults objectForKey:@"bigMeterCount"] intValue];
-//    [self.tableView reloadData];
     
     NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
     NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
@@ -340,9 +357,9 @@
 - (void)_createTableView
 {
     _tableView.backgroundColor = [UIColor clearColor];
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    _tableView.scrollEnabled = NO;
+    _tableView.delegate        = self;
+    _tableView.dataSource      = self;
+    _tableView.scrollEnabled   = NO;
 }
 
 
@@ -393,11 +410,12 @@
 - (void)loadingInfo
 {
     NSString *loadingStr = @"loading";
-    self.weather.text = [NSString stringWithFormat:@"天气:  %@",loadingStr];
-    self.temLabel.text = [NSString stringWithFormat:@"气温:  %@",loadingStr];
-    self.windDriection.text = [NSString stringWithFormat:@"风向:  %@",loadingStr];
+    self.weather.text        = [NSString stringWithFormat:@"天气:  %@",loadingStr];
+    self.temLabel.text       = [NSString stringWithFormat:@"气温:  %@",loadingStr];
+    self.windDriection.text  = [NSString stringWithFormat:@"风向:  %@",loadingStr];
     self.windForceScale.text = [NSString stringWithFormat:@"风力:  %@",loadingStr];
-    self.time.text = [NSString stringWithFormat:@"日期:  %@",loadingStr];
+    self.time.text           = [NSString stringWithFormat:@"日期:  %@",loadingStr];
+    
     self.day1Label.text = loadingStr;
     self.day2Label.text = loadingStr;
     self.day3Label.text = loadingStr;
@@ -419,34 +437,34 @@
 //请求天气信息
 - (void)_requestWeatherData:(NSString *)cityName
 {
-    self.city.text = [NSString stringWithFormat:@"城市:  %@",cityName];
-    self.locaCity = cityName;
+    self.city.text   = [NSString stringWithFormat:@"城市:  %@",cityName];
+    self.locaCity    = cityName;
     
     [self loadingInfo];
 
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    AFHTTPSessionManager *manager     = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
     
-    NSString *cityNameStr = [self transform:cityName];
+    NSString *cityNameStr             = [self transform:cityName];
     
-    NSString *replacedCityNameStr = [cityNameStr stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSString *httpArg = [NSString stringWithFormat:@"city=%@",replacedCityNameStr];
+    NSString *replacedCityNameStr     = [cityNameStr stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *httpArg                 = [NSString stringWithFormat:@"city=%@",replacedCityNameStr];
     
     
-    NSMutableURLRequest *requestHistory = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@",weatherAPI,httpArg]]];
+    NSMutableURLRequest *requestHistory  = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@",weatherAPI,httpArg]]];
     NSLog(@"天气请求URL：%@",[NSString stringWithFormat:@"%@?%@",weatherAPI,httpArg]);
     requestHistory.HTTPMethod = @"GET";
     
-    requestHistory.timeoutInterval = 10;
+    requestHistory.timeoutInterval       = 10;
     
     [requestHistory addValue:weatherAPIkey forHTTPHeaderField:@"apikey"];
     
     AFHTTPResponseSerializer *serializer = manager.responseSerializer;
     
-    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    serializer.acceptableContentTypes    = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
     
-    __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf         = self;
 
     NSURLSessionTask *hisTask = [manager dataTaskWithRequest:requestHistory uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -473,13 +491,9 @@
                 NSDictionary *responseDic = [responseObject objectForKey:@"HeWeather data service 3.0"];
                 
                 for (NSDictionary *arr in responseDic) {
+                    
                     if ([[arr objectForKey:@"status"] isEqualToString:@"unknown city"]) {
-//                        GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"查询失败" message:@"查询不到当前城市天气信息" buttonTitle:@"确定" buttonTouchedAction:^{
-//                            
-//                        } dismissAction:^{
-//                            
-//                        }];
-//                        [alertView show];
+                        
                         [self weatherLoadfailed];
                     } else {
                         
@@ -490,7 +504,7 @@
                         //今天
                         weakSelf.day1Label.text   = [NSString stringWithFormat:@"%@",[[[arr objectForKey:@"now"] objectForKey:@"cond"] objectForKey:@"txt"]];
                         //明天
-                        weakSelf.day2Label.text  = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:1] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                        weakSelf.day2Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:1] objectForKey:@"cond"] objectForKey:@"txt_d"]];
                         //后天
                         weakSelf.day3Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:2] objectForKey:@"cond"] objectForKey:@"txt_d"]];
                         weakSelf.day4Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:3] objectForKey:@"cond"] objectForKey:@"txt_d"]];
@@ -568,8 +582,8 @@
                                 //} AnimationType;
                                 
                                 CATransition *transition = [[CATransition alloc] init];
-                                transition.type = @"rippleEffect";
-                                transition.duration = .5;
+                                transition.type          = @"rippleEffect";
+                                transition.duration      = .5;
                                 [_weatherPicImage.layer addAnimation:transition forKey:@"transition"];
             }
         }
@@ -585,13 +599,15 @@
 }
 
 - (void)weatherLoadfailed {
+    
     [SVProgressHUD showErrorWithStatus:@"天气加载失败"];
-    self.weather.text = [NSString stringWithFormat:@"天气:  N/A"];
-    self.temLabel.text = [NSString stringWithFormat:@"气温:  N/A"];
-    self.windDriection.text = [NSString stringWithFormat:@"风向:  N/A"];
+    self.weather.text        = [NSString stringWithFormat:@"天气:  N/A"];
+    self.temLabel.text       = [NSString stringWithFormat:@"气温:  N/A"];
+    self.windDriection.text  = [NSString stringWithFormat:@"风向:  N/A"];
     self.windForceScale.text = [NSString stringWithFormat:@"风力:  N/A"];
-    self.time.text = [NSString stringWithFormat:@"日期:  N/A"];
-    NSString *loadFail = @"N/A";
+    self.time.text           = [NSString stringWithFormat:@"日期:  N/A"];
+    
+    NSString *loadFail  = @"N/A";
     self.day1Label.text = loadFail;
     self.day2Label.text = loadFail;
     self.day3Label.text = loadFail;
@@ -630,9 +646,9 @@
                                TLCityPickerController *cityPickerVC = [[TLCityPickerController alloc] init];
                                [cityPickerVC setDelegate:(id)self];
                                
-                               cityPickerVC.locationCityID = [self transCityNameIntoCityCode:self.city.text];
+                               cityPickerVC.locationCityID  = [self transCityNameIntoCityCode:self.city.text];
                                    cityPickerVC.commonCitys = [[NSMutableArray alloc] initWithArray: @[@"1400010000", @"100010000"]];        // 最近访问城市，如果不设置，将自动管理
-                               cityPickerVC.hotCitys = @[@"100010000", @"200010000", @"300210000", @"600010000", @"300110000"];
+                               cityPickerVC.hotCitys        = @[@"100010000", @"200010000", @"300210000", @"600010000", @"300110000"];
                                
                                [self presentViewController:[[UINavigationController alloc] initWithRootViewController:cityPickerVC] animated:YES completion:^{
                                    
@@ -663,10 +679,9 @@
     NSArray *array = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"CityData" ofType:@"plist"]];
     for (NSDictionary *groupDic in array) {
         TLCityGroup *group = [[TLCityGroup alloc] init];
-        group.groupName = [groupDic objectForKey:@"initial"];
+        group.groupName    = [groupDic objectForKey:@"initial"];
         for (NSDictionary *dic in [groupDic objectForKey:@"citys"]) {
             if (cityNameString == [dic objectForKey:@"city_name"]) {
-                NSLog(@"%@",[dic objectForKey:@"city_name"]);
                 return [dic objectForKey:@"city_key"];
             }
         }
@@ -731,13 +746,12 @@ static int timesOut = 0;
 - (void)animationWithView:(UIView *)view duration:(CFTimeInterval)duration{
     
     CAKeyframeAnimation * animation;
-    animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-    animation.duration = duration;
+    animation                     = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    animation.duration            = duration;
     animation.removedOnCompletion = NO;
+    animation.fillMode            = kCAFillModeForwards;
     
-    animation.fillMode = kCAFillModeForwards;
-    
-    NSMutableArray *values = [NSMutableArray array];
+    NSMutableArray *values        = [NSMutableArray array];
     
     [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(.5, .5, 1.0)]];
     [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)]];
@@ -816,15 +830,15 @@ static int timesOut = 0;
             }
             if ([cityName rangeOfString:@"自治区"].location != NSNotFound) {
                 NSInteger index = [cityName rangeOfString:@"自治区"].location;
-                cityName = [cityName substringToIndex:index];
+                cityName  = [cityName substringToIndex:index];
             }
             if ([cityName rangeOfString:@"自治洲"].location != NSNotFound) {
                 NSInteger index = [cityName rangeOfString:@"自治洲"].location;
-                cityName = [cityName substringToIndex:index];
+                cityName  = [cityName substringToIndex:index];
             }
             if ([cityName rangeOfString:@"县"].location != NSNotFound) {
                 NSInteger index = [cityName rangeOfString:@"县"].location;
-                cityName = [cityName substringToIndex:index];
+                cityName  = [cityName substringToIndex:index];
             }
             self.locaCity = cityName;
             [self _requestWeatherData:cityName];
@@ -842,14 +856,20 @@ static int timesOut = 0;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {
+        
+        return 0;
+    }else{
+        
+        return 1;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [[UITableViewCell alloc] init];
-    cell.backgroundColor = [UIColor colorWithWhite:.5 alpha:.5];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.backgroundColor  = [UIColor colorWithWhite:.5 alpha:0];
+    cell.selectionStyle   = UITableViewCellSelectionStyleNone;
     if (litMeterCount == 0) {
         cell.textLabel.text = [NSString stringWithFormat:@"大表待抄收 %d 个", bigMeterCount];
     }
@@ -862,10 +882,20 @@ static int timesOut = 0;
     }else {
         _tableView.hidden = NO;
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"小表待抄收 %d 户     大表待抄收 %d 个",litMeterCount, bigMeterCount];
-    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.text          = [NSString stringWithFormat:@"小表待抄收 %d 户     大表待抄收 %d 个",litMeterCount, bigMeterCount];
+    cell.textLabel.textColor     = [UIColor whiteColor];
+    cell.textLabel.font          = [UIFont systemFontOfSize:17];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     
+    FBShimmeringView *shimmeringView           = [[FBShimmeringView alloc] initWithFrame:cell.bounds];
+    shimmeringView.shimmering                  = YES;
+    shimmeringView.shimmeringBeginFadeDuration = 0.4;
+    shimmeringView.shimmeringOpacity           = 0.1f;
+    shimmeringView.shimmeringAnimationOpacity  = 1.f;
+    [self.view addSubview:shimmeringView];
+    shimmeringView.center                      = self.view.center;
+    shimmeringView.contentView                 = cell;
+    shimmeringView.multipleTouchEnabled        = NO;
     return cell;
 }
 

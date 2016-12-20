@@ -703,23 +703,14 @@
                         </mask>
                     </variation>
                 </label>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入人工示值" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4bp-Kk-BjZ">
-                    <rect key="frame" x="135" y="302" width="130" height="16"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" allowsEditingTextAttributes="YES" placeholder="请输入抄表值" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4bp-Kk-BjZ">
+                    <rect key="frame" x="130" y="296" width="203" height="27"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="130" id="2cd-fN-Mn3"/>
+                        <constraint firstAttribute="height" constant="27" id="dBy-H0-dgv"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" red="0.022068876773118973" green="0.022812444716691971" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <textInputTraits key="textInputTraits"/>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="2cd-fN-Mn3"/>
-                        </mask>
-                    </variation>
-                    <variation key="widthClass=compact">
-                        <mask key="constraints">
-                            <include reference="2cd-fN-Mn3"/>
-                        </mask>
-                    </variation>
                 </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请选择抄表情况" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PHn-aB-TOL">
                     <rect key="frame" x="130" y="333" width="235" height="16"/>
@@ -894,7 +885,7 @@
                 <constraint firstItem="baz-eg-Xtx" firstAttribute="bottom" secondItem="E9a-lp-AG0" secondAttribute="bottom" id="OM0-Uc-c1B"/>
                 <constraint firstAttribute="bottom" secondItem="3aX-Ne-WSA" secondAttribute="bottom" constant="354" id="ObW-Pw-iQ8"/>
                 <constraint firstItem="4bp-Kk-BjZ" firstAttribute="leading" secondItem="wKu-98-Q13" secondAttribute="trailing" constant="8" id="P9z-3H-vii">
-                    <variation key="widthClass=compact" constant="0.0"/>
+                    <variation key="widthClass=compact" constant="-5"/>
                 </constraint>
                 <constraint firstItem="9B3-Du-b6H" firstAttribute="top" secondItem="6Bj-dj-6IN" secondAttribute="bottom" constant="10" id="PvB-KG-VoX"/>
                 <constraint firstItem="QuU-nf-V8u" firstAttribute="centerY" secondItem="JrC-9J-wwm" secondAttribute="centerY" id="RFx-DS-j6C"/>
@@ -935,6 +926,7 @@
                 <constraint firstAttribute="trailing" secondItem="E9a-lp-AG0" secondAttribute="trailing" constant="20" id="feY-AH-cns"/>
                 <constraint firstItem="E9a-lp-AG0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="gBd-az-Jvi"/>
                 <constraint firstAttribute="trailing" secondItem="34Z-JC-IIQ" secondAttribute="trailing" id="gDk-so-Lzo"/>
+                <constraint firstItem="5vg-CT-seI" firstAttribute="leading" secondItem="4bp-Kk-BjZ" secondAttribute="trailing" id="h49-iS-y0E"/>
                 <constraint firstAttribute="trailing" secondItem="6EI-Vi-VzJ" secondAttribute="trailing" constant="20" id="hVO-PC-8Hl"/>
                 <constraint firstItem="Roz-tL-3Kc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="hnm-CN-zQm">
                     <variation key="widthClass=compact" constant="80"/>
@@ -1033,6 +1025,10 @@
                     <exclude reference="AQX-0o-OKu"/>
                     <exclude reference="RuI-UC-Fu9"/>
                     <exclude reference="r93-bI-FOb"/>
+                    <exclude reference="NUG-ES-f2S"/>
+                    <exclude reference="ObW-Pw-iQ8"/>
+                    <exclude reference="fRn-yN-BYw"/>
+                    <exclude reference="nxO-9i-0lD"/>
                     <exclude reference="alP-F9-9eC"/>
                     <exclude reference="eZ0-uq-QNh"/>
                     <exclude reference="eiL-TA-1fq"/>
@@ -1040,10 +1036,6 @@
                     <exclude reference="8g7-4H-h4C"/>
                     <exclude reference="BhZ-M5-We8"/>
                     <exclude reference="xI8-kW-Iee"/>
-                    <exclude reference="NUG-ES-f2S"/>
-                    <exclude reference="ObW-Pw-iQ8"/>
-                    <exclude reference="fRn-yN-BYw"/>
-                    <exclude reference="nxO-9i-0lD"/>
                     <exclude reference="Dmz-bs-cQ7"/>
                     <exclude reference="VnM-4P-8xI"/>
                     <exclude reference="BBy-it-wpb"/>
@@ -1151,6 +1143,10 @@
                     <include reference="AQX-0o-OKu"/>
                     <include reference="RuI-UC-Fu9"/>
                     <include reference="r93-bI-FOb"/>
+                    <include reference="NUG-ES-f2S"/>
+                    <exclude reference="ObW-Pw-iQ8"/>
+                    <include reference="fRn-yN-BYw"/>
+                    <include reference="nxO-9i-0lD"/>
                     <exclude reference="alP-F9-9eC"/>
                     <include reference="eZ0-uq-QNh"/>
                     <include reference="eiL-TA-1fq"/>
@@ -1158,10 +1154,6 @@
                     <include reference="8g7-4H-h4C"/>
                     <include reference="BhZ-M5-We8"/>
                     <include reference="xI8-kW-Iee"/>
-                    <include reference="NUG-ES-f2S"/>
-                    <exclude reference="ObW-Pw-iQ8"/>
-                    <include reference="fRn-yN-BYw"/>
-                    <include reference="nxO-9i-0lD"/>
                     <include reference="Dmz-bs-cQ7"/>
                     <include reference="VnM-4P-8xI"/>
                     <include reference="BBy-it-wpb"/>
@@ -1213,7 +1205,7 @@
                     <include reference="vT9-oW-jjA"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="-1" y="-93"/>
+            <point key="canvasLocation" x="136" y="-173"/>
         </view>
     </objects>
     <resources>

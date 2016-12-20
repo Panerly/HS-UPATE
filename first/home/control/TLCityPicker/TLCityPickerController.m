@@ -31,17 +31,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationItem setTitle:@"城市选择"];
-    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonDown:)];
+    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:cancelTitle style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonDown:)];
     [self.navigationItem setLeftBarButtonItem:cancelBarButton];
     
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:self.view.frame];
-    [imgView setImage:[UIImage imageNamed:@"icon_water_img"]];
+    [imgView setImage:[UIImage imageNamed:@"icon_bg_weather.jpg"]];
     
     [self.tableView setTableHeaderView:self.searchController.searchBar];
+    self.searchController.searchBar.barTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"icon_bg_weather.jpg"]];
     [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
     self.tableView.backgroundView = imgView;
     self.tableView.backgroundColor = [UIColor clearColor];
-    [self.tableView setSectionIndexColor:[UIColor blackColor]];
+    [self.tableView setSectionIndexColor:[UIColor whiteColor]];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
     [self.tableView registerClass:[TLCityGroupCell class] forCellReuseIdentifier:@"TLCityGroupCell"];
     [self.tableView registerClass:[TLCityHeaderView class] forHeaderFooterViewReuseIdentifier:@"TLCityHeaderView"];
@@ -84,6 +85,7 @@
     TLCityGroup *group = [self.data objectAtIndex:indexPath.section - 3];
     TLCity *city =  [group.arrayCitys objectAtIndex:indexPath.row];
     [cell.textLabel setText:city.cityName];
+    cell.textLabel.textColor = [UIColor whiteColor];
     cell.backgroundColor = [UIColor clearColor];
     return cell;
 }

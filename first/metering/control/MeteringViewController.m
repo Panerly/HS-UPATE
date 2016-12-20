@@ -10,7 +10,7 @@
 #import "MeteringSingleViewController.h"
 #import "SingleViewController.h"
 #import "TestViewController.h"
-#import <ShareSDK/ShareSDK.h>
+
 #import "MeterInfoModel.h"
 #import "MeterInfoTableViewCell.h"
 #import <AVFoundation/AVFoundation.h>
@@ -23,9 +23,10 @@
 #import "FTPopOverMenu.h"
 
 #import "ScanImageViewController.h"
+#import "SJViewController.h"
 
 
-static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
+//static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
 static NSString *const menuCellIdentifier = @"rotationCell";
 
 @interface MeteringViewController ()
@@ -83,22 +84,23 @@ static BOOL flashIsOn;
     [super viewDidLoad];
     [self setNavColor];
     
-//    UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
-//    [button addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
-//    UIBarButtonItem *scan = [[UIBarButtonItem alloc] initWithCustomView:button];
-//    self.navigationItem.leftBarButtonItem = scan;
+    flashIsOn   = YES;
+    isBitMeter  = YES;
+    isTap       = NO;
+    _num        = 5;
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
+    [button addTarget:self action:@selector(QRcode) forControlEvents:UIControlEventTouchUpInside];
+    [button setImage:[UIImage imageNamed:@"icon_qrcode@3x"] forState:UIControlStateNormal];
+    UIBarButtonItem *scan                   = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.leftBarButtonItem   = scan;
 
-    flashIsOn = YES;
     
     UIBarButtonItem *more = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_more@2x"] style:UIBarButtonItemStylePlain target:self action:@selector(presentMenuButtonTapped)];
     self.navigationItem.rightBarButtonItem = more;
     
     [self initiateMenuOptions];
     
-    isBitMeter = YES;
-    isTap = NO;
-    
-    _num = 5;
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
     
@@ -106,82 +108,25 @@ static BOOL flashIsOn;
     
     [self loadInterNetData];
     
-//    UIButton *btn = [[UIButton alloc] init];
-//    btn.clipsToBounds = YES;
-//    btn.layer.cornerRadius = 10;
-//    btn.backgroundColor = [UIColor redColor];
-//    [btn setTitle:@"通知+1" forState:UIControlStateNormal];
-//    [btn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:btn];
-//    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.view.mas_left).with.offset(PanScreenWidth/6);
-//        make.top.equalTo(self.view.mas_top).with.offset(100);
-//        make.size.equalTo(CGSizeMake(PanScreenWidth/4, 50));
-//    }];
-//    
-//    UIButton *btn2 = [[UIButton alloc] init];
-//    btn2.clipsToBounds = YES;
-//    btn2.layer.cornerRadius = 10;
-//    btn2.backgroundColor = [UIColor redColor];
-//    [btn2 setTitle:@"通知-1" forState:UIControlStateNormal];
-//    [btn2 addTarget:self action:@selector(btn) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:btn2];
-//    [btn2 mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.right.equalTo(self.view.mas_right).with.offset(-PanScreenWidth/6);
-//        make.top.equalTo(self.view.mas_top).with.offset(100);
-//        make.size.equalTo(CGSizeMake(PanScreenWidth/4, 50));
-//    }];
-//
-//
-//    UIButton *btn3 = [[UIButton alloc] init];
-//    btn3.clipsToBounds = YES;
-//    btn3.layer.cornerRadius = 10;
-//    btn3.backgroundColor = [UIColor redColor];
-//    [btn3 setTitle:@"跳转" forState:UIControlStateNormal];
-//    [btn3 addTarget:self action:@selector(push) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:btn3];
-//    [btn3 mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.right.equalTo(self.view.mas_right).with.offset(-PanScreenWidth/6);
-//        make.top.equalTo(self.view.mas_top).with.offset(160);
-//        make.size.equalTo(CGSizeMake(PanScreenWidth/4, 50));
-//    }];
-    
-//    UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(share)];
-//    self.navigationItem.rightBarButtonItems = @[share];
     [self setSegmentedCtl];
 }
 /**
  *  设置导航栏的颜色，返回按钮和标题为白色
  */
 -(void)setNavColor{
-//    NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
-//    if ([[ver objectAtIndex:0] intValue] >= 7) {
-//        // iOS 7.0 or later
-//        [self.navigationController.navigationBar lt_setBackgroundColor:COLORRGB(226, 107, 16)];
-//        
-//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-//        
-//        
-//        self.navigationController.navigationBar.translucent = YES;
-//        
-//        
-//    }else {
-//        // iOS 6.1 or earlier
-//        self.navigationController.navigationBar.tintColor =[UIColor colorFromHexString:@"12baaa"];
-//        
-//    }
     
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleDefault;
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     self.navigationController.navigationBar.barTintColor = COLORRGB(226, 107, 16);
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
 }
+
+//大小表控制
 - (void)setSegmentedCtl {
-    segmentedCtl = [[UISegmentedControl alloc] initWithItems:@[@"小表抄收",@"大表抄收"]];
-    segmentedCtl.frame = CGRectMake(0, 0, PanScreenWidth/3, 30);
+    segmentedCtl            = [[UISegmentedControl alloc] initWithItems:@[@"小表抄收",@"大表抄收"]];
+    segmentedCtl.frame      = CGRectMake(0, 0, PanScreenWidth/3, 30);
+    segmentedCtl.tintColor  = [UIColor whiteColor];
     segmentedCtl.selectedSegmentIndex = 0;
-    segmentedCtl.tintColor = [UIColor whiteColor];
     [segmentedCtl addTarget:self action:@selector(meterTypecOntrol:) forControlEvents:UIControlEventValueChanged];
     self.navigationItem.titleView = segmentedCtl;
     segmentedCtl.selectedSegmentIndex = 0;
@@ -212,7 +157,7 @@ static BOOL flashIsOn;
         }
         if (litMeterCountNum + bigMeterCountNum > 0) {
             
-            self.tabBarItem.badgeColor = [UIColor redColor];
+//            self.tabBarItem.badgeColor = [UIColor redColor];
             self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",litMeterCountNum+bigMeterCountNum];
         }else{
             
@@ -244,11 +189,11 @@ static BOOL flashIsOn;
                 }
                 
                 while ([restultSet next]) {
-                    NSString *install_addr = [restultSet stringForColumn:@"area_Name"];
-                    NSString *area_id = [restultSet stringForColumn:@"id"];
+                    NSString *install_addr         = [restultSet stringForColumn:@"area_Name"];
+                    NSString *area_id              = [restultSet stringForColumn:@"id"];
                     MeterInfoModel *meterinfoModel = [[MeterInfoModel alloc] init];
-                    meterinfoModel.install_Addr = install_addr;
-                    meterinfoModel.area_Id = area_id;
+                    meterinfoModel.install_Addr    = install_addr;
+                    meterinfoModel.area_Id         = area_id;
                     [_dataArr addObject:meterinfoModel];
                 }
                 
@@ -270,7 +215,7 @@ static BOOL flashIsOn;
 - (void)loadBigMeterLocalData {
     [self createDB];
     if ([self.db open]) {
-        FMResultSet *restultSet = [self.db executeQuery:@"SELECT * FROM litMeter_info where collector_area = '02' order by id"];
+        FMResultSet *restultSet = [self.db executeQuery:@"SELECT * FROM litMeter_info where collector_area = '00' order by id"];
         if (_dataArr) {
             [_dataArr removeAllObjects];
         }else {
@@ -279,9 +224,9 @@ static BOOL flashIsOn;
         }
         
         while ([restultSet next]) {
-            NSString *install_addr = [restultSet stringForColumn:@"install_addr"];
+            NSString *install_addr         = [restultSet stringForColumn:@"install_addr"];
             MeterInfoModel *meterinfoModel = [[MeterInfoModel alloc] init];
-            meterinfoModel.install_Addr = install_addr;
+            meterinfoModel.install_Addr    = install_addr;
             [_dataArr addObject:meterinfoModel];
         }
         
@@ -298,7 +243,7 @@ static BOOL flashIsOn;
     
     //刷新控件
     if (!loading) {
-        loading = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+        loading        = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
         loading.center = self.view.center;
         UIImage *image = [UIImage sd_animatedGIFNamed:@"刷新5"];
         [loading setImage:image];
@@ -309,21 +254,21 @@ static BOOL flashIsOn;
         [loading removeFromSuperview];
     }
     
-    NSString *litMeterDataUrl = [NSString stringWithFormat:@"%@/Meter_Reading/Meter_areaServlet",litMeterApi];
+    NSString *litMeterDataUrl                 = [NSString stringWithFormat:@"%@/Meter_Reading/Meter_areaServlet",litMeterApi];
     
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSessionConfiguration *config         = [NSURLSessionConfiguration defaultSessionConfiguration];
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    AFHTTPSessionManager *manager             = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
     
-    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
+    AFHTTPResponseSerializer *serializer      = manager.responseSerializer;
     
     manager.requestSerializer.timeoutInterval = 8;
     
-    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    serializer.acceptableContentTypes         = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
     
-    __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf              = self;
     
-    NSURLSessionTask *litMeterTask =[manager POST:litMeterDataUrl parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSURLSessionTask *litMeterTask = [manager POST:litMeterDataUrl parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -355,6 +300,34 @@ static BOOL flashIsOn;
             
             [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         }
+        if (!isBitMeter) {
+            [self loadBigMeterLocalData];
+        }
+        NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
+        NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+        FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+        if ([db open]) {
+            
+            FMResultSet *restultSet = [db executeQuery:@"select * from litMeter_info"];
+            int litMeterCountNum    = 0;
+            int bigMeterCountNum    = 0;
+            while ([restultSet next]) {
+                if (![[restultSet stringForColumn:@"collector_area"] isEqualToString:@"00"]) {
+                    litMeterCountNum++;
+                }
+                if ([[restultSet stringForColumn:@"collector_area"] isEqualToString:@"00"]) {
+                    bigMeterCountNum++;
+                }
+            }
+            if (litMeterCountNum + bigMeterCountNum > 0) {
+                
+                self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",litMeterCountNum+bigMeterCountNum];
+            }else{
+                
+                self.tabBarItem.badgeValue = nil;
+            }
+        }
+        [db close];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"小表数据查询失败：%@",error);
@@ -368,7 +341,6 @@ static BOOL flashIsOn;
 /**
  *  视图消失停止请求任务
  *
- *  @param animated <#animated description#>
  */
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -381,24 +353,6 @@ static BOOL flashIsOn;
     }
 }
 
-#warning mark - abandon menu 弃用菜单
-- (void)action :(UIButton *)sender{
-    [FTPopOverMenu showForSender:sender
-                        withMenu:@[@"MenuOne",@"MenuTwo",@"MenuThr"]
-                  imageNameArray:@[@"setting_icon",@"setting_icon",@"setting_icon"]
-                       doneBlock:^(NSInteger selectedIndex) {
-                           if (selectedIndex == 0) {
-                               ScanImageViewController *scanVC = [[ScanImageViewController alloc] init];
-                               [self.navigationController showViewController:scanVC sender:nil];
-                           }
-                           NSLog(@"done block. do something. selectedIndex : %ld", (long)selectedIndex);
-                           
-                       } dismissBlock:^{
-                           
-                           NSLog(@"user canceled. do nothing.");
-                           
-                       }];
-}
 
 //- (void)share{
 //    UIImage *image = [UIImage imageNamed:@"bg_server.jpg"];
@@ -463,54 +417,6 @@ static BOOL flashIsOn;
     }];
 }
 
-//static int i = 0;
-//- (void)viewWillAppear:(BOOL)animated
-//{
-//    if (i == 0) {
-//        self.tabBarItem.badgeValue = nil;
-//        i = 1;
-//    }else {
-//        
-//        self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",i ];
-//    }
-//}
-////测试：通知加减
-//- (void)btnAction
-//{
-//    if (i > 99) {
-//        self.tabBarItem.badgeValue = @"99+";
-//    }else {
-//        if (i == 0) {
-//            self.tabBarItem.badgeValue = nil;
-//            i = 1;
-//        } else {
-//            if (self.tabBarItem.badgeValue == nil) {
-//                self.tabBarItem.badgeValue = @"1";
-//            }
-//            self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",i++];
-//        }
-//    }
-//    
-//}
-//
-//-(void)btn
-//{
-//    if (i>=1) {
-//        
-//        self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",--i];
-//        if (i==0) {
-//            self.tabBarItem.badgeValue = nil;
-//        }
-//    }else
-//    {
-//        if (self.tabBarItem.badgeValue == nil) {
-//            self.tabBarItem.badgeValue = @"1";
-//            i = 1;
-//        }
-//        self.tabBarItem.badgeValue = nil;
-//    }
-//    
-//}
 - (void)_createTableView
 {
     cellID = @"meterInfoID";
@@ -518,12 +424,12 @@ static BOOL flashIsOn;
         
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, PanScreenHeight) style:UITableViewStylePlain];
         [self.view addSubview:_tableView];
-        _tableView.backgroundColor = [UIColor clearColor];
-        self.tableView.delegate = self;
-        self.tableView.dataSource = self;
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        self.tableView.backgroundColor = [UIColor clearColor];
-        _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+        _tableView.backgroundColor      = [UIColor clearColor];
+        self.tableView.delegate         = self;
+        self.tableView.dataSource       = self;
+        self.tableView.separatorStyle   = UITableViewCellSeparatorStyleNone;
+        self.tableView.backgroundColor  = [UIColor clearColor];
+        _tableView.keyboardDismissMode  = UIScrollViewKeyboardDismissModeOnDrag;
         
         [_tableView registerNib:[UINib nibWithNibName:@"MeterInfoTableViewCell" bundle:nil] forCellReuseIdentifier:cellID];
         
@@ -534,14 +440,14 @@ static BOOL flashIsOn;
         
         //调用初始化searchController
         self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-        self.searchController.searchBar.frame = CGRectMake(0, 0, 0, 44);
-        self.searchController.dimsBackgroundDuringPresentation = NO;
-        self.searchController.hidesNavigationBarDuringPresentation = NO;
-        self.searchController.searchBar.barTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
-        self.searchController.searchBar.placeholder = @"搜索";
+        self.searchController.searchBar.frame                       = CGRectMake(0, 0, 0, 44);
+        self.searchController.dimsBackgroundDuringPresentation      = NO;
+        self.searchController.hidesNavigationBarDuringPresentation  = NO;
+        self.searchController.searchBar.barTintColor                = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
+        self.searchController.searchBar.placeholder                 = @"搜索";
         
-        self.searchController.searchBar.delegate = self;
-        self.searchController.searchResultsUpdater = self;
+        self.searchController.searchBar.delegate    = self;
+        self.searchController.searchResultsUpdater  = self;
         //搜索栏表头视图
         self.tableView.tableHeaderView = self.searchController.searchBar;
         [self.searchController.searchBar sizeToFit];
@@ -549,11 +455,11 @@ static BOOL flashIsOn;
     
     if (!self.contextMenuTableView) {
         
-        self.contextMenuTableView = [[YALContextMenuTableView alloc]initWithTableViewDelegateDataSource:self];
-        self.contextMenuTableView.scrollEnabled = NO;
+        self.contextMenuTableView                   = [[YALContextMenuTableView alloc]initWithTableViewDelegateDataSource:self];
+        self.contextMenuTableView.scrollEnabled     = NO;
         self.contextMenuTableView.animationDuration = 0.1;
-        self.contextMenuTableView.yalDelegate = self;
-        self.contextMenuTableView.menuItemsSide = Right;
+        self.contextMenuTableView.yalDelegate       = self;
+        self.contextMenuTableView.menuItemsSide     = Right;
         self.contextMenuTableView.menuItemsAppearanceDirection = FromTopToBottom;
         
         //register nib
@@ -577,7 +483,6 @@ static BOOL flashIsOn;
 /**
  *  大小表切换
  *
- *  @param sender <#sender description#>
  */
 - (IBAction)meterTypecOntrol:(UISegmentedControl *)sender {
     
@@ -604,33 +509,26 @@ static BOOL flashIsOn;
 - (void)loadLitMeterLocalData {
     [self createDB];
     if ([self.db open]) {
+        
         FMResultSet *restultSet = [self.db executeQuery:@"SELECT * FROM Meter_area where id = 1 order by id"];
         if (_dataArr) {
+            
             [_dataArr removeAllObjects];
         }else {
+            
             _dataArr = [NSMutableArray array];
             [_dataArr removeAllObjects];
         }
-//        int litMeterCount = 0;
-//        int bigMeterCount = 0;
+        
         while ([restultSet next]) {
-//            if ([[restultSet stringForColumn:@"collector_Area"] isEqualToString:@"01"]) {
-//                litMeterCount++;
-//            }
-//            if ([[restultSet stringForColumn:@"collector_Area"] isEqualToString:@"02"]) {
-//                bigMeterCount++;
-//            }
-            NSString *install_addr = [restultSet stringForColumn:@"install_addr"];
-            NSString *meter_id = [restultSet stringForColumn:@"id"];
-            MeterInfoModel *meterinfoModel = [[MeterInfoModel alloc] init];
-            meterinfoModel.install_Addr = install_addr;
-            meterinfoModel.area_Id = meter_id;
+            
+            NSString *install_addr          = [restultSet stringForColumn:@"install_addr"];
+            NSString *meter_id              = [restultSet stringForColumn:@"id"];
+            MeterInfoModel *meterinfoModel  = [[MeterInfoModel alloc] init];
+            meterinfoModel.install_Addr     = install_addr;
+            meterinfoModel.area_Id          = meter_id;
             [_dataArr addObject:meterinfoModel];
         }
-//        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//        [defaults setObject:[NSString stringWithFormat:@"%d",litMeterCount] forKey:@"litMeterCount"];
-//        [defaults setObject:[NSString stringWithFormat:@"%d",bigMeterCount] forKey:@"bigMeterCount"];
-//        [defaults synchronize];
         
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     }
@@ -643,9 +541,10 @@ static BOOL flashIsOn;
 - (void)_requestData {
     //刷新控件
     if (!loading) {
-        loading = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
-        loading.center = self.view.center;
-        UIImage *image = [UIImage sd_animatedGIFNamed:@"刷新5"];
+        
+        loading         = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+        loading.center  = self.view.center;
+        UIImage *image  = [UIImage sd_animatedGIFNamed:@"刷新5"];
         [loading setImage:image];
         [self.view addSubview:loading];
     }
@@ -654,19 +553,19 @@ static BOOL flashIsOn;
         [loading removeFromSuperview];
     }
     
-    NSString *logInUrl = [NSString stringWithFormat:@"%@/Meter_Reading/Meter_info_1Servlet",litMeterApi];
+    NSString *logInUrl                   = [NSString stringWithFormat:@"%@/Meter_Reading/Meter_info_1Servlet",litMeterApi];
     
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSessionConfiguration *config    = [NSURLSessionConfiguration defaultSessionConfiguration];
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    AFHTTPSessionManager *manager        = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
     
     AFHTTPResponseSerializer *serializer = manager.responseSerializer;
     
     manager.requestSerializer.timeoutInterval = 8;
     
-    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    serializer.acceptableContentTypes         = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
     
-    __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf              = self;
     
     task =[manager POST:logInUrl parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -678,17 +577,16 @@ static BOOL flashIsOn;
             
             [weakSelf createDB];
             
-            
             UIAlertAction *conformBtn = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 
                 int litMeterCount = 0;
                 int bigMeterCount = 0;
                 for (NSDictionary *dic in responseObject) {
                     
-                    if ([[dic objectForKey:@"collector_Area"] isEqualToString:@"01"]) {
+                    if ([[dic objectForKey:@"collector_Area"] isEqualToString:@"00"]) {
                         litMeterCount++;
                     }
-                    if ([[dic objectForKey:@"collector_Area"] isEqualToString:@"02"]) {
+                    if (![[dic objectForKey:@"collector_Area"] isEqualToString:@"00"]) {
                         bigMeterCount++;
                     }
                     
@@ -700,13 +598,20 @@ static BOOL flashIsOn;
                 [defaults setObject:[NSString stringWithFormat:@"%d",litMeterCount] forKey:@"litMeterCount"];
                 [defaults setObject:[NSString stringWithFormat:@"%d",bigMeterCount] forKey:@"bigMeterCount"];
                 [defaults synchronize];
+                if (litMeterCount + bigMeterCount > 0) {
+                    
+                    self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",litMeterCount+bigMeterCount];
+                }else{
+                    
+                    self.tabBarItem.badgeValue = nil;
+                }
                 
                 [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                 [weakSelf.db close];
                 
                 [loading removeFromSuperview];
             }];
-            UIAlertAction *cancelBtn = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            UIAlertAction *cancelBtn = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                 [loading removeFromSuperview];
             }];
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否网络覆盖本地数据？" preferredStyle:UIAlertControllerStyleAlert];
@@ -753,17 +658,46 @@ static BOOL flashIsOn;
     [task resume];
 
 }
+
 #pragma mark - openQrcode
 //开启扫描
 - (void)QRcode {
 
-    [SVProgressHUD show];
+    SJViewController *viewController = [[SJViewController alloc] init];
+    
+    /** 扫描成功返回来的数据 */
+    viewController.successBlock = ^(NSString *successString) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        NSLog(@"successBlock=%@",successString);
+        
+        SingleViewController *singleVC      = [[SingleViewController alloc] init];
+        singleVC.meter_id_string            = [self getInfo:successString];
+        singleVC.hidesBottomBarWhenPushed   = YES;
+        if ([self getInfo:successString] == nil) {
+            
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"本地库中不存在此户信息！\n请更新本地库或检查条码信息！" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *action = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            [alertVC addAction:action];
+            [self presentViewController:alertVC animated:YES completion:^{
+                
+            }];
+        }else{
+            
+            [self.navigationController showViewController:singleVC sender:nil];
+        }
+    };
+    
+    [self presentViewController:viewController animated:YES completion:nil];
+    /*
+     [SVProgressHUD show];
     
     if (!_scanView) {
-        _scanView = [[UIView alloc] initWithFrame:self.view.bounds];
-        _scanView.center = self.view.center;
-        _scanView.backgroundColor = [UIColor blackColor];
-        _scanView.alpha = .8;
+        _scanView                   = [[UIView alloc] initWithFrame:self.view.bounds];
+        _scanView.center            = self.view.center;
+        _scanView.backgroundColor   = [UIColor blackColor];
+        _scanView.alpha             = .8;
         [self.navigationController.view addSubview:_scanView];
     }
 
@@ -772,9 +706,9 @@ static BOOL flashIsOn;
         scanBtn = [[UIButton alloc] init];
     }
     [scanBtn setTitle:@"关闭" forState:UIControlStateNormal];
-    scanBtn.backgroundColor = [UIColor redColor];
-    scanBtn.clipsToBounds = YES;
-    scanBtn.layer.cornerRadius = 5;
+    scanBtn.backgroundColor     = [UIColor redColor];
+    scanBtn.clipsToBounds       = YES;
+    scanBtn.layer.cornerRadius  = 5;
     [scanBtn addTarget:self action:@selector(conformBtn) forControlEvents:UIControlEventTouchUpInside];
     [_scanView addSubview:scanBtn];
     [scanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -784,8 +718,11 @@ static BOOL flashIsOn;
     }];
     
     [self startReading];
+     */
 
 }
+
+/*
 //关闭窗口
 - (void)conformBtn
 {
@@ -793,7 +730,7 @@ static BOOL flashIsOn;
     
     [UIView animateWithDuration:.5 animations:^{
         
-        _scanView.transform = CGAffineTransformMakeScale(.001, .001);
+        _scanView.transform          = CGAffineTransformMakeScale(.001, .001);
         _videoPreviewLayer.transform = CATransform3DMakeScale(.001, .001, .001);
         
     } completion:^(BOOL finished) {
@@ -801,8 +738,8 @@ static BOOL flashIsOn;
         [_scanView removeFromSuperview];
         [_videoPreviewLayer removeFromSuperlayer];
         
-        _videoPreviewLayer = nil;
-        _scanView = nil;
+        _videoPreviewLayer  = nil;
+        _scanView           = nil;
 
     }];
 }
@@ -812,13 +749,13 @@ static BOOL flashIsOn;
 {
     // 获取 AVCaptureDevice 实例
     NSError * error;
-    AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    AVCaptureDevice *captureDevice  = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     // 初始化输入流
-    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
+    AVCaptureDeviceInput *input     = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
     if (!input) {
         
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"警告！" message:@"设备不支持！请检查" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertController *alertVC  = [UIAlertController alertControllerWithTitle:@"警告！" message:@"设备不支持！请检查" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action       = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             [self conformBtn];
         }];
         [alertVC addAction:action];
@@ -911,10 +848,10 @@ static BOOL flashIsOn;
     [self stopReading];
     NSLog(@"扫描结果：%@",result);
     
-    UILabel *resultLabel = [[UILabel alloc] init];
-    resultLabel.text = result;
-    resultLabel.textColor = [UIColor whiteColor];
-    resultLabel.textAlignment = NSTextAlignmentCenter;
+    UILabel *resultLabel        = [[UILabel alloc] init];
+    resultLabel.text            = result;
+    resultLabel.textColor       = [UIColor whiteColor];
+    resultLabel.textAlignment   = NSTextAlignmentCenter;
     [_scanView addSubview:resultLabel];
     
     [resultLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -925,19 +862,28 @@ static BOOL flashIsOn;
 
     [self conformBtn];
     
-    SingleViewController *singleVC = [[SingleViewController alloc] init];
-    singleVC.meter_id_string = result;
-    singleVC.hidesBottomBarWhenPushed = YES;
-    
-    [self.navigationController showViewController:singleVC sender:nil];
+    SingleViewController *singleVC      = [[SingleViewController alloc] init];
+    singleVC.meter_id_string            = [self getInfo:result];
+    singleVC.hidesBottomBarWhenPushed   = YES;
+    if ([self getInfo:result] == nil) {
+        GUAAlertView *alertView = [GUAAlertView alertViewWithTitle:@"确定" message:@"本地库中不存在此户信息！\n请更新本地库或检查条码信息！" buttonTitle:@"确定" buttonTouchedAction:^{
+            
+        } dismissAction:^{
+            
+        }];
+        [alertView show];
+    }else{
+        
+        [self.navigationController showViewController:singleVC sender:nil];
+    }
     
     if (!_lastResult) {
         return;
     }
     _lastResult = NO;
 
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"条形码扫描" message:result preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alertVC  = [UIAlertController alertControllerWithTitle:@"条形码扫描" message:result preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action       = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 
     }];
     [alertVC addAction:action];
@@ -948,24 +894,48 @@ static BOOL flashIsOn;
     // 以下处理了结果，继续下次扫描
     _lastResult = YES;
 }
+*/
 
+//查找本地库信息是否存在此扫描结果数据
+- (NSString*)getInfo :(NSString *)meter_id {
+    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
+    NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+    
+    NSLog(@"文件路径：%@  条码号(meter_id)：%@", fileName, meter_id);
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+    
+    if ([db open]) {
+        
+        FMResultSet *restultSet = [db executeQuery:[NSString stringWithFormat:@"select * from litMeter_info where meter_txm = '%@'",meter_id]];
+        NSString *install_addr;
+        while ([restultSet next]) {
+            install_addr = [restultSet stringForColumn:@"meter_id"];
+        }
+        if (install_addr) {
+            
+            return install_addr;
+        }else{
+            
+            
+            return nil;
+        }
+    }
+    return nil;
+}
 
 #pragma mark - Local methods
 
 - (void)initiateMenuOptions {
     self.menuTitles = @[
                         @"",
-                        @"大表扫码",
-                        @"小表扫码",
-                        @"开启手电筒",
+                        @"开  启  手  电  筒",
                         @"查看本地数据库",
                         @"已完成抄收列表"
                         ];
     
     self.menuIcons = @[
                        [UIImage imageNamed:@"icon_close@3x"],
-                       [UIImage imageNamed:@"icon_qrcode_big@3x"],
-                       [UIImage imageNamed:@"icon_qrcode@3x"],
                        [UIImage imageNamed:@"light@3x"],
                        [UIImage imageNamed:@"icon_db@3x"],
                        [UIImage imageNamed:@"icon_complete@2x"]
@@ -982,19 +952,14 @@ static BOOL flashIsOn;
         [self.view addSubview:_tableView];
         [self.view insertSubview:_tableView belowSubview:_ctrlBtn];
     }
-    
-    if (indexPath.row == 1|| indexPath.row == 2) {
-        
-        [self QRcode];
-    }
-    if (indexPath.row == 3) {
+    if (indexPath.row == 1) {
         [self systemLightSwitch:flashIsOn];
     }
-    if (indexPath.row == 4) {
+    if (indexPath.row == 2) {
         LocaDBViewController *locaDB = [[LocaDBViewController alloc] init];
         [self.navigationController showViewController:locaDB sender:nil];
     }
-    if (indexPath.row == 5) {
+    if (indexPath.row == 3) {
         CompleteViewController *completeVC = [[CompleteViewController alloc] init];
         [self.navigationController showViewController:completeVC sender:nil];
     }
@@ -1015,7 +980,6 @@ static BOOL flashIsOn;
             if (self.searchController.active) {
                 
                 meteringVC.area_id = [((MeterInfoModel *)_searchResults[indexPath.row]).area_Id isEqualToString:@"1"]?@"01":((MeterInfoModel *)_searchResults[indexPath.row]).area_Id;
-                
             }else {
                 
                 meteringVC.area_id = [((MeterInfoModel *)_dataArr[indexPath.row]).area_Id isEqualToString:@"1"]?@"01":((MeterInfoModel *)_dataArr[indexPath.row]).area_Id;
@@ -1026,10 +990,10 @@ static BOOL flashIsOn;
         }
         else
         {
-            SingleViewController *singleVC = [[SingleViewController alloc] init];
-            singleVC.meter_id_string = self.searchController.active?((MeterInfoModel *)_searchResults[indexPath.row]).install_Addr:((MeterInfoModel *)_dataArr[indexPath.row]).install_Addr;
-            singleVC.hidesBottomBarWhenPushed = YES;
-            singleVC.isBigMeter = YES;
+            SingleViewController *singleVC      = [[SingleViewController alloc] init];
+            singleVC.meter_id_string            = self.searchController.active?((MeterInfoModel *)_searchResults[indexPath.row]).install_Addr:((MeterInfoModel *)_dataArr[indexPath.row]).install_Addr;
+            singleVC.hidesBottomBarWhenPushed   = YES;
+            singleVC.isBigMeter                 = YES;
             [self.navigationController showViewController:singleVC sender:nil];
         }
     }
@@ -1037,6 +1001,7 @@ static BOOL flashIsOn;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (isTap) {
+        
         return 50;
     }
     return 40;
@@ -1057,7 +1022,7 @@ static BOOL flashIsOn;
         ContextMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:menuCellIdentifier forIndexPath:indexPath];
         
         if (cell) {
-            cell.backgroundColor = [UIColor clearColor];
+            cell.backgroundColor     = [UIColor clearColor];
             cell.menuTitleLabel.text = [self.menuTitles objectAtIndex:indexPath.row];
             cell.menuImageView.image = [self.menuIcons objectAtIndex:indexPath.row];
         }
@@ -1065,9 +1030,10 @@ static BOOL flashIsOn;
     }
     MeterInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
     
-    cell.backgroundColor = [UIColor clearColor];
+    cell.backgroundColor         = [UIColor clearColor];
     
     if (!cell) {
+        
         cell = [[[NSBundle mainBundle] loadNibNamed:@"MeterInfoTableViewCell" owner:self options:nil] lastObject];
     }
     cell.meterInfoModel= self.searchController.active?_searchResults[indexPath.row]:_dataArr[indexPath.row];
@@ -1110,10 +1076,9 @@ static BOOL flashIsOn;
 /**
  *  隐藏状态栏
  *
- *  @return <#return value description#>
  */
 - (BOOL)prefersStatusBarHidden {
-    return YES;
+    return NO;
 }
 
 /**
@@ -1151,6 +1116,7 @@ static BOOL flashIsOn;
 }
 #pragma mark - 创建数据库
 - (void)createDB {
+    
     NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
     NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
     
@@ -1193,14 +1159,14 @@ static BOOL flashIsOn;
 #pragma mark - searchController delegate
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController{
-    self.searchResults= [NSMutableArray array];
+    self.searchResults = [NSMutableArray array];
     [self.searchResults removeAllObjects];
     
     //NSPredicate 谓词
     NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@",searchController.searchBar.text];
     
-    NSMutableArray *arr = [NSMutableArray array];
-    NSMutableArray *arr2 = [NSMutableArray array];
+    NSMutableArray *arr     = [NSMutableArray array];
+    NSMutableArray *arr2    = [NSMutableArray array];
     [arr2 removeAllObjects];
     if (isBitMeter) {
         
@@ -1232,8 +1198,8 @@ static BOOL flashIsOn;
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:YES animated:YES];
-    UIButton *btn=[searchBar valueForKey:@"_cancelButton"];
-    [btn setTitle:@"取消" forState:UIControlStateNormal];
+    UIButton *btn = [searchBar valueForKey:@"_cancelButton"];
+    [btn setTitle:cancelTitle forState:UIControlStateNormal];
 }
 
 

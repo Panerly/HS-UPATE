@@ -50,13 +50,13 @@ UISearchResultsUpdating
     [self requestAbnormalCommunityData];
     
     //切换按钮
-    selectedBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    selectedBtn.frame = CGRectMake(0, 0, 60, 30);
+    selectedBtn         = [UIButton buttonWithType:UIButtonTypeSystem];
+    selectedBtn.frame   = CGRectMake(0, 0, 60, 30);
     [selectedBtn setTitle:@"异常" forState:UIControlStateNormal];
     [selectedBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     isNormal = YES;
     [selectedBtn addTarget:self action:@selector(_selectDataSource:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *selectItem = [[UIBarButtonItem alloc] initWithCustomView:selectedBtn];
+    UIBarButtonItem *selectItem             = [[UIBarButtonItem alloc] initWithCustomView:selectedBtn];
     self.navigationItem.rightBarButtonItems = @[selectItem];
 }
 
@@ -89,9 +89,9 @@ UISearchResultsUpdating
 
 - (void)startLoading {
     //刷新控件
-    loadingView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
-    loadingView.center = self.view.center;
-    UIImage *image = [UIImage sd_animatedGIFNamed:@"刷新5"];
+    loadingView         = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+    loadingView.center  = self.view.center;
+    UIImage *image      = [UIImage sd_animatedGIFNamed:@"刷新5"];
     [loadingView setImage:image];
     [self.view addSubview:loadingView];
 }
@@ -125,13 +125,13 @@ UISearchResultsUpdating
         [loadingView removeFromSuperview];
     }
     
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
-    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
-    manager.requestSerializer.timeoutInterval = 30;
-    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    NSString *communityURL = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_NumberServlet",litMeterApi];
-    __weak typeof(self) weekSelf = self;
+    NSURLSessionConfiguration *config           = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFHTTPSessionManager *manager               = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    AFHTTPResponseSerializer *serializer        = manager.responseSerializer;
+    manager.requestSerializer.timeoutInterval   = 30;
+    serializer.acceptableContentTypes           = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    NSString *communityURL                      = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_NumberServlet",litMeterApi];
+    __weak typeof(self) weekSelf                = self;
     
     task = [manager POST:communityURL parameters:NULL progress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -186,13 +186,13 @@ UISearchResultsUpdating
         [loadingView removeFromSuperview];
     }
     
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
-    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
-    manager.requestSerializer.timeoutInterval = 60;
-    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    NSString *communityURL = [NSString stringWithFormat:@"%@/Small_Meter_Reading/NotNormalServlet",litMeterApi];
-    __weak typeof(self) weekSelf = self;
+    NSURLSessionConfiguration *config           = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFHTTPSessionManager *manager               = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    AFHTTPResponseSerializer *serializer        = manager.responseSerializer;
+    manager.requestSerializer.timeoutInterval   = 60;
+    serializer.acceptableContentTypes           = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    NSString *communityURL                      = [NSString stringWithFormat:@"%@/Small_Meter_Reading/NotNormalServlet",litMeterApi];
+    __weak typeof(self) weekSelf                = self;
     
     task = [manager POST:communityURL parameters:NULL progress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -235,25 +235,25 @@ UISearchResultsUpdating
 //初始化tableview
 - (void)initTableView {
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, PanScreenWidth, PanScreenHeight - 64 - 49)];
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    _tableView.backgroundColor = [UIColor clearColor];
-    _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    _tableView                      = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, PanScreenWidth, PanScreenHeight - 64 - 49)];
+    _tableView.delegate             = self;
+    _tableView.dataSource           = self;
+    _tableView.backgroundColor      = [UIColor clearColor];
+    _tableView.keyboardDismissMode  = UIScrollViewKeyboardDismissModeOnDrag;
     
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(requestCommunityData)];
     _tableView.mj_header.automaticallyChangeAlpha = YES;
     
     //调用初始化searchController
-    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    self.searchController.searchBar.frame = CGRectMake(0, 0, 0, 44);
-    self.searchController.dimsBackgroundDuringPresentation = NO;
-    self.searchController.hidesNavigationBarDuringPresentation = YES;
-    self.searchController.searchBar.barTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
-    self.searchController.searchBar.placeholder = @"搜索";
+    self.searchController                                       = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchBar.frame                       = CGRectMake(0, 0, 0, 44);
+    self.searchController.dimsBackgroundDuringPresentation      = NO;
+    self.searchController.hidesNavigationBarDuringPresentation  = YES;
+    self.searchController.searchBar.barTintColor                = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
+    self.searchController.searchBar.placeholder                 = @"搜索";
     
-    self.searchController.searchBar.delegate = self;
-    self.searchController.searchResultsUpdater = (id)self;
+    self.searchController.searchBar.delegate    = self;
+    self.searchController.searchResultsUpdater  = (id)self;
     //搜索栏表头视图
     self.tableView.tableHeaderView = self.searchController.searchBar;
     [self.searchController.searchBar sizeToFit];
@@ -360,14 +360,14 @@ float _oldY;
 #pragma mark - searchController delegate
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController{
-    self.searchResults= [NSMutableArray array];
+    self.searchResults = [NSMutableArray array];
     [self.searchResults removeAllObjects];
     
     //NSPredicate 谓词
     NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@",searchController.searchBar.text];
     
-    NSMutableArray *arr = [NSMutableArray array];
-    NSMutableArray *arr2 = [NSMutableArray array];
+    NSMutableArray *arr     = [NSMutableArray array];
+    NSMutableArray *arr2    = [NSMutableArray array];
     [arr2 removeAllObjects];
     
     if (isNormal) {
@@ -411,7 +411,7 @@ float _oldY;
 {
     [searchBar setShowsCancelButton:YES animated:YES];
     UIButton *btn=[searchBar valueForKey:@"_cancelButton"];
-    [btn setTitle:@"取消" forState:UIControlStateNormal];
+    [btn setTitle:cancelTitle forState:UIControlStateNormal];
 }
 
 @end

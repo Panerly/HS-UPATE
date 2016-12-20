@@ -115,7 +115,7 @@
         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         [weakSelf presentViewController:imagePicker animated:YES completion:nil];
     }];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:nil];
     [alert addAction:cancel];
     [alert addAction:change];
     [self presentViewController:alert animated:YES completion:nil];
@@ -199,7 +199,7 @@
             [defaults setObject:@"女" forKey:@"sex"];
             [_tableView reloadData];
         }];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             
         }];
         [alert addAction:boy];

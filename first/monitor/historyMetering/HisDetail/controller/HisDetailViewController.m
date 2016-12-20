@@ -68,24 +68,23 @@ static CGFloat i = 0;
 {
     
     //刷新控件
-    
-    loading = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
-    loading.center = self.view.center;
-    loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(PanScreenWidth/2 - 60, PanScreenHeight/2 + 25, 150, 30)];
-    loadingLabel.text = @"正在拼命加载中...";
+    loading             = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    loading.center      = self.view.center;
+    loadingLabel        = [[UILabel alloc] initWithFrame:CGRectMake(PanScreenWidth/2 - 60, PanScreenHeight/2 + 25, 150, 30)];
+    loadingLabel.text   = @"正在拼命加载中...";
     
     UIImage *image = [UIImage sd_animatedGIFNamed:@"刷新1"];
     [loading setImage:image];
     [self.view addSubview:loading];
     [self.view addSubview:loadingLabel];
     
-    NSString *historyUrl = [NSString stringWithFormat:@"http://%@/waterweb/His5Servlet",self.ipLabel];
+    NSString *historyUrl                = [NSString stringWithFormat:@"http://%@/waterweb/His5Servlet",self.ipLabel];
     
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSessionConfiguration *config   = [NSURLSessionConfiguration defaultSessionConfiguration];
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    AFHTTPSessionManager *manager       = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
     
-    NSDictionary *parameters = @{@"meter_id":self.hisDetailModel.meter_id,
+    NSDictionary *parameters  = @{@"meter_id":self.hisDetailModel.meter_id,
                                  @"date1":fromTime,
                                  @"date2":toTime,
                                  @"username":self.userNameLabel,
@@ -106,8 +105,8 @@ static CGFloat i = 0;
         if (responseObject) {
             
             NSDictionary *meter1Dic = [responseObject objectForKey:@"meters"];
-            dataCount = [[responseObject objectForKey:@"count"] integerValue];
-            NSError *error = nil;
+            dataCount               = [[responseObject objectForKey:@"count"] integerValue];
+            NSError *error          = nil;
             
             [self.dataArr removeAllObjects];
             
@@ -139,10 +138,10 @@ static CGFloat i = 0;
 }
 - (void)_getValue
 {
-    self.meter_id.text = [NSString stringWithFormat:@"用户号: %@",self.hisDetailModel.meter_id];
-    self.meter_name.text = [NSString stringWithFormat:@"用户名: %@",self.hisDetailModel.meter_name];
-    self.meter_name2.text = [NSString stringWithFormat:@"表类型: %@",self.hisDetailModel.meter_name2];
-    self.meter_cali.text = [NSString stringWithFormat:@"表口径: %@",self.hisDetailModel.meter_cali];
+    self.meter_id.text      = [NSString stringWithFormat:@"用户号: %@",self.hisDetailModel.meter_id];
+    self.meter_name.text    = [NSString stringWithFormat:@"用户名: %@",self.hisDetailModel.meter_name];
+    self.meter_name2.text   = [NSString stringWithFormat:@"表类型: %@",self.hisDetailModel.meter_name2];
+    self.meter_cali.text    = [NSString stringWithFormat:@"表口径: %@",self.hisDetailModel.meter_cali];
 }
 
 - (void)_setTableView
@@ -195,11 +194,11 @@ static CGFloat i = 0;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat avg = i / _dataArr.count;
-    float m =  [((HisDetailModel *)self.dataArr[indexPath.row]).collect_avg floatValue];
+    float m     =  [((HisDetailModel *)self.dataArr[indexPath.row]).collect_avg floatValue];
 
-    UIAlertController *alert1 = [UIAlertController alertControllerWithTitle:@"平均用量值" message:[NSString stringWithFormat:@"\n本期流量值：%lf m³\n\n平均流量值：%lf m³\n\n高于平均用水量：%lf m³",m,avg,m-avg] preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"平均用量值" message:[NSString stringWithFormat:@"\n本期流量值：%lf m³\n\n平均流量值：%lf m³\n\n低于平均用水量：%lf m³",m,avg,avg-m] preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alert1   = [UIAlertController alertControllerWithTitle:@"平均用量值" message:[NSString stringWithFormat:@"\n本期流量值：%lf m³\n\n平均流量值：%lf m³\n\n高于平均用水量：%lf m³",m,avg,m-avg] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert2   = [UIAlertController alertControllerWithTitle:@"平均用量值" message:[NSString stringWithFormat:@"\n本期流量值：%lf m³\n\n平均流量值：%lf m³\n\n低于平均用水量：%lf m³",m,avg,avg-m] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action       = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
     }];
     [alert1 addAction:action];
@@ -232,9 +231,9 @@ static CGFloat i = 0;
 }
 
 - (IBAction)chartBtn:(id)sender {
-    SCViewController *curveVC = [[SCViewController alloc] init];
-    curveVC.xArr = _xArr;
-    curveVC.yArr = _yArr;
+    SCViewController *curveVC   = [[SCViewController alloc] init];
+    curveVC.xArr                = _xArr;
+    curveVC.yArr                = _yArr;
     curveVC.hidesBottomBarWhenPushed = YES;
     
     [self.navigationController showViewController:curveVC sender:nil];

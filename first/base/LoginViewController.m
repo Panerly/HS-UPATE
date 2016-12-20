@@ -62,6 +62,28 @@
     
     //创建登录btn
     [self _createLogBtn];
+    
+}
+
+- (void)textFieldDidChange:(UITextField *)textField {
+    if (textField == self.userName) {
+        
+        if ([textField.text isEqualToString:@"hzsb"]) {
+            [UIView animateWithDuration:.5 animations:^{
+                
+                self.configBtn.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished) {
+
+            }];
+        }else{
+            [UIView animateWithDuration:.5 animations:^{
+                
+                self.configBtn.transform = CGAffineTransformMakeScale(.01, .01);
+            } completion:^(BOOL finished) {
+                
+            }];
+        }
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -120,9 +142,9 @@
 - (void)popKeyBoard:(NSNotification *)notification
 {
     //获取键盘的高度
-    NSValue *value = notification.userInfo[@"UIKeyboardBoundsUserInfoKey"];
-    CGRect rect = [value CGRectValue];
-    CGFloat height = rect.size.height;
+    NSValue *value  = notification.userInfo[@"UIKeyboardBoundsUserInfoKey"];
+    CGRect rect     = [value CGRectValue];
+    CGFloat height  = rect.size.height;
     
     
     if (_flag == 1) {
@@ -237,9 +259,9 @@
         
         logInButton.frame = CGRectMake(20, CGRectGetHeight(self.view.bounds) - (40 + 80), [UIScreen mainScreen].bounds.size.width - 40, 40);
         
-        _hsLogoView.transform = CGAffineTransformIdentity;
-        _userName.transform = CGAffineTransformIdentity;
-        _passWord.transform = CGAffineTransformIdentity;
+        _hsLogoView.transform   = CGAffineTransformIdentity;
+        _userName.transform     = CGAffineTransformIdentity;
+        _passWord.transform     = CGAffineTransformIdentity;
         _userBaseView.transform = CGAffineTransformIdentity;
         
         [_passWord resignFirstResponder];
@@ -398,21 +420,22 @@
 
 #pragma mark - login litmeter 大表登录检测后登录小表
 - (void)logLitMeter {
+    
     //登录API 需传入的参数：用户名、密码、数据库名、IP地址
-    NSString *logInUrl = [NSString stringWithFormat:@"%@/Meter_Reading/S_Login_InfoServlet",litMeterApi];
+    NSString *logInUrl                  = [NSString stringWithFormat:@"%@/Meter_Reading/S_Login_InfoServlet",litMeterApi];
     
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSessionConfiguration *config   = [NSURLSessionConfiguration defaultSessionConfiguration];
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    AFHTTPSessionManager *manager       = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
     manager.requestSerializer.timeoutInterval= 10;
     
     NSDictionary *parameters = @{@"name":self.userName.text,
                                  @"pwd":self.passWord.text,
                                  };
     
-    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
+    AFHTTPResponseSerializer *serializer    = manager.responseSerializer;
     
-    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    serializer.acceptableContentTypes       = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
     
     __weak typeof(self) weakSelf = self;
     
@@ -506,9 +529,9 @@
     _flag = 1;
     [UIView animateWithDuration:.25 animations:^{
         
-        _hsLogoView.transform = CGAffineTransformIdentity;
-        _userName.transform = CGAffineTransformIdentity;
-        _passWord.transform = CGAffineTransformIdentity;
+        _hsLogoView.transform   = CGAffineTransformIdentity;
+        _userName.transform     = CGAffineTransformIdentity;
+        _passWord.transform     = CGAffineTransformIdentity;
         _userBaseView.transform = CGAffineTransformIdentity;
         
         logInButton.frame = CGRectMake(20, CGRectGetHeight(self.view.bounds) - (40 + 80), [UIScreen mainScreen].bounds.size.width - 40, 40);
@@ -532,15 +555,32 @@
     _flag = 1;
     [UIView animateWithDuration:.25 animations:^{
         
-        _hsLogoView.transform = CGAffineTransformIdentity;
-        _userName.transform = CGAffineTransformIdentity;
-        _passWord.transform = CGAffineTransformIdentity;
-        _userBaseView.transform = CGAffineTransformIdentity;
+        _hsLogoView.transform       = CGAffineTransformIdentity;
+        _userName.transform         = CGAffineTransformIdentity;
+        _passWord.transform         = CGAffineTransformIdentity;
+        _userBaseView.transform     = CGAffineTransformIdentity;
         
         logInButton.frame = CGRectMake(20, CGRectGetHeight(self.view.bounds) - (40 + 80), [UIScreen mainScreen].bounds.size.width - 40, 40);
         [_passWord resignFirstResponder];
         [_userName resignFirstResponder];
     }];
+    if ([self.userName.text isEqualToString:@"hzsb"]) {
+        [UIView animateWithDuration:.5 animations:^{
+            
+            self.configBtn.transform = CGAffineTransformIdentity;
+        } completion:^(BOOL finished) {
+            
+        }];
+    }else{
+        [UIView animateWithDuration:.5 animations:^{
+            
+            self.configBtn.transform = CGAffineTransformMakeScale(.01, .01);
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    //监听输入内容，判断是否显示配置选项
+    [self.userName addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate
@@ -576,9 +616,9 @@
         _flag = 1;
         [UIView animateWithDuration:.25 animations:^{
             
-            _hsLogoView.transform = CGAffineTransformIdentity;
-            _userName.transform = CGAffineTransformIdentity;
-            _passWord.transform = CGAffineTransformIdentity;
+            _hsLogoView.transform   = CGAffineTransformIdentity;
+            _userName.transform     = CGAffineTransformIdentity;
+            _passWord.transform     = CGAffineTransformIdentity;
             _userBaseView.transform = CGAffineTransformIdentity;
             
             logInButton.frame = CGRectMake(20, CGRectGetHeight(self.view.bounds) - (40 + 80), [UIScreen mainScreen].bounds.size.width - 40, 40);

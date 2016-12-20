@@ -18,21 +18,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIButton *backAction = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 25)];
+    UIButton *backAction        = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 25)];
     [backAction setImage:[UIImage imageNamed:@"icon_back@3x"] forState:UIControlStateNormal];
-    UIBarButtonItem *backitem = [[UIBarButtonItem alloc] initWithCustomView:backAction];
+    UIBarButtonItem *backitem   = [[UIBarButtonItem alloc] initWithCustomView:backAction];
     self.navigationController.navigationItem.backBarButtonItem = backitem;
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor   = [UIColor whiteColor];
     
-    _image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, PanScreenHeight)];
-    _image.backgroundColor = [UIColor redColor];
+    _image                      = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, PanScreenHeight)];
+    _image.backgroundColor      = [UIColor redColor];
     
-    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *doc               = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     
-    NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+    NSString *fileName          = [doc stringByAppendingPathComponent:@"meter.sqlite"];
     
-    FMDatabase *db = [FMDatabase databaseWithPath:fileName];
+    FMDatabase *db              = [FMDatabase databaseWithPath:fileName];
     
     if ([db open]) {
         
@@ -46,20 +46,5 @@
     [self.view addSubview:_image];
     
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

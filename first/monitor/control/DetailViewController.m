@@ -31,6 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [MLTransition invalidate];
+    
     [self _requestData];
     
     [self _setValue];

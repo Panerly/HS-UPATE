@@ -10,16 +10,17 @@
 #import "DBModel.h"
 #import "TableViewCell.h"
 #import "SingleViewController.h"
-#import "LUNSegmentedControl.h"
 
 @interface LocaDBViewController ()
 <
 UITableViewDelegate,
-UITableViewDataSource,
-LUNSegmentedControlDelegate,
-LUNSegmentedControlDataSource
+UITableViewDataSource
 >
-@property (strong, nonatomic) LUNSegmentedControl *segmentedControl;
+{
+    BOOL isBigMeter;
+}
+
+@property (strong, nonatomic) UISegmentedControl *segmentedControl;
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) FMDatabase *db;
@@ -38,12 +39,52 @@ LUNSegmentedControlDataSource
     [self createTableView];
   
     [self setSegment];
+    
+    UIBarButtonItem *deletAll              = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_delete@3x"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteBtn)];
+    self.navigationItem.rightBarButtonItem = deletAll;
+    
+}
+
+- (void)deleteBtn {
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"确定删除 %@ 本地库数据？",isBigMeter?@"大表":@"小表"] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *confirmBtn  = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        NSString *doc      = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+        NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+        FMDatabase *db     = [FMDatabase databaseWithPath:fileName];
+        
+        if ([db open]) {
+            
+            for (int i = 0; i < _dataArr.count; i++) {
+                
+                [db executeUpdate:[NSString stringWithFormat:@"delete from litMeter_info where install_addr = '%@'",((DBModel *)_dataArr[i]).user_addr]];
+            }
+            
+            [db close];
+            [_dataArr removeAllObjects];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            [SCToastView showInView:self.view text:@"数据库打开失败" duration:.5 autoHide:YES];
+        }
+    }];
+    UIAlertAction *cancelBtn = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:cancelBtn];
+    [alertVC addAction:confirmBtn];
+    [self presentViewController:alertVC animated:YES completion:^{
+        
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self segmentedControl:self.segmentedControl didScrollWithXOffset:0];
-    [self queryDB];
+//    [self segmentedControl:self.segmentedControl didScrollWithXOffset:0];
+    if (isBigMeter) {
+        [self queryBigMeterDB];
+    }else{
+        [self queryDB];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -52,13 +93,33 @@ LUNSegmentedControlDataSource
 }
 
 - (void)setSegment {
-    self.segmentedControl = [[LUNSegmentedControl alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth/2.5, 30)];
-    self.segmentedControl.transitionStyle = LUNSegmentedControlTransitionStyleFade;
-    self.segmentedControl.delegate = self;
-    self.segmentedControl.dataSource = self;
-    self.navigationItem.titleView = self.segmentedControl;
-}
+    self.segmentedControl            = [[UISegmentedControl alloc] initWithItems:@[@"小表抄收",@"大表抄收"]];
+    self.segmentedControl.frame      = CGRectMake(0, 0, PanScreenWidth/2.5, 30);
+    [self.segmentedControl setTitle:@"小表抄收" forSegmentAtIndex:0];
+    [self.segmentedControl setTitle:@"大表抄收" forSegmentAtIndex:1];
 
+    [self.segmentedControl addTarget:self action:@selector(segmentControl:) forControlEvents:UIControlEventValueChanged];
+    
+    self.segmentedControl.selectedSegmentIndex = 0;
+    self.navigationItem.titleView    = self.segmentedControl;
+    isBigMeter                       = NO;
+}
+- (void)segmentControl :(UISegmentedControl *)segmentedControl{
+    switch (segmentedControl.selectedSegmentIndex) {
+        case 0:
+            
+            [self queryDB];
+            isBigMeter = NO;
+            break;
+        case 1:
+            
+            [self queryBigMeterDB];
+            isBigMeter = YES;
+            break;
+        default:
+            break;
+    }
+}
 
 
 - (void)queryDB {
@@ -71,19 +132,19 @@ LUNSegmentedControlDataSource
     
     if ([db open]) {
         
-        FMResultSet *resultSet = [db executeQuery:@"select *from litMeter_info where collector_area = '01' order by id"];
+        FMResultSet *resultSet = [db executeQuery:@"select *from litMeter_info where collector_area != '00' order by id"];
         
         _dataArr = [NSMutableArray array];
         [_dataArr removeAllObjects];
         
         while ([resultSet next]) {
             
-            NSString *meter_id = [resultSet stringForColumn:@"meter_id"];
+            NSString *meter_id  = [resultSet stringForColumn:@"meter_id"];
             NSString *user_addr = [resultSet stringForColumn:@"install_addr"];
 
-            DBModel *dbModel = [[DBModel alloc] init];
-            dbModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
-            dbModel.user_addr =[NSString stringWithFormat:@"%@",user_addr];
+            DBModel *dbModel    = [[DBModel alloc] init];
+            dbModel.meter_id    = [NSString stringWithFormat:@"%@",meter_id];
+            dbModel.user_addr   =[NSString stringWithFormat:@"%@",user_addr];
             [_dataArr addObject:dbModel];
         }
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
@@ -103,19 +164,19 @@ LUNSegmentedControlDataSource
     
     if ([db open]) {
         
-        FMResultSet *resultSet = [db executeQuery:@"select *from litMeter_info where collector_area = '02' order by id"];
+        FMResultSet *resultSet = [db executeQuery:@"select *from litMeter_info where collector_area = '00' order by id"];
         
-        _dataArr = [NSMutableArray array];
+        _dataArr               = [NSMutableArray array];
         [_dataArr removeAllObjects];
         
         while ([resultSet next]) {
             
-            NSString *meter_id = [resultSet stringForColumn:@"meter_id"];
+            NSString *meter_id  = [resultSet stringForColumn:@"meter_id"];
             NSString *user_addr = [resultSet stringForColumn:@"install_addr"];
             
-            DBModel *dbModel = [[DBModel alloc] init];
-            dbModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
-            dbModel.user_addr =[NSString stringWithFormat:@"%@",user_addr];
+            DBModel *dbModel    = [[DBModel alloc] init];
+            dbModel.meter_id    = [NSString stringWithFormat:@"%@",meter_id];
+            dbModel.user_addr   =[NSString stringWithFormat:@"%@",user_addr];
             [_dataArr addObject:dbModel];
         }
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
@@ -157,9 +218,9 @@ LUNSegmentedControlDataSource
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    SingleViewController *singleVC = [[SingleViewController alloc] init];
-    singleVC.meter_id_string = ((DBModel *)_dataArr[indexPath.row]).user_addr;
-    singleVC.meter_id.text = ((DBModel *)_dataArr[indexPath.row]).meter_id;
+    SingleViewController *singleVC    = [[SingleViewController alloc] init];
+    singleVC.meter_id_string          = ((DBModel *)_dataArr[indexPath.row]).user_addr;
+    singleVC.meter_id.text            = ((DBModel *)_dataArr[indexPath.row]).meter_id;
     singleVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController showViewController:singleVC sender:nil];
 }
@@ -169,78 +230,5 @@ LUNSegmentedControlDataSource
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - segmentControl delegate & datasource
-- (NSArray<UIColor *> *)segmentedControl:(LUNSegmentedControl *)segmentedControl gradientColorsForStateAtIndex:(NSInteger)index {
-    switch (index) {
-        case 0:
-            return @[[UIColor colorWithRed:160 / 255.0 green:223 / 255.0 blue:56 / 255.0 alpha:1.0], [UIColor colorWithRed:177 / 255.0 green:255 / 255.0 blue:0 / 255.0 alpha:1.0]];
-            
-            break;
-            
-        case 1:
-            return @[[UIColor colorWithRed:178 / 255.0 green:0 / 255.0 blue:235 / 255.0 alpha:1.0], [UIColor colorWithRed:233 / 255.0 green:0 / 255.0 blue:147 / 255.0 alpha:1.0]];
-            break;
-            
-//        case 2:
-//            return @[[UIColor colorWithRed:178 / 255.0 green:0 / 255.0 blue:235 / 255.0 alpha:1.0], [UIColor colorWithRed:233 / 255.0 green:0 / 255.0 blue:147 / 255.0 alpha:1.0]];
-//            break;
-            
-        default:
-            break;
-    }
-    return nil;
-}
 
-- (NSInteger)numberOfStatesInSegmentedControl:(LUNSegmentedControl *)segmentedControl {
-    return 2;
-}
-
-- (NSAttributedString *)segmentedControl:(LUNSegmentedControl *)segmentedControl attributedTitleForStateAtIndex:(NSInteger)index {
-    if (index == 0) {
-       return [[NSAttributedString alloc] initWithString:@"小表抄收" attributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:13]}];
-    }
-    return [[NSAttributedString alloc] initWithString:@"大表抄收" attributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:13]}];
-}
-
-- (NSAttributedString *)segmentedControl:(LUNSegmentedControl *)segmentedControl attributedTitleForSelectedStateAtIndex:(NSInteger)index {
-    switch (index) {
-        case 0:
-            return [[NSAttributedString alloc] initWithString:@"小表抄收" attributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:15]}];
-            break;
-        case 1:
-            return [[NSAttributedString alloc] initWithString:@"大表抄收" attributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:15]}];
-            break;
-            
-        default:
-            break;
-    }
-    return [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"TAB %li",(long)index] attributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:16]}];
-}
-
-
-- (void)segmentedControl:(LUNSegmentedControl *)segmentedControl didScrollWithXOffset:(CGFloat)offset {
-    CGFloat maxOffset = self.segmentedControl.frame.size.width / self.segmentedControl.statesCount * (self.segmentedControl.statesCount - 1);
-    if (offset == 0) {
-        [self queryDB];
-    }
-    if (PanScreenWidth == 414) {//plus
-        
-        if (offset == (NSInteger)maxOffset+1) {
-            [self queryBigMeterDB];
-        }
-    } else {
-        if (offset == (NSInteger)maxOffset) {
-            [self queryBigMeterDB];
-        }
-    }
-//    CGFloat leftDistance = (self.backgroundScrollView.contentSize.width - width) * 0.25;
-//    CGFloat rightDistance = (self.backgroundScrollView.contentSize.width - width) * 0.75;
-//    CGFloat backgroundScrollViewOffset = leftDistance + ((offset / maxOffset) * (self.backgroundScrollView.contentSize.width - rightDistance - leftDistance));
-//    width = self.view.frame.size.width;
-//    leftDistance = -width * 0.75;
-//    rightDistance = width * 0.5;
-//    CGFloat rectangleScrollViewOffset = leftDistance + ((offset / maxOffset) * (self.rectangleScrollView.contentSize.width - rightDistance - leftDistance));
-//    [self.rectangleScrollView setContentOffset:CGPointMake(rectangleScrollViewOffset, 0)];
-//    [self.backgroundScrollView setContentOffset:CGPointMake(backgroundScrollViewOffset,0)];
-}
 @end

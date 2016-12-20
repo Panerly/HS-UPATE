@@ -15,7 +15,7 @@
 
 #import <BaiduMapAPI_Map/BMKPointAnnotation.h>
 #import <BaiduMapAPI_Map/BMKPinAnnotationView.h>
-#import "MLTransition.h"
+
 
 @interface CommProViewController ()
 <
@@ -41,8 +41,9 @@ UITableViewDataSource
     [super viewDidLoad];
 
     self.title = @"小表概览";
+    map_type   = YES;
     
-    map_type = YES;
+    //禁止全屏滑动返回
     [MLTransition invalidate];
     
     [self initMapView];
@@ -60,7 +61,7 @@ UITableViewDataSource
         _tableView.backgroundColor = [UIColor clearColor];
     }
     
-    _tableView.delegate = self;
+    _tableView.delegate   = self;
     
     _tableView.dataSource = self;
     
@@ -73,24 +74,24 @@ UITableViewDataSource
 //初始化地图
 - (void)initMapView {
     
-    _mapView = [[BMKMapView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    _locService = [[BMKLocationService alloc] init];
+    _mapView             = [[BMKMapView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    _locService          = [[BMKLocationService alloc] init];
     
-    _mapView.delegate = self;// 此处记得不用的时候需要置nil，否则影响内存的释放
+    _mapView.delegate    = self;// 此处记得不用的时候需要置nil，否则影响内存的释放
     _locService.delegate = self;
     //启动LocationService
     [_locService startUserLocationService];
     
     //设置地图类型
-    _mapView.mapType = BMKMapTypeStandard;
+    _mapView.mapType           = BMKMapTypeStandard;
     //罗盘模式
-    _mapView.userTrackingMode = BMKUserTrackingModeFollowWithHeading;
+    _mapView.userTrackingMode  = BMKUserTrackingModeFollowWithHeading;
     //显示当前位置
     _mapView.showsUserLocation = YES;
     
-    _mapView.showMapScaleBar = YES;
+    _mapView.showMapScaleBar   = YES;
     
-    self.view = _mapView;
+    self.view                  = _mapView;
     
     [self initDirectionBtn];
     [self initlayerBtn];
@@ -101,15 +102,15 @@ UITableViewDataSource
     
     [AnimationView showInView:self.view];
     
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
-    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
+    NSURLSessionConfiguration *config         = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFHTTPSessionManager *manager             = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    AFHTTPResponseSerializer *serializer      = manager.responseSerializer;
     manager.requestSerializer.timeoutInterval = 20;
-    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    NSString *communityURL = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_NumberServlet",litMeterApi];
-    __weak typeof(self) weekSelf = self;
+    serializer.acceptableContentTypes         = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    NSString *communityURL                    = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_NumberServlet",litMeterApi];
+    __weak typeof(self) weekSelf              = self;
     
-    task = [manager POST:communityURL parameters:NULL progress:^(NSProgress * _Nonnull uploadProgress) {
+    task                                      = [manager POST:communityURL parameters:NULL progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -124,17 +125,16 @@ UITableViewDataSource
                 [weekSelf.dataArray addObject:litMeterModel];
             }
         }
-//        [weekSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
         [AnimationView dismiss];
         // 添加一个PointAnnotation
         for (int i = 0; i < _dataArray.count; i++) {
             
             BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
             CLLocationCoordinate2D coor;
-            coor.latitude = [((LitMeterModel *)_dataArray[i]).y integerValue];
-            coor.longitude = [((LitMeterModel *)_dataArray[i]).x integerValue];
+            coor.latitude         = [((LitMeterModel *)_dataArray[i]).y floatValue];
+            coor.longitude        = [((LitMeterModel *)_dataArray[i]).x floatValue];
             annotation.coordinate = coor;
-            NSLog(@"%lf -- %lf",coor.longitude,coor.latitude);
             [_mapView addAnnotation:annotation];
         }
         
@@ -153,11 +153,11 @@ UITableViewDataSource
     
     [AnimationView showInView:self.view];
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    AFHTTPSessionManager *manager        = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     AFHTTPResponseSerializer *serializer = manager.responseSerializer;
     manager.requestSerializer.timeoutInterval = 60;
     serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    NSString *communityURL = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_New_DataServlet",litMeterApi];
+    NSString *communityURL            = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_New_DataServlet",litMeterApi];
     __weak typeof(self) weekSelf = self;
     
     NSDictionary *parameters = @{
@@ -202,17 +202,17 @@ UITableViewDataSource
     
     [directionBtn setImage:[UIImage imageNamed:@"icon_direction@2x"] forState:UIControlStateNormal];
     
-    directionBtn.backgroundColor = [UIColor whiteColor];
+    directionBtn.backgroundColor    = [UIColor whiteColor];
     
     directionBtn.layer.cornerRadius = 5;
     
-    directionBtn.alpha = .8f;
+    directionBtn.alpha              = .8f;
     
     [directionBtn addTarget:self action:@selector(directionAction) forControlEvents:UIControlEventTouchUpInside];
     
     [_mapView addSubview:directionBtn];
 }
-
+//设定定位模式
 - (void)directionAction {
     
     _mapView.userTrackingMode = BMKUserTrackingModeFollowWithHeading;
@@ -223,7 +223,7 @@ UITableViewDataSource
 //切换地图类型（标准、卫星）
 - (void)initlayerBtn {
     
-    UIButton *layerBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 15 - 40, PanScreenHeight - 15*2 - 40*2, 40, 40)];
+    UIButton *layerBtn       = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 15 - 40, PanScreenHeight - 15*2 - 40*2, 40, 40)];
     
     layerBtn.backgroundColor = [UIColor whiteColor];
     
@@ -231,7 +231,7 @@ UITableViewDataSource
     
     layerBtn.layer.cornerRadius = 5;
     
-    layerBtn.alpha = .8f;
+    layerBtn.alpha              = .8f;
     
     [layerBtn addTarget:self action:@selector(layerAction:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -242,7 +242,7 @@ UITableViewDataSource
     
     _mapView.mapType = map_type ? BMKMapTypeSatellite:BMKMapTypeStandard;
     
-    map_type = !map_type;
+    map_type         = !map_type;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -256,26 +256,6 @@ UITableViewDataSource
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    // 添加一个PointAnnotation
-//    for (int i = 0; i < 10; i++) {
-//        
-//        BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
-//        CLLocationCoordinate2D coor;
-//        coor.latitude = 30.289077 + i*.005;
-//        coor.longitude = 120.350810 + i*.005;
-//        annotation.coordinate = coor;
-//        [_mapView addAnnotation:annotation];
-//    }
-//    for (int i = 0; i < _dataArray.count; i++) {
-//        
-//        BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
-//        CLLocationCoordinate2D coor;
-//        coor.latitude = [((LitMeterModel *)_dataArray[i]).x integerValue];
-//        coor.longitude = [((LitMeterModel *)_dataArray[i]).y integerValue];
-//        annotation.coordinate = coor;
-//        [_mapView addAnnotation:annotation];
-//    }
-    
 }
 
 
@@ -310,7 +290,7 @@ UITableViewDataSource
         BMKPinAnnotationView *newAnnotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"myAnnotation"];
         newAnnotationView.pinColor = BMKPinAnnotationColorRed;
         
-        newAnnotationView.image = [UIImage imageNamed:@"icon_pin"];
+        newAnnotationView.image        = [UIImage imageNamed:@"icon_pin"];
         
         newAnnotationView.animatesDrop = YES;// 设置该标注点动画显示
 
@@ -321,15 +301,15 @@ UITableViewDataSource
         
         paopaoBgView.layer.cornerRadius = 10;
 
-        paopaoBgView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.9];
+        paopaoBgView.backgroundColor    = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.9];
 
-        UIImageView *iconImgV = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 50, 50)];
+        UIImageView *iconImgV           = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 50, 50)];
 
-        iconImgV.image = [UIImage imageNamed:@"AppIcon60x60"];
+        iconImgV.image                  = [UIImage imageNamed:@"AppIcon60x60"];
 
         [paopaoBgView addSubview:iconImgV];
 
-        UIView *v2 = [[UIView alloc]initWithFrame:CGRectMake(5, 70, 290, 1)];
+        UIView *v2         = [[UIView alloc]initWithFrame:CGRectMake(5, 70, 290, 1)];
 
         v2.backgroundColor = [UIColor lightGrayColor];
 
@@ -347,7 +327,7 @@ UITableViewDataSource
         }
         [paopaoBgView addSubview:label];
 
-        UIView *v1 = [[UIView alloc]initWithFrame:CGRectMake(75, 41, 210, 1)];
+        UIView *v1         = [[UIView alloc]initWithFrame:CGRectMake(75, 41, 210, 1)];
 
         v1.backgroundColor = [UIColor lightGrayColor];
 
@@ -361,14 +341,14 @@ UITableViewDataSource
             addressLbl.text = [NSString stringWithFormat:@"地址：%@",((LitMeterModel *)_dataArray[bmkViewTag - 200]).small_name];
             NSLog(@"bmkViewTag:%d, 地址信息：%@", bmkViewTag, ((LitMeterModel *)_dataArray[bmkViewTag - 200]).small_name);
         }
-        addressLbl.backgroundColor = [UIColor clearColor];
-        addressLbl.textAlignment = NSTextAlignmentLeft;
+        addressLbl.backgroundColor        = [UIColor clearColor];
+        addressLbl.textAlignment          = NSTextAlignmentLeft;
         addressLbl.userInteractionEnabled = NO;
         [paopaoBgView addSubview:addressLbl];
 
-        BMKActionPaopaoView *paopaoView = [[BMKActionPaopaoView alloc]initWithCustomView:paopaoBgView];
+        BMKActionPaopaoView *paopaoView  = [[BMKActionPaopaoView alloc]initWithCustomView:paopaoBgView];
 
-        newAnnotationView.paopaoView = paopaoView;
+        newAnnotationView.paopaoView     = paopaoView;
 
         newAnnotationView.paopaoView.tag = bmkViewTag;
         bmkViewTag++;
@@ -392,8 +372,25 @@ UITableViewDataSource
 }
 
 - (void)mapView:(BMKMapView *)mapView annotationView:(BMKAnnotationView *)view didChangeDragState:(BMKAnnotationViewDragState)newState fromOldState:(BMKAnnotationViewDragState)oldState {
-    _tableView.hidden = YES;
-    
+//    _tableView.hidden = YES;
+//    BMKAnnotationViewDragStateNone = 0,      ///< 静止状态.
+//    BMKAnnotationViewDragStateStarting,      ///< 开始拖动
+//    BMKAnnotationViewDragStateDragging,      ///< 拖动中
+//    BMKAnnotationViewDragStateCanceling,     ///< 取消拖动
+//    BMKAnnotationViewDragStateEnding         ///< 拖动结束
+    if (newState == BMKAnnotationViewDragStateStarting) {
+        [UIView animateWithDuration:.5 animations:^{
+            _tableView.alpha = 0;
+        }];
+    } else if (newState == BMKAnnotationViewDragStateDragging) {
+        [UIView animateWithDuration:.5 animations:^{
+            _tableView.alpha = 0;
+                        }];
+    } else if (newState == BMKAnnotationViewDragStateEnding) {
+        [UIView animateWithDuration:.5 animations:^{
+            _tableView.alpha = 1;
+        }];
+    }
 }
 - (void)mapStatusDidChanged:(BMKMapView *)mapView {
     _tableView.hidden = YES;
@@ -402,7 +399,6 @@ UITableViewDataSource
     if (mapView.getMapStatus.fLevel >13.0f) {
         
     }
-    
 }
 
 

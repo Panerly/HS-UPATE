@@ -18,7 +18,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     _village_name.text = self.litMeterModel.small_name;
-    _village_num.text = [NSString stringWithFormat:@"%@户",self.litMeterModel.count];
+    _village_num.text  = [NSString stringWithFormat:@"%@户",self.litMeterModel.count];
 }
 
 

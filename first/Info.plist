@@ -5,7 +5,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>水表APP需要您的同意才能使用摄像头功能</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>此 App 需要您的同意才能读取媒体资料库</string>
+	<string>水表 App 需要您的同意才能读取媒体资料库</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -84,6 +84,10 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Fashionblack.ttf</string>
 	</array>
 </dict>
 </plist>

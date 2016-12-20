@@ -21,12 +21,12 @@
 {
     [super layoutSubviews];
     
-    _userName.text = self.CRModel.meter_name;
-    _x = self.CRModel.x;
-    _y = self.CRModel.y;
-    _userImage.image = [self isnormal:self.CRModel.alarm];
-    _userImage.clipsToBounds = YES;
-    _userImage.layer.cornerRadius = 25;
+    _userName.text                  = self.CRModel.meter_name;
+    _x                              = self.CRModel.x;
+    _y                              = self.CRModel.y;
+    _userImage.image                = [self isnormal:self.CRModel.alarm];
+    _userImage.clipsToBounds        = YES;
+    _userImage.layer.cornerRadius   = 25;
 }
 
 //是否显示警报图片
@@ -49,7 +49,7 @@
     NSLog(@"%@-----%@",_x,_y);
     
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"导航提示" message:[NSString stringWithFormat:@"导航前往 ‘%@’ ？",_userName.text] preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:nil];
     UIAlertAction *conf = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         //检测定位功能是否开启
         if([CLLocationManager locationServicesEnabled]){

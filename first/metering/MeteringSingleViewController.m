@@ -99,26 +99,26 @@ UISearchBarDelegate
 
 - (void)_createTableView
 {
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
+    _tableView.delegate     = self;
+    _tableView.dataSource   = self;
     
-    cellID = @"meteringsingleID";
+    cellID                  = @"meteringsingleID";
     
-    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
-    _tableView.mj_header.automaticallyChangeAlpha = YES;
-    _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    _tableView.mj_header                            = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
+    _tableView.mj_header.automaticallyChangeAlpha   = YES;
+    _tableView.keyboardDismissMode                  = UIScrollViewKeyboardDismissModeOnDrag;
     
     [_tableView registerNib:[UINib nibWithNibName:@"MeteringSingleTableViewCell" bundle:nil] forCellReuseIdentifier:cellID];
     
     //调用初始化searchController
-    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    self.searchController.searchBar.frame = CGRectMake(0, 0, 0, 44);
-    self.searchController.dimsBackgroundDuringPresentation = NO;
-    self.searchController.hidesNavigationBarDuringPresentation = NO;
-    self.searchController.searchBar.placeholder = @"搜索";
+    self.searchController                                       = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchBar.frame                       = CGRectMake(0, 0, 0, 44);
+    self.searchController.dimsBackgroundDuringPresentation      = NO;
+    self.searchController.hidesNavigationBarDuringPresentation  = NO;
+    self.searchController.searchBar.placeholder                 = @"搜索";
     
-    self.searchController.searchBar.delegate = self;
-    self.searchController.searchResultsUpdater = self;
+    self.searchController.searchBar.delegate    = self;
+    self.searchController.searchResultsUpdater  = self;
     //搜索栏表头视图
     self.tableView.tableHeaderView = self.searchController.searchBar;
     [self.searchController.searchBar sizeToFit];
@@ -136,8 +136,9 @@ UISearchBarDelegate
 
 //获取未抄收的数据
 - (void)getDataFromDB {
-    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
-    NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+    
+    NSString *doc       = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
+    NSString *fileName  = [doc stringByAppendingPathComponent:@"meter.sqlite"];
     
     NSLog(@"文件路径：%@  区域编码：%@", fileName, _area_id);
     
@@ -148,6 +149,7 @@ UISearchBarDelegate
         //如果被网络覆盖了 则再删除本地中已抄收的数据
         FMResultSet *completeRestultSet = [db executeQuery:[NSString stringWithFormat:@"select * from meter_complete where collect_area = '%@'",_area_id]];
         while ([completeRestultSet next]) {
+            
             NSString *install_addr = [completeRestultSet stringForColumn:@"install_addr"];
             [db executeUpdate:[NSString stringWithFormat:@"delete from litMeter_info where install_addr = '%@'",install_addr]];
         }
@@ -160,9 +162,10 @@ UISearchBarDelegate
         [_tableView.mj_header endRefreshing];
         
         while ([restultSet next]) {
-            NSString *install_addr = [restultSet stringForColumn:@"install_addr"];
-            MeterInfoModel *meterinfoModel = [[MeterInfoModel alloc] init];
-            meterinfoModel.install_Addr = install_addr;
+            
+            NSString *install_addr          = [restultSet stringForColumn:@"install_addr"];
+            MeterInfoModel *meterinfoModel  = [[MeterInfoModel alloc] init];
+            meterinfoModel.install_Addr     = install_addr;
             [_dataArr addObject:meterinfoModel];
         }
         self.messionCount.text = [NSString stringWithFormat:@"待抄数量： %ld 户",(long)_dataArr.count];
@@ -182,12 +185,13 @@ UISearchBarDelegate
     if ([db open]) {
         
         FMResultSet *restultSet = [db executeQuery:[NSString stringWithFormat:@"select * from meter_complete where collect_area = '%@'",_area_id]];
-        _dataArr = [NSMutableArray array];
+        _dataArr                = [NSMutableArray array];
         [_dataArr removeAllObjects];
         
         [_tableView.mj_header endRefreshing];
         
         while ([restultSet next]) {
+            
             NSString *install_addr = [restultSet stringForColumn:@"install_addr"];
             MeterInfoModel *meterinfoModel = [[MeterInfoModel alloc] init];
             meterinfoModel.install_Addr = install_addr;
@@ -208,10 +212,11 @@ UISearchBarDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    MeteringSingleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.backgroundColor = [UIColor clearColor];
+    MeteringSingleTableViewCell *cell   = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
+    cell.selectionStyle                 = UITableViewCellSelectionStyleNone;
+    cell.backgroundColor                = [UIColor clearColor];
     if (!cell) {
+        
         cell = [[[NSBundle mainBundle] loadNibNamed:@"MeteringSingleTableViewCell" owner:self options:nil] lastObject];
     }
     cell.meterInfoModel= self.searchController.active?_searchResults[indexPath.row]:_dataArr[indexPath.row];
@@ -222,10 +227,11 @@ UISearchBarDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!isDone) {
-        SingleViewController *singleVC = [[SingleViewController alloc] init];
-        singleVC.meter_id_string = self.searchController.active?((MeterInfoModel *)_searchResults[indexPath.row]).install_Addr:((MeterInfoModel *)_dataArr[indexPath.row]).install_Addr;
-        singleVC.hidesBottomBarWhenPushed = YES;
-        singleVC.isBigMeter = NO;
+        
+        SingleViewController *singleVC      = [[SingleViewController alloc] init];
+        singleVC.meter_id_string            = self.searchController.active?((MeterInfoModel *)_searchResults[indexPath.row]).install_Addr:((MeterInfoModel *)_dataArr[indexPath.row]).install_Addr;
+        singleVC.hidesBottomBarWhenPushed   = YES;
+        singleVC.isBigMeter                 = NO;
         [self.navigationController pushViewController:singleVC animated:YES];
     }
 }
@@ -258,14 +264,14 @@ UISearchBarDelegate
 #pragma mark - searchController delegate
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController{
-    self.searchResults= [NSMutableArray array];
+    self.searchResults = [NSMutableArray array];
     [self.searchResults removeAllObjects];
     
     //NSPredicate 谓词
-    NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@",searchController.searchBar.text];
+    NSPredicate *searchPredicate    = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@",searchController.searchBar.text];
     
-    NSMutableArray *arr = [NSMutableArray array];
-    NSMutableArray *arr2 = [NSMutableArray array];
+    NSMutableArray *arr             = [NSMutableArray array];
+    NSMutableArray *arr2            = [NSMutableArray array];
     [arr2 removeAllObjects];
     
     for (MeterInfoModel *model in self.dataArr) {
@@ -285,7 +291,7 @@ UISearchBarDelegate
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:YES animated:YES];
-    UIButton *btn=[searchBar valueForKey:@"_cancelButton"];
-    [btn setTitle:@"取消" forState:UIControlStateNormal];
+    UIButton *btn = [searchBar valueForKey:@"_cancelButton"];
+    [btn setTitle:cancelTitle forState:UIControlStateNormal];
 }
 @end

@@ -28,4 +28,6 @@
 
 - (IBAction)configBtn:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UIButton *configBtn;
+
 @end

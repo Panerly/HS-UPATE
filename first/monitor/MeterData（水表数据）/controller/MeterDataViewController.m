@@ -32,15 +32,15 @@ UITextFieldDelegate
     [super viewDidLoad];
     
     if (_isBigMeter) {
-        self.title = @"大表数据查询";
-        _callerName.text = @"主叫方：";
-        _callerLabel.placeholder = @"例如：57178794";
+        self.title                  = @"大表数据查询";
+        _callerName.text            = @"主叫方：";
+        _callerLabel.placeholder    = @"例如：57178794";
     } else {
         
         self.title = @"小表数据查询";
-        _callerName.text = @"户 号：";
-        _callerLabel.placeholder = @"请输入户号";
-        _callerLabel.text = self.user_id_str;
+        _callerName.text            = @"户 号：";
+        _callerLabel.placeholder    = @"请输入户号";
+        _callerLabel.text           = self.user_id_str;
     }
     
     cellID = @"meterDataID";
@@ -56,20 +56,20 @@ UITextFieldDelegate
 
 - (void)_setTableView
 {
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.delegate         = self;
+    _tableView.dataSource       = self;
+    _tableView.separatorStyle   = UITableViewCellSeparatorStyleNone;
     [_tableView registerNib:[UINib nibWithNibName:@"MeterDataTableViewCell" bundle:nil] forCellReuseIdentifier:cellID];
 }
 
 - (void)_getSysTime
 {
     //获取系统当前时间
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *formatter  = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSString *time = [formatter stringFromDate:[NSDate date]];
+    NSString *time              = [formatter stringFromDate:[NSDate date]];
     self.fromDate.text = time;
-    self.toDate.text = time;
+    self.toDate.text   = time;
 }
 
 - (void)_getUserInfo
@@ -135,16 +135,16 @@ UITextFieldDelegate
 
                     [SVProgressHUD showInfoWithStatus:@"加载成功"];
                     
-                    NSDictionary *dicResponse = [responseObject objectForKey:@"meters"];
+                    NSDictionary *dicResponse   = [responseObject objectForKey:@"meters"];
                     
-                    weakSelf.dataNum.text = [NSString stringWithFormat:@"数    量: %@",[responseObject objectForKey:@"count"]];
+                    weakSelf.dataNum.text       = [NSString stringWithFormat:@"数    量: %@",[responseObject objectForKey:@"count"]];
                     
                     for (NSDictionary *dic in dicResponse) {
                         
-                        weakSelf.userNameLabel.text = [NSString stringWithFormat:@"用户名: %@",[dic objectForKey:@"user_name"]];
-                        weakSelf.userNumLabel.text = [NSString stringWithFormat:@"用户号: %@",[dic objectForKey:@"meter_id"]];
+                        weakSelf.userNameLabel.text     = [NSString stringWithFormat:@"用户名: %@",[dic objectForKey:@"user_name"]];
+                        weakSelf.userNumLabel.text      = [NSString stringWithFormat:@"用户号: %@",[dic objectForKey:@"meter_id"]];
                         
-                        MeterDataModel *meterDataModel = [[MeterDataModel alloc] initWithDictionary:dic error:&error];
+                        MeterDataModel *meterDataModel  = [[MeterDataModel alloc] initWithDictionary:dic error:&error];
                         [_dataArr addObject:meterDataModel];
                     }
                     weakSelf.tableView.hidden = NO;
@@ -204,16 +204,16 @@ UITextFieldDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MeterDataTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.selectionStyle          = UITableViewCellSelectionStyleNone;
     
     if (!cell) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"MeterDataTableViewCell" owner:self options:nil] lastObject];
     }
-    cell.serialNum.text = [NSString stringWithFormat:@"%li",(long)indexPath.row];
-    cell.serialNum.font = [UIFont systemFontOfSize:10];
-    cell.serialNum.textColor = [UIColor redColor];
-    cell.meterDataModel = _dataArr[indexPath.row];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
+    cell.serialNum.text         = [NSString stringWithFormat:@"%li",(long)indexPath.row];
+    cell.serialNum.font         = [UIFont systemFontOfSize:10];
+    cell.serialNum.textColor    = [UIColor redColor];
+    cell.meterDataModel         = _dataArr[indexPath.row];
+    cell.detailTextLabel.text   = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
     return cell;
 }
 
@@ -290,11 +290,11 @@ UITextFieldDelegate
         
         [SVProgressHUD showWithStatus:@"查询中"];
         
-        NSString *url = [NSString stringWithFormat:@"%@/Small_Meter_Reading/HisDateSelectServlet",litMeterApi];
+        NSString *url                       = [NSString stringWithFormat:@"%@/Small_Meter_Reading/HisDateSelectServlet",litMeterApi];
         
-        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSURLSessionConfiguration *config   = [NSURLSessionConfiguration defaultSessionConfiguration];
         
-        AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+        AFHTTPSessionManager *manager       = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
         
         NSDictionary *parameters = @{
                                      @"fromDate":fromDate,
@@ -325,10 +325,10 @@ UITextFieldDelegate
                 
                 for (NSDictionary *dic in responseObject) {
                     
-                    weakSelf.userNameLabel.text = [NSString stringWithFormat:@"地址: %@",[dic objectForKey:@"user_addr"]];
-                    weakSelf.userNumLabel.text = [NSString stringWithFormat:@"所属区域: %@",[dic objectForKey:@"collector_area"]];
+                    weakSelf.userNameLabel.text     = [NSString stringWithFormat:@"地址: %@",[dic objectForKey:@"user_addr"]];
+                    weakSelf.userNumLabel.text      = [NSString stringWithFormat:@"所属区域: %@",[dic objectForKey:@"collector_area"]];
                     
-                    MeterDataModel *meterDataModel = [[MeterDataModel alloc] initWithDictionary:dic error:&error];
+                    MeterDataModel *meterDataModel  = [[MeterDataModel alloc] initWithDictionary:dic error:&error];
                     [_dataArr addObject:meterDataModel];
                     
                 }
@@ -364,6 +364,7 @@ UITextFieldDelegate
 }
 
 - (IBAction)dateBtn:(UIButton *)sender {
+    
     [_fromDate resignFirstResponder];
     [_toDate resignFirstResponder];
     [_callerLabel resignFirstResponder];

@@ -13,6 +13,7 @@
 #import "ServerViewController.h"
 #import "HSNavigationController.h"
 #import "MonitorViewController.h"
+#import "SeniorlevelViewController.h"
 
 
 @interface HSTabBarController ()
@@ -28,11 +29,22 @@
     HomeViewController *home = [[HomeViewController alloc] init];
     [self addOneChlildVc:home title:@"首页" imageName:@"home2@2x" selectedImageName:@"home_selected2@2x"];
     
-    MeteringViewController *meter = [[MeteringViewController alloc] init];
-    [self addOneChlildVc:meter title:@"抄表" imageName:@"metering@2x" selectedImageName:@"metering_selected@2x"];
+    //判断是否是高级权限 选择呈现不同查看方式
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {
+        
+        SeniorlevelViewController *Senior = [[SeniorlevelViewController alloc] init];
+        [self addOneChlildVc:Senior title:@"抄表情况" imageName:@"metering@2x" selectedImageName:@"metering_selected@2x"];
+    }else{
+        
+        MeteringViewController *meter = [[MeteringViewController alloc] init];
+        [self addOneChlildVc:meter title:@"抄表" imageName:@"metering@2x" selectedImageName:@"metering_selected@2x"];
+    }
     
-    MonitorViewController *monitor = [[MonitorViewController alloc] init];
-    [self addOneChlildVc:monitor title:@"监测" imageName:@"monitor@2x" selectedImageName:@"monitor_selected@2x"];
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {
+        
+        MonitorViewController *monitor = [[MonitorViewController alloc] init];
+        [self addOneChlildVc:monitor title:@"监测" imageName:@"monitor@2x" selectedImageName:@"monitor_selected@2x"];
+    }
     
     ServerViewController *server = [[ServerViewController alloc] init];
     [self addOneChlildVc:server title:@"服务" imageName:@"server@2x" selectedImageName:@"server_selected@2x"];
@@ -54,16 +66,16 @@
     
     // 设置标题
     // 相当于同时设置了tabBarItem.title和navigationItem.title
-    childVc.title = title;
+    childVc.title               = title;
     
     // 设置图标
-    childVc.tabBarItem.image = [UIImage imageNamed:imageName];
+    childVc.tabBarItem.image    = [UIImage imageNamed:imageName];
     // 设置选中的图标
-    UIImage *selectedImage = [UIImage imageNamed:selectedImageName];
+    UIImage *selectedImage      = [UIImage imageNamed:selectedImageName];
 
     // 声明这张图片用原图(别渲染)
-    selectedImage = [selectedImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    childVc.tabBarItem.selectedImage = selectedImage;
+    selectedImage                       = [selectedImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    childVc.tabBarItem.selectedImage    = selectedImage;
     
     // 添加为tabbar控制器的子控制器
     HSNavigationController *nav = [[HSNavigationController alloc] initWithRootViewController:childVc];

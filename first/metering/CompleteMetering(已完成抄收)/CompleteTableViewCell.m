@@ -20,8 +20,8 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    if (self.completeModel.meter_id) {
-        self.meter_id.text = [NSString stringWithFormat:@"本期抄收值： %@ m³",self.completeModel.meter_id];
+    if (self.completeModel.collect_num) {
+        self.meter_id.text = [NSString stringWithFormat:@"本期抄收值： %@ m³",self.completeModel.collect_num];
     }
     if (self.completeModel.user_id) {
         self.user_id.text = [NSString stringWithFormat:@"%@",self.completeModel.user_id];
@@ -70,6 +70,7 @@
     
 }
 - (void)createDB {
+    
     NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
     NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
     NSLog(@"大表数据库路径%@",fileName);
@@ -80,12 +81,13 @@
     FMResultSet *restultSet = [db executeQuery:@"SELECT * FROM meter_complete order by user_id"];
     [((CompleteViewController *)[self findVC]).dataArr removeAllObjects];
     while ([restultSet next]) {
-        NSString *meter_id = [restultSet stringForColumn:@"meter_id"];
-        NSString *user_id = [restultSet stringForColumn:@"user_id"];
+        
+        NSString *meter_id  = [restultSet stringForColumn:@"meter_id"];
+        NSString *user_id   = [restultSet stringForColumn:@"user_id"];
 
-        CompleteModel *completeModel = [[CompleteModel alloc] init];
-        completeModel.meter_id = [NSString stringWithFormat:@"%@",meter_id];
-        completeModel.user_id =[NSString stringWithFormat:@"%@",user_id];
+        CompleteModel *completeModel    = [[CompleteModel alloc] init];
+        completeModel.meter_id          = [NSString stringWithFormat:@"%@",meter_id];
+        completeModel.user_id           = [NSString stringWithFormat:@"%@",user_id];
         [((CompleteViewController *)[self findVC]).dataArr addObject:completeModel];
     }
     [db close];

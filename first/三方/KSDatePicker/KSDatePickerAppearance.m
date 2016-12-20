@@ -44,7 +44,7 @@
     _commitBtnTitleColor = [UIColor colorWithRed: 228/255. green:0/255. blue:127/255. alpha:1];
     _commitBtnBackgroundColor = [UIColor whiteColor];
     
-    _cancelBtnTitle = @"取消";
+    _cancelBtnTitle = cancelTitle;
     _cancelBtnFont = [UIFont systemFontOfSize:15];
     _cancelBtnTitleColor = [UIColor lightGrayColor];
     _cancelBtnBackgroundColor = [UIColor whiteColor];

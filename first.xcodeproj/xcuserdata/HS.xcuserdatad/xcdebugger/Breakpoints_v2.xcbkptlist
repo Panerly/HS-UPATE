@@ -19,13 +19,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "first/metering/CompleteMetering(&#x5df2;&#x5b8c;&#x6210;&#x6284;&#x6536;)/CompleteViewController.m"
-            timestampString = "501481319.33881"
+            filePath = "first/metering/CompleteMetering(&#x5df2;&#x5b8c;&#x6210;&#x6284;&#x6536;)/UploadFile.m"
+            timestampString = "503481823.932712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "500"
-            endingLineNumber = "500"
-            landmarkName = "-uploadData:"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "-uploadFileWithURL:imageDic:pramDic:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "first/metering/CompleteMetering(&#x5df2;&#x5b8c;&#x6210;&#x6284;&#x6536;)/UploadFile.m"
+            timestampString = "503481823.932712"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "-uploadFileWithURL:imageDic:pramDic:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

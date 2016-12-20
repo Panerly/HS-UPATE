@@ -32,24 +32,29 @@
 }
 
 - (void)btnPressed:(id)sender {
+    
     [chartView strokeChart];
 }
 
 - (void)configUI:(NSIndexPath *)indexPath {
+    
     if (chartView) {
+        
         [chartView removeFromSuperview];
         chartView = nil;
     }
-    path = indexPath;
-    chartView = [[SCChart alloc] initwithSCChartDataFrame:CGRectMake(10, (self.frame.size.height-150)/2, [UIScreen mainScreen].bounds.size.width - 20, 150)
+    path        = indexPath;
+    chartView   = [[SCChart alloc] initwithSCChartDataFrame:CGRectMake(10, (self.frame.size.height-150)/2, [UIScreen mainScreen].bounds.size.width - 20, 150)
                                                withSource:self
                                                 withStyle:SCChartBarStyle];
     [chartView showInView:self.contentView];
 }
 
 - (NSArray *)getXTitles:(int)num {
+    
     NSMutableArray *xTitles = [NSMutableArray array];
     for (int i=0; i<num; i++) {
+        
         NSString * str = [NSString stringWithFormat:@"%d",i+1];
         [xTitles addObject:str];
     }
@@ -69,6 +74,7 @@
         {
             NSMutableArray *ary = [NSMutableArray array];
             for (NSInteger i = 0; i < _yNum.count; i++) {
+                
                 NSString *num = _yNum[i];
                 NSString *str = [NSString stringWithFormat:@"%@",num];
                 [ary addObject:str];
@@ -78,16 +84,18 @@
         }
         case 1:
         {
-            NSMutableArray *ary = [NSMutableArray array];
-            NSMutableArray *ary2 = [NSMutableArray array];
+            NSMutableArray *ary     = [NSMutableArray array];
+            NSMutableArray *ary2    = [NSMutableArray array];
             for (NSInteger i = 0; i < 7; i++) {
-                CGFloat num = arc4random_uniform(1000) / 100;
-                NSString *str = [NSString stringWithFormat:@"%f",num];
+                
+                CGFloat num     = arc4random_uniform(1000) / 100;
+                NSString *str   = [NSString stringWithFormat:@"%f",num];
                 [ary addObject:str];
             }
             for (NSInteger i = 0; i < 7; i++) {
-                CGFloat num = arc4random_uniform(1000) / 100;
-                NSString *str = [NSString stringWithFormat:@"%f",num];
+                
+                CGFloat num     = arc4random_uniform(1000) / 100;
+                NSString *str   = [NSString stringWithFormat:@"%f",num];
                 [ary2 addObject:str];
             }
             return @[ary,ary2];

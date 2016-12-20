@@ -50,8 +50,9 @@
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-variable"
-    CGFloat boundsWidth = CGRectGetWidth(self.bounds);
+    
     CGFloat boundsHeight = CGRectGetHeight(self.bounds);
+    
 #pragma clang diagnostic pop
     
     [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];

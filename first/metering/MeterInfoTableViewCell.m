@@ -38,7 +38,12 @@
         
         _y = self.meterInfoModel.y;
     }
+    if (_meterInfoModel.area_Id) {
+        
+    }
+    
 }
+
 
 - (IBAction)naviBtn:(id)sender {
     
@@ -52,7 +57,7 @@
     } else {
         
         UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"导航提示" message:[NSString stringWithFormat:@"导航前往 ‘%@’ ？",_area.text] preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:nil];
         UIAlertAction *conf = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             //检测定位功能是否开启
             if([CLLocationManager locationServicesEnabled]){

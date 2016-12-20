@@ -19,5 +19,6 @@
 
 @property (nonatomic, strong) NSString *x;
 @property (nonatomic, strong) NSString *y;
+@property (weak, nonatomic) IBOutlet UILabel *num;
 
 @end

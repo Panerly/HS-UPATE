@@ -10,6 +10,7 @@
 #import "QueryTableViewCell.h"
 #import "SCViewController.h"
 #import "QueryModel.h"
+#import <ShareSDK/ShareSDK.h>
 #define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
 
 @interface QueryViewController ()<UITableViewDelegate,UITableViewDataSource,SCChartDataSource>
@@ -36,6 +37,8 @@
     self.title = @"大表数据查询";
     self.switchBtn.selectedSegmentIndex = 0;
     
+    [MLTransition invalidate];
+    
     //设置时流量统计为默认值
     _flag = 0;
     
@@ -47,12 +50,84 @@
     
     [self _createCurveView];
     
+    [self initShareBtn];
+    
     [self requestDayData:_dayDateTime :_dayDateTime];
     
-    self.dataArr = [NSMutableArray array];
-    self.xArr = [NSMutableArray array];
-    self.yArr = [NSMutableArray array];
-    yFlowArr = [NSMutableArray array];
+    self.dataArr    = [NSMutableArray array];
+    self.xArr       = [NSMutableArray array];
+    self.yArr       = [NSMutableArray array];
+    yFlowArr        = [NSMutableArray array];
+}
+
+//分享item
+- (void)initShareBtn {
+    UIButton *rightButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,57,45)];
+    rightButton.imageEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
+    [rightButton setImage:[UIImage imageNamed:@"icon_share@2x.png"]forState:UIControlStateNormal];
+    rightButton.tintColor = [UIColor redColor];
+    [rightButton addTarget:self action:@selector(selectRightAction:)forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
+    self.navigationItem.rightBarButtonItem = rightItem;
+}
+
+- (void)selectRightAction:(UIButton *)sender
+{
+    
+    //构造分享内容
+    id<ISSContent> publishContent = [ShareSDK content:@"分享内容"
+                                       defaultContent:@"大表数据查询"
+                                                image:[ShareSDK jpegImageWithImage:[self getSnapshotImage] quality:1]
+                                                title:@"大表数据查询截图"
+                                                  url:@"http://www.hzsb.com"
+                                          description:@"这是一条测试信息"
+                                            mediaType:SSPublishContentMediaTypeImage];
+    //创建弹出菜单容器
+    id<ISSContainer> container = [ShareSDK container];
+    [container setIPadContainerWithView:sender arrowDirect:UIPopoverArrowDirectionUp];
+    //  选择要添加的功能
+    NSArray *shareList = [ShareSDK customShareListWithType:
+                          SHARE_TYPE_NUMBER(ShareTypeCopy),
+                          SHARE_TYPE_NUMBER(ShareTypeMail),
+                          SHARE_TYPE_NUMBER(ShareTypeWeixiTimeline),
+                          SHARE_TYPE_NUMBER(ShareTypeWeixiSession),
+                          SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
+                          SHARE_TYPE_NUMBER(ShareTypeQQSpace),
+                          SHARE_TYPE_NUMBER(ShareTypeQQ),
+                          nil];
+    
+    
+    //弹出分享菜单
+    [ShareSDK showShareActionSheet:container
+                         shareList:shareList
+                           content:publishContent
+                     statusBarTips:YES
+                       authOptions:nil
+                      shareOptions:nil
+                            result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                
+                                if (state == SSResponseStateSuccess)
+                                {
+                                    NSLog(NSLocalizedString(@"TEXT_ShARE_SUC", @"分享成功"));
+                                }
+                                else if (state == SSResponseStateFail)
+                                {
+                                    NSLog(NSLocalizedString(@"TEXT_ShARE_FAI", @"分享失败,错误码:%d,错误描述:%@"), [error errorCode], [error errorDescription]);
+                                }
+                            }];
+    
+    
+    
+}
+
+
+//获取当前屏幕
+- (UIImage *)getSnapshotImage {
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)), NO, 1);
+    [self.view drawViewHierarchyInRect:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)) afterScreenUpdates:NO];
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return snapshot;
 }
 
 - (void)_getSysTime

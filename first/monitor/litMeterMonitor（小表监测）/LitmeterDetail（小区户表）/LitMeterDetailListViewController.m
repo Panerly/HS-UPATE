@@ -50,26 +50,31 @@ UISearchBarDelegate
     [self requestData];
 }
 - (void)ReturnTextBlock:(ReturnTextBlock)block {
+    
     self.returnTextBlock = block;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    
     [super viewWillDisappear:animated];
     [SVProgressHUD dismiss];
+    
     if (self.searchController.active) {
+        
         self.searchController.active = NO;
         [self.searchController.searchBar removeFromSuperview];
     }
     if (task) {
+        
         [task cancel];
     }
 }
 
 - (void)startLoading {
     //刷新控件
-    loadingView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
-    loadingView.center = self.view.center;
-    UIImage *image = [UIImage sd_animatedGIFNamed:@"刷新5"];
+    loadingView         = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+    loadingView.center  = self.view.center;
+    UIImage *image      = [UIImage sd_animatedGIFNamed:@"刷新5"];
     [loadingView setImage:image];
     [self.view addSubview:loadingView];
 }
@@ -89,11 +94,11 @@ UISearchBarDelegate
 }
 
 - (void)initTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, PanScreenWidth, PanScreenHeight - 64)];
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    _tableView.backgroundColor = [UIColor clearColor];
-    _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    _tableView                      = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, PanScreenWidth, PanScreenHeight - 64)];
+    _tableView.delegate             = self;
+    _tableView.dataSource           = self;
+    _tableView.backgroundColor      = [UIColor clearColor];
+    _tableView.keyboardDismissMode  = UIScrollViewKeyboardDismissModeOnDrag;
     
     [_tableView registerNib:[UINib nibWithNibName:@"LitMeterDetailTableViewCell" bundle:nil] forCellReuseIdentifier:@"litMeterDetailCellID"];
     
@@ -104,17 +109,17 @@ UISearchBarDelegate
     _tableView.mj_header.automaticallyChangeAlpha = YES;
     
     //调用初始化searchController
-    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    self.searchController.searchBar.frame = CGRectMake(0, 0, 0, 44);
-    self.searchController.dimsBackgroundDuringPresentation = NO;
-    self.searchController.hidesNavigationBarDuringPresentation = YES;
-    self.searchController.searchBar.barTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
-    self.searchController.searchBar.placeholder = @"搜索";
+    self.searchController                                       = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchBar.frame                       = CGRectMake(0, 0, 0, 44);
+    self.searchController.dimsBackgroundDuringPresentation      = NO;
+    self.searchController.hidesNavigationBarDuringPresentation  = YES;
+    self.searchController.searchBar.barTintColor                = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
+    self.searchController.searchBar.placeholder                 = @"搜索";
     
-    self.searchController.searchBar.delegate = self;
-    self.searchController.searchResultsUpdater = self;
+    self.searchController.searchBar.delegate    = self;
+    self.searchController.searchResultsUpdater  = self;
     //搜索栏表头视图
-    self.tableView.tableHeaderView = self.searchController.searchBar;
+    self.tableView.tableHeaderView              = self.searchController.searchBar;
     [self.searchController.searchBar sizeToFit];
     
     [GCDQueue executeInMainQueue:^{
@@ -135,14 +140,15 @@ UISearchBarDelegate
     
     [AnimationView showInView:self.view];
     if (self.tableView.mj_header.state == MJRefreshStateRefreshing) {
+        
         [AnimationView dismiss];
     }
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
-    manager.requestSerializer.timeoutInterval = 60;
-    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    NSString *communityURL = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_New_DataServlet",litMeterApi];
-    __weak typeof(self) weekSelf = self;
+    AFHTTPSessionManager *manager               = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    AFHTTPResponseSerializer *serializer        = manager.responseSerializer;
+    manager.requestSerializer.timeoutInterval   = 60;
+    serializer.acceptableContentTypes           = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    NSString *communityURL                      = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_New_DataServlet",litMeterApi];
+    __weak typeof(self) weekSelf                = self;
 
     NSDictionary *parameters = @{
                                  @"name":self.village_name
@@ -184,10 +190,8 @@ UISearchBarDelegate
         [weekSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
         [weekSelf.tableView.mj_header endRefreshing];
-//        if (loadingView) {
-//            [loadingView removeFromSuperview];
-//        }
         [AnimationView dismiss];
         [SVProgressHUD showInfoWithStatus:@"加载失败" maskType:SVProgressHUDMaskTypeGradient];
     }];
@@ -199,7 +203,9 @@ UISearchBarDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([_isNormal isEqualToString:@"异常"]) {
+        
         if ([((LitMeterDetailModel *)_abnormalDataArr[indexPath.row]).collect_Status isEqualToString:@"抄收超时"]) {
+            
             return 70;
         }else {
             
@@ -207,7 +213,9 @@ UISearchBarDelegate
         }
     } else {
         if (![((LitMeterDetailModel *)_dataArr[indexPath.row]).collect_Status isEqualToString:@"正常"]) {
+            
             if ([((LitMeterDetailModel *)_dataArr[indexPath.row]).collect_Status isEqualToString:@"抄收超时"]) {
+                
                 return 70;
             }else {
                 
@@ -354,7 +362,7 @@ UISearchBarDelegate
 {
     [searchBar setShowsCancelButton:YES animated:YES];
     UIButton *btn=[searchBar valueForKey:@"_cancelButton"];
-    [btn setTitle:@"取消" forState:UIControlStateNormal];
+    [btn setTitle:cancelTitle forState:UIControlStateNormal];
 }
 
 

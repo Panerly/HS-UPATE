@@ -20,14 +20,16 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.userAddr.text = [self _clearLineBreak:self.litMeterDetailModel.user_addr];
-    self.meter_status.text = [self isNormal:self.litMeterDetailModel.collect_Status];
+    self.userAddr.text      = [self _clearLineBreak:self.litMeterDetailModel.user_addr];
+    self.meter_status.text  = [self isNormal:self.litMeterDetailModel.collect_Status];
 }
 
 - (NSString *)isNormal :(NSString *)isNormal {
     if (![isNormal isEqualToString:@"正常"]) {
+        
         self.meter_status.textColor = [UIColor redColor];
     } else {
+        
         self.meter_status.textColor = [UIColor blueColor];
     }
     return [NSString stringWithFormat:@"状态：%@",isNormal];
@@ -37,6 +39,7 @@
 
     //去除\n
     if ([string rangeOfString:@"\n"].location != NSNotFound) {
+        
         [string stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         
         string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];  //去除掉首尾的空白字符和换行字符
@@ -53,6 +56,7 @@
     while (1) {
         
         if ([next isKindOfClass:[UIViewController class]]) {
+            
             return  (UIViewController *)next;
         }
         next =  next.nextResponder;
@@ -85,9 +89,9 @@
 }
 - (IBAction)scanHisBtn:(id)sender {
     
-    MeterDataViewController *meterDataVC = [[MeterDataViewController alloc] init];
-    meterDataVC.isBigMeter = NO;
-    meterDataVC.user_id_str = self.litMeterDetailModel.user_Id;
+    MeterDataViewController *meterDataVC    = [[MeterDataViewController alloc] init];
+    meterDataVC.isBigMeter                  = NO;
+    meterDataVC.user_id_str                 = self.litMeterDetailModel.user_Id;
     [[self findVC] showViewController:meterDataVC sender:nil];
 }
 @end

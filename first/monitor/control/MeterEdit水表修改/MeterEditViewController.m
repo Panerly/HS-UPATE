@@ -40,11 +40,12 @@ LLSwitchDelegate
 
 static int i = 0;
 
+#define changeLabel @"水表修改"
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"水表修改";
+    self.title = changeLabel;
     
     LLSwitch *customSwitchBtn = [[LLSwitch alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
     [customSwitchBtn setOn:NO];
@@ -131,36 +132,36 @@ static int i = 0;
             
             [attrutedStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, 4)];
             
-            _userID.attributedText = attrutedStr;
+            _userID.attributedText      = attrutedStr;
             
-            _installAddrTextField.text = [responseObject objectForKey:@"username"];
-            _longitudeTextField.text = [responseObject objectForKey:@"x"];
-            _latitudeTextField.text = [responseObject objectForKey:@"y"];
-            _remarksTextView.text = [responseObject objectForKey:@"user_remark"];
-            _user_addr= [responseObject objectForKey:@"user_addr"];
+            _installAddrTextField.text  = [responseObject objectForKey:@"username"];
+            _longitudeTextField.text    = [responseObject objectForKey:@"x"];
+            _latitudeTextField.text     = [responseObject objectForKey:@"y"];
+            _remarksTextView.text       = [responseObject objectForKey:@"user_remark"];
+            _user_addr                  = [responseObject objectForKey:@"user_addr"];
             
-            NSDictionary *dic = [responseObject objectForKey:@"meter1"];
+            NSDictionary *dic           = [responseObject objectForKey:@"meter1"];
             
             NSMutableAttributedString *attrutedStr_id = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"表位号: %@",[dic objectForKey:@"meter_id"]]];
             [attrutedStr_id addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, 4)];
-            _meterID.attributedText = attrutedStr_id;
             
-            _meter_idTextField.text = [dic objectForKey:@"meter_wid"];
-            _connectIDTextField.text = [dic objectForKey:@"comm_id"];
-            _collectIDTextField.text = [dic objectForKey:@"collector_id"];
-            _installTimeTextField.text = [dic objectForKey:@"install_time"];
-            _wheelTypeTextField.text = [dic objectForKey:@"bz10"];
-            _regionTextField.text = [dic objectForKey:@"area"];
-            _meterTypeTextField.text = [dic objectForKey:@"meter_name"];
-            _caliberTextField.text = [dic objectForKey:@"meter_cali"];
-            _remoteTypeTextField.text = [dic objectForKey:@"type_name"];
-            _remoteWayTextField.text = [dic objectForKey:@"type"];
+            _meterID.attributedText     = attrutedStr_id;
+            _meter_idTextField.text     = [dic objectForKey:@"meter_wid"];
+            _connectIDTextField.text    = [dic objectForKey:@"comm_id"];
+            _collectIDTextField.text    = [dic objectForKey:@"collector_id"];
+            _installTimeTextField.text  = [dic objectForKey:@"install_time"];
+            _wheelTypeTextField.text    = [dic objectForKey:@"bz10"];
+            _regionTextField.text       = [dic objectForKey:@"area"];
+            _meterTypeTextField.text    = [dic objectForKey:@"meter_name"];
+            _caliberTextField.text      = [dic objectForKey:@"meter_cali"];
+            _remoteTypeTextField.text   = [dic objectForKey:@"type_name"];
+            _remoteWayTextField.text    = [dic objectForKey:@"type"];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"数据加载失败^_^!" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertVC  = [UIAlertController alertControllerWithTitle:@"提示" message:@"数据加载失败^_^!" preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *action       = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             
         }];
         
@@ -176,14 +177,14 @@ static int i = 0;
 //配置滑动试图
 - (void)_configScrollView
 {
-    _scrollView = [[UIScrollView alloc] init];
-    _scrollView.contentSize= CGSizeMake(PanScreenWidth, 2*PanScreenHeight);
-    _scrollView.scrollEnabled = YES;
-    _scrollView.pagingEnabled = NO;
-    _scrollView.delegate = self;
-    _scrollView.showsVerticalScrollIndicator = YES;
-    _scrollView.showsHorizontalScrollIndicator = NO;
-    _scrollView.backgroundColor = [UIColor whiteColor];
+    _scrollView                 = [[UIScrollView alloc] init];
+    _scrollView.contentSize     = CGSizeMake(PanScreenWidth, 2*PanScreenHeight);
+    _scrollView.scrollEnabled   = YES;
+    _scrollView.pagingEnabled   = NO;
+    _scrollView.delegate        = self;
+    _scrollView.showsVerticalScrollIndicator    = YES;
+    _scrollView.showsHorizontalScrollIndicator  = NO;
+    _scrollView.backgroundColor                 = [UIColor whiteColor];
     //滑动时使键盘收回
     _scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:_scrollView];
@@ -219,40 +220,40 @@ static int i = 0;
 //控件部署
 - (void)_configContent
 {
-    _userID = [self allocLabel];
-    _meterID = [self allocLabel];
-    _installAddrLabel = [self allocLabel];
-    _meter_idLabel = [self allocLabel];
-    _connectIDLabel = [self allocLabel];
-    _collectIDLabel = [self allocLabel];
-    _installTimeLabel = [self allocLabel];
-    _wheelTypeLabel = [self allocLabel];
-    _regionLabel = [self allocLabel];
-    _meterTypeLabel = [self allocLabel];
-    UILabel *remoteWay = [self allocLabel];
-    _caliberLabel = [self allocLabel];
-    UILabel *remoteType = [self allocLabel];
-    _latitudeLabel = [self allocLabel];
-    _longitudeLabel = [self allocLabel];
-    UILabel *setAlarm = [self allocLabel];
-    _excessiveAlarmLabel = [self allocLabel];
-    _remarksLabel = [self allocLabel];
-    _toLabel = [self allocLabel];
-    _fromLabel = [self allocLabel];
-    UILabel *intervalLabel = [self allocLabel];
-    UILabel *limitOfUsageAlarmUnit = [self allocLabel];
-    _limitOfUsageLabel = [self allocLabel];
-    UILabel *longtimeNotUse = [self allocLabel];
-    UILabel *dayOverFlowUnit = [self allocLabel];
-    UILabel *dayOverFlow = [self allocLabel];
-    UILabel *longTimeNotServerUnit = [self allocLabel];
-    _longTimeNotServer = [self allocLabel];
-    UILabel *reversalAlarmUnit = [self allocLabel];
-    _reversalAlarmLabel = [self allocLabel];
-    UILabel *excessiveAlarmUnit = [self allocLabel];
-    UILabel *alarmIntroduce = [self allocLabel];
-    UILabel *parameterSet = [self allocLabel];
-    UILabel *enableLabel = [self allocLabel];
+    _userID                 = [self allocLabel];
+    _meterID                = [self allocLabel];
+    _installAddrLabel       = [self allocLabel];
+    _meter_idLabel          = [self allocLabel];
+    _connectIDLabel         = [self allocLabel];
+    _collectIDLabel         = [self allocLabel];
+    _installTimeLabel       = [self allocLabel];
+    _wheelTypeLabel         = [self allocLabel];
+    _regionLabel            = [self allocLabel];
+    _meterTypeLabel         = [self allocLabel];
+    UILabel *remoteWay      = [self allocLabel];
+    _caliberLabel           = [self allocLabel];
+    UILabel *remoteType     = [self allocLabel];
+    _latitudeLabel          = [self allocLabel];
+    _longitudeLabel         = [self allocLabel];
+    UILabel *setAlarm       = [self allocLabel];
+    _excessiveAlarmLabel    = [self allocLabel];
+    _remarksLabel           = [self allocLabel];
+    _toLabel                = [self allocLabel];
+    _fromLabel              = [self allocLabel];
+    UILabel *intervalLabel  = [self allocLabel];
+    UILabel *limitOfUsageAlarmUnit  = [self allocLabel];
+    _limitOfUsageLabel              = [self allocLabel];
+    UILabel *longtimeNotUse         = [self allocLabel];
+    UILabel *dayOverFlowUnit        = [self allocLabel];
+    UILabel *dayOverFlow            = [self allocLabel];
+    UILabel *longTimeNotServerUnit  = [self allocLabel];
+    _longTimeNotServer              = [self allocLabel];
+    UILabel *reversalAlarmUnit      = [self allocLabel];
+    _reversalAlarmLabel             = [self allocLabel];
+    UILabel *excessiveAlarmUnit     = [self allocLabel];
+    UILabel *alarmIntroduce         = [self allocLabel];
+    UILabel *parameterSet           = [self allocLabel];
+    UILabel *enableLabel            = [self allocLabel];
     
     NSMutableArray *labelArr = [NSMutableArray arrayWithObjects:_userID,_meterID,_installAddrLabel,_meter_idLabel,_connectIDLabel,_collectIDLabel,_installTimeLabel,_wheelTypeLabel,_regionLabel,_meterTypeLabel,remoteWay,_caliberLabel,remoteType,_latitudeLabel,_longitudeLabel,setAlarm,_excessiveAlarmLabel,_remarksLabel,_toLabel,_fromLabel,intervalLabel,limitOfUsageAlarmUnit,_limitOfUsageLabel,longtimeNotUse,dayOverFlowUnit,dayOverFlow,longTimeNotServerUnit,_longTimeNotServer,reversalAlarmUnit,_reversalAlarmLabel,excessiveAlarmUnit,alarmIntroduce,parameterSet,enableLabel,nil];
    
@@ -260,49 +261,49 @@ static int i = 0;
         
         if (i<=16) {
             if (i<2) {
-                ((UILabel *)labelArr[i]).font = [UIFont systemFontOfSize:13];
-                ((UILabel *)labelArr[i]).textColor = [UIColor blackColor];
+                ((UILabel *)labelArr[i]).font       = [UIFont systemFontOfSize:13];
+                ((UILabel *)labelArr[i]).textColor  = [UIColor blackColor];
             }else {
-            ((UILabel *)labelArr[i]).font = [UIFont systemFontOfSize:13];
-            ((UILabel *)labelArr[i]).textColor = [UIColor blueColor];
+            ((UILabel *)labelArr[i]).font       = [UIFont systemFontOfSize:13];
+            ((UILabel *)labelArr[i]).textColor  = [UIColor blueColor];
             }
             
         } else {
             
-        ((UILabel *)labelArr[i]).font = [UIFont systemFontOfSize:10.0f];
-        ((UILabel *)labelArr[i]).textColor = [UIColor darkGrayColor];
+        ((UILabel *)labelArr[i]).font       = [UIFont systemFontOfSize:10.0f];
+        ((UILabel *)labelArr[i]).textColor  = [UIColor darkGrayColor];
             
         }
         [_scrollView addSubview:labelArr[i]];
     }
     
-    _installAddrTextField = [[UITextField alloc] init];
-    _meter_idTextField = [[UITextField alloc] init];
-    _connectIDTextField = [[UITextField alloc] init];
-    _collectIDTextField = [[UITextField alloc] init];
-    _installTimeTextField = [[UITextField alloc] init];
-    _wheelTypeTextField = [[UITextField alloc] init];
-    _regionTextField = [[UITextField alloc] init];
-    _meterTypeTextField = [[UITextField alloc] init];
-    _caliberTextField = [[UITextField alloc] init];
-    _remoteWayTextField = [[UITextField alloc] init];
-    _remoteTypeTextField = [[UITextField alloc] init];
-    _longitudeTextField = [[UITextField alloc] init];
-    _latitudeTextField = [[UITextField alloc] init];
-    _excessiveAlarmTextField = [[UITextField alloc] init];
-    _reversalAlarmTextField = [[UITextField alloc] init];
-    _longTimeNotServerTextField = [[UITextField alloc] init];
-    _limitOfDayUsageAlarmTextField = [[UITextField alloc] init];
-    _limitOfUsageAlarmTextField = [[UITextField alloc] init];
-    _fromTextField = [[UITextField alloc] init];
-    _toTextField = [[UITextField alloc] init];
+    _installAddrTextField           = [[UITextField alloc] init];
+    _meter_idTextField              = [[UITextField alloc] init];
+    _connectIDTextField             = [[UITextField alloc] init];
+    _collectIDTextField             = [[UITextField alloc] init];
+    _installTimeTextField           = [[UITextField alloc] init];
+    _wheelTypeTextField             = [[UITextField alloc] init];
+    _regionTextField                = [[UITextField alloc] init];
+    _meterTypeTextField             = [[UITextField alloc] init];
+    _caliberTextField               = [[UITextField alloc] init];
+    _remoteWayTextField             = [[UITextField alloc] init];
+    _remoteTypeTextField            = [[UITextField alloc] init];
+    _longitudeTextField             = [[UITextField alloc] init];
+    _latitudeTextField              = [[UITextField alloc] init];
+    _excessiveAlarmTextField        = [[UITextField alloc] init];
+    _reversalAlarmTextField         = [[UITextField alloc] init];
+    _longTimeNotServerTextField     = [[UITextField alloc] init];
+    _limitOfDayUsageAlarmTextField  = [[UITextField alloc] init];
+    _limitOfUsageAlarmTextField     = [[UITextField alloc] init];
+    _fromTextField                  = [[UITextField alloc] init];
+    _toTextField                    = [[UITextField alloc] init];
     
     NSMutableArray *arr = [NSMutableArray arrayWithObjects:_installAddrTextField,_meter_idTextField,_connectIDTextField,_collectIDTextField,_installTimeTextField,_wheelTypeTextField,_regionTextField,_meterTypeTextField,_caliberTextField,_remoteWayTextField,_remoteTypeTextField,_longitudeTextField,_latitudeTextField,_excessiveAlarmTextField,_reversalAlarmTextField,_limitOfDayUsageAlarmTextField,_longTimeNotServerTextField,_limitOfUsageAlarmTextField,_fromTextField,_toTextField, nil];
     
     for (int i = 0; i < arr.count; i++) {
         
         ((UITextField *)arr[i]).borderStyle = UITextBorderStyleRoundedRect;
-        ((UITextField *)arr[i]).font = [UIFont systemFontOfSize:13];
+        ((UITextField *)arr[i]).font        = [UIFont systemFontOfSize:13];
         [_scrollView addSubview:arr[i]];
     }
     
@@ -418,9 +419,9 @@ static int i = 0;
         make.right.equalTo(self.view.right).with.offset(-10);
         make.height.equalTo(25);
     }];
-    UIButton *button = [[UIButton alloc] init];
-    button.tag = 500;
-    button.backgroundColor = [UIColor clearColor];
+    UIButton *button        = [[UIButton alloc] init];
+    button.tag              = 500;
+    button.backgroundColor  = [UIColor clearColor];
     [button addTarget:self action:@selector(changeAttr:) forControlEvents:UIControlEventTouchUpInside];
     [_scrollView addSubview:button];
     [button mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -443,8 +444,8 @@ static int i = 0;
         make.right.equalTo(self.view.right).with.offset(-10);
         make.height.equalTo(25);
     }];
-    UIButton *button2 = [[UIButton alloc] init];
-    button2.tag = 501;
+    UIButton *button2       = [[UIButton alloc] init];
+    button2.tag             = 501;
     button2.backgroundColor = [UIColor clearColor];
     [button2 addTarget:self action:@selector(changeAttr:) forControlEvents:UIControlEventTouchUpInside];
     [_scrollView addSubview:button2];
@@ -468,8 +469,8 @@ static int i = 0;
         make.right.equalTo(self.view.right).with.offset(-10);
         make.height.equalTo(25);
     }];
-    UIButton *button3 = [[UIButton alloc] init];
-    button3.tag = 502;
+    UIButton *button3       = [[UIButton alloc] init];
+    button3.tag             = 502;
     button3.backgroundColor = [UIColor clearColor];
     [button3 addTarget:self action:@selector(changeAttr:) forControlEvents:UIControlEventTouchUpInside];
     [_scrollView addSubview:button3];
@@ -493,8 +494,8 @@ static int i = 0;
         make.right.equalTo(self.view.right).with.offset(-10);
         make.height.equalTo(25);
     }];
-    UIButton *button4 = [[UIButton alloc] init];
-    button4.tag = 503;
+    UIButton *button4       = [[UIButton alloc] init];
+    button4.tag             = 503;
     button4.backgroundColor = [UIColor clearColor];
     [button4 addTarget:self action:@selector(changeAttr:) forControlEvents:UIControlEventTouchUpInside];
     [_scrollView addSubview:button4];
@@ -519,8 +520,8 @@ static int i = 0;
         make.right.equalTo(self.view.right).with.offset(-10);
         make.height.equalTo(25);
     }];
-    UIButton *button5 = [[UIButton alloc] init];
-    button5.tag = 504;
+    UIButton *button5       = [[UIButton alloc] init];
+    button5.tag             = 504;
     button5.backgroundColor = [UIColor clearColor];
     [button5 addTarget:self action:@selector(changeAttr:) forControlEvents:UIControlEventTouchUpInside];
     [_scrollView addSubview:button5];
@@ -569,9 +570,9 @@ static int i = 0;
         make.size.equalTo(CGSizeMake(35, 35));
     }];
     
-    setAlarm.text = @"警报参数设置";
-    setAlarm.font = [UIFont systemFontOfSize:15.0f];
-    setAlarm.textAlignment = NSTextAlignmentCenter;
+    setAlarm.text           = @"警报参数设置";
+    setAlarm.font           = [UIFont systemFontOfSize:15.0f];
+    setAlarm.textAlignment  = NSTextAlignmentCenter;
     [setAlarm mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_scrollView.mas_centerX);
         make.top.equalTo(_longitudeLabel.mas_bottom).with.offset(30);
@@ -579,9 +580,9 @@ static int i = 0;
     }];
     
     //警报介绍
-    alarmIntroduce.text = @"警报介绍";
-    alarmIntroduce.textColor = [UIColor blackColor];
-    alarmIntroduce.font = [UIFont systemFontOfSize:13.0f];
+    alarmIntroduce.text         = @"警报介绍";
+    alarmIntroduce.textColor    = [UIColor blackColor];
+    alarmIntroduce.font         = [UIFont systemFontOfSize:13.0f];
     [alarmIntroduce mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_scrollView.mas_left).with.offset(5);
         make.top.equalTo(setAlarm.mas_bottom);
@@ -589,10 +590,10 @@ static int i = 0;
     }];
     
     //参数设置
-    parameterSet.text = @"参数设置";
-    parameterSet.textColor = [UIColor blackColor];
-    parameterSet.font = [UIFont systemFontOfSize:13.0f];
-    parameterSet.textAlignment = NSTextAlignmentCenter;
+    parameterSet.text           = @"参数设置";
+    parameterSet.textColor      = [UIColor blackColor];
+    parameterSet.font           = [UIFont systemFontOfSize:13.0f];
+    parameterSet.textAlignment  = NSTextAlignmentCenter;
     [parameterSet mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_scrollView.centerX);
         make.top.equalTo(setAlarm.mas_bottom);
@@ -600,9 +601,9 @@ static int i = 0;
     }];
     
     //是否启用
-    enableLabel.text = @"是否启用";
-    enableLabel.textColor = [UIColor blackColor];
-    enableLabel.font = [UIFont systemFontOfSize:13.0f];
+    enableLabel.text        = @"是否启用";
+    enableLabel.textColor   = [UIColor blackColor];
+    enableLabel.font        = [UIFont systemFontOfSize:13.0f];
     [enableLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.view.right);
         make.top.equalTo(setAlarm.mas_bottom);
@@ -610,9 +611,9 @@ static int i = 0;
     }];
     
     //用水过量报警
-    _excessiveAlarmLabel.text = @"用水过量报警";
-    _excessiveAlarmLabel.textColor = [UIColor darkGrayColor];
-    _excessiveAlarmLabel.font = [UIFont systemFontOfSize:10.0f];
+    _excessiveAlarmLabel.text       = @"用水过量报警";
+    _excessiveAlarmLabel.textColor  = [UIColor darkGrayColor];
+    _excessiveAlarmLabel.font       = [UIFont systemFontOfSize:10.0f];
     [_excessiveAlarmLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_scrollView.mas_left).with.offset(5);
         make.top.equalTo(alarmIntroduce.mas_bottom).with.offset(10);
@@ -807,7 +808,7 @@ static int i = 0;
     
     
     //备注信息
-    _remarksLabel.text = @"备注信息";
+    _remarksLabel.text      = @"备注信息";
     _remarksLabel.textColor = [UIColor blueColor];
     [_remarksLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_scrollView.mas_left).with.offset(5);
@@ -815,12 +816,12 @@ static int i = 0;
         make.size.equalTo(CGSizeMake(50, 25));
     }];
     
-    _remarksTextView = [[UITextView alloc] init];
-    _remarksTextView.font = [UIFont systemFontOfSize:13];
-    _remarksTextView.layer.borderColor = [[UIColor blackColor] CGColor];
-    _remarksTextView.layer.borderWidth = 1;
-    _remarksTextView.layer.cornerRadius = 6;
-    _remarksTextView.layer.masksToBounds = YES;
+    _remarksTextView                        = [[UITextView alloc] init];
+    _remarksTextView.font                   = [UIFont systemFontOfSize:13];
+    _remarksTextView.layer.borderColor      = [[UIColor blackColor] CGColor];
+    _remarksTextView.layer.borderWidth      = 1;
+    _remarksTextView.layer.cornerRadius     = 6;
+    _remarksTextView.layer.masksToBounds    = YES;
     [_scrollView addSubview:_remarksTextView];
     [_remarksTextView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_remarksLabel.mas_right);
@@ -857,9 +858,9 @@ static int i = 0;
         }
     }else{
         
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"定位信息" message:@"您没有开启定位功能" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertVC  = [UIAlertController alertControllerWithTitle:@"定位信息" message:@"您没有开启定位功能" preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *action       = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             
         }];
         
@@ -939,19 +940,21 @@ static int i = 0;
                                  @"save4edit":@"save4edit",
                                  };
     
-    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
+    AFHTTPResponseSerializer *serializer    = manager.responseSerializer;
     
-    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    serializer.acceptableContentTypes       = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
     
-    NSURLSessionTask *task =[manager POST:logInUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSURLSessionTask *task                  = [manager POST:logInUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
         if (responseObject) {
             
             if ([[responseObject objectAtIndex:0] isEqualToString:@"1"]) {
                 
                 [SCToastView showInView:[UIApplication sharedApplication].keyWindow text:@"保存成功" duration:2 autoHide:YES];
             } else {
+                
                 [SCToastView showInView:[UIApplication sharedApplication].keyWindow text:@"保存失败" duration:2 autoHide:YES];
             }
         }
@@ -999,17 +1002,17 @@ static int i = 0;
 
 - (void)changeAttr:(UIButton *)sender
 {
-    _pickerNameArr = [NSArray array];
-    _pickerTypeArr = [NSArray array];
-    _pickerCaliArr = [NSArray array];
-    _pickerWayArr = [NSArray array];
-    _pickerRemoTypeArr = [NSArray array];
+    _pickerNameArr      = [NSArray array];
+    _pickerTypeArr      = [NSArray array];
+    _pickerCaliArr      = [NSArray array];
+    _pickerWayArr       = [NSArray array];
+    _pickerRemoTypeArr  = [NSArray array];
     
-    _pickerNameArr = nil;
-    _pickerTypeArr = nil;
-    _pickerCaliArr = nil;
-    _pickerWayArr = nil;
-    _pickerRemoTypeArr = nil;
+    _pickerNameArr      = nil;
+    _pickerTypeArr      = nil;
+    _pickerCaliArr      = nil;
+    _pickerWayArr       = nil;
+    _pickerRemoTypeArr  = nil;
     
     /*//所属区域
      NSArray *_pickerNameArr;
@@ -1161,15 +1164,20 @@ static int i = 0;
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     if (i == 500) {
-        _regionTextField.text = [NSString stringWithFormat:@"%@",_pickerNameArr[row]];
+        
+        _regionTextField.text       = [NSString stringWithFormat:@"%@",_pickerNameArr[row]];
     } else if (i == 501) {
-        _meterTypeTextField.text = [NSString stringWithFormat:@"%@",_pickerTypeArr[row]];
+        
+        _meterTypeTextField.text    = [NSString stringWithFormat:@"%@",_pickerTypeArr[row]];
     } else if (i == 502) {
-        _caliberTextField.text = [NSString stringWithFormat:@"%@",_pickerCaliArr[row]];
+        
+        _caliberTextField.text      = [NSString stringWithFormat:@"%@",_pickerCaliArr[row]];
     } else if (i == 503) {
-        _remoteWayTextField.text = [NSString stringWithFormat:@"%@",_pickerWayArr[row]];
+        
+        _remoteWayTextField.text    = [NSString stringWithFormat:@"%@",_pickerWayArr[row]];
     } else if (i == 504) {
-        _remoteTypeTextField.text = [NSString stringWithFormat:@"%@",_pickerRemoTypeArr[row]];
+        
+        _remoteTypeTextField.text   = [NSString stringWithFormat:@"%@",_pickerRemoTypeArr[row]];
     }
 }
 
@@ -1214,41 +1222,43 @@ static int i = 0;
 //}
 
 - (void)unavailable {
-    _installAddrTextField.delegate = self;
+    
+    _installAddrTextField.delegate  = self;
     _installAddrTextField.textColor = [UIColor lightGrayColor];
     
-    _meter_idTextField.delegate = self;
-    _meter_idTextField.textColor = [UIColor lightGrayColor];
+    _meter_idTextField.delegate     = self;
+    _meter_idTextField.textColor    = [UIColor lightGrayColor];
     
-    _connectIDTextField.delegate = self;
-    _connectIDTextField.textColor = [UIColor lightGrayColor];
+    _connectIDTextField.delegate    = self;
+    _connectIDTextField.textColor   = [UIColor lightGrayColor];
     
-    _collectIDTextField.delegate = self;
-    _collectIDTextField.textColor = [UIColor lightGrayColor];
+    _collectIDTextField.delegate    = self;
+    _collectIDTextField.textColor   = [UIColor lightGrayColor];
     
-    _installTimeTextField.delegate = self;
+    _installTimeTextField.delegate  = self;
     _installTimeTextField.textColor = [UIColor lightGrayColor];
     
-    _wheelTypeTextField.delegate = self;
-    _wheelTypeTextField.textColor = [UIColor lightGrayColor];
+    _wheelTypeTextField.delegate    = self;
+    _wheelTypeTextField.textColor   = [UIColor lightGrayColor];
 }
 - (void)usable {
-    _installAddrTextField.delegate = nil;
+    
+    _installAddrTextField.delegate  = nil;
     _installAddrTextField.textColor = [UIColor blackColor];
     
-    _meter_idTextField.delegate = nil;
-    _meter_idTextField.textColor = [UIColor blackColor];
+    _meter_idTextField.delegate     = nil;
+    _meter_idTextField.textColor    = [UIColor blackColor];
     
-    _connectIDTextField.delegate = nil;
-    _connectIDTextField.textColor = [UIColor blackColor];
+    _connectIDTextField.delegate    = nil;
+    _connectIDTextField.textColor   = [UIColor blackColor];
     
-    _collectIDTextField.delegate = nil;
-    _collectIDTextField.textColor = [UIColor blackColor];
+    _collectIDTextField.delegate    = nil;
+    _collectIDTextField.textColor   = [UIColor blackColor];
     
-    _installTimeTextField.delegate = nil;
+    _installTimeTextField.delegate  = nil;
     _installTimeTextField.textColor = [UIColor blackColor];
     
-    _wheelTypeTextField.delegate = nil;
-    _wheelTypeTextField.textColor = [UIColor blackColor];
+    _wheelTypeTextField.delegate    = nil;
+    _wheelTypeTextField.textColor   = [UIColor blackColor];
 }
 @end

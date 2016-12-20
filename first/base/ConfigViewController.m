@@ -34,12 +34,12 @@
     defaults = [NSUserDefaults standardUserDefaults];
 
     
-    _pickerIPArr = [NSArray array];
-    _pickerNameArr = [NSArray array];
-    _dBArr = [NSArray array];
-    _pickerNameArr = @[@"杭州水表",@"杭水测试",@"杭州水务",@"浙江工商大学",@"中国科技大学",@"池州供排水",@"宣城水司",@"杭州下沙街道",@"成都节水办"];
-    _dBArr = @[@"bigmeter_water",@"bigmeter_water",@"bigmeter",@"bigmeter_zjgs",@"bigmeter_zkd",@"bigmeter_chizhou",@"bigmeter_xc",@"bigmeter_xs",@"bigmeter_chengdu"];
-    _pickerIPArr = @[@"60.191.39.206:8000",@"192.168.3.156:8080",@"122.224.204.102:8080",@"124.160.64.122:8080",@"202.141.176.120:8080",@"218.23.188.30:8000",@"58.243.104.26:8080",@"183.129.135.2:8080",@"125.70.9.203:5002"];
+    _pickerIPArr    = [NSArray array];
+    _pickerNameArr  = [NSArray array];
+    _dBArr          = [NSArray array];
+    _pickerNameArr  = @[@"杭州水表",@"杭水测试",@"杭州水务",@"浙江工商大学",@"中国科技大学",@"池州供排水",@"宣城水司",@"杭州下沙街道",@"成都节水办"];
+    _dBArr          = @[@"bigmeter_water",@"bigmeter_water",@"bigmeter",@"bigmeter_zjgs",@"bigmeter_zkd",@"bigmeter_chizhou",@"bigmeter_xc",@"bigmeter_xs",@"bigmeter_chengdu"];
+    _pickerIPArr    = @[@"60.191.39.206:8000",@"192.168.3.156:8080",@"122.224.204.102:8080",@"124.160.64.122:8080",@"202.141.176.120:8080",@"218.23.188.30:8000",@"58.243.104.26:8080",@"183.129.135.2:8080",@"125.70.9.203:5002"];
     
     self.IPConfig.text = [defaults objectForKey:@"ip"];
     self.DBConfig.text = [defaults objectForKey:@"db"];
@@ -70,6 +70,7 @@
 {
     self = [super init];
     if (self) {
+        
         self  = [[UIStoryboard storyboardWithName:@"Config" bundle:nil] instantiateViewControllerWithIdentifier:@"Config"];
         
     }
@@ -113,9 +114,9 @@
 
     if (!_pickerView) {
         
-        _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, PanScreenHeight, PanScreenWidth, 200)];
+        _pickerView                 = [[UIPickerView alloc] initWithFrame:CGRectMake(0, PanScreenHeight, PanScreenWidth, 200)];
         _pickerView.backgroundColor = [UIColor lightGrayColor];_pickerView.delegate = self;
-        _pickerView.dataSource = self;
+        _pickerView.dataSource      = self;
         for (int i = 0; i < _pickerNameArr.count; i++) {
             if ([_pickerNameArr[i] isEqualToString:[defaults objectForKey:@"count"]]) {
                 [_pickerView selectRow:i inComponent:0 animated:YES];

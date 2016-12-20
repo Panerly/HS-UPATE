@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -20,8 +23,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_weather3.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="1He-1j-IdL"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_weather3.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="1He-1j-IdL">
+                                <rect key="frame" x="-4" y="0.0" width="383" height="731"/>
+                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="晴.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZNQ-kU-GIa">
+                                <rect key="frame" x="138" y="30" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="18X-Oe-tMZ">
                                         <variation key="widthClass=compact" constant="100"/>
@@ -44,39 +50,47 @@
                                 </variation>
                             </imageView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ds-4l-RvD">
+                                <rect key="frame" x="36" y="140" width="303" height="184"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="5yp-WH-5JZ">
-                                    <frame key="frameInset"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="303" height="184"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="nId-Mh-IwW">
+                                            <rect key="frame" x="10" y="8" width="283" height="168"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="城市：加载中" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xo8-eA-KR8">
+                                                    <rect key="frame" x="0.0" y="0.0" width="283" height="29.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <color key="shadowColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="天气：加载中" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPa-zL-uJl">
+                                                    <rect key="frame" x="0.0" y="29.5" width="283" height="29.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="温度：加载中" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wuX-Rc-fdB">
+                                                    <rect key="frame" x="0.0" y="59" width="283" height="29.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="风向：加载中" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KtC-OP-JsM">
+                                                    <rect key="frame" x="0.0" y="88.5" width="283" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="风力：加载中" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zoe-Nc-sg5">
+                                                    <rect key="frame" x="0.0" y="109" width="283" height="29.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="日期：加载中" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="seG-i6-UOx">
+                                                    <rect key="frame" x="0.0" y="138.5" width="283" height="29.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -180,7 +194,8 @@
                                     </mask>
                                 </variation>
                             </visualEffectView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q9k-Wd-7CY">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q9k-Wd-7CY">
+                                <rect key="frame" x="329" y="35" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="cZ7-c0-OKX">
                                         <variation key="widthClass=compact" constant="40"/>
@@ -189,7 +204,7 @@
                                         <variation key="widthClass=compact" constant="40"/>
                                     </constraint>
                                 </constraints>
-                                <state key="normal" backgroundImage="定位@3x.png">
+                                <state key="normal" image="orientate">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <variation key="default">
@@ -209,6 +224,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ugu-1d-a9s">
+                                <rect key="frame" x="-4" y="617" width="383" height="50"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="kxq-et-YFr">
@@ -231,11 +247,12 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hg3-eF-daM">
+                                <rect key="frame" x="6" y="30" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="7yK-Ik-Zzw"/>
                                     <constraint firstAttribute="width" constant="50" id="pOc-mj-bHe"/>
                                 </constraints>
-                                <state key="normal" image="refresh@2x.png"/>
+                                <state key="normal" image="icon_refresh"/>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="7yK-Ik-Zzw"/>
@@ -253,6 +270,7 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rgd-ce-xlL">
+                                <rect key="frame" x="0.0" y="329" width="375" height="128"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="K0r-hx-KjP"/>
@@ -320,27 +338,27 @@
                                 <exclude reference="hg3-eF-daM"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="JeC-K4-rwJ"/>
+                                <exclude reference="pBK-ut-jj4"/>
                                 <exclude reference="C7H-Vh-IAd"/>
                                 <exclude reference="UQ5-6u-yR4"/>
                                 <exclude reference="uyg-Xb-rJv"/>
-                                <exclude reference="EnR-Dl-zYX"/>
-                                <exclude reference="Q8N-aw-YPx"/>
-                                <exclude reference="WRf-mB-H7d"/>
-                                <exclude reference="4qe-py-5dj"/>
-                                <exclude reference="H8z-SJ-548"/>
-                                <exclude reference="QlH-iu-JxB"/>
-                                <exclude reference="keg-gq-aBC"/>
                                 <exclude reference="Cgr-AE-yRx"/>
                                 <exclude reference="LkP-8W-s8w"/>
                                 <exclude reference="dXs-ct-k3b"/>
                                 <exclude reference="hl9-FI-JSb"/>
                                 <exclude reference="y2M-bl-XWZ"/>
+                                <exclude reference="4qe-py-5dj"/>
+                                <exclude reference="H8z-SJ-548"/>
+                                <exclude reference="QlH-iu-JxB"/>
+                                <exclude reference="keg-gq-aBC"/>
+                                <exclude reference="EnR-Dl-zYX"/>
+                                <exclude reference="Q8N-aw-YPx"/>
+                                <exclude reference="WRf-mB-H7d"/>
                                 <exclude reference="5PG-CK-XPF"/>
                                 <exclude reference="ina-Pg-iAp"/>
                                 <exclude reference="OHi-OC-WEf"/>
                                 <exclude reference="W8m-fr-6hI"/>
-                                <exclude reference="JeC-K4-rwJ"/>
-                                <exclude reference="pBK-ut-jj4"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -353,27 +371,27 @@
                                 <include reference="hg3-eF-daM"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="JeC-K4-rwJ"/>
+                                <include reference="pBK-ut-jj4"/>
                                 <include reference="C7H-Vh-IAd"/>
                                 <include reference="UQ5-6u-yR4"/>
                                 <include reference="uyg-Xb-rJv"/>
-                                <include reference="EnR-Dl-zYX"/>
-                                <exclude reference="Q8N-aw-YPx"/>
-                                <include reference="WRf-mB-H7d"/>
-                                <exclude reference="4qe-py-5dj"/>
-                                <include reference="H8z-SJ-548"/>
-                                <exclude reference="QlH-iu-JxB"/>
-                                <include reference="keg-gq-aBC"/>
                                 <include reference="Cgr-AE-yRx"/>
                                 <include reference="LkP-8W-s8w"/>
                                 <include reference="dXs-ct-k3b"/>
                                 <include reference="hl9-FI-JSb"/>
                                 <exclude reference="y2M-bl-XWZ"/>
+                                <exclude reference="4qe-py-5dj"/>
+                                <include reference="H8z-SJ-548"/>
+                                <exclude reference="QlH-iu-JxB"/>
+                                <include reference="keg-gq-aBC"/>
+                                <include reference="EnR-Dl-zYX"/>
+                                <exclude reference="Q8N-aw-YPx"/>
+                                <include reference="WRf-mB-H7d"/>
                                 <include reference="5PG-CK-XPF"/>
                                 <include reference="ina-Pg-iAp"/>
                                 <include reference="OHi-OC-WEf"/>
                                 <include reference="W8m-fr-6hI"/>
-                                <include reference="JeC-K4-rwJ"/>
-                                <include reference="pBK-ut-jj4"/>
                             </mask>
                         </variation>
                     </view>
@@ -402,8 +420,8 @@
     </scenes>
     <resources>
         <image name="bg_weather3.jpg" width="535" height="803"/>
-        <image name="refresh@2x.png" width="535" height="803"/>
-        <image name="定位@3x.png" width="535" height="803"/>
+        <image name="icon_refresh" width="32" height="32"/>
+        <image name="orientate" width="32" height="27"/>
         <image name="晴.png" width="256" height="256"/>
     </resources>
 </document>
