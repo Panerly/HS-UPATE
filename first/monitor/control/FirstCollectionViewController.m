@@ -37,7 +37,7 @@ static NSString * const reuseIdentifier = @"CollectionCell";
 {
     [super viewDidAppear:animated];
     self.navigationController.delegate = self;
-    
+    [MLTransition invalidate];
     [self.navigationController setDelegate:self];
     [self.interactive attachInteractiveGestureToNavigationController:self.navigationController];
     

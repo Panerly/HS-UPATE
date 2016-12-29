@@ -574,7 +574,6 @@ static NSString *uploadID;              // 上传(php)脚本中，接收文件�
 {
     // 1> 数据体
     
-    
     NSMutableData *dataM = [NSMutableData data];
     
     //    [dataM appendData:[boundaryStr dataUsingEncoding:NSUTF8StringEncoding]];
@@ -610,7 +609,6 @@ static NSString *uploadID;              // 上传(php)脚本中，接收文件�
     NSString *strContentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", randomIDStr];
     [request setValue:strContentType forHTTPHeaderField:@"Content-Type"];
     
-    
     __weak typeof(self) weakSelf         = self;
 
     // 3> 连接服务器发送请求
@@ -629,7 +627,8 @@ static NSString *uploadID;              // 上传(php)脚本中，接收文件�
                 if ([weakSelf.db open]) {
                     
                     for (int i = 0; i < _uploadArr.count; i++) {
-                        if (installArr.count>0) {
+                        
+                        if (installArr.count > 0) {
                             
                             [weakSelf.db executeUpdate:[NSString stringWithFormat:@"delete from meter_complete where install_addr = '%@'",installArr[i]]];
                         }

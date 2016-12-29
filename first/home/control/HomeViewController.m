@@ -315,27 +315,31 @@ UITableViewDataSource
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
-    NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
-    FMDatabase *db = [FMDatabase databaseWithPath:fileName];
-    if ([db open]) {
+    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {
         
-        FMResultSet *restultSet = [db executeQuery:@"select * from litMeter_info"];
-        int litMeterCountNum = 0;
-        int bigMeterCountNum = 0;
-        while ([restultSet next]) {
-            if (![[restultSet stringForColumn:@"collector_area"] isEqualToString:@"00"]) {
-                litMeterCountNum++;
-            }
-            if ([[restultSet stringForColumn:@"collector_area"] isEqualToString:@"00"]) {
-                bigMeterCountNum++;
-            }
-        }
-        litMeterCount = litMeterCountNum;
-        bigMeterCount = bigMeterCountNum;
+        [self _createTableView];
+        NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
+        NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
+        FMDatabase *db = [FMDatabase databaseWithPath:fileName];
         
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+        if ([db open]) {
+            
+            FMResultSet *restultSet = [db executeQuery:@"select * from litMeter_info"];
+            int litMeterCountNum = 0;
+            int bigMeterCountNum = 0;
+            while ([restultSet next]) {
+                if (![[restultSet stringForColumn:@"collector_area"] isEqualToString:@"00"]) {
+                    litMeterCountNum++;
+                }
+                if ([[restultSet stringForColumn:@"collector_area"] isEqualToString:@"00"]) {
+                    bigMeterCountNum++;
+                }
+            }
+            litMeterCount = litMeterCountNum;
+            bigMeterCount = bigMeterCountNum;
+            
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+    }
     }
 
 }
@@ -890,7 +894,7 @@ static int timesOut = 0;
     FBShimmeringView *shimmeringView           = [[FBShimmeringView alloc] initWithFrame:cell.bounds];
     shimmeringView.shimmering                  = YES;
     shimmeringView.shimmeringBeginFadeDuration = 0.4;
-    shimmeringView.shimmeringOpacity           = 0.1f;
+    shimmeringView.shimmeringOpacity           = 0.4f;
     shimmeringView.shimmeringAnimationOpacity  = 1.f;
     [self.view addSubview:shimmeringView];
     shimmeringView.center                      = self.view.center;

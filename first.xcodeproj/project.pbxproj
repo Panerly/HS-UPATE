@@ -319,6 +319,14 @@
 		459157681E022B840025F439 /* SJViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4591575C1E022B840025F439 /* SJViewController.m */; };
 		459241BC1D18DEAC0007A5A5 /* chart_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 459241BB1D18DEAC0007A5A5 /* chart_line.png */; };
 		459241BE1D18DF2B0007A5A5 /* Real-time_curve.png in Resources */ = {isa = PBXBuildFile; fileRef = 459241BD1D18DF2B0007A5A5 /* Real-time_curve.png */; };
+		45934EAF1E12330F006694E3 /* MapDataDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45934EAE1E12330F006694E3 /* MapDataDetailViewController.m */; };
+		45934EB51E124793006694E3 /* LSStatusBarHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 45934EB11E124793006694E3 /* LSStatusBarHUD.bundle */; };
+		45934EB61E124793006694E3 /* LSStatusBarHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 45934EB31E124793006694E3 /* LSStatusBarHUD.m */; };
+		45934EC41E124A10006694E3 /* LMReportView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45934EBB1E124A10006694E3 /* LMReportView.m */; };
+		45934EC51E124A10006694E3 /* LMRGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 45934EBD1E124A10006694E3 /* LMRGrid.m */; };
+		45934EC61E124A10006694E3 /* LMRLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 45934EBF1E124A10006694E3 /* LMRLabel.m */; };
+		45934EC71E124A10006694E3 /* LMRStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 45934EC11E124A10006694E3 /* LMRStyle.m */; };
+		45934EC81E124A10006694E3 /* NSIndexPath+LMReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 45934EC31E124A10006694E3 /* NSIndexPath+LMReport.m */; };
 		45978D631CED7E6400BF3C0E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 45978D621CED7E6400BF3C0E /* main.m */; };
 		45978D6C1CED7E6400BF3C0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45978D6A1CED7E6400BF3C0E /* Main.storyboard */; };
 		45978D6E1CED7E6400BF3C0E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45978D6D1CED7E6400BF3C0E /* Assets.xcassets */; };
@@ -353,10 +361,13 @@
 		45A520C01DB60160006BD05E /* TLCityHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A520B71DB60160006BD05E /* TLCityHeaderView.m */; };
 		45A520C11DB60160006BD05E /* TLCityPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A520B91DB60160006BD05E /* TLCityPickerController.m */; };
 		45A520C21DB60160006BD05E /* TLCityPickerSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A520BC1DB60160006BD05E /* TLCityPickerSearchResultController.m */; };
+		45AA96E31E1367620048B5A9 /* BigMeterDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AA96E11E1367620048B5A9 /* BigMeterDetailCell.m */; };
+		45AA96E41E1367620048B5A9 /* BigMeterDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AA96E21E1367620048B5A9 /* BigMeterDetailCell.xib */; };
 		45B289FB1E03964900CF2A78 /* Fashionblack.ttf in Sources */ = {isa = PBXBuildFile; fileRef = 45898E291DB8992200636982 /* Fashionblack.ttf */; };
 		45B4435D1CF41A58000644B2 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B4435C1CF41A58000644B2 /* ConfigViewController.m */; };
 		45B4435F1CF41FB8000644B2 /* Config.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45B4435E1CF41FB8000644B2 /* Config.storyboard */; };
 		45B443611CF44752000644B2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45B443601CF44752000644B2 /* Security.framework */; };
+		45B5E0B11E10D1B3004C3DB4 /* QZoneConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4521D6EA1D542712006DA76C /* QZoneConnection.framework */; };
 		45B602FB1D532238006A7B08 /* cry4.gif in Resources */ = {isa = PBXBuildFile; fileRef = 45B602FA1D532238006A7B08 /* cry4.gif */; };
 		45BF598C1D1A2E5300F3EFBD /* Metering.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45BF598B1D1A2E5300F3EFBD /* Metering.storyboard */; };
 		45BF59931D1A381800F3EFBD /* MeteringSingleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BF59911D1A381800F3EFBD /* MeteringSingleViewController.m */; };
@@ -997,8 +1008,26 @@
 		4591575A1E022B840025F439 /* SJScanningView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SJScanningView.m; sourceTree = "<group>"; };
 		4591575B1E022B840025F439 /* SJViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SJViewController.h; sourceTree = "<group>"; };
 		4591575C1E022B840025F439 /* SJViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SJViewController.m; sourceTree = "<group>"; };
+		4591C4121E0CCD35005FEF0C /* AddTrust External CA Root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AddTrust External CA Root.cer"; sourceTree = "<group>"; };
 		459241BB1D18DEAC0007A5A5 /* chart_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chart_line.png; sourceTree = "<group>"; };
 		459241BD1D18DF2B0007A5A5 /* Real-time_curve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Real-time_curve.png"; sourceTree = "<group>"; };
+		45934EAD1E12330F006694E3 /* MapDataDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapDataDetailViewController.h; sourceTree = "<group>"; };
+		45934EAE1E12330F006694E3 /* MapDataDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapDataDetailViewController.m; sourceTree = "<group>"; };
+		45934EB11E124793006694E3 /* LSStatusBarHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LSStatusBarHUD.bundle; sourceTree = "<group>"; };
+		45934EB21E124793006694E3 /* LSStatusBarHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSStatusBarHUD.h; sourceTree = "<group>"; };
+		45934EB31E124793006694E3 /* LSStatusBarHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSStatusBarHUD.m; sourceTree = "<group>"; };
+		45934EB41E124793006694E3 /* LSStatusBarHUDConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSStatusBarHUDConst.h; sourceTree = "<group>"; };
+		45934EB91E124A10006694E3 /* LMReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMReport.h; sourceTree = "<group>"; };
+		45934EBA1E124A10006694E3 /* LMReportView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMReportView.h; sourceTree = "<group>"; };
+		45934EBB1E124A10006694E3 /* LMReportView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMReportView.m; sourceTree = "<group>"; };
+		45934EBC1E124A10006694E3 /* LMRGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMRGrid.h; sourceTree = "<group>"; };
+		45934EBD1E124A10006694E3 /* LMRGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMRGrid.m; sourceTree = "<group>"; };
+		45934EBE1E124A10006694E3 /* LMRLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMRLabel.h; sourceTree = "<group>"; };
+		45934EBF1E124A10006694E3 /* LMRLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMRLabel.m; sourceTree = "<group>"; };
+		45934EC01E124A10006694E3 /* LMRStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMRStyle.h; sourceTree = "<group>"; };
+		45934EC11E124A10006694E3 /* LMRStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMRStyle.m; sourceTree = "<group>"; };
+		45934EC21E124A10006694E3 /* NSIndexPath+LMReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+LMReport.h"; sourceTree = "<group>"; };
+		45934EC31E124A10006694E3 /* NSIndexPath+LMReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+LMReport.m"; sourceTree = "<group>"; };
 		45978D5E1CED7E6400BF3C0E /* 杭州水表.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "杭州水表.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45978D621CED7E6400BF3C0E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		45978D6B1CED7E6400BF3C0E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -1062,6 +1091,9 @@
 		45A520BA1DB60160006BD05E /* TLCityPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCityPickerDelegate.h; sourceTree = "<group>"; };
 		45A520BB1DB60160006BD05E /* TLCityPickerSearchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCityPickerSearchResultController.h; sourceTree = "<group>"; };
 		45A520BC1DB60160006BD05E /* TLCityPickerSearchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLCityPickerSearchResultController.m; sourceTree = "<group>"; };
+		45AA96E01E1367620048B5A9 /* BigMeterDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BigMeterDetailCell.h; sourceTree = "<group>"; };
+		45AA96E11E1367620048B5A9 /* BigMeterDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BigMeterDetailCell.m; sourceTree = "<group>"; };
+		45AA96E21E1367620048B5A9 /* BigMeterDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BigMeterDetailCell.xib; sourceTree = "<group>"; };
 		45B4435B1CF41A58000644B2 /* ConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigViewController.h; sourceTree = "<group>"; };
 		45B4435C1CF41A58000644B2 /* ConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigViewController.m; sourceTree = "<group>"; };
 		45B4435E1CF41FB8000644B2 /* Config.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Config.storyboard; sourceTree = "<group>"; };
@@ -1276,14 +1308,15 @@
 				4521D7281D542712006DA76C /* libWeChatSDK.a in Frameworks */,
 				4521D7171D542712006DA76C /* MailConnection.framework in Frameworks */,
 				4521D7241D542712006DA76C /* TencentOpenAPI.framework in Frameworks */,
-				4521D71E1D542712006DA76C /* WeChatConnection.framework in Frameworks */,
 				4521D71C1D542712006DA76C /* TencentWeiboConnection.framework in Frameworks */,
+				4521D7181D542712006DA76C /* QQConnection.framework in Frameworks */,
+				45B5E0B11E10D1B3004C3DB4 /* QZoneConnection.framework in Frameworks */,
+				4521D71E1D542712006DA76C /* WeChatConnection.framework in Frameworks */,
 				451DFFED1D13AECA003DCDDD /* CoreLocation.framework in Frameworks */,
 				4521D71A1D542712006DA76C /* SinaWeiboConnection.framework in Frameworks */,
 				4521D7211D542712006DA76C /* MOBFoundation.framework in Frameworks */,
 				45B443611CF44752000644B2 /* Security.framework in Frameworks */,
 				4521D71F1D542712006DA76C /* AGCommon.framework in Frameworks */,
-				4521D7181D542712006DA76C /* QQConnection.framework in Frameworks */,
 				4521D7151D542712006DA76C /* CopyConnection.framework in Frameworks */,
 				4521D72D1D542712006DA76C /* ShareSDKShareActionSheet.framework in Frameworks */,
 				4521D72C1D542712006DA76C /* ShareSDKFlatShareViewUI.framework in Frameworks */,
@@ -2022,10 +2055,14 @@
 		457853EA1DEFFA5300F69A82 /* meter_ senior(高级权限) */ = {
 			isa = PBXGroup;
 			children = (
+				45934EAC1E1232E1006694E3 /* mapDataDetail */,
 				457853EB1DEFFAB600F69A82 /* SeniorlevelViewController.h */,
 				457853EC1DEFFAB600F69A82 /* SeniorlevelViewController.m */,
 				457048081DF505FF00C2561A /* MapDataModel.h */,
 				457048091DF505FF00C2561A /* MapDataModel.m */,
+				45AA96E01E1367620048B5A9 /* BigMeterDetailCell.h */,
+				45AA96E11E1367620048B5A9 /* BigMeterDetailCell.m */,
+				45AA96E21E1367620048B5A9 /* BigMeterDetailCell.xib */,
 			);
 			name = "meter_ senior(高级权限)";
 			path = "meter_ senior";
@@ -2089,6 +2126,8 @@
 		45901AB71D41E13100E6249C /* ThirdSource */ = {
 			isa = PBXGroup;
 			children = (
+				45934EB81E124A10006694E3 /* LMReport */,
+				45934EB01E124793006694E3 /* LSStatusBarHUD */,
 				4591574E1E022B840025F439 /* SJQRCode */,
 				459A96E91DFF9432004C6547 /* JHChart */,
 				459E7C931DE6C8D00037D607 /* FBShimmering */,
@@ -2368,6 +2407,44 @@
 				45D44BC11D1CFC1A00024E1B /* SCViewController.m */,
 			);
 			name = "curve（曲线图）";
+			sourceTree = "<group>";
+		};
+		45934EAC1E1232E1006694E3 /* mapDataDetail */ = {
+			isa = PBXGroup;
+			children = (
+				45934EAD1E12330F006694E3 /* MapDataDetailViewController.h */,
+				45934EAE1E12330F006694E3 /* MapDataDetailViewController.m */,
+			);
+			path = mapDataDetail;
+			sourceTree = "<group>";
+		};
+		45934EB01E124793006694E3 /* LSStatusBarHUD */ = {
+			isa = PBXGroup;
+			children = (
+				45934EB11E124793006694E3 /* LSStatusBarHUD.bundle */,
+				45934EB21E124793006694E3 /* LSStatusBarHUD.h */,
+				45934EB31E124793006694E3 /* LSStatusBarHUD.m */,
+				45934EB41E124793006694E3 /* LSStatusBarHUDConst.h */,
+			);
+			path = LSStatusBarHUD;
+			sourceTree = "<group>";
+		};
+		45934EB81E124A10006694E3 /* LMReport */ = {
+			isa = PBXGroup;
+			children = (
+				45934EB91E124A10006694E3 /* LMReport.h */,
+				45934EBA1E124A10006694E3 /* LMReportView.h */,
+				45934EBB1E124A10006694E3 /* LMReportView.m */,
+				45934EBC1E124A10006694E3 /* LMRGrid.h */,
+				45934EBD1E124A10006694E3 /* LMRGrid.m */,
+				45934EBE1E124A10006694E3 /* LMRLabel.h */,
+				45934EBF1E124A10006694E3 /* LMRLabel.m */,
+				45934EC01E124A10006694E3 /* LMRStyle.h */,
+				45934EC11E124A10006694E3 /* LMRStyle.m */,
+				45934EC21E124A10006694E3 /* NSIndexPath+LMReport.h */,
+				45934EC31E124A10006694E3 /* NSIndexPath+LMReport.m */,
+			);
+			path = LMReport;
 			sourceTree = "<group>";
 		};
 		45978D551CED7E6400BF3C0E = {
@@ -2979,6 +3056,7 @@
 				455A4CFA1DC1A8770008E942 /* AnimationView.m */,
 				45E2E2A81DDDA14B00CE42B7 /* MLTransition.h */,
 				45E2E2A91DDDA14B00CE42B7 /* MLTransition.m */,
+				4591C4121E0CCD35005FEF0C /* AddTrust External CA Root.cer */,
 			);
 			path = base;
 			sourceTree = "<group>";
@@ -3435,6 +3513,7 @@
 				451794181D6ACD5300433921 /* icon_db@3x.png in Resources */,
 				45FF5D161D0FAD1C00F3D4E4 /* userhelp.png in Resources */,
 				45D634CC1D17816D004358B8 /* SettingTableViewCell.xib in Resources */,
+				45934EB51E124793006694E3 /* LSStatusBarHUD.bundle in Resources */,
 				45771FC41D0E7DD9006BF7F3 /* 中雨.png in Resources */,
 				45107CEB1D52CC9400693E3D /* bg_server.jpg in Resources */,
 				458A74EE1D5AFC6100A53D8C /* SingleViewCtl.xib in Resources */,
@@ -3530,6 +3609,7 @@
 				4531FE4B1D238FCF00E2C18F /* save.png in Resources */,
 				45978D6E1CED7E6400BF3C0E /* Assets.xcassets in Resources */,
 				45EB0C0F1D3E01E70062AE52 /* metering@2x.png in Resources */,
+				45AA96E41E1367620048B5A9 /* BigMeterDetailCell.xib in Resources */,
 				45EB0C0D1D3E01E70062AE52 /* monitor@2x.png in Resources */,
 				45771FD01D0E7DD9006BF7F3 /* 雾.png in Resources */,
 				45901BA01D41E13100E6249C /* SVProgressHUD.bundle in Resources */,
@@ -3574,6 +3654,7 @@
 			files = (
 				45B289FB1E03964900CF2A78 /* Fashionblack.ttf in Sources */,
 				45BF59931D1A381800F3EFBD /* MeteringSingleViewController.m in Sources */,
+				45934EB61E124793006694E3 /* LSStatusBarHUD.m in Sources */,
 				45901B961D41E13100E6249C /* SDWebImagePrefetcher.m in Sources */,
 				45D635131D17E31F004358B8 /* DetailModel.m in Sources */,
 				4555A2371D45E169009D1DC6 /* MJRefreshConst.m in Sources */,
@@ -3614,8 +3695,10 @@
 				45901B751D41E13100E6249C /* MASConstraint.m in Sources */,
 				45F42BCF1D6C1FAF006E2412 /* LLAnimationManager.m in Sources */,
 				45901B9F1D41E13100E6249C /* SVIndefiniteAnimatedView.m in Sources */,
+				45934EC51E124A10006694E3 /* LMRGrid.m in Sources */,
 				453BD7F11DBEF68900C3C66C /* WYPieChartView.m in Sources */,
 				45901B831D41E13100E6249C /* SCChart.m in Sources */,
+				45934EAF1E12330F006694E3 /* MapDataDetailViewController.m in Sources */,
 				453BD7F21DBEF68900C3C66C /* WYPieSector.m in Sources */,
 				45D635081D17B7F1004358B8 /* QueryTableViewCell.m in Sources */,
 				45901B811D41E13100E6249C /* SCBar.m in Sources */,
@@ -3628,6 +3711,7 @@
 				45901B771D41E13100E6249C /* MASLayoutConstraint.m in Sources */,
 				459A970D1DFF9432004C6547 /* JHTableDataRowModel.m in Sources */,
 				451794151D6ACCAC00433921 /* LocaDBViewController.m in Sources */,
+				45934EC81E124A10006694E3 /* NSIndexPath+LMReport.m in Sources */,
 				45D634D71D17937E004358B8 /* QueryViewController.m in Sources */,
 				45901B9C1D41E13100E6249C /* UIImageView+WebCache.m in Sources */,
 				456E4C541D98C1E300940DC8 /* LitMeterModel.m in Sources */,
@@ -3676,6 +3760,7 @@
 				45901B8C1D41E13100E6249C /* UICountingLabel.m in Sources */,
 				451794311D6AE30500433921 /* TableViewCell.m in Sources */,
 				453BD7E81DBEF68900C3C66C /* WYChartCategory.m in Sources */,
+				45AA96E31E1367620048B5A9 /* BigMeterDetailCell.m in Sources */,
 				45C791E81DA888BA00078786 /* TAAnimatedDotView.m in Sources */,
 				450D3CB71DD0690B0024E9AA /* CommProTableViewCell.m in Sources */,
 				451C25821D4992F10076AB93 /* WZXPopViewController.m in Sources */,
@@ -3686,6 +3771,7 @@
 				45901B6B1D41E13100E6249C /* JSONAPI.m in Sources */,
 				453F2CAC1D2634A70048A4DB /* MeterEditScrollView.m in Sources */,
 				453BD7E51DBEF68900C3C66C /* WYLineChartJunctionShape.m in Sources */,
+				45934EC71E124A10006694E3 /* LMRStyle.m in Sources */,
 				458A74E01D5AD13D00A53D8C /* MeterInfoModel.m in Sources */,
 				45901B881D41E13100E6249C /* SCLineChart.m in Sources */,
 				45E26C121D50437900820EC3 /* KSDatePicker.m in Sources */,
@@ -3787,7 +3873,9 @@
 				45E2E2AA1DDDA14B00CE42B7 /* MLTransition.m in Sources */,
 				45D44BD01D1D15F100024E1B /* HisDetailModel.m in Sources */,
 				455A4CFB1DC1A8770008E942 /* AnimationView.m in Sources */,
+				45934EC41E124A10006694E3 /* LMReportView.m in Sources */,
 				45C791EB1DA888BA00078786 /* SDCollectionViewCell.m in Sources */,
+				45934EC61E124A10006694E3 /* LMRLabel.m in Sources */,
 				451B14721DC3364D00F613C6 /* TZPopInputView.m in Sources */,
 				453BD7EE1DBEF68900C3C66C /* WYPieChartForegroundView.m in Sources */,
 				4588272A1DB0BD14008103F9 /* LitMeterDetailDataModel.m in Sources */,

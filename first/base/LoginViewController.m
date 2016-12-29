@@ -420,6 +420,34 @@
 
 #pragma mark - login litmeter 大表登录检测后登录小表
 - (void)logLitMeter {
+    /*
+    // 1.初始化
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    // 2.设置证书模式
+    NSString * cerPath = [[NSBundle mainBundle] pathForResource:@"AddTrust External CA Root" ofType:@"cer"];
+    NSData * cerData = [NSData dataWithContentsOfFile:cerPath];
+    NSLog(@"%@",cerPath);
+    
+    if (cerPath) {
+        
+        manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone withPinnedCertificates:[[NSSet alloc] initWithObjects:cerData, nil]];
+        // 客户端是否信任非法证书
+        manager.securityPolicy.allowInvalidCertificates = YES;
+        // 是否在证书域字段中验证域名
+        [manager.securityPolicy setValidatesDomainName:NO];
+    }
+    
+    [manager POST:@"http://www.hzsbgs.com:8888/scinf/gyd2?time=2016_11_24_14_49_27" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSLog(@"%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        NSLog(@"%@",error);
+        
+    }];*/
     
     //登录API 需传入的参数：用户名、密码、数据库名、IP地址
     NSString *logInUrl                  = [NSString stringWithFormat:@"%@/Meter_Reading/S_Login_InfoServlet",litMeterApi];
@@ -427,7 +455,7 @@
     NSURLSessionConfiguration *config   = [NSURLSessionConfiguration defaultSessionConfiguration];
     
     AFHTTPSessionManager *manager       = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
-    manager.requestSerializer.timeoutInterval= 10;
+    manager.requestSerializer.timeoutInterval = 10;
     
     NSDictionary *parameters = @{@"name":self.userName.text,
                                  @"pwd":self.passWord.text,

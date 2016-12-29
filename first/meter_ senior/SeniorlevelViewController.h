@@ -19,7 +19,11 @@ BMKLocationServiceDelegate
 
 @property (nonatomic, strong) MapDataModel *mapDataModel;
 
+@property (nonatomic, strong) NSMutableArray *infoDataArr;
 @property (nonatomic, strong) NSMutableArray *bigMeterDataArr;
 @property (nonatomic, strong) NSMutableArray *litMeterDataArr;
+
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSMutableArray *bigMeterDetailArr;
 
 @end

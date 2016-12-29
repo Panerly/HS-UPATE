@@ -165,7 +165,10 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="43" id="RFu-hc-a2x"/>
                     </constraints>
-                    <state key="normal" title="支付"/>
+                    <fontDescription key="fontDescription" name="Verdana-BoldItalic" family="Verdana" pointSize="20"/>
+                    <state key="normal" title="确认支付">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="self.layer.cornerRadius">
                             <integer key="value" value="8"/>

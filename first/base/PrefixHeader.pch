@@ -27,10 +27,13 @@
 #import "LLSwitch.h"
 #import "FTPopOverMenu.h"
 #import "JHChart.h"
+#import "LSStatusBarHUD.h"
 
+//天气key
 #define weatherAPIkey @"87aa67335bd8e0739a06cfccc6edecb5"
-
+//天气
 #define weatherAPI @"http://apis.baidu.com/heweather/weather/free"
+
 //杭水简介
 #define introduction @"http://www.hzsberp.com:9999/hzsb"
 
@@ -38,7 +41,9 @@
 #define litMeterApi @"http://120.199.12.110:6060"
 
 //大小表抄收监控数据
-#define mapCompleteApi @"http://192.168.3.175:8080/Meter_Reading/MapComplete_Servlet"
+#define mapCompleteApi @"http://192.168.3.175:8080/Meter_Reading/IosMapCompleteServlet"
+
+#define mapBigMeterCompleteApi @"http://192.168.3.175:8080/Meter_Reading/MapComplete_Servlet"
 
 //抄表数据上传接口
 #define uploadApi @"http://192.168.3.175:8080/Meter_Reading/Reading_nowServlet1";
@@ -65,6 +70,7 @@
 #import <MapKit/MKFoundation.h>
 #import <MapKit/MKPlacemark.h>
 #import <MapKit/MKMapItem.h>
+#import <ShareSDK/ShareSDK.h>
 #import "SVProgressHUD.h"
 #import "FMDB.h"
 #import "UIImage+GIF.h"
@@ -76,6 +82,7 @@
 #import "UIColor+WHE.h"
 #import "UINavigationBar+Awesome.h"
 #import "MLTransition.h"
+
 
 #import "GCD.h"
 

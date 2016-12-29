@@ -86,6 +86,8 @@ static BOOL flag;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [_thisPeriodValue becomeFirstResponder];
     _thisPeriodValue.delegate = self;
 }
 

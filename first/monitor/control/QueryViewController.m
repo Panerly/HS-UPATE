@@ -10,8 +10,6 @@
 #import "QueryTableViewCell.h"
 #import "SCViewController.h"
 #import "QueryModel.h"
-#import <ShareSDK/ShareSDK.h>
-#define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
 
 @interface QueryViewController ()<UITableViewDelegate,UITableViewDataSource,SCChartDataSource>
 
@@ -36,7 +34,7 @@
     
     self.title = @"大表数据查询";
     self.switchBtn.selectedSegmentIndex = 0;
-    
+
     [MLTransition invalidate];
     
     //设置时流量统计为默认值
@@ -64,7 +62,7 @@
 - (void)initShareBtn {
     UIButton *rightButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,57,45)];
     rightButton.imageEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
-    [rightButton setImage:[UIImage imageNamed:@"icon_share@2x.png"]forState:UIControlStateNormal];
+    [rightButton setImage:[UIImage imageNamed:@"share_icon.png"]forState:UIControlStateNormal];
     rightButton.tintColor = [UIColor redColor];
     [rightButton addTarget:self action:@selector(selectRightAction:)forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
@@ -80,7 +78,7 @@
                                                 image:[ShareSDK jpegImageWithImage:[self getSnapshotImage] quality:1]
                                                 title:@"大表数据查询截图"
                                                   url:@"http://www.hzsb.com"
-                                          description:@"这是一条测试信息"
+                                          description:@"杭州水表"
                                             mediaType:SSPublishContentMediaTypeImage];
     //创建弹出菜单容器
     id<ISSContainer> container = [ShareSDK container];
@@ -95,7 +93,7 @@
                           SHARE_TYPE_NUMBER(ShareTypeQQSpace),
                           SHARE_TYPE_NUMBER(ShareTypeQQ),
                           nil];
-    
+    __weak typeof(self) weakSelf = self;
     
     //弹出分享菜单
     [ShareSDK showShareActionSheet:container
@@ -109,10 +107,12 @@
                                 if (state == SSResponseStateSuccess)
                                 {
                                     NSLog(NSLocalizedString(@"TEXT_ShARE_SUC", @"分享成功"));
+                                    [SCToastView showInView:weakSelf.view text:@"分享成功" duration:1 autoHide:YES];
                                 }
                                 else if (state == SSResponseStateFail)
                                 {
                                     NSLog(NSLocalizedString(@"TEXT_ShARE_FAI", @"分享失败,错误码:%d,错误描述:%@"), [error errorCode], [error errorDescription]);
+                                    [SCToastView showInView:weakSelf.view text:[NSString stringWithFormat:@"分享失败,原因：%@",[error errorDescription]] duration:3.5 autoHide:YES];
                                 }
                             }];
     

@@ -39,6 +39,8 @@ WYLineChartViewDatasource
     self.title = @"小表户表信息";
     self.view.backgroundColor = [UIColor colorWithRed:44/255.0f green:147/255.0f blue:209/255.0f alpha:1];
 
+    [self initShareBtn];
+    
 //    UIButton *saveBtn             = [[UIButton alloc] initWithFrame:CGRectMake(20, PanScreenHeight - 49 - 20, 100, 35)];
 //    saveBtn.backgroundColor       = [UIColor colorWithRed:121/255.0f green:180/255.0f blue:76/255.0f alpha:1];
 //    saveBtn.layer.cornerRadius    = 10;
@@ -68,6 +70,83 @@ WYLineChartViewDatasource
         [self queryFail];
     }
     
+}
+
+//分享item
+- (void)initShareBtn {
+    
+    UIButton *rightButton       = [[UIButton alloc]initWithFrame:CGRectMake(0,0,57,45)];
+    rightButton.imageEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
+    [rightButton setImage:[UIImage imageNamed:@"share_icon.png"]forState:UIControlStateNormal];
+    rightButton.tintColor       = [UIColor redColor];
+    [rightButton addTarget:self action:@selector(selectRightAction:)forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightItem  = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
+    self.navigationItem.rightBarButtonItem = rightItem;
+}
+
+- (void)selectRightAction:(UIButton *)sender
+{
+    
+    //构造分享内容
+    id<ISSContent> publishContent = [ShareSDK content:@"分享内容"
+                                       defaultContent:@"小表户表信息"
+                                                image:[ShareSDK jpegImageWithImage:[self getSnapshotImage] quality:1]
+                                                title:@"小表户表信息截图"
+                                                  url:@"http://www.hzsb.com"
+                                          description:@"杭州水表"
+                                            mediaType:SSPublishContentMediaTypeImage];
+    //创建弹出菜单容器
+    id<ISSContainer> container = [ShareSDK container];
+    [container setIPadContainerWithView:sender arrowDirect:UIPopoverArrowDirectionUp];
+    //  选择要添加的功能
+    NSArray *shareList = [ShareSDK customShareListWithType:
+                          SHARE_TYPE_NUMBER(ShareTypeCopy),
+                          SHARE_TYPE_NUMBER(ShareTypeMail),
+                          SHARE_TYPE_NUMBER(ShareTypeWeixiTimeline),
+                          SHARE_TYPE_NUMBER(ShareTypeWeixiSession),
+                          SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
+                          SHARE_TYPE_NUMBER(ShareTypeQQSpace),
+                          SHARE_TYPE_NUMBER(ShareTypeQQ),
+                          nil];
+    __weak typeof(self) weakSelf = self;
+    
+    //弹出分享菜单
+    [ShareSDK showShareActionSheet:container
+                         shareList:shareList
+                           content:publishContent
+                     statusBarTips:YES
+                       authOptions:nil
+                      shareOptions:nil
+                            result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                
+                                if (state == SSResponseStateSuccess)
+                                {
+                                    NSLog(NSLocalizedString(@"TEXT_ShARE_SUC", @"分享成功"));
+                                    [SCToastView showInView:weakSelf.view text:@"分享成功" duration:1 autoHide:YES];
+                                }
+                                else if (state == SSResponseStateFail)
+                                {
+                                    NSLog(NSLocalizedString(@"TEXT_ShARE_FAI", @"分享失败,错误码:%d,错误描述:%@"), [error errorCode], [error errorDescription]);
+                                    [SCToastView showInView:weakSelf.view text:[NSString stringWithFormat:@"分享失败,原因：%@",[error errorDescription]] duration:3.5 autoHide:YES];
+                                }
+                                else if (state == SSResponseStateCancel)
+                                {
+                                    [SCToastView showInView:weakSelf.view text:@"已取消分享" duration:2.5 autoHide:YES];
+                                }
+                            }];
+    
+    
+    
+}
+
+
+//获取当前屏幕
+- (UIImage *)getSnapshotImage {
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)), NO, 1);
+    [self.view drawViewHierarchyInRect:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)) afterScreenUpdates:NO];
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return snapshot;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

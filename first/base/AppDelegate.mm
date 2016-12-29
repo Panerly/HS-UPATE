@@ -56,7 +56,7 @@ BMKMapManager* _mapManager;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
+
     //c侧滑返回
     [MLTransition validatePanBackWithMLTransitionGestureRecognizerType:(MLTransitionGestureRecognizerTypePan)];
     
@@ -109,7 +109,8 @@ BMKMapManager* _mapManager;
     //初始化社交平台
     [self initializePlat];
     
-    [self getPushMessage];
+    //待抄数据
+    //[self getPushMessage];
     
     return YES;
 }
@@ -177,8 +178,6 @@ BMKMapManager* _mapManager;
         }];
         [alertView show];
     }
-    
-
 }
 
 - (void)initializePlat
@@ -200,8 +199,11 @@ BMKMapManager* _mapManager;
 //    [ShareSDK connectQQWithQZoneAppKey:@"100371282"
 //                     qqApiInterfaceCls:[QQApiInterface class]
 //                       tencentOAuthCls:[TencentOAuth class]];
-    [ShareSDK connectQQWithAppId:@"QQ075BCD15" qqApiCls:[QQApiInterface class]];
+
+    [ShareSDK connectQQWithAppId:@"1105823619" qqApiCls:[QQApiInterface class]];
     
+    [ShareSDK connectQQWithQZoneAppKey:@"1105823619" qqApiInterfaceCls:[QQApiInterface class] tencentOAuthCls:[TencentOAuth class]];
+    [ShareSDK connectQZoneWithAppKey:@"1105823619" appSecret:@"Wj88YV79vMTWCPCO" qqApiInterfaceCls:[QQApiInterface class] tencentOAuthCls:[TencentOAuth class]];
     //连接邮件
     [ShareSDK connectMail];
     
@@ -210,6 +212,7 @@ BMKMapManager* _mapManager;
     
     //连接拷贝
     [ShareSDK connectCopy];
+    
     
 }
 

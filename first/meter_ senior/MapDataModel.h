@@ -10,15 +10,16 @@
 
 @interface MapDataModel : JSONModel
 
-@property (nonatomic, strong) NSString *area_id;
-@property (nonatomic, strong) NSString *bs;
-@property (nonatomic, strong) NSString *collect_dt;
-@property (nonatomic, strong) NSString *collect_img_name1;
-@property (nonatomic, strong) NSString *collect_img_name2;
-@property (nonatomic, strong) NSString *collect_num;
-@property (nonatomic, strong) NSString *install_addr;
-@property (nonatomic, strong) NSString *meter_id;
-@property (nonatomic, strong) NSString *x;
-@property (nonatomic, strong) NSString *y;
+@property (nonatomic, strong) NSString <Optional>*area_id;
+@property (nonatomic, strong) NSString <Optional>*area_name;
+@property (nonatomic, strong) NSString <Optional>*bs;
+@property (nonatomic, strong) NSString <Optional>*collect_dt;
+@property (nonatomic, strong) NSString <Optional>*collect_img_name1;
+@property (nonatomic, strong) NSString <Optional>*collect_img_name2;
+@property (nonatomic, strong) NSString <Optional>*collect_num;
+@property (nonatomic, strong) NSString <Optional>*install_addr;
+@property (nonatomic, strong) NSString <Optional>*meter_id;
+@property (nonatomic, strong) NSString <Optional>*x;
+@property (nonatomic, strong) NSString <Optional>*y;
 
 @end

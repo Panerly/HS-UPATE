@@ -31,12 +31,12 @@ CGFloat radius=5.f;
 {
     self=[super initWithFrame:frame];
     if (self) {
-        self.backgroundColor=[UIColor whiteColor];
-        _linePath=[CAShapeLayer layer];
-        _linePath.lineCap=kCALineCapRound;
-        _linePath.lineJoin=kCALineJoinBevel;
-        _linePath.lineWidth=2;
-        _linePath.fillColor=[UIColor clearColor].CGColor;
+        self.backgroundColor= [UIColor whiteColor];
+        _linePath           = [CAShapeLayer layer];
+        _linePath.lineCap   = kCALineCapRound;
+        _linePath.lineJoin  = kCALineJoinBevel;
+        _linePath.lineWidth = 2;
+        _linePath.fillColor = [UIColor clearColor].CGColor;
         [self.layer addSublayer:_linePath];
         _maxValue=1;
         _allLayer=[NSMutableArray array];
@@ -57,8 +57,8 @@ CGFloat radius=5.f;
 }
 -(CGFloat)avgHeight
 {
-    CGFloat height=self.frame.size.height;
-    _avgHeight=(height-4*margin)/self.maxValue;
+    CGFloat height  = self.frame.size.height;
+    _avgHeight      = (height-4*margin)/self.maxValue;
     return _avgHeight;
 }
 -(void)drawRect:(CGRect)rect
@@ -72,8 +72,8 @@ CGFloat radius=5.f;
     [self drawOriginAndMaxPoint];
     UIBezierPath *path=[UIBezierPath bezierPath];
     for (int i=0; i<self.count; i++) {
-        CGFloat value=[_dataSource chart:self valueAtIndex:i];
-        CGPoint point=[self pointWithValue:value index:i];
+        CGFloat value = [_dataSource chart:self valueAtIndex:i];
+        CGPoint point = [self pointWithValue:value index:i];
         if (i==0) {
             [path moveToPoint:point];
         }else{

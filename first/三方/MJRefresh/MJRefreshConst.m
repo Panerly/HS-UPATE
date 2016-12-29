@@ -32,4 +32,3 @@ NSString *const MJRefreshHeaderLastTimeText = @"MJRefreshHeaderLastTimeText";
 NSString *const MJRefreshHeaderDateTodayText = @"MJRefreshHeaderDateTodayText";
 NSString *const MJRefreshHeaderNoneLastDateText = @"MJRefreshHeaderNoneLastDateText";
 
-NSString *const CurrentMetering = @"CurrentMetering";
