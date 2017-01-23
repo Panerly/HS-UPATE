@@ -26,8 +26,8 @@
     [super viewDidLoad];
     
     //添加子控制器
-    HomeViewController *home = [[HomeViewController alloc] init];
-    [self addOneChlildVc:home title:@"首页" imageName:@"home2@2x" selectedImageName:@"home_selected2@2x"];
+//    HomeViewController *home = [[HomeViewController alloc] init];
+//    [self addOneChlildVc:home title:@"首页" imageName:@"home2@2x" selectedImageName:@"home_selected2@2x"];
     
     //判断是否是高级权限 选择呈现不同查看方式
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {

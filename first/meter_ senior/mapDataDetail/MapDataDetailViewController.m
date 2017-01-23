@@ -8,6 +8,7 @@
 
 #import "MapDataDetailViewController.h"
 #import "LMReport.h"
+#import "UIImageView+WebCache.h"
 
 
 @interface MapDataDetailViewController ()<LMReportViewDatasource>
@@ -51,19 +52,19 @@
                         grid.text = @"抄收情况";
                         break;
                     case 2:
-                        grid.text = @"抄收时间";
-                        break;
-                    case 3:
-                        grid.text = @"现场图片1";
-                        break;
-                    case 4:
-                        grid.text = @"现场图片2";
-                        break;
-                    case 5:
                         grid.text = @"抄收读数";
                         break;
-                    case 6:
+                    case 3:
+                        grid.text = @"抄收时间";
+                        break;
+                    case 4:
                         grid.text = @"水表表号";
+                        break;
+                    case 5:
+                        grid.text = @"现场图片1";
+                        break;
+                    case 6:
+                        grid.text = @"现场图片2";
                         break;
                     default:
                         break;
@@ -92,23 +93,25 @@
                         break;
                     case 2:
 
-                        grid.text = [NSString stringWithFormat:@"%@",((MapDataModel *)_dataArr[rowIndex]).collect_dt];
+                        grid.text = [NSString stringWithFormat:@"%@ m³",((MapDataModel *)_dataArr[rowIndex]).collect_num];
                         break;
                     case 3:
 
-                        grid.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/Meter_Reading/%@",litMeterApi,((MapDataModel *)_dataArr[rowIndex]).collect_img_name1]]]];
+                        grid.text = [NSString stringWithFormat:@"%@",((MapDataModel *)_dataArr[rowIndex]).collect_dt];
                         break;
                     case 4:
 
-                        grid.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/Meter_Reading/%@",litMeterApi,((MapDataModel *)_dataArr[rowIndex]).collect_img_name2]]]];
+                        grid.text = [NSString stringWithFormat:@"%@",((MapDataModel *)_dataArr[rowIndex]).meter_id];
                         break;
                     case 5:
 
-                        grid.text = [NSString stringWithFormat:@"%@",((MapDataModel *)_dataArr[rowIndex]).collect_num];
+                        [self setGridImage:rowIndex :grid];
+                        //grid.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/Meter_Reading/%@",litMeterApi,((MapDataModel *)_dataArr[rowIndex]).collect_img_name1]]]];
                         break;
                     case 6:
-
-                        grid.text = [NSString stringWithFormat:@"%@",((MapDataModel *)_dataArr[rowIndex]).meter_id];
+                        
+                        [self setGridImage:rowIndex :grid];
+                        //grid.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/Meter_Reading/%@",litMeterApi,((MapDataModel *)_dataArr[rowIndex]).collect_img_name2]]]];
                         break;
                     default:
                         break;
@@ -121,6 +124,17 @@
     }
     _generalDatas = rows;
     return _generalDatas;
+}
+
+- (void)setGridImage :(NSInteger)rowIndex :(LMRGrid *)grid{
+    NSURL *urlstr   = [NSURL URLWithString:[NSString stringWithFormat:@"%@/Meter_Reading/%@",litMeterApi,((MapDataModel *)_dataArr[rowIndex]).collect_img_name2]];
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    [manager downloadImageWithURL:urlstr options:SDWebImageRetryFailed  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        
+        [SVProgressHUD showProgress:receivedSize/expectedSize];
+    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+        grid.image = image;
+    }];
 }
 
 #pragma mark - <LMReportViewDatasource>

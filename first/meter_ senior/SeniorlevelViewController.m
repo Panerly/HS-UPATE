@@ -10,6 +10,7 @@
 #import "JHPieChart.h"
 #import "MapDataDetailViewController.h"
 #import "BigMeterDetailCell.h"
+#import "UIImageView+WebCache.h"
 
 #import <BaiduMapAPI_Map/BMKPointAnnotation.h>
 #import <BaiduMapAPI_Map/BMKPinAnnotationView.h>
@@ -35,6 +36,7 @@ UITableViewDataSource
     BOOL flag;
     NSTimer *timer;
     JHPieChart *pie;
+    UIButton *closeBtn;
     UIButton *refreshBtn;
     UIButton *imageViewBtn;
 }
@@ -244,12 +246,13 @@ UITableViewDataSource
     [smallMeterNumArr addObject:[NSString stringWithFormat:@"%d",litMeterCompleteNum]];
     [smallMeterNumArr addObject:[NSString stringWithFormat:@"%d",litMeterUnCompleteNum]];
     
-    UIButton *closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 50 - 45, -5, 50, 50)];
+    closeBtn = [[UIButton alloc] initWithFrame:CGRectMake((PanScreenWidth - 50)/2, PanScreenHeight - 49 - 50*2, 50, 50)];
     closeBtn.tintColor = [UIColor redColor];
+    [closeBtn becomeFirstResponder];
     [closeBtn setImage:[UIImage imageNamed:@"close@2x"] forState:UIControlStateNormal];
     [closeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [closeBtn addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
-    [pie addSubview:closeBtn];
+    
     
     
     
@@ -268,6 +271,7 @@ UITableViewDataSource
                                
                                //Start animation
                                [pie showAnimation];
+                               [weakSelf.view addSubview:closeBtn];
                                
                                if (bigMeterCompleteNum+bigMeterUnCompleteNum < 1) {
                                    [SCToastView showInView:self.view text:@"暂无数据，请更新\n温馨提示:左下角更新" duration:2 autoHide:YES];
@@ -279,6 +283,7 @@ UITableViewDataSource
                                
                                [weakSelf.view addSubview:pie];
                                [pie showAnimation];
+                               [weakSelf.view addSubview:closeBtn];
                                if (litMeterUnCompleteNum+litMeterUnCompleteNum < 1) {
                                    
                                    [SCToastView showInView:self.view text:@"暂无数据，请更新\n温馨提示:左下角更新" duration:2 autoHide:YES];
@@ -305,6 +310,9 @@ UITableViewDataSource
             pie = nil;
         }];
         
+    }
+    if (closeBtn) {
+        [closeBtn removeFromSuperview];
     }
 }
 
@@ -411,52 +419,6 @@ UITableViewDataSource
         [LSStatusBarHUD hideLoading];
         [LSStatusBarHUD showMessage:@"加载成功"];
         
-        /*if (responseObject) {
-            
-            NSError *error;
-            
-            NSMutableArray *muteArr = [NSMutableArray array];
-            
-            for (NSDictionary *responseDic in responseObject) {
-                
-                _mapDataModel = [[MapDataModel alloc] initWithDictionary:responseDic error:&error];
-                
-                if ([_mapDataModel.area_id isEqualToString:@"00"]) {
-                    
-                    [weakSelf.bigMeterDataArr addObject:_mapDataModel];
-                } else {
-                    
-                    [weakSelf.litMeterDataArr addObject:_mapDataModel];
-                }
-                [muteArr addObject:_mapDataModel];
-            }
-
-            if (isBigMeter) {
-                
-                for (int i = 0; i < weakSelf.bigMeterDataArr.count; i++) {
-                    
-                    BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
-                    CLLocationCoordinate2D coor;
-                    coor.latitude  = [((MapDataModel *)_bigMeterDataArr[i]).y floatValue];
-                    coor.longitude = [((MapDataModel *)_bigMeterDataArr[i]).x floatValue];
-                    annotation.coordinate = coor;
-                    [_bmkMapView addAnnotation:annotation];
-                    [_annomationArray addObject:annotation];
-                }
-            } else {
-                for (int i = 0; i < weakSelf.litMeterDataArr.count; i++) {
-                    
-                    BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
-                    CLLocationCoordinate2D coor;
-                    coor.latitude  = [((MapDataModel *)_litMeterDataArr[i]).y floatValue];
-                    coor.longitude = [((MapDataModel *)_litMeterDataArr[i]).x floatValue];
-                    annotation.coordinate = coor;
-                    [_bmkMapView addAnnotation:annotation];
-                    [_annomationArray addObject:annotation];
-                }
-            }
-            [weakSelf setTimer];
-        }*/
         if (responseObject) {
             
             NSError *error;
@@ -589,66 +551,6 @@ UITableViewDataSource
 
 //请求水表抄收数据
 - (void)_requestBigMeterData :(NSString *)install_addr{
-    
-    /*[LSStatusBarHUD showLoading:@"加载中"];
-    NSString *mapMeterDataUrl                 = @"http://192.168.3.175:8080/Meter_Reading/IosAreaCompleteServlet";
-    
-    NSURLSessionConfiguration *config         = [NSURLSessionConfiguration defaultSessionConfiguration];
-    
-    AFHTTPSessionManager *manager             = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
-    
-    AFHTTPResponseSerializer *serializer      = manager.responseSerializer;
-    
-    manager.requestSerializer.timeoutInterval = 8;
-    
-    serializer.acceptableContentTypes         = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    
-    NSDictionary *para                        = @{
-                                                  @"area_id":area
-                                                  };
-    
-    __weak typeof(self) weakSelf              = self;
-    
-    NSURLSessionTask *meterTask               = [manager GET:mapMeterDataUrl parameters:para progress:^(NSProgress * _Nonnull downloadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        [LSStatusBarHUD hideLoading];
-        
-        if (responseObject) {
-            
-            NSError *error;
-            
-            [weakSelf.bigMeterDetailArr removeAllObjects];
-            
-            for (NSDictionary *responseDic in responseObject) {
-                
-                _mapDataModel = [[MapDataModel alloc] initWithDictionary:responseDic error:&error];
-                
-                [weakSelf.bigMeterDetailArr addObject:_mapDataModel];
-                
-            }
-            if (weakSelf.bigMeterDetailArr.count>0) {
-                
-                [weakSelf initTableView];
-            }
-        }
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        [LSStatusBarHUD hideLoading];
-        [LSStatusBarHUD showMessage:@"加载失败！"];
-        
-        if (error.code == -1004) {
-            [SCToastView showInView:self.view text:[NSString stringWithFormat:@"服务器连接失败"] duration:1.5 autoHide:YES];
-        }else {
-            [SCToastView showInView:self.view text:[NSString stringWithFormat:@"数据加载失败！\n%@",[error description]] duration:1.5 autoHide:YES];
-            
-        }
-        
-    }];
-    
-    [meterTask resume];*/
     
     NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
     NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
@@ -1092,14 +994,46 @@ UITableViewDataSource
     if (((MapDataModel *)self.bigMeterDetailArr[indexPath.row]).collect_img_name1) {
         
         if (!imageViewBtn) {
+
             imageViewBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 64, PanScreenWidth, PanScreenHeight - 64 - 49)];
             [[UIApplication sharedApplication].keyWindow addSubview:imageViewBtn];
-            imageViewBtn.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:.5];
+
+            /*
+            //1.获取一个全局串行队列
+             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+            //2.把任务添加到队列中执行
+             dispatch_async(queue, ^{
+                 
+                 //3.从网络上下载图片
             
-            [imageViewBtn setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/Meter_Reading/%@",litMeterApi,((MapDataModel *)self.bigMeterDetailArr[indexPath.row]).collect_img_name1]]]] forState:UIControlStateNormal];
+                 NSURL *urlstr   = [NSURL URLWithString:[NSString stringWithFormat:@"%@/Meter_Reading/%@",litMeterApi,((MapDataModel *)self.bigMeterDetailArr[indexPath.row]).collect_img_name1]];
+           
+                 NSData *data    = [NSData dataWithContentsOfURL:urlstr];
+            
+                 UIImage *image  = [UIImage imageWithData:data];
+                 
+                 [AnimationView dismiss];
+                 
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [imageViewBtn setImage:image forState:UIControlStateNormal];
+                 });
+            });
+             */
+            NSURL *urlstr   = [NSURL URLWithString:[NSString stringWithFormat:@"%@/Meter_Reading/%@",litMeterApi,((MapDataModel *)self.bigMeterDetailArr[indexPath.row]).collect_img_name1]];
+            SDWebImageManager *manager = [SDWebImageManager sharedManager];
+            [manager downloadImageWithURL:urlstr options:SDWebImageRetryFailed  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                
+                [SVProgressHUD showProgress:receivedSize/expectedSize];
+            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                [imageViewBtn setImage:image forState:UIControlStateNormal];
+                [SVProgressHUD dismiss];
+            }];
+            
+            
             [imageViewBtn addTarget:self action:@selector(removeImageBtn) forControlEvents:UIControlEventTouchUpInside];
         }
         imageViewBtn.transform = CGAffineTransformMakeScale(.01, .01);
+        imageViewBtn.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:.5];
         [UIView animateWithDuration:.5 animations:^{
             imageViewBtn.transform = CGAffineTransformIdentity;
         }];
@@ -1108,6 +1042,8 @@ UITableViewDataSource
 }
 
 - (void)removeImageBtn {
+
+    imageViewBtn.backgroundColor = [UIColor clearColor];
     [UIView animateWithDuration:.5 animations:^{
         imageViewBtn.alpha = 0;
         imageViewBtn.transform = CGAffineTransformMakeScale(.01, .01);

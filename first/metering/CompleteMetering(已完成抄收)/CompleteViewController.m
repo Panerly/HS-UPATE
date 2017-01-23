@@ -292,7 +292,6 @@ static NSString *uploadID;              // 上传(php)脚本中，接收文件�
         
         NSString *meter_id        = [resultSet stringForColumn:@"meter_id"];
         NSString *user_id         = [resultSet stringForColumn:@"user_id"];
-        NSString *collect_time    = [resultSet stringForColumn:@"collect_time"];
         NSString *remark          = [resultSet stringForColumn:@"remark"];
         NSString *collecTime      = [resultSet stringForColumn:@"collect_time"];
         NSString *collect_num     = [resultSet stringForColumn:@"collect_num"];
@@ -321,7 +320,6 @@ static NSString *uploadID;              // 上传(php)脚本中，接收文件�
         completeModel.metering_status = metering_status;
         completeModel.x               = x;
         completeModel.y               = y;
-        completeModel.collect_time    = [NSString stringWithFormat:@"%@",collect_time];
         completeModel.image           = [UIImage imageWithData:first_image];
         completeModel.second_img      = [UIImage imageWithData:second_image];
         completeModel.third_img       = [UIImage imageWithData:third_image];
@@ -452,7 +450,7 @@ static NSString *uploadID;              // 上传(php)脚本中，接收文件�
     [AnimationView showInView:self.view];
     
     
-    NSString *uploadUrl                = [NSString stringWithFormat:@"http://192.168.3.175:8080/Meter_Reading/Reading_nowServlet1"];
+    NSString *uploadUrl                = [NSString stringWithFormat:@"%@/Meter_Reading/Reading_nowServlet1",litMeterApi];
     
     AFSecurityPolicy *securityPolicy   = [[AFSecurityPolicy alloc] init];
     [securityPolicy setAllowInvalidCertificates:YES];
@@ -618,6 +616,7 @@ static NSString *uploadID;              // 上传(php)脚本中，接收文件�
         
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         if (responseObject) {
+            
             [AnimationView dismiss];
             
             if ([[responseObject objectForKey:@"type"] isEqualToString:@"成功"]) {

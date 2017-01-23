@@ -137,7 +137,6 @@ UISearchResultsUpdating
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        
         if (!weekSelf.dataArray) {
             weekSelf.dataArray = [NSMutableArray array];
         }
@@ -166,7 +165,12 @@ UISearchResultsUpdating
             
         }
         [weekSelf.tableView.mj_header endRefreshing];
-        [SVProgressHUD showInfoWithStatus:@"加载失败" maskType:SVProgressHUDMaskTypeGradient];
+        if (error.code == 3840) {
+            [SVProgressHUD showInfoWithStatus:@"服务器错误" maskType:SVProgressHUDMaskTypeGradient];
+        }else{
+            
+            [SVProgressHUD showInfoWithStatus:@"加载失败" maskType:SVProgressHUDMaskTypeGradient];
+        }
         
         NSLog(@"小区浏览页请求数据失败：\n%@",error);
     }];

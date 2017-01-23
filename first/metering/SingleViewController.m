@@ -247,7 +247,7 @@ static BOOL flag;
     
     [AnimationView showInView:self.view];
     
-    NSString *uploadUrl               = [NSString stringWithFormat:@"http://192.168.3.175:8080/Meter_Reading/Reading_nowServlet1"];
+    NSString *uploadUrl               = [NSString stringWithFormat:@"%@/Meter_Reading/Reading_nowServlet1",litMeterApi];
     
     AFSecurityPolicy *securityPolicy  = [[AFSecurityPolicy alloc] init];
     [securityPolicy setAllowInvalidCertificates:YES];

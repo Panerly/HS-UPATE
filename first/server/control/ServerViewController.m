@@ -104,11 +104,13 @@
     
 }
 - (IBAction)waterCharge:(UIButton *)sender {
-//    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"该功能暂未推出，敬请期待^_^!" preferredStyle:UIAlertControllerStyleAlert];
-//    
-//    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//        
-//    }];
+    
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"该功能暂未推出，敬请期待^_^!" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
     
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:nil];
     
@@ -125,14 +127,14 @@
     }];
     
     HelpViewController *helpView = [[HelpViewController alloc] init];
-    PayViewController *pay = [[PayViewController alloc] init];
+//    PayViewController *pay = [[PayViewController alloc] init];
     switch (sender.tag) {
             
         case 200:
-//            [alertVC addAction:action];
-//            [self presentViewController:alertVC animated:YES completion:^{
-//            }];
-            [self.navigationController showViewController:pay sender:nil];
+            [alertVC addAction:action];
+            [self presentViewController:alertVC animated:YES completion:^{
+            }];
+//            [self.navigationController showViewController:pay sender:nil];
         break;
             
         case 201:

@@ -182,23 +182,12 @@ BMKMapManager* _mapManager;
 
 - (void)initializePlat
 {
-    /**
-     连接微信应用以使用相关功能，此应用需要引用WeChatConnection.framework和微信官方SDK
-     http://open.weixin.qq.com上注册应用，并将相关信息填写以下字段
-     **/
+    
     [ShareSDK connectWeChatWithAppId:@"wx947dfa7241a19ca0" wechatCls:[WXApi class]];
     [ShareSDK connectWeChatWithAppId:@"wx947dfa7241a19ca0"
                            appSecret:@"bb3324d49d0466557eabf44cf3c7714f"
                            wechatCls:[WXApi class]];
-    /**
-     连接QQ应用以使用相关功能，此应用需要引用QQConnection.framework和QQApi.framework库
-     http://mobile.qq.com/api/上注册应用，并将相关信息填写到以下字段
-     **/
-    //旧版中申请的AppId（如：QQxxxxxx类型），可以通过下面方法进行初始化
-    //    [ShareSDK connectQQWithAppId:@"QQ075BCD15" qqApiCls:[QQApi class]];
-//    [ShareSDK connectQQWithQZoneAppKey:@"100371282"
-//                     qqApiInterfaceCls:[QQApiInterface class]
-//                       tencentOAuthCls:[TencentOAuth class]];
+    
 
     [ShareSDK connectQQWithAppId:@"1105823619" qqApiCls:[QQApiInterface class]];
     

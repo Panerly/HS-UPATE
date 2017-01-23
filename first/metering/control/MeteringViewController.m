@@ -9,7 +9,6 @@
 #import "MeteringViewController.h"
 #import "MeteringSingleViewController.h"
 #import "SingleViewController.h"
-#import "TestViewController.h"
 
 #import "MeterInfoModel.h"
 #import "MeterInfoTableViewCell.h"
@@ -409,13 +408,6 @@ static BOOL flashIsOn;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)push
-{
-    TestViewController *testVC = [[TestViewController alloc] init];
-    [self presentViewController:testVC animated:YES completion:^{
-        
-    }];
-}
 
 - (void)_createTableView
 {

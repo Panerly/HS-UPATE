@@ -38,7 +38,7 @@
 #define introduction @"http://www.hzsberp.com:9999/hzsb"
 
 //小表数据平台
-#define litMeterApi @"http://120.199.12.110:6060"
+#define litMeterApi @"http://www.hzsbgs.com:8000"
 
 //大小表抄收监控数据
 #define mapCompleteApi @"http://192.168.3.175:8080/Meter_Reading/IosMapCompleteServlet"

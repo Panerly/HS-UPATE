@@ -115,7 +115,8 @@
     if (!_pickerView) {
         
         _pickerView                 = [[UIPickerView alloc] initWithFrame:CGRectMake(0, PanScreenHeight, PanScreenWidth, 200)];
-        _pickerView.backgroundColor = [UIColor lightGrayColor];_pickerView.delegate = self;
+        _pickerView.backgroundColor = [UIColor lightGrayColor];
+        _pickerView.delegate = self;
         _pickerView.dataSource      = self;
         for (int i = 0; i < _pickerNameArr.count; i++) {
             if ([_pickerNameArr[i] isEqualToString:[defaults objectForKey:@"count"]]) {

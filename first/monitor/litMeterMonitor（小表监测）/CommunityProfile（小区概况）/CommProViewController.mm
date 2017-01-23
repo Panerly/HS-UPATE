@@ -100,7 +100,7 @@ UITableViewDataSource
 //请求小区数据(小区)
 - (void)requestCommunityData {
     
-    [AnimationView showInView:self.view];
+    [LSStatusBarHUD showLoading:@"请稍等..."];
     
     NSURLSessionConfiguration *config         = [NSURLSessionConfiguration defaultSessionConfiguration];
     AFHTTPSessionManager *manager             = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
@@ -114,6 +114,7 @@ UITableViewDataSource
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
+        [LSStatusBarHUD hideLoading];
         if (!weekSelf.dataArray) {
             weekSelf.dataArray = [NSMutableArray array];
         }
@@ -126,7 +127,7 @@ UITableViewDataSource
             }
         }
         
-        [AnimationView dismiss];
+        
         // 添加一个PointAnnotation
         for (int i = 0; i < _dataArray.count; i++) {
             
@@ -139,7 +140,7 @@ UITableViewDataSource
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [AnimationView dismiss];
+        [LSStatusBarHUD hideLoading];
 
         [SVProgressHUD showInfoWithStatus:@"小区列表加载失败" maskType:SVProgressHUDMaskTypeGradient];
         

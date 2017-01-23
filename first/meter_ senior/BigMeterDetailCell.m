@@ -7,6 +7,7 @@
 //
 
 #import "BigMeterDetailCell.h"
+#import "UIImageView+WebCache.h"
 
 @implementation BigMeterDetailCell
 
@@ -19,27 +20,31 @@
     [super layoutSubviews];
     
     if (_mapDataModel.bs) {
-        self.collect_status.text = [NSString stringWithFormat:@"抄收状态: %@",[self returnCollectStatus:_mapDataModel.bs]];
+        self.collect_status.text = [NSString stringWithFormat:@"%@",[self returnCollectStatus:_mapDataModel.bs]];
     }
     if (_mapDataModel.collect_dt) {
         self.collect_dt.text = [NSString stringWithFormat:@"抄收时间: %@",_mapDataModel.collect_dt];
     }
     if (_mapDataModel.collect_num) {
-        self.collect_num.text = [NSString stringWithFormat:@"抄收读数: %@",_mapDataModel.collect_num];
+        self.collect_num.text = [NSString stringWithFormat:@"%@m³",_mapDataModel.collect_num];
     }
     if (_mapDataModel.install_addr) {
         self.install_addr.text = [NSString stringWithFormat:@"安装地址: %@",_mapDataModel.install_addr];
     }
     if (_mapDataModel.collect_img_name1) {
-        self.collect_image.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/Meter_Reading/%@",litMeterApi,_mapDataModel.collect_img_name1]]]];
+        [self.collect_image sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/Meter_Reading/%@",litMeterApi,_mapDataModel.collect_img_name1]] placeholderImage:[UIImage imageNamed:@"icon_thumb_img"]];
     }
     
 }
 
 - (NSString *)returnCollectStatus :(NSString *)meterBs {
+    
     if ([meterBs isEqualToString:@"0"]) {
+        
+        self.collect_status.textColor = [UIColor redColor];
         return @"待抄收";
     }
+    self.collect_status.textColor = [UIColor blueColor];
     return @"已抄收";
 }
 
