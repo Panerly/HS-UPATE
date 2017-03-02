@@ -32,7 +32,7 @@
 //天气key
 #define weatherAPIkey @"87aa67335bd8e0739a06cfccc6edecb5"
 //天气
-#define weatherAPI @"http://apis.baidu.com/heweather/weather/free"
+#define weatherAPI @"http://apis.baidu.com/heweather/pro/weather"
 
 //杭水简介
 #define introduction @"http://www.hzsberp.com:9999/hzsb"

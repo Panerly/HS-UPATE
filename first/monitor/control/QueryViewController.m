@@ -130,6 +130,7 @@
     return snapshot;
 }
 
+//获取系统时间
 - (void)_getSysTime
 {
     //获取系统当前时间
@@ -147,7 +148,7 @@
 
 }
 
-//设置
+//设值
 - (void)_setValue
 {
     defaults = [NSUserDefaults standardUserDefaults];
@@ -170,7 +171,7 @@
     _tableView.dataSource = self;
 }
 
-//创建曲线图
+//创建曲线图&手势
 - (void)_createCurveView
 {
     scrollView = [[UIScrollView alloc] init];
@@ -257,14 +258,6 @@ static CGFloat i = 1.0;
     }
     return array;
 }
-//- (NSArray *)getXTitles:(int)num {
-//    NSMutableArray *xTitles = [NSMutableArray array];
-//    for (int i=0; i<num; i++) {
-//        NSString * str = [NSString stringWithFormat:@"%d",i+1];
-//        [xTitles addObject:str];
-//    }
-//    return xTitles;
-//}
 
 //数值多重数组 Y轴值数组
 - (NSArray *)SCChart_yValueArray:(SCChart *)chart {
@@ -295,6 +288,7 @@ static CGFloat i = 1.0;
 - (NSArray *)SCChart_ColorArray:(SCChart *)chart {
     return @[SCGreen,SCRed,SCBrown];
 }
+
 //判断显示横线条
 - (BOOL)SCChart:(SCChart *)chart ShowHorizonLineAtIndex:(NSInteger)index {
     return YES;
@@ -330,11 +324,6 @@ static CGFloat i = 1.0;
 
 //选择日用量或月用量的数据
 - (IBAction)flowStatistics:(UISegmentedControl *)sender {
-//    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"暂无数据" preferredStyle:UIAlertControllerStyleAlert];
-//    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//        
-//    }];
-//    [alertVC addAction:action];
     
     selectedIndex = sender.selectedSegmentIndex;
     
@@ -353,6 +342,7 @@ static CGFloat i = 1.0;
     }
     
 }
+
 //请求一天每小时水表抄收数据
 - (void)requestHourData:(NSString *)date {
     NSLog(@"一天每小时水表抄收数据 %@",date);
@@ -389,12 +379,23 @@ static CGFloat i = 1.0;
             
             NSError *error = nil;
             
+            CGFloat submit = 0;
             for (NSDictionary *dataDic in responseObject) {
                 QueryModel *queryModel = [[QueryModel alloc] initWithDictionary:dataDic error:&error];
                 [self.dataArr addObject:queryModel];
                 [_yArr addObject:queryModel.collect_num];
                 [_xArr addObject:queryModel.collect_dt];
+                submit = submit + [queryModel.collect_num floatValue];
             }
+            
+            if (submit == 0) {
+                
+                weakSelf.flowStatisticsLabel.text = [NSString stringWithFormat:@"流量统计：暂无数据"];
+            }else{
+                
+                weakSelf.flowStatisticsLabel.text = [NSString stringWithFormat:@"流量统计：%0.2f",submit];
+            }
+            
             NSMutableArray *array = [NSMutableArray array];
             [array removeAllObjects];
             for (int i = 0; i < _xArr.count; i++) {
@@ -422,7 +423,7 @@ static CGFloat i = 1.0;
 //查询月流量
 - (void)requestData:(NSString *)fromDate :(NSString *)toDate
 {
-//    [SVProgressHUD setBackgroundColor:[UIColor blackColor]];
+
     [SVProgressHUD setForegroundColor:[UIColor blackColor]];
     [SVProgressHUD showWithStatus:@"加载中" maskType:SVProgressHUDMaskTypeGradient];
     
@@ -467,11 +468,22 @@ static CGFloat i = 1.0;
             [_xArr removeAllObjects];
             [_yArr removeAllObjects];
             
+            CGFloat submit = 0;
+
             for (NSDictionary *dic in meter1Dic) {
                 QueryModel *queryModel = [[QueryModel alloc] initWithDictionary:dic error:&error];
                 [self.dataArr addObject:queryModel];
                 [_yArr addObject:queryModel.collect_num];
                 [_xArr addObject:queryModel.collect_dt];
+                submit = submit + [queryModel.collect_num floatValue];
+            }
+            
+            if (submit == 0) {
+                
+                weakSelf.flowStatisticsLabel.text = [NSString stringWithFormat:@"流量统计：暂无数据"];
+            }else{
+                
+                weakSelf.flowStatisticsLabel.text = [NSString stringWithFormat:@"流量统计：%0.2f",submit];
             }
             [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationBottom];
             [chartView setNeedsDisplay];
@@ -559,7 +571,16 @@ static CGFloat i = 1.0;
                 [yFlowArr addObject:queryModel.collect_num];
                 [_xArr addObject:[dic objectForKey:@"collect_dt"]];
             }
-
+            CGFloat submit = 0;
+            submit = [yFlowArr.lastObject floatValue] - [yFlowArr.firstObject floatValue];
+            
+            if (submit == 0) {
+                
+                weakSelf.flowStatisticsLabel.text = [NSString stringWithFormat:@"流量统计：暂无数据"];
+            }else{
+                
+                weakSelf.flowStatisticsLabel.text = [NSString stringWithFormat:@"流量统计：%0.2f",submit];
+            }
             [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationBottom];
             [chartView setNeedsDisplay];
             [chartView strokeChart];
@@ -594,6 +615,7 @@ static CGFloat i = 1.0;
     
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     

@@ -60,7 +60,7 @@
     self.title = self.titleName;
 //    self.netNum.text = [NSString stringWithFormat:@"网络编号:   %@", self.crModel.meter_name2];
     self.userNum.text = [NSString stringWithFormat:@"用户号:   %@", self.crModel.meter_id];
-    self.meterNum.text = [NSString stringWithFormat:@"表位号:   %@", self.crModel.meter_id];
+    
     self.userName.text = [NSString stringWithFormat:@"用户名:   %@", self.crModel.meter_name];
     self.userAddr.text = [NSString stringWithFormat:@"用户地址:   %@", self.crModel.meter_user_addr];
     self.caliber.text = [NSString stringWithFormat:@"口径:   %@", self.crModel.meter_cali];
@@ -124,6 +124,8 @@
     
     serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
     
+    __weak typeof(self) weakSelf = self;
+    
     NSURLSessionTask *task =[manager POST:logInUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -132,8 +134,24 @@
 
             NSDictionary *dic = [responseObject objectForKey:@"meter1"];
             
-            self.netNum.text = [NSString stringWithFormat:@"网络编号:   %@", [dic objectForKey:@"comm_id"]];
-            self.alarm.text = [NSString stringWithFormat:@"警报:   %@", [dic objectForKey:@"alarm"]];
+            if ([dic objectForKey:@"comm_id"]) {
+                
+                weakSelf.netNum.text = [NSString stringWithFormat:@"网络编号:   %@", [dic objectForKey:@"comm_id"]];
+            }else{
+                weakSelf.netNum.text = [NSString stringWithFormat:@"网络编号:   N/A"];
+            }
+            if ([dic objectForKey:@"alarm"]) {
+                
+                weakSelf.alarm.text = [NSString stringWithFormat:@"警报:   %@", [dic objectForKey:@"alarm"]];
+            }else{
+                weakSelf.alarm.text = [NSString stringWithFormat:@"警报:   N/A"];
+            }
+            if ([responseObject objectForKey:@"user_id"]) {
+                
+                weakSelf.meterNum.text = [NSString stringWithFormat:@"水表号:   %@", [responseObject objectForKey:@"user_id"]];
+            }else{
+                weakSelf.meterNum.text = [NSString stringWithFormat:@"水表号:   N/A"];
+            }
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

@@ -47,11 +47,88 @@ UIWebViewDelegate
     self.view.backgroundColor   = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
     
     isBigMeter                  = YES;
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {
+    
+    
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {//管理员：大小表
         
         [self setSegmentedCtl];
         
+//        [self _createButton];
+//        
+//        [self _createPicPlay];
+//        
+//        [self createLitBtn];
+        
         [self addGesture];
+        
+        if (_webView) {
+            [self backAction];
+        }
+        if (isBigMeter) {
+            
+            if (!button) {
+                
+                [self _createButton];
+            }
+            [self _createPicPlay];
+            
+            for (int i = 100; i < 104; i++) {
+                
+                ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeScale(.01, .01);
+            }
+            
+            for (int i = 100; i < 104; i++) {
+                
+                CGFloat duration = (i - 99) * 0.2;
+                
+                [UIView animateWithDuration:duration animations:^{
+                    
+                    ((UIButton *)arr[i-100]).transform = CGAffineTransformIdentity;
+                    
+                } completion:^(BOOL finished) {
+                    
+                }];
+            }
+        } else {
+            
+            if (!litButton) {
+                
+                [self createLitBtn];
+            }
+        }
+    }else if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"01"]) {//大表用户
+        
+        //添加大表及滚动视图
+        
+        if (!button) {
+            
+            [self _createButton];
+        }
+        [self _createPicPlay];
+        
+        for (int i = 100; i < 104; i++) {
+            
+            ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeScale(.01, .01);
+        }
+        
+        for (int i = 100; i < 104; i++) {
+            
+            CGFloat duration = (i - 99) * 0.2;
+            
+            [UIView animateWithDuration:duration animations:^{
+                
+                ((UIButton *)arr[i-100]).transform = CGAffineTransformIdentity;
+                
+            } completion:^(BOOL finished) {
+                
+            }];
+        }
+        
+    }else if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"02"]) {//小表用户
+        
+        if (!litButton) {
+            [self createLitBtn];
+        }
     }
     
     
@@ -83,14 +160,18 @@ UIWebViewDelegate
     
 }
 
+//左右划手势切换大小表
 - (void)addGesture {
-    UISwipeGestureRecognizer *swipeToLeft   = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(gestureLeftAction)];
-    swipeToLeft.direction                   = UISwipeGestureRecognizerDirectionLeft;
-    [self.view addGestureRecognizer:swipeToLeft];
-    
-    UISwipeGestureRecognizer *swipeRight    = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(gestureRightAction)];
-    swipeRight.direction                    = UISwipeGestureRecognizerDirectionRight;
-    [self.view addGestureRecognizer:swipeRight];
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {//管理员账户，有大小表切换手势
+        
+        UISwipeGestureRecognizer *swipeToLeft   = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(gestureLeftAction)];
+        swipeToLeft.direction                   = UISwipeGestureRecognizerDirectionLeft;
+        [self.view addGestureRecognizer:swipeToLeft];
+        
+        UISwipeGestureRecognizer *swipeRight    = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(gestureRightAction)];
+        swipeRight.direction                    = UISwipeGestureRecognizerDirectionRight;
+        [self.view addGestureRecognizer:swipeRight];
+    }
 }
 
 - (void)gestureRightAction {
@@ -224,11 +305,30 @@ UIWebViewDelegate
 }
 
 - (void)setSegmentedCtl {
-    segmentedCtl                    = [[UISegmentedControl alloc] initWithItems:@[@"大表监测",@"小表监测"]];
-    segmentedCtl.frame              = CGRectMake(0, 0, PanScreenWidth/3, 30);
-    [segmentedCtl addTarget:self action:@selector(transMeters:) forControlEvents:UIControlEventValueChanged];
-    self.navigationItem.titleView     = segmentedCtl;
-    segmentedCtl.selectedSegmentIndex = 0;
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {//管理员
+        
+        segmentedCtl                    = [[UISegmentedControl alloc] initWithItems:@[@"大表监测",@"小表监测"]];
+        segmentedCtl.frame              = CGRectMake(0, 0, PanScreenWidth/3, 30);
+        [segmentedCtl addTarget:self action:@selector(transMeters:) forControlEvents:UIControlEventValueChanged];
+        self.navigationItem.titleView     = segmentedCtl;
+        segmentedCtl.selectedSegmentIndex = 0;
+    }else if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"01"]){//大表用户
+        UILabel *titleLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, 44)];
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.textColor       = [UIColor whiteColor];
+        titleLabel.textAlignment   = NSTextAlignmentCenter;
+        [titleLabel setFont:[UIFont systemFontOfSize:17.0]];
+        [titleLabel setText:@"大表监测"];
+        self.navigationItem.titleView = titleLabel;
+    }else if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"02"]){//小表用户
+        UILabel *titleLabel        = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, 44)];
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.textColor       = [UIColor whiteColor];
+        titleLabel.textAlignment   = NSTextAlignmentCenter;
+        [titleLabel setFont:[UIFont systemFontOfSize:17.0]];
+        [titleLabel setText:@"小表监测"];
+        self.navigationItem.titleView = titleLabel;
+    }
 }
 
 //选择大表还是小表
@@ -359,7 +459,7 @@ UIWebViewDelegate
 {
     [super viewWillAppear:animated];
     
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {//管理员
         
         
         if (_webView) {
@@ -397,10 +497,35 @@ UIWebViewDelegate
                 [self createLitBtn];
             }
         }
-    } else {
+    } else if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"01"]) {//大表用户
+        if (!button) {
+            
+            [self _createButton];
+        }
+        [self _createPicPlay];
+        
+        for (int i = 100; i < 104; i++) {
+            
+            ((UIButton *)arr[i-100]).transform = CGAffineTransformMakeScale(.01, .01);
+        }
+        
+        for (int i = 100; i < 104; i++) {
+            
+            CGFloat duration = (i - 99) * 0.2;
+            
+            [UIView animateWithDuration:duration animations:^{
+                
+                ((UIButton *)arr[i-100]).transform = CGAffineTransformIdentity;
+                
+            } completion:^(BOOL finished) {
+                
+            }];
+        }
+    } else {//小表用户
         if (!litButton) {
             [self createLitBtn];
         }
+        
     }
     
 }

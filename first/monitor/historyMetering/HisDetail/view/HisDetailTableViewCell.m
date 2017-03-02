@@ -21,7 +21,7 @@
     
     _meterReadNum.text      = [NSString stringWithFormat:@"水表读数: %@",_hisDetailModel.collect_num];
     _readingTimeLabel.text  = [NSString stringWithFormat:@"抄收时间: %@",_hisDetailModel.collect_dt];
-    _flowNum.text           = [NSString stringWithFormat:@"流量: %@m³",_hisDetailModel.collect_avg];
+    _flowNum.text           = [NSString stringWithFormat:@"流量: %@m³/h",_hisDetailModel.collect_avg];
     
 }
 

@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSString *manageMeterNumValue;
 
 @property (weak, nonatomic) IBOutlet UILabel *meterType;
+@property (weak, nonatomic) IBOutlet UILabel *flowStatisticsLabel;
 @property (nonatomic, strong) NSString *meterTypeValue;
 
 //此处通讯类型修改为口径

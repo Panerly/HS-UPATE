@@ -41,10 +41,10 @@
     //    [self configKeyChainItemWrapper];
     
     //判断机型
-    if (PanScreenHeight == 736) {
+    if (PanScreenHeight == 736) {//5.5
         device = @"6p";
     }
-    else if (PanScreenHeight == 667) {
+    else if (PanScreenHeight == 667) {//4.7
         device = @"6";
     }
     else if (PanScreenHeight == 568) {
@@ -257,7 +257,7 @@
     if (![self.userName.text isEqualToString:@""] && ![self.passWord.text isEqualToString:@""]) {//用户名密码不为空
         if ([self.userName.text isEqualToString:@"hzsb"] && [self.passWord.text isEqualToString:@"hzsb"]) {//检测室否是超级管理员
             if (self.ipLabel == nil || self.dbLabel == nil) {//管理员 但未配置
-                UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"检测到管理员，请配置数据库和IP" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"检测到管理员，请点击右上角配置按钮\n进行数据库和IP的配置" preferredStyle:UIAlertControllerStyleAlert];
                 
                 UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                     
@@ -275,7 +275,7 @@
             }
             
         }else{//非管理员
-            [self logLitMeter];
+            [self logBigMeter];
         }
         
     
@@ -301,13 +301,22 @@
 
 //登录大表
 - (void)logBigMeter {
+    
+    //非管理员账户给个默认值
+    if (![self.userName.text isEqualToString:@"hzsb"]) {
+        self.dbLabel = @"bigmeter_water";
+        self.ipLabel = @"60.191.39.206:8000";
+        [defaults setObject:self.dbLabel forKey:@"db"];
+        [defaults setObject:self.ipLabel forKey:@"ip"];
+        [defaults synchronize];
+    }
     //登录API 需传入的参数：用户名、密码、数据库名、IP地址
     NSString *logInUrl = [NSString stringWithFormat:@"http://%@/waterweb/LoginServlet",self.ipLabel];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
-    manager.requestSerializer.timeoutInterval= 10;
+    manager.requestSerializer.timeoutInterval = 10;
     
     NSDictionary *parameters = @{@"username":self.userName.text,
                                  @"password":self.passWord.text,
@@ -477,9 +486,11 @@
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
+//        NSLog(@"登录返回字段：%@",responseObject);
         if ([responseObject objectForKey:@"type"]) {
             
             if ([[responseObject objectForKey:@"type"] isEqualToString:@"0"]) {
+                
                 UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"用户名或密码错误！" preferredStyle:UIAlertControllerStyleAlert];
                 
                 UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {

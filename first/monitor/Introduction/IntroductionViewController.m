@@ -36,7 +36,6 @@
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
     //刷新控件
-    
     loading                     = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     loading.center              = self.view.center;
     loadingLabel                = [[UILabel alloc] init];

@@ -329,7 +329,7 @@
     popView.center = CGPointMake(bt.center.x, bt.center.y - popView.frame.size.height/2);
     popView.layer.cornerRadius = 5;
     [popView setAlpha:1.0f];
-    [UIView animateWithDuration:2.0f animations:^{
+    [UIView animateWithDuration:2.5f animations:^{
         [popView setAlpha:0.0f];
     }];
 }

@@ -20,6 +20,9 @@
 //表口径
 @property (weak, nonatomic) IBOutlet UILabel *meter_cali;
 
+//流量统计
+@property (weak, nonatomic) IBOutlet UILabel *flowStatistics;
+
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *formDate;

@@ -273,38 +273,43 @@ WYLineChartViewDatasource
                 }
             }
             
-            //添加图表数值
-            _points = [NSMutableArray array];
-            for (int i = 0; i < dataArr.count; i++) {
-                WYLineChartPoint *point = [[WYLineChartPoint alloc] init];
-                point.index = i;
-                [_points addObject:point];
-            }
-            
-            
-            chartDataArr = [NSMutableArray array];
-            for (int i = 0; i < dataArr.count; i++) {
-                WYLineChartPoint *point = _points[i];
-                point.value             = [((LitMeterDetailDataModel *)dataArr[i]).collect_num integerValue];
-                [chartDataArr addObject:@(point.value)];
-            }
-            NSInteger maxValue  = [[chartDataArr valueForKeyPath:@"@max.intValue"] integerValue];
-            max                 = maxValue;
-            
-            NSInteger num       = 0;
-            for (int i = 0; i < dataArr.count; i++) {
-                num = num + [((LitMeterDetailDataModel*)dataArr[i]).collect_num integerValue];
-            }
-            if (num != 0) {
+            if (dataArr.count == 6) {
                 
-                [self initChatView];
-                _chartView.points = [NSArray arrayWithArray:_points];
-                NSLog(@"points:%@   _dataArr:%@", _points, chartDataArr);
-                [_chartView updateGraph];
-            }else {
-                if (lightDarkView) {
-                    [lightDarkView removeFromSuperview];
+                //添加图表数值
+                _points = [NSMutableArray array];
+                for (int i = 0; i < dataArr.count; i++) {
+                    WYLineChartPoint *point = [[WYLineChartPoint alloc] init];
+                    point.index = i;
+                    [_points addObject:point];
                 }
+                
+                
+                chartDataArr = [NSMutableArray array];
+                for (int i = 0; i < dataArr.count; i++) {
+                    WYLineChartPoint *point = _points[i];
+                    point.value             = [((LitMeterDetailDataModel *)dataArr[i]).collect_num integerValue];
+                    [chartDataArr addObject:@(point.value)];
+                }
+                NSInteger maxValue  = [[chartDataArr valueForKeyPath:@"@max.intValue"] integerValue];
+                max                 = maxValue;
+                
+                NSInteger num       = 0;
+                for (int i = 0; i < dataArr.count; i++) {
+                    num = num + [((LitMeterDetailDataModel*)dataArr[i]).collect_num integerValue];
+                }
+                if (num != 0) {
+                    
+                    [self initChatView];
+                    _chartView.points = [NSArray arrayWithArray:_points];
+                    NSLog(@"points:%@   _dataArr:%@", _points, chartDataArr);
+                    [_chartView updateGraph];
+                }else {
+                    if (lightDarkView) {
+                        [lightDarkView removeFromSuperview];
+                    }
+                    [SVProgressHUD showInfoWithStatus:@"暂无数据" maskType:SVProgressHUDMaskTypeGradient];
+                }
+            }else{
                 [SVProgressHUD showInfoWithStatus:@"暂无数据" maskType:SVProgressHUDMaskTypeGradient];
             }
             

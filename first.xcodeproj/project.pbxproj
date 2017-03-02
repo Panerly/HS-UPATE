@@ -194,7 +194,7 @@
 		45771FA71D0E7CFD006BF7F3 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 45771FA21D0E7CFD006BF7F3 /* City.m */; };
 		45771FA81D0E7CFD006BF7F3 /* Province.m in Sources */ = {isa = PBXBuildFile; fileRef = 45771FA41D0E7CFD006BF7F3 /* Province.m */; };
 		45771FA91D0E7CFD006BF7F3 /* WeatherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 45771FA61D0E7CFD006BF7F3 /* WeatherModel.m */; };
-		45771FC11D0E7DD9006BF7F3 /* 晴转多云.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FAE1D0E7DD9006BF7F3 /* 晴转多云.png */; };
+		45771FC11D0E7DD9006BF7F3 /* 晴间多云.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FAE1D0E7DD9006BF7F3 /* 晴间多云.png */; };
 		45771FC21D0E7DD9006BF7F3 /* 多云转晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FAF1D0E7DD9006BF7F3 /* 多云转晴.png */; };
 		45771FC31D0E7DD9006BF7F3 /* weather-forecast-14.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FB01D0E7DD9006BF7F3 /* weather-forecast-14.png */; };
 		45771FC41D0E7DD9006BF7F3 /* 中雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FB11D0E7DD9006BF7F3 /* 中雨.png */; };
@@ -222,6 +222,7 @@
 		457CEE131D47065500E961A6 /* cry3.gif in Resources */ = {isa = PBXBuildFile; fileRef = 457CEE101D47065500E961A6 /* cry3.gif */; };
 		458047C21DBDFAE20015536B /* bg_阴.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 458047C11DBDFAE20015536B /* bg_阴.jpg */; };
 		458047C41DBDFC200015536B /* icon_test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 458047C31DBDFC200015536B /* icon_test.jpg */; };
+		4585C8FC1E5BD8C500AD894F /* 暴雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 4585C8FB1E5BD8C500AD894F /* 暴雪.png */; };
 		4588272A1DB0BD14008103F9 /* LitMeterDetailDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 458827291DB0BD14008103F9 /* LitMeterDetailDataModel.m */; };
 		458A74E01D5AD13D00A53D8C /* MeterInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 458A74DF1D5AD13D00A53D8C /* MeterInfoModel.m */; };
 		458A74E91D5ADEEA00A53D8C /* MeterInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 458A74E71D5ADEEA00A53D8C /* MeterInfoTableViewCell.m */; };
@@ -794,7 +795,7 @@
 		45771FA41D0E7CFD006BF7F3 /* Province.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Province.m; sourceTree = "<group>"; };
 		45771FA51D0E7CFD006BF7F3 /* WeatherModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherModel.h; sourceTree = "<group>"; };
 		45771FA61D0E7CFD006BF7F3 /* WeatherModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherModel.m; sourceTree = "<group>"; };
-		45771FAE1D0E7DD9006BF7F3 /* 晴转多云.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "晴转多云.png"; sourceTree = "<group>"; };
+		45771FAE1D0E7DD9006BF7F3 /* 晴间多云.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "晴间多云.png"; sourceTree = "<group>"; };
 		45771FAF1D0E7DD9006BF7F3 /* 多云转晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "多云转晴.png"; sourceTree = "<group>"; };
 		45771FB01D0E7DD9006BF7F3 /* weather-forecast-14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weather-forecast-14.png"; sourceTree = "<group>"; };
 		45771FB11D0E7DD9006BF7F3 /* 中雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "中雨.png"; sourceTree = "<group>"; };
@@ -825,6 +826,7 @@
 		457CEE101D47065500E961A6 /* cry3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = cry3.gif; sourceTree = "<group>"; };
 		458047C11DBDFAE20015536B /* bg_阴.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "bg_阴.jpg"; sourceTree = "<group>"; };
 		458047C31DBDFC200015536B /* icon_test.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = icon_test.jpg; sourceTree = "<group>"; };
+		4585C8FB1E5BD8C500AD894F /* 暴雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "暴雪.png"; sourceTree = "<group>"; };
 		458827281DB0BD14008103F9 /* LitMeterDetailDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LitMeterDetailDataModel.h; sourceTree = "<group>"; };
 		458827291DB0BD14008103F9 /* LitMeterDetailDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LitMeterDetailDataModel.m; sourceTree = "<group>"; };
 		45898E291DB8992200636982 /* Fashionblack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fashionblack.ttf; sourceTree = "<group>"; };
@@ -2031,9 +2033,10 @@
 				45771FB21D0E7DD9006BF7F3 /* 多云.png */,
 				45771FB61D0E7DD9006BF7F3 /* 晴.png */,
 				45771FAF1D0E7DD9006BF7F3 /* 多云转晴.png */,
-				45771FAE1D0E7DD9006BF7F3 /* 晴转多云.png */,
+				45771FAE1D0E7DD9006BF7F3 /* 晴间多云.png */,
 				45771FB51D0E7DD9006BF7F3 /* 小雪.png */,
 				459E7C9D1DE6D3DE0037D607 /* 阵雪.png */,
+				4585C8FB1E5BD8C500AD894F /* 暴雪.png */,
 				45771FB91D0E7DD9006BF7F3 /* 雪.png */,
 				45771FBA1D0E7DD9006BF7F3 /* 雷.png */,
 				45771FBC1D0E7DD9006BF7F3 /* 雹.png */,
@@ -3445,6 +3448,7 @@
 				45F03A391D598725009D8E4C /* back@2x.png in Resources */,
 				456D19601D5C70F70038C442 /* 定位@3x.png in Resources */,
 				4549364C1D615FF9004EC4E0 /* icon_drop_up@3x.png in Resources */,
+				4585C8FC1E5BD8C500AD894F /* 暴雪.png in Resources */,
 				45BF59A41D1A68CD00F3EFBD /* waterCharg.png in Resources */,
 				45F42BB71D6BD3DF006E2412 /* icon_more@2x.png in Resources */,
 				452ACC391D20DFF600B50002 /* MeterDataViewController.xib in Resources */,
@@ -3617,7 +3621,7 @@
 				45978D6C1CED7E6400BF3C0E /* Main.storyboard in Resources */,
 				45FF5D0E1D0FAD0400F3D4E4 /* his.png in Resources */,
 				45BF59AC1D1A71FB00F3EFBD /* 定位图.gif in Resources */,
-				45771FC11D0E7DD9006BF7F3 /* 晴转多云.png in Resources */,
+				45771FC11D0E7DD9006BF7F3 /* 晴间多云.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -26,24 +26,28 @@
     [super viewDidLoad];
     
     //添加子控制器
-//    HomeViewController *home = [[HomeViewController alloc] init];
-//    [self addOneChlildVc:home title:@"首页" imageName:@"home2@2x" selectedImageName:@"home_selected2@2x"];
+    HomeViewController *home = [[HomeViewController alloc] init];
+    [self addOneChlildVc:home title:@"首页" imageName:@"home2@2x" selectedImageName:@"home_selected2@2x"];
     
     //判断是否是高级权限 选择呈现不同查看方式
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {//管理员（大小表，无抄表）
         
         SeniorlevelViewController *Senior = [[SeniorlevelViewController alloc] init];
         [self addOneChlildVc:Senior title:@"抄表情况" imageName:@"metering@2x" selectedImageName:@"metering_selected@2x"];
-    }else{
-        
-        MeteringViewController *meter = [[MeteringViewController alloc] init];
-        [self addOneChlildVc:meter title:@"抄表" imageName:@"metering@2x" selectedImageName:@"metering_selected@2x"];
-    }
-    
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {
         
         MonitorViewController *monitor = [[MonitorViewController alloc] init];
         [self addOneChlildVc:monitor title:@"监测" imageName:@"monitor@2x" selectedImageName:@"monitor_selected@2x"];
+        
+    }else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"01"]){//大表用户
+        MonitorViewController *monitor = [[MonitorViewController alloc] init];
+        [self addOneChlildVc:monitor title:@"监测" imageName:@"monitor@2x" selectedImageName:@"monitor_selected@2x"];
+    }else if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"02"]){//小表用户
+        MonitorViewController *monitor = [[MonitorViewController alloc] init];
+        [self addOneChlildVc:monitor title:@"监测" imageName:@"monitor@2x" selectedImageName:@"monitor_selected@2x"];
+    }else if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"03"]){//抄表员
+        MeteringViewController *meter = [[MeteringViewController alloc] init];
+        [self addOneChlildVc:meter title:@"抄表" imageName:@"metering@2x" selectedImageName:@"metering_selected@2x"];
+        
     }
     
     ServerViewController *server = [[ServerViewController alloc] init];

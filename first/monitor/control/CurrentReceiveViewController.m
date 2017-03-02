@@ -280,7 +280,9 @@ UINavigationControllerDelegate
     crCell.backgroundColor = [UIColor clearColor];
     
     crCell.CRModel = (!self.searchController.active)?_dataArr[indexPath.row] : self.searchResults[indexPath.row];
-    
+    crCell.textLabel.textColor = [UIColor lightGrayColor];
+    crCell.textLabel.font = [UIFont systemFontOfSize:14];
+    crCell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row+1];
     return crCell;
 }
 

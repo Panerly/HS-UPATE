@@ -51,6 +51,7 @@ static CGFloat i = 0;
     
     _formDate.text = time;
     _toDate.text = time;
+    _flowStatistics.alpha = 0;
 }
 
 - (void)_getUserInfo
@@ -108,18 +109,23 @@ static CGFloat i = 0;
             dataCount               = [[responseObject objectForKey:@"count"] integerValue];
             NSError *error          = nil;
             
-            [self.dataArr removeAllObjects];
+            [weakSelf.dataArr removeAllObjects];
             
             
             for (NSDictionary *dic in meter1Dic) {
                 
                 HisDetailModel *hisDetailModel = [[HisDetailModel alloc] initWithDictionary:dic error:&error];
                 
-                [self.dataArr addObject:hisDetailModel];
+                [weakSelf.dataArr addObject:hisDetailModel];
                 
                 [_yArr addObject:hisDetailModel.collect_avg];
-                i = [hisDetailModel.collect_avg floatValue] + i;
+                i = [hisDetailModel.collect_num floatValue] + i;
             }
+            
+            CGFloat flowCount = 0;
+            flowCount = [((HisDetailModel*)weakSelf.dataArr.lastObject).collect_num floatValue] - [((HisDetailModel*)weakSelf.dataArr.firstObject).collect_num floatValue];
+            weakSelf.flowStatistics.alpha = 1;
+            weakSelf.flowStatistics.text = [NSString stringWithFormat:@"用量统计：%.2f 吨",flowCount];
             
             [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationBottom];
             [loading removeFromSuperview];
@@ -186,18 +192,18 @@ static CGFloat i = 0;
         cell = [[[NSBundle mainBundle] loadNibNamed:@"HisDetailTableViewCell" owner:self options:nil] lastObject];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.serialNum.text = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
+    cell.serialNum.text = [NSString stringWithFormat:@"%ld",(long)indexPath.row+1];
     cell.hisDetailModel = _dataArr[indexPath.row];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat avg = i / _dataArr.count;
-    float m     =  [((HisDetailModel *)self.dataArr[indexPath.row]).collect_avg floatValue];
+    CGFloat avg = i / _dataArr.count - [((HisDetailModel *)self.dataArr.firstObject).collect_num floatValue];
+    float m     =  [((HisDetailModel *)self.dataArr[indexPath.row]).collect_num floatValue] - [((HisDetailModel *)self.dataArr.firstObject).collect_num floatValue];
 
-    UIAlertController *alert1   = [UIAlertController alertControllerWithTitle:@"平均用量值" message:[NSString stringWithFormat:@"\n本期流量值：%lf m³\n\n平均流量值：%lf m³\n\n高于平均用水量：%lf m³",m,avg,m-avg] preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertController *alert2   = [UIAlertController alertControllerWithTitle:@"平均用量值" message:[NSString stringWithFormat:@"\n本期流量值：%lf m³\n\n平均流量值：%lf m³\n\n低于平均用水量：%lf m³",m,avg,avg-m] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert1   = [UIAlertController alertControllerWithTitle:@"平均用量值" message:[NSString stringWithFormat:@"\n本期用量值：%.2f m³\n\n平均用量值：%.2f m³\n\n高于平均用水量：%.2f m³",m,avg,m-avg] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert2   = [UIAlertController alertControllerWithTitle:@"平均用量值" message:[NSString stringWithFormat:@"\n本期用量值：%.2f m³\n\n平均用量值：%.2f m³\n\n低于平均用水量：%.2f m³",m,avg,avg-m] preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *action       = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
     }];

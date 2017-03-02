@@ -34,7 +34,7 @@ UITextFieldDelegate
     if (_isBigMeter) {
         self.title                  = @"大表数据查询";
         _callerName.text            = @"主叫方：";
-        _callerLabel.placeholder    = @"例如：57178794";
+        _callerLabel.placeholder    = @"请输入网络编号";
     } else {
         
         self.title = @"小表数据查询";
@@ -150,6 +150,8 @@ UITextFieldDelegate
                     weakSelf.tableView.hidden = NO;
                     [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
                 }
+            }else{//responseObject = nil
+                [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"暂无数据"]];
             }
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -170,8 +172,8 @@ UITextFieldDelegate
     [self.userNameLabel removeFromSuperview];
     [self.dataNum removeFromSuperview];
     
-    _callerLabel.delegate = self;
-    _callerLabel.returnKeyType = UIReturnKeyDone;
+    _callerLabel.delegate       = self;
+    _callerLabel.returnKeyType  = UIReturnKeyDone;
 }
 
 - (void)viewWillDisappear:(BOOL)animated

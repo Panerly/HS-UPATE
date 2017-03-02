@@ -72,6 +72,62 @@ UITableViewDataSource
         self.tableView.hidden = YES;
     }
     
+    //检测升级
+    [self checkVersion];
+}
+
+
+-(void)checkVersion
+{
+    NSString *newVersion;
+    NSURL *url = [NSURL URLWithString:@"http://itunes.apple.com/cn/lookup?id=1193445551"];//这个URL地址是该app在iTunes connect里面的相关配置信息。其中id是该app在app store唯一的ID编号。
+    NSString *jsonResponseString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+    NSLog(@"通过appStore获取的数据信息：%@",jsonResponseString);
+    
+    NSData *data = [jsonResponseString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    //    解析json数据
+    
+    id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    
+    NSArray *array = json[@"results"];
+    
+    for (NSDictionary *dic in array) {
+        
+        
+        newVersion = [dic valueForKey:@"version"];
+        
+    }
+    
+    NSLog(@"通过appStore获取的版本号是：%@",newVersion);
+    
+    //获取本地软件的版本号
+    NSString *localVersion = [[[NSBundle mainBundle]infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    
+    NSString *msg = [NSString stringWithFormat:@"你当前的版本是V%@，发现新版本V%@，是否下载新版本？",localVersion,newVersion];
+
+    //对比发现的新版本和本地的版本
+    if (![newVersion isEqualToString:localVersion])
+    {
+        
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"升级提示" message:msg preferredStyle:UIAlertControllerStyleAlert];
+        
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        
+        [alert addAction:[UIAlertAction actionWithTitle:@"现在升级" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/cn/app/yi-ka-tongbic-ban/id1139094792?l=en&mt=8"]];//这里写的URL地址是该app在app store里面的下载链接地址，其中ID是该app在app store对应的唯一的ID编号。
+            NSLog(@"点击现在升级按钮");
+        }]];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:@"下次再说" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSLog(@"点击下次再说按钮");
+        }]];
+        
+        
+    }
 }
 
 /**
@@ -501,12 +557,12 @@ UITableViewDataSource
                         [self weatherLoadfailed];
                     } else {
                         
-                        weakSelf.windDriection.text     = [NSString stringWithFormat:@"风向:  %@",[[[arr objectForKey:@"now"] objectForKey:@"wind"] objectForKey:@"dir"]];
-                        weakSelf.temLabel.text          = [NSString stringWithFormat:@"气温:  %@℃   体感温度:  %@℃",[[arr objectForKey:@"now"] objectForKey:@"tmp"],[[arr objectForKey:@"now"] objectForKey:@"fl"]];
+                        weakSelf.windDriection.text     = [NSString stringWithFormat:@"风向:  %@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:0] objectForKey:@"wind"] objectForKey:@"dir"]];
+                        weakSelf.temLabel.text          = [NSString stringWithFormat:@"气温:  %@℃ ~ %@℃",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:0] objectForKey:@"tmp"] objectForKey:@"min"],[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:0] objectForKey:@"tmp"] objectForKey:@"max" ]];
                         weakSelf.time.text              = [NSString stringWithFormat:@"更新时间:  %@",[[[arr objectForKey:@"basic"] objectForKey:@"update"] objectForKey:@"loc"]];
-                        weakSelf.windForceScale.text    = [NSString stringWithFormat:@"风力:  %@级",[[[arr objectForKey:@"now"] objectForKey:@"wind"] objectForKey:@"sc"]];
+                        weakSelf.windForceScale.text    = [NSString stringWithFormat:@"风力:  %@级",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:0] objectForKey:@"wind"] objectForKey:@"sc"]];
                         //今天
-                        weakSelf.day1Label.text   = [NSString stringWithFormat:@"%@",[[[arr objectForKey:@"now"] objectForKey:@"cond"] objectForKey:@"txt"]];
+                        weakSelf.weather.text   = [NSString stringWithFormat:@"天气:  %@     夜间: %@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:0] objectForKey:@"cond"] objectForKey:@"txt_d"], [[[[arr objectForKey:@"daily_forecast"] objectAtIndex:0] objectForKey:@"cond"] objectForKey:@"txt_n"]];
                         //明天
                         weakSelf.day2Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:1] objectForKey:@"cond"] objectForKey:@"txt_d"]];
                         //后天
@@ -515,7 +571,7 @@ UITableViewDataSource
                         weakSelf.day5Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:4] objectForKey:@"cond"] objectForKey:@"txt_d"]];
                         weakSelf.day6Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:5] objectForKey:@"cond"] objectForKey:@"txt_d"]];
                         weakSelf.day7Label.text   = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:6] objectForKey:@"cond"] objectForKey:@"txt_d"]];
-                        weakSelf.weather.text     = [NSString stringWithFormat:@"天气:  %@",self.day1Label.text];
+                        weakSelf.day1Label.text     = [NSString stringWithFormat:@"%@",[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:0] objectForKey:@"cond"] objectForKey:@"txt_d"]];
                         
                         weakSelf.time1Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"basic"] objectForKey:@"update"] objectForKey:@"loc"]] substringWithRange:NSMakeRange(5, 6)];
                         weakSelf.time2Label.text  = [[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:1] objectForKey:@"date"]]substringWithRange:NSMakeRange(5, 5)];
@@ -651,7 +707,7 @@ UITableViewDataSource
                                [cityPickerVC setDelegate:(id)self];
                                
                                cityPickerVC.locationCityID  = [self transCityNameIntoCityCode:self.city.text];
-                                   cityPickerVC.commonCitys = [[NSMutableArray alloc] initWithArray: @[@"1400010000", @"100010000"]];        // 最近访问城市，如果不设置，将自动管理
+                               cityPickerVC.commonCitys     = [[NSMutableArray alloc] initWithArray: @[@"1400010000", @"100010000"]];        // 最近访问城市，如果不设置，将自动管理
                                cityPickerVC.hotCitys        = @[@"100010000", @"200010000", @"300210000", @"600010000", @"300110000"];
                                
                                [self presentViewController:[[UINavigationController alloc] initWithRootViewController:cityPickerVC] animated:YES completion:^{

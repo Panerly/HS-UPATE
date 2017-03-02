@@ -301,6 +301,8 @@ UISearchResultsUpdating
     } else {
         cell.litMeterModel = (!self.searchController.active)?_abnormalDataArray[indexPath.row] : self.searchResults[indexPath.row];
     }
+    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row + 1];
+    cell.textLabel.textColor = [UIColor redColor];
     return cell;
 }
 
