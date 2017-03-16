@@ -37,7 +37,7 @@
 //杭水简介
 #define introduction @"http://www.hzsberp.com:9999/hzsb"
 
-//小表数据平台
+//小表数据平台@"http://www.hzsbgs.com:8000"
 #define litMeterApi @"http://www.hzsbgs.com:8000"
 
 //大小表抄收监控数据
@@ -85,5 +85,20 @@
 
 
 #import "GCD.h"
+
+
+
+#ifdef DEBUG
+#define SRLog(FORMAT, ...) {\
+NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];\
+[dateFormatter setDateStyle:NSDateFormatterMediumStyle];\
+[dateFormatter setTimeStyle:NSDateFormatterShortStyle];\
+[dateFormatter setDateFormat:@"HH:mm:ss:SSSS"];\
+NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];\
+fprintf(stderr,"[%s:%d %s] %s\n", [[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [dateString UTF8String], [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);\
+}
+#else
+#define SRLog(FORMAT, ...) nil
+#endif
 
 #endif

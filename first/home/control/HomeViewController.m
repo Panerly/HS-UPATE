@@ -82,7 +82,6 @@ UITableViewDataSource
     NSString *newVersion;
     NSURL *url = [NSURL URLWithString:@"http://itunes.apple.com/cn/lookup?id=1193445551"];//这个URL地址是该app在iTunes connect里面的相关配置信息。其中id是该app在app store唯一的ID编号。
     NSString *jsonResponseString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
-    NSLog(@"通过appStore获取的数据信息：%@",jsonResponseString);
     
     NSData *data = [jsonResponseString dataUsingEncoding:NSUTF8StringEncoding];
     
@@ -94,40 +93,45 @@ UITableViewDataSource
     
     for (NSDictionary *dic in array) {
         
-        
         newVersion = [dic valueForKey:@"version"];
-        
     }
     
-    NSLog(@"通过appStore获取的版本号是：%@",newVersion);
-    
-    //获取本地软件的版本号
-    NSString *localVersion = [[[NSBundle mainBundle]infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    
-    NSString *msg = [NSString stringWithFormat:@"你当前的版本是V%@，发现新版本V%@，是否下载新版本？",localVersion,newVersion];
+    [self compareVesionWithServerVersion:newVersion];
+}
 
-    //对比发现的新版本和本地的版本
-    if (![newVersion isEqualToString:localVersion])
-    {
-        
-        
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"升级提示" message:msg preferredStyle:UIAlertControllerStyleAlert];
-        
-        
-        [self presentViewController:alert animated:YES completion:nil];
-        
-        
-        [alert addAction:[UIAlertAction actionWithTitle:@"现在升级" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/cn/app/yi-ka-tongbic-ban/id1139094792?l=en&mt=8"]];//这里写的URL地址是该app在app store里面的下载链接地址，其中ID是该app在app store对应的唯一的ID编号。
-            NSLog(@"点击现在升级按钮");
-        }]];
-        
-        [alert addAction:[UIAlertAction actionWithTitle:@"下次再说" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSLog(@"点击下次再说按钮");
-        }]];
-        
-        
+-(BOOL)compareVesionWithServerVersion:(NSString *)version{
+    NSArray *versionArray = [version componentsSeparatedByString:@"."];//服务器返回版
+    //获取本地软件的版本号
+    NSString *APP_VERSION = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSArray *currentVesionArray = [APP_VERSION componentsSeparatedByString:@"."];//当前版本
+    NSInteger a = (versionArray.count> currentVesionArray.count)?currentVesionArray.count : versionArray.count;
+    NSLog(@"当前版本：%@ ---appstoreVersion:%@",currentVesionArray, versionArray);
+    
+    for (int i = 0; i< a; i++) {
+        int new = [[versionArray objectAtIndex:i] intValue];
+        int now = [[currentVesionArray objectAtIndex:i] intValue];
+        if (new > now) {//appstore版本大于当前版本，提示更新
+            NSLog(@"有新版本 new%ld-----now%ld", (long)new, (long)now);
+            NSString *msg = [NSString stringWithFormat:@"发现新版本，是否下载新版本？"];
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"升级提示" message:msg preferredStyle:UIAlertControllerStyleAlert];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            [alert addAction:[UIAlertAction actionWithTitle:@"现在升级" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/cn/app/yi-ka-tongbic-ban/id1139094792?l=en&mt=8"]];//这里写的URL地址是该app在app store里面的下载链接地址，其中ID是该app在app store对应的唯一的ID编号。
+                        NSLog(@"点击现在升级按钮");
+            }]];
+            
+            [alert addAction:[UIAlertAction actionWithTitle:@"下次再说" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        NSLog(@"点击下次再说按钮");
+            }]];
+
+            return YES;
+        }else if (new < now){//appStore版本小于当前版本
+            return YES;
+        }
     }
+    return NO;
 }
 
 /**
@@ -372,8 +376,7 @@ UITableViewDataSource
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {
-        
-        [self _createTableView];
+    
         NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
         NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
         FMDatabase *db = [FMDatabase databaseWithPath:fileName];
@@ -682,7 +685,7 @@ UITableViewDataSource
 {
     self = [super init];
     if (self) {
-        self  = [[UIStoryboard storyboardWithName:@"HomeSB" bundle:nil] instantiateViewControllerWithIdentifier:@"HomeSB"];
+        self  = [[UIStoryboard storyboardWithName:@"HomeSB" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"HomeSB"];
     }
     return self;
 }

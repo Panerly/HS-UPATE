@@ -58,15 +58,16 @@ typedef NS_ENUM(NSUInteger, AnimatingState) {
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.animatingState = Stable;
-        self.animationDuration = defaultDuration;
-        self.animatingIndex = 0;
-        self.menuItemsSide = Right;
-        self.menuItemsAppearanceDirection = FromTopToBottom;
+        self.animatingState                 = Stable;
+        self.animationDuration              = defaultDuration;
+        self.animatingIndex                 = 0;
+        self.menuItemsSide                  = Right;
+        self.menuItemsAppearanceDirection   = FromTopToBottom;
         
-        self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7f];
-        self.separatorColor = [UIColor colorWithRed:181.0/255.0 green:181.0/255.0 blue:181.0/255.0 alpha:0];
-        self.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero]; //Zero rect footer to clear empty rows UITableView draws
+        self.backgroundColor    = [[UIColor blackColor] colorWithAlphaComponent:0.7f];
+        self.separatorColor     = [UIColor colorWithRed:181.0/255.0 green:181.0/255.0 blue:181.0/255.0 alpha:0];
+        self.tableHeaderView    = [[UIView alloc] initWithFrame:CGRectMake(0, 64, self.frame.size.width, self.frame.size.height - 64)];
+        self.tableFooterView    = [[UIView alloc] initWithFrame:CGRectZero]; //Zero rect footer to clear empty rows UITableView draws
     }
     return self;
 }

@@ -14,6 +14,7 @@
 #import "HSNavigationController.h"
 #import "MonitorViewController.h"
 #import "SeniorlevelViewController.h"
+#import "NewHomeViewController.h"
 
 
 @interface HSTabBarController ()
@@ -25,8 +26,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+//    //添加子控制器
+//    HomeViewController *home = [[HomeViewController alloc] init];
+//    [self addOneChlildVc:home title:@"首页" imageName:@"home2@2x" selectedImageName:@"home_selected2@2x"];
+   
     //添加子控制器
-    HomeViewController *home = [[HomeViewController alloc] init];
+    NewHomeViewController *home = [[NewHomeViewController alloc] init];
     [self addOneChlildVc:home title:@"首页" imageName:@"home2@2x" selectedImageName:@"home_selected2@2x"];
     
     //判断是否是高级权限 选择呈现不同查看方式

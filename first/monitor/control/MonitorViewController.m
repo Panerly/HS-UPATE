@@ -138,21 +138,7 @@ UIWebViewDelegate
  *  设置导航栏的颜色，返回按钮和标题为白色
  */
 -(void)setNavColor{
-//    NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
-//    if ([[ver objectAtIndex:0] intValue] >= 7) {
-//        // iOS 7.0 or later
-//        [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorFromHexString:@"12baaa"]];
-//        
-//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-//        
-//        self.navigationController.navigationBar.translucent = YES;
-//        
-//    }else {
-//        // iOS 6.1 or earlier
-//        self.navigationController.navigationBar.tintColor =[UIColor colorFromHexString:@"12baaa"];
-//        
-//    }
+    
     self.navigationController.navigationBar.barStyle        = UIStatusBarStyleDefault;
     self.navigationController.navigationBar.barTintColor    = COLORRGB(226, 107, 16);
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];

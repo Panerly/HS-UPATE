@@ -201,8 +201,7 @@
 {
     self = [super init];
     if (self) {
-        self = [[UIStoryboard storyboardWithName:@"Login" bundle:nil] instantiateViewControllerWithIdentifier:@"loginVC"];
-        
+        self = [[UIStoryboard storyboardWithName:@"Login" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"loginVC"];
     }
     return self;
 }
@@ -302,14 +301,6 @@
 //登录大表
 - (void)logBigMeter {
     
-    //非管理员账户给个默认值
-    if (![self.userName.text isEqualToString:@"hzsb"]) {
-        self.dbLabel = @"bigmeter_water";
-        self.ipLabel = @"60.191.39.206:8000";
-        [defaults setObject:self.dbLabel forKey:@"db"];
-        [defaults setObject:self.ipLabel forKey:@"ip"];
-        [defaults synchronize];
-    }
     //登录API 需传入的参数：用户名、密码、数据库名、IP地址
     NSString *logInUrl = [NSString stringWithFormat:@"http://%@/waterweb/LoginServlet",self.ipLabel];
     
@@ -515,6 +506,8 @@
                 
                 [defaults setObject:[responseObject objectForKey:@"find_purview"] forKey:@"find_purview"];
                 
+                [defaults setObject:[responseObject objectForKey:@"xqbh"] forKey:@"xqbh"];
+                
                 [defaults synchronize];
                 
                 //成功进入
@@ -584,6 +577,7 @@
         [_userName resignFirstResponder];
     }];
 }
+
 //视图出现前准备好密码、布局还原
 - (void)viewWillAppear:(BOOL)animated
 {

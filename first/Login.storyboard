@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="PR3-Wt-sBI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="PR3-Wt-sBI">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -56,10 +56,10 @@
                                 <rect key="frame" x="-4" y="258.5" width="383" height="150"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user.png" translatesAutoresizingMaskIntoConstraints="NO" id="chu-ID-2kG">
-                                        <rect key="frame" x="76.5" y="10" width="30" height="30"/>
+                                        <rect key="frame" x="78.5" y="10" width="28" height="28"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="09S-V4-o6r"/>
-                                            <constraint firstAttribute="width" constant="30" id="cVq-VY-44O"/>
+                                            <constraint firstAttribute="height" constant="28" id="09S-V4-o6r"/>
+                                            <constraint firstAttribute="width" constant="28" id="cVq-VY-44O"/>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
@@ -75,7 +75,7 @@
                                         </variation>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=":" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BY1-fZ-qed">
-                                        <rect key="frame" x="111.5" y="12.5" width="5" height="21"/>
+                                        <rect key="frame" x="113.5" y="11.5" width="5" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="5" id="fuL-5p-K2l"/>
                                             <constraint firstAttribute="height" constant="21" id="s0g-QA-353"/>
@@ -97,10 +97,10 @@
                                         </variation>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="passWord.png" translatesAutoresizingMaskIntoConstraints="NO" id="Dve-9I-gla">
-                                        <rect key="frame" x="76.5" y="55" width="30" height="30"/>
+                                        <rect key="frame" x="78.5" y="55" width="28" height="28"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="m1S-c4-Rhx"/>
-                                            <constraint firstAttribute="width" constant="30" id="sue-bV-cvL"/>
+                                            <constraint firstAttribute="height" constant="28" id="m1S-c4-Rhx"/>
+                                            <constraint firstAttribute="width" constant="28" id="sue-bV-cvL"/>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
@@ -116,7 +116,7 @@
                                         </variation>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=":" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMc-Zg-85F">
-                                        <rect key="frame" x="111.5" y="57.5" width="5" height="21"/>
+                                        <rect key="frame" x="113.5" y="56.5" width="5" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="5" id="0Yb-UX-W5M"/>
                                             <constraint firstAttribute="height" constant="21" id="DZ7-Xl-Quq"/>

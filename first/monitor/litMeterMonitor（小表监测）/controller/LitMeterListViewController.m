@@ -132,8 +132,10 @@ UISearchResultsUpdating
     serializer.acceptableContentTypes           = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
     NSString *communityURL                      = [NSString stringWithFormat:@"%@/Small_Meter_Reading/Small_NumberServlet",litMeterApi];
     __weak typeof(self) weekSelf                = self;
-    
-    task = [manager POST:communityURL parameters:NULL progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSDictionary *para = @{
+                           @"xqbh":[[NSUserDefaults standardUserDefaults] objectForKey:@"xqbh"]
+                           };
+    task = [manager POST:communityURL parameters:para progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -197,8 +199,10 @@ UISearchResultsUpdating
     serializer.acceptableContentTypes           = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
     NSString *communityURL                      = [NSString stringWithFormat:@"%@/Small_Meter_Reading/NotNormalServlet",litMeterApi];
     __weak typeof(self) weekSelf                = self;
-    
-    task = [manager POST:communityURL parameters:NULL progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSDictionary *para = @{
+                           @"xqbh":[[NSUserDefaults standardUserDefaults] objectForKey:@"xqbh"]
+                           };
+    task = [manager POST:communityURL parameters:para progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

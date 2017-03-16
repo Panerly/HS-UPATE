@@ -103,7 +103,7 @@ UINavigationControllerDelegate
         
         // 1. 配置CATransform3D的内容
         CATransform3D transform;
-        transform       = CATransform3DMakeRotation( (90.0*M_PI)/180, 0.0, 0.7, 0.4);
+        transform       = CATransform3DMakeRotation((90.0*M_PI)/180, 0.0, 0.7, 0.4);
         transform.m34   = 1.0/ -600;
         
         // 2. 定义cell的初始状态
@@ -152,7 +152,7 @@ UINavigationControllerDelegate
                                  @"db":self.dbLabel,
                                  @"type":self.typeLabel,
                                  };
-    
+    NSLog(@"%@",self.typeLabel);
     AFHTTPResponseSerializer *serializer    = manager.responseSerializer;
     
     serializer.acceptableContentTypes       = [serializer.acceptableContentTypes setByAddingObject:@"text/plain"];
