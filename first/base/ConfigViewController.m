@@ -41,8 +41,8 @@
     _dBArr          = @[@"bigmeter_water",@"bigmeter_water",@"bigmeter",@"bigmeter_zjgs",@"bigmeter_zkd",@"bigmeter_chizhou",@"bigmeter_xc",@"bigmeter_xs",@"bigmeter_chengdu"];
     _pickerIPArr    = @[@"60.191.39.206:8000",@"192.168.3.156:8080",@"122.224.204.102:8080",@"124.160.64.122:8080",@"202.141.176.120:8080",@"218.23.188.30:8000",@"58.243.104.26:8080",@"183.129.135.2:8080",@"125.70.9.203:5002"];
     
-    self.IPConfig.text = [defaults objectForKey:@"ip"];
-    self.DBConfig.text = [defaults objectForKey:@"db"];
+    self.IPConfig.text = [[defaults objectForKey:@"ip"] isEqualToString:@""]?[defaults objectForKey:@"ip"]:@"60.191.39.206:8000";
+    self.DBConfig.text = [[defaults objectForKey:@"db"] isEqualToString:@""]?[defaults objectForKey:@"db"]:@"bigmeter_water";
 }
 
 //- (void)configKeyChainItemWrapper
@@ -63,7 +63,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    _userCountLabel.text = [NSString stringWithFormat:@"%@",[defaults objectForKey:@"unit"]];
+    _userCountLabel.text = [NSString stringWithFormat:@"%@",[[defaults objectForKey:@"unit"] isEqualToString:@""]?[defaults objectForKey:@"unit"]:@"所属单位:杭州水表"];
 }
 //从storyboard加载
 - (instancetype)init

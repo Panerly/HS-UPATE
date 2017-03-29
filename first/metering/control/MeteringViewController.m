@@ -592,10 +592,10 @@ static BOOL flashIsOn;
                 [defaults synchronize];
                 if (litMeterCount + bigMeterCount > 0) {
                     
-                    self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",litMeterCount+bigMeterCount];
+                    weakSelf.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",litMeterCount+bigMeterCount];
                 }else{
                     
-                    self.tabBarItem.badgeValue = nil;
+                    weakSelf.tabBarItem.badgeValue = nil;
                 }
                 
                 [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
@@ -656,28 +656,28 @@ static BOOL flashIsOn;
 - (void)QRcode {
 
     SJViewController *viewController = [[SJViewController alloc] init];
-    
+    __weak typeof(self)weakSelf = self;
     /** 扫描成功返回来的数据 */
     viewController.successBlock = ^(NSString *successString) {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
         NSLog(@"successBlock=%@",successString);
         
         SingleViewController *singleVC      = [[SingleViewController alloc] init];
-        singleVC.meter_id_string            = [self getInfo:successString];
+        singleVC.meter_id_string            = [weakSelf getInfo:successString];
         singleVC.hidesBottomBarWhenPushed   = YES;
-        if ([self getInfo:successString] == nil) {
+        if ([weakSelf getInfo:successString] == nil) {
             
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"本地库中不存在此户信息！\n请更新本地库或检查条码信息！" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *action = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                 
             }];
             [alertVC addAction:action];
-            [self presentViewController:alertVC animated:YES completion:^{
+            [weakSelf presentViewController:alertVC animated:YES completion:^{
                 
             }];
         }else{
             
-            [self.navigationController showViewController:singleVC sender:nil];
+            [weakSelf.navigationController showViewController:singleVC sender:nil];
         }
     };
     

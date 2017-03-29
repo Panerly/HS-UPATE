@@ -36,7 +36,7 @@
 //    effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
 //    [self.view addSubview:effectView];
     
-    self.view.backgroundColor = [UIColor lightGrayColor];
+    self.view.backgroundColor = COLORRGB(231, 231, 231);
     
     [self _createTableView];
     
@@ -48,15 +48,17 @@
 - (void)_createVersion {
     
     UIButton *versionBtn = [[UIButton alloc] initWithFrame:CGRectMake((PanScreenWidth-200)/2, PanScreenHeight - 49 -50, 200, 40)];
-    [versionBtn setTitle:@"版本：V1.1.2" forState:UIControlStateNormal];
+    [versionBtn setTitle:@"版本：V1.1.6" forState:UIControlStateNormal];
     [versionBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [versionBtn.titleLabel setFont:[UIFont systemFontOfSize:13]];
     [versionBtn addTarget:self action:@selector(versionAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:versionBtn];
 }
 
+//版本更新内容
 - (void)versionAction {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"版本提示" message:@"1. 修正历史抄见用量提示，修正流量单位\n2.延长统计显示时长\n3.优化体验\n4.修正小表数据\n5.BUG反馈群：QQ群:511584754" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"版本提示" message:@"1. 修改首页UI\n2.修复已知bug\n3.BUG反馈群：QQ群:511584754" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
     
     [alert addAction:cancel];
@@ -71,10 +73,10 @@
     UIButton *logOutBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, PanScreenHeight - 49 - 50 - 40, PanScreenWidth - 20 * 2, 40)];
     [logOutBtn addTarget:self action:@selector(logOut) forControlEvents:UIControlEventTouchUpInside];
     [logOutBtn setTitle:@"退出登录" forState:UIControlStateNormal];
-    logOutBtn.clipsToBounds = YES;
-    logOutBtn.layer.cornerRadius = 20;
-    logOutBtn.backgroundColor = [UIColor redColor];
-    logOutBtn.titleLabel.textColor = [UIColor blackColor];
+    logOutBtn.clipsToBounds         = YES;
+    logOutBtn.layer.cornerRadius    = 20;
+    logOutBtn.backgroundColor       = [UIColor redColor];
+    logOutBtn.titleLabel.textColor  = [UIColor blackColor];
     [self.view addSubview:logOutBtn];
 }
 
@@ -91,11 +93,11 @@
     
     _tableView.backgroundColor = [UIColor clearColor];
     
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
+    _tableView.delegate     = self;
+    _tableView.dataSource   = self;
     
-    userIdenty = @"userIdenty";
-    identy = @"logoutIdenty";
+    userIdenty  = @"userIdenty";
+    identy      = @"logoutIdenty";
     
     _tableView.scrollEnabled = NO;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
@@ -150,46 +152,46 @@
             
             userCell = [[[NSBundle mainBundle] loadNibNamed:@"SettingTableViewCell" owner:self options:nil] lastObject];
             
-            UIVisualEffectView *effectView;
-            if (!effectView) {
-                effectView = [[UIVisualEffectView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, userCell.frame.size.height)];
-            }
-            effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+//            UIVisualEffectView *effectView;
+//            if (!effectView) {
+//                effectView = [[UIVisualEffectView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, userCell.frame.size.height)];
+//            }
+//            effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
             
-            userCell.backgroundColor = [UIColor clearColor];
-            [userCell insertSubview:effectView belowSubview:userCell.contentView];
+            userCell.backgroundColor = [UIColor whiteColor];
+//            [userCell insertSubview:effectView belowSubview:userCell.contentView];
         }
         return userCell;
     }
 
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     
-    cell.backgroundColor = [UIColor clearColor];
+    cell.backgroundColor = [UIColor whiteColor];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (indexPath.section == 1 && indexPath.row == 0) {
 
-        UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, cell.frame.size.height)];
-        effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+//        UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, cell.frame.size.height)];
+//        effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
         
         UIImageView *cleanImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"moreClear@2x"]];
         cleanImageView.frame = CGRectMake(10, (50-30)/2, 30, 30);
-        [effectView addSubview:cleanImageView];
+        [cell addSubview:cleanImageView];
         
         UILabel *cleanLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
-        cleanLabel.center = effectView.center;
+        cleanLabel.center = CGPointMake((PanScreenWidth-100)/2+40, CGRectGetMidY(cell.frame));
         cleanLabel.text = @"点击清理";
         cleanLabel.textColor = [UIColor colorWithRed:81/255.0f green:155/255.0f blue:248/255.0f alpha:1];
         cleanLabel.textAlignment = NSTextAlignmentCenter;
-        [effectView addSubview:cleanLabel];
+        [cell addSubview:cleanLabel];
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(PanScreenWidth-60, (50-25)/2, 60, 25)];
         label.text = [NSString stringWithFormat:@"%.1fM",fileSize / 1024.0 / 1024.0];
         label.font = [UIFont boldSystemFontOfSize:18];
-        [effectView addSubview:label];
-        
-        [cell addSubview:effectView];
+        [cell addSubview:label];
+
+        //        [cell addSubview:effectView];
         
         return cell;
     }

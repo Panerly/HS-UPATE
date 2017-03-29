@@ -246,55 +246,87 @@ UITableViewDataSource
     [smallMeterNumArr addObject:[NSString stringWithFormat:@"%d",litMeterCompleteNum]];
     [smallMeterNumArr addObject:[NSString stringWithFormat:@"%d",litMeterUnCompleteNum]];
     
-    closeBtn = [[UIButton alloc] initWithFrame:CGRectMake((PanScreenWidth - 50)/2, PanScreenHeight - 49 - 50*2, 50, 50)];
-    closeBtn.tintColor = [UIColor redColor];
-    [closeBtn becomeFirstResponder];
-    [closeBtn setImage:[UIImage imageNamed:@"close@2x"] forState:UIControlStateNormal];
-    [closeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [closeBtn addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
-    
-    
-    [FTPopOverMenu showForSender:sender
-                        withMenu:@[@"大表 pie",@"小表 pie"]
-                  imageNameArray:@[@"icon_bigMeter",@"icon_smallMeter"]
-                       doneBlock:^(NSInteger selectedIndex) {
-                           if (selectedIndex == 0) {
-                               
-                               [weakSelf.view addSubview:pie];
-                               /* Pie chart value, will automatically according to the percentage of numerical calculation */
-                               pie.valueArr = bigMeterNumArr;
-                               /* The description of each sector must be filled, and the number must be the same as the pie chart. */
-                               pie.descArr = @[@"大表已抄",@"大表未抄"];
-                               
-                               //Start animation
-                               [pie showAnimation];
-                               [weakSelf.view addSubview:closeBtn];
-                               
-                               if (bigMeterCompleteNum+bigMeterUnCompleteNum < 1) {
-                                   [SCToastView showInView:self.view text:@"暂无数据，请更新\n温馨提示:左下角更新" duration:2 autoHide:YES];
-                               }
-                           }else if (selectedIndex == 1) {
-                               
-                               pie.valueArr = smallMeterNumArr;
-                               pie.descArr = @[@"小表已抄",@"小表未抄"];
-                               
-                               [weakSelf.view addSubview:pie];
-                               [pie showAnimation];
-                               [weakSelf.view addSubview:closeBtn];
-                               if (litMeterUnCompleteNum+litMeterUnCompleteNum < 1) {
-                                   
-                                   [SCToastView showInView:self.view text:@"暂无数据，请更新\n温馨提示:左下角更新" duration:2 autoHide:YES];
-                               }
-                           }
-                           
-                       } dismissBlock:^{
-                           
-                           NSLog(@"user canceled. do nothing.");
-                           
-                       }];
+    if (!closeBtn) {
+        
+        closeBtn = [[UIButton alloc] initWithFrame:CGRectMake((PanScreenWidth - 50)/2, PanScreenHeight - 49 - 50*2, 50, 50)];
+        closeBtn.tintColor = [UIColor redColor];
+        [closeBtn becomeFirstResponder];
+        [closeBtn setImage:[UIImage imageNamed:@"close@2x"] forState:UIControlStateNormal];
+        [closeBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [closeBtn addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    [FTPopOverMenu showForSender:sender withMenuArray:@[@"大表 pie",@"小表 pie"] imageArray:@[@"icon_bigMeter",@"icon_smallMeter"] doneBlock:^(NSInteger selectedIndex) {
+        if (selectedIndex == 0) {
+            
+            [weakSelf.view addSubview:pie];
+            /* Pie chart value, will automatically according to the percentage of numerical calculation */
+            pie.valueArr = bigMeterNumArr;
+            /* The description of each sector must be filled, and the number must be the same as the pie chart. */
+            pie.descArr = @[@"大表已抄",@"大表未抄"];
+            
+            //Start animation
+            [pie showAnimation];
+            [weakSelf.view addSubview:closeBtn];
+            
+            if (bigMeterCompleteNum+bigMeterUnCompleteNum < 1) {
+                [SCToastView showInView:self.view text:@"暂无数据，请更新\n温馨提示:左下角更新" duration:2 autoHide:YES];
+            }
+        }else if (selectedIndex == 1) {
+            
+            pie.valueArr = smallMeterNumArr;
+            pie.descArr = @[@"小表已抄",@"小表未抄"];
+            
+            [weakSelf.view addSubview:pie];
+            [pie showAnimation];
+            [weakSelf.view addSubview:closeBtn];
+            if (litMeterUnCompleteNum+litMeterUnCompleteNum < 1) {
+                
+                [SCToastView showInView:self.view text:@"暂无数据，请更新\n温馨提示:左下角更新" duration:2 autoHide:YES];
+            }
+        }
+
+        
+    } dismissBlock:^{
+        NSLog(@"user canceled. do nothing.");
+    }];
+//    [FTPopOverMenu showForSender:sender
+//                        withMenu:@[@"大表 pie",@"小表 pie"]
+//                  imageNameArray:@[@"icon_bigMeter",@"icon_smallMeter"]
+//                       doneBlock:^(NSInteger selectedIndex) {
+//                           if (selectedIndex == 0) {
+//                               
+//                               [weakSelf.view addSubview:pie];
+//                               /* Pie chart value, will automatically according to the percentage of numerical calculation */
+//                               pie.valueArr = bigMeterNumArr;
+//                               /* The description of each sector must be filled, and the number must be the same as the pie chart. */
+//                               pie.descArr = @[@"大表已抄",@"大表未抄"];
+//                               
+//                               //Start animation
+//                               [pie showAnimation];
+//                               [weakSelf.view addSubview:closeBtn];
+//                               
+//                               if (bigMeterCompleteNum+bigMeterUnCompleteNum < 1) {
+//                                   [SCToastView showInView:self.view text:@"暂无数据，请更新\n温馨提示:左下角更新" duration:2 autoHide:YES];
+//                               }
+//                           }else if (selectedIndex == 1) {
+//                               
+//                               pie.valueArr = smallMeterNumArr;
+//                               pie.descArr = @[@"小表已抄",@"小表未抄"];
+//                               
+//                               [weakSelf.view addSubview:pie];
+//                               [pie showAnimation];
+//                               [weakSelf.view addSubview:closeBtn];
+//                               if (litMeterUnCompleteNum+litMeterUnCompleteNum < 1) {
+//                                   
+//                                   [SCToastView showInView:self.view text:@"暂无数据，请更新\n温馨提示:左下角更新" duration:2 autoHide:YES];
+//                               }
+//                           }
+//                           
+//                       } dismissBlock:^{
+//                           
+//                           NSLog(@"user canceled. do nothing.");
+//                           
+//                       }];
     
 }
 

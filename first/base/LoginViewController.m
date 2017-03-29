@@ -95,8 +95,9 @@
 {
     self.passWord.text = [defaults objectForKey:@"passWord"];
     self.userName.text = [defaults objectForKey:@"userName"];
-    self.ipLabel = [defaults objectForKey:@"ip"];
-    self.dbLabel = [defaults objectForKey:@"db"];
+    NSLog(@"%@",[defaults objectForKey:@"ip"]?[defaults objectForKey:@"ip"]:@"123");
+    self.ipLabel = [defaults objectForKey:@"ip"]?[defaults objectForKey:@"ip"]:@"60.191.39.206:8000";
+    self.dbLabel = [defaults objectForKey:@"db"]?[defaults objectForKey:@"db"]:@"bigmeter_water";
 }
 
 //- (void)configKeyChainItemWrapper
@@ -233,10 +234,6 @@
 //    
 //    //保存密码
 //    [wrapper setObject:self.userName.text forKey:(id)kSecValueData];
-
-    
-    self.ipLabel = [defaults objectForKey:@"ip"];
-    self.dbLabel = [defaults objectForKey:@"db"];
     
     [UIView animateWithDuration:.25 animations:^{
         
@@ -372,52 +369,50 @@
             [defaults synchronize];
             
             [self logLitMeter];
-            
         }
-        
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            
-        }];
-        if (error.code == -1004) {
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"未能连接到服务器!" preferredStyle:UIAlertControllerStyleAlert];
-            
-            [alertVC addAction:action];
-            [self presentViewController:alertVC animated:YES completion:^{
-                
-            }];
-        }
-        if (error.code == -1001) {
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录超时!" preferredStyle:UIAlertControllerStyleAlert];
-            
-            [alertVC addAction:action];
-            [self presentViewController:alertVC animated:YES completion:^{
-                
-            }];
-        } else if (error.code == 3840){
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"配置错误!" preferredStyle:UIAlertControllerStyleAlert];
-            
-            [alertVC addAction:action];
-            [self presentViewController:alertVC animated:YES completion:^{
-                
-            }];
-            
-        }else {
-            
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"服务器连接失败!" preferredStyle:UIAlertControllerStyleAlert];
-            
-            [alertVC addAction:action];
-            [self presentViewController:alertVC animated:YES completion:^{
-                
-            }];
-        }
+//        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//            
+//        }];
+//        if (error.code == -1004) {
+//            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"未能连接到服务器!" preferredStyle:UIAlertControllerStyleAlert];
+//            
+//            [alertVC addAction:action];
+//            [self presentViewController:alertVC animated:YES completion:^{
+//                
+//            }];
+//        }
+//        if (error.code == -1001) {
+//            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录超时!" preferredStyle:UIAlertControllerStyleAlert];
+//            
+//            [alertVC addAction:action];
+//            [self presentViewController:alertVC animated:YES completion:^{
+//                
+//            }];
+//        } else if (error.code == 3840){
+//            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"配置错误!" preferredStyle:UIAlertControllerStyleAlert];
+//            
+//            [alertVC addAction:action];
+//            [self presentViewController:alertVC animated:YES completion:^{
+//                
+//            }];
+//            
+//        }else {
+//            
+//            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"服务器连接失败!" preferredStyle:UIAlertControllerStyleAlert];
+//            
+//            [alertVC addAction:action];
+//            [self presentViewController:alertVC animated:YES completion:^{
+//                
+//            }];
+//        }
         
-        [logInButton ErrorRevertAnimationCompletion:^{
-            
-        }];
-        
+//        [logInButton ErrorRevertAnimationCompletion:^{
+//            
+//        }];
+        [self logLitMeter];
     }];
     
     [task resume];

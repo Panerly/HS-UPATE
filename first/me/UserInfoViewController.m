@@ -27,6 +27,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"账户信息";
+    
     UIImageView *bgView = [[UIImageView alloc] initWithFrame:self.view.frame];
     [bgView setImage:[UIImage imageNamed:@"bg_weather3.jpg"]];
     [self.view addSubview:bgView];
@@ -40,8 +42,11 @@
     
     self.userIcon.clipsToBounds = YES;
     self.userIcon.layer.cornerRadius = 50;
-    defaults = [NSUserDefaults standardUserDefaults];
+    [self.userIcon.layer setMasksToBounds:YES];
+    [self.userIcon.layer setBorderColor:COLORRGB(233, 233, 216).CGColor];
+    [self.userIcon.layer setBorderWidth:2];
     
+    defaults = [NSUserDefaults standardUserDefaults];
     
     [self _setTableView];
 }

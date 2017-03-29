@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -43,7 +43,7 @@
                                     </mask>
                                 </variation>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright（C）2001-2016 HZSB Inc.All rights reserved" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VDh-H5-Tue">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright（C）2001-2017 HZSB Inc.All rights reserved" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VDh-H5-Tue">
                                 <rect key="frame" x="16" y="635" width="343" height="12"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="CVM-PV-wLx"/>
@@ -103,6 +103,7 @@
                                 <exclude reference="VDh-H5-Tue"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="FfZ-CK-gDK"/>
                                 <exclude reference="HZp-i3-d08"/>
                                 <exclude reference="s4z-25-4rd"/>
                                 <exclude reference="0ZG-aR-UX6"/>
@@ -121,7 +122,6 @@
                                 <exclude reference="HS4-x2-z4G"/>
                                 <exclude reference="Rgh-bX-vrs"/>
                                 <exclude reference="VmI-d5-cfK"/>
-                                <exclude reference="FfZ-CK-gDK"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -131,6 +131,7 @@
                                 <include reference="VDh-H5-Tue"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="FfZ-CK-gDK"/>
                                 <include reference="HZp-i3-d08"/>
                                 <include reference="s4z-25-4rd"/>
                                 <exclude reference="0ZG-aR-UX6"/>
@@ -149,7 +150,6 @@
                                 <include reference="HS4-x2-z4G"/>
                                 <include reference="Rgh-bX-vrs"/>
                                 <exclude reference="VmI-d5-cfK"/>
-                                <include reference="FfZ-CK-gDK"/>
                             </mask>
                         </variation>
                     </view>

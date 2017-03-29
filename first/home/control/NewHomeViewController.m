@@ -14,7 +14,10 @@
 //偏移
 #define touchPy 10
 
-@interface NewHomeViewController ()<CLLocationManagerDelegate>
+#define widthPix PanScreenWidth/320
+#define heightPix PanScreenHeight/568
+
+@interface NewHomeViewController ()<CLLocationManagerDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) CLLocationManager* locationManager;
@@ -23,6 +26,22 @@
 @property (assign) CGPoint beginPoint;
 @property (assign) CGPoint movePoint;
 
+
+@property (nonatomic, strong) UIImageView  *backgroudView;
+//多云动画
+@property (nonatomic, strong) NSMutableArray *imageArr;//鸟图片数组
+@property (nonatomic, strong) UIImageView *birdImage;//鸟本体
+@property (nonatomic, strong) UIImageView *birdRefImage;//鸟倒影
+@property (nonatomic, strong) UIImageView *cloudImageViewF;//云
+@property (nonatomic, strong) UIImageView *cloudImageViewS;//云
+//晴天动画
+@property (nonatomic, strong) UIImageView *sunImage;//太阳
+@property (nonatomic, strong) UIImageView *sunshineImage;//太阳光
+@property (nonatomic, strong) UIImageView *sunCloudImage;//晴天云
+//雨天动画
+@property (nonatomic, strong) UIImageView *rainCloudImage;//乌云
+@property (nonatomic, strong) NSArray *jsonArray;
+
 @end
 
 @implementation NewHomeViewController
@@ -30,12 +49,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    NSLog(@"%f", PanScreenWidth);
     [self setTitleLabel];
     
     [self setScroll];
     
-    [self setNavColor];//设置导航栏颜色
+//    [self setNavColor];//设置导航栏颜色
     
     [self _requestWeatherData:@"杭州"];
     
@@ -45,10 +63,31 @@
         [self performSelector:@selector(modifyConstant) withObject:nil afterDelay:0.1];
         
     }
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"icon_home_bg"]];
+    [self createBackgroundView];
     
     //检测升级
     [self checkVersion];
+    
+    // 设置导航控制器的代理为self
+    self.navigationController.delegate = self;
+}
+
+//创建背景视图
+- (void)createBackgroundView {
+    self.backgroudView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_home_bg"]];
+    _backgroudView.frame = self.view.bounds;
+    //[self.view addSubview:self.backgroudView];
+    [self.view insertSubview:self.backgroudView atIndex:0];
+}
+
+#pragma mark - UINavigationControllerDelegate
+// 将要显示控制器
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    
+    // 判断要显示的控制器是否是自己
+    BOOL isShowHomePage = [viewController isKindOfClass:[self class]];
+    
+    [self.navigationController setNavigationBarHidden:isShowHomePage animated:YES];
 }
 
 -(void)checkVersion
@@ -79,7 +118,7 @@
     NSString *APP_VERSION = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSArray *currentVesionArray = [APP_VERSION componentsSeparatedByString:@"."];//当前版本
     NSInteger a = (versionArray.count> currentVesionArray.count)?currentVesionArray.count : versionArray.count;
-    NSLog(@"当前版本：%@ ---appstoreVersion:%@",currentVesionArray, versionArray);
+//    NSLog(@"当前版本：%@ ---appstoreVersion:%@",currentVesionArray, versionArray);
     
     for (int i = 0; i< a; i++) {
         int new = [[versionArray objectAtIndex:i] intValue];
@@ -138,7 +177,8 @@
 -(void)setNavColor{
     
     self.navigationController.navigationBar.barStyle        = UIStatusBarStyleDefault;
-    self.navigationController.navigationBar.barTintColor    = COLORRGB(226, 107, 16);
+    self.navigationController.navigationBar.barTintColor    = COLORRGB(81, 174, 220);
+//    self.navigationController.navigationBar.barTintColor    = [UIColor colorWithPatternImage:[UIImage imageNamed:@"icon_navi"]];
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
 }
@@ -180,7 +220,6 @@
             
             [weakSelf _requestWeatherData:weakSelf.cityLabel.text];
         }
-
         
     } dismissBlock:^{
         
@@ -303,6 +342,9 @@
                         weakSelf.day7Label.text  = [weakSelf GetTime2:[NSString stringWithFormat:@"%@",[[[arr objectForKey:@"daily_forecast"] objectAtIndex:6] objectForKey:@"date"]]];
                         
                         weakSelf.day1WeatherImageView.image = [UIImage imageNamed:[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:0] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                        
+                        [weakSelf addAnimationWithType:[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:0] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                        
                         weakSelf.day2WeatherImageView.image = [UIImage imageNamed:[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:1] objectForKey:@"cond"] objectForKey:@"txt_d"]];
                         weakSelf.day3WeatherImageView.image = [UIImage imageNamed:[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:2] objectForKey:@"cond"] objectForKey:@"txt_d"]];
                         weakSelf.day4WeatherImageView.image = [UIImage imageNamed:[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:3] objectForKey:@"cond"] objectForKey:@"txt_d"]];
@@ -712,7 +754,6 @@ static int timesOut = 0;
         
     {
         NSLog(@"竖扫");
-        
     }
     int changeX = self.movePoint.x - self.beginPoint.x;
     
@@ -729,7 +770,6 @@ static int timesOut = 0;
     }else
         
     {
-        
         NSLog(@"左划");
         
         if (deltaX > touchDistance && deltaY<=touchPy)
@@ -740,10 +780,298 @@ static int timesOut = 0;
         }}
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+
+
+
+
+
+
+
+
+
+#pragma mark - weather bg & animation
+
+//添加动画
+- (void)addAnimationWithType:(NSString *)weatherType{
+    NSLog(@"今日天气%@",weatherType);
+    //先将所有的动画移除
+    [self removeAnimationView];
+    
+    if ([weatherType isEqualToString:@"晴"]) { //晴天
+        [self changeImageAnimated:[UIImage imageNamed:@"bg_sunny_day.jpg"]];
+        [self sun];//动画
+    }
+    else if ([weatherType containsString:@"多云"]) { //多云
+        [self changeImageAnimated:[UIImage imageNamed:@"bg_normal.jpg"]];
+        [self wind];//动画
+    }
+    else if ([weatherType containsString:@"阴"]) { //阴
+        [self changeImageAnimated:[UIImage imageNamed:@"bg_normal.jpg"]];
+        [self wind];//动画
+    }
+    else if ([weatherType containsString:@"雨"]) { //雨
+        [self changeImageAnimated:[UIImage imageNamed:@"bg_rain_day.jpg"]];
+        [self rain];
+    }
+    else if ([weatherType containsString:@"雪"]) { //雪
+        [self changeImageAnimated:[UIImage imageNamed:@"bg_snow_night.jpg"]];
+        
+    }
+    else if ([weatherType containsString:@"尘"]) { //沙尘暴
+        [self changeImageAnimated:[UIImage imageNamed:@"bg_sunny_day.jpg"]];
+        
+    }
+    else if ([weatherType containsString:@"雾"]||[weatherType containsString:@"霾"]) { //雾霾
+        [self changeImageAnimated:[UIImage imageNamed:@"bg_haze.jpg"]];
+        
+    }
+    else if ([weatherType containsString:@"风"]) { //风
+        [self changeImageAnimated:[UIImage imageNamed:@"bg_sunny_day.jpg"]];
+        
+    }
+    else if ([weatherType containsString:@"雷"]) { //雷
+        [self changeImageAnimated:[UIImage imageNamed:@"bg_night_rain.jpg"]];
+        
+    }
+    else if ([weatherType containsString:@"热"]) { //热
+        [self changeImageAnimated:[UIImage imageNamed:@"bg_sunny_day.jpg"]];
+        
+    }
+    else if ([weatherType containsString:@"未知"]) { //未知
+        
+        
+    }
+    
+    //[self.view bringSubviewToFront:self.weatherV];
+}
+
+- (void)changeImageAnimated:(UIImage *)image {
+    
+    CATransition *transition = [CATransition animation];
+    transition.duration = 1;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionFade;
+    [self.backgroudView.layer addAnimation:transition forKey:@"a"];
+    [self.backgroudView setImage:image];
+}
+
+- (void)removeAnimationView {
+    //先将所有的动画移除
+    [self.birdImage removeFromSuperview];
+    [self.birdRefImage removeFromSuperview];
+    [self.cloudImageViewF removeFromSuperview];
+    [self.cloudImageViewS removeFromSuperview];
+    [self.sunImage removeFromSuperview];
+    [self.sunshineImage removeFromSuperview];
+    [self.sunCloudImage removeFromSuperview];
+    
+    [self.rainCloudImage removeFromSuperview];
+    
+    for (NSInteger i = 0; i < _jsonArray.count; i++) {
+        UIImageView *rainLineView = (UIImageView *)[self.view viewWithTag:100+i];
+        [rainLineView removeFromSuperview];
+    }
+    
+}
+
+
+//晴天动画
+- (void)sun {
+    //太阳
+    _sunImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ele_sunnySun"]];
+    CGRect frameSun = _sunImage.frame;
+    frameSun.size = CGSizeMake(200, 200*579/612.0);
+    _sunImage.frame = frameSun;
+    _sunImage.center = CGPointMake(PanScreenHeight * 0.1, PanScreenHeight * 0.1);
+    [self.view addSubview:_sunImage];
+    [_sunImage.layer addAnimation:[self sunshineAnimationWithDuration:40] forKey:nil];
+    
+    //太阳光
+    _sunshineImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ele_sunnySunshine"]];
+    CGRect _sunImageFrame = _sunshineImage.frame;
+    _sunImageFrame.size = CGSizeMake(400, 400);
+    _sunshineImage.frame = _sunImageFrame;
+    _sunshineImage.center = CGPointMake(PanScreenHeight * 0.1, PanScreenHeight * 0.1);
+    [self.view addSubview:_sunshineImage];
+    [_sunshineImage.layer addAnimation:[self sunshineAnimationWithDuration:40] forKey:nil];
+    
+    
+    //晴天云
+    _sunCloudImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ele_sunnyCloud2"]];
+    CGRect frame = _sunCloudImage.frame;
+    frame.size = CGSizeMake(PanScreenHeight *0.7, PanScreenWidth*0.5);
+    _sunCloudImage.frame = frame;
+    _sunCloudImage.center = CGPointMake(PanScreenWidth * 0.25, PanScreenHeight*0.5);
+    [_sunCloudImage.layer addAnimation:[self birdFlyAnimationWithToValue:@(PanScreenWidth+30) duration:50] forKey:nil];
+    [self.view addSubview:_sunCloudImage];
+    
+    
+}
+
+//多云动画
+- (void)wind {
+    
+    //鸟 本体
+    _birdImage = [[UIImageView alloc]initWithFrame:CGRectMake(-30, PanScreenHeight * 0.2, 70, 50)];
+    [_birdImage setAnimationImages:self.imageArr];
+    _birdImage.animationRepeatCount = 0;
+    _birdImage.animationDuration = 1;
+    [_birdImage startAnimating];
+    [self.view addSubview:_birdImage];
+    [_birdImage.layer addAnimation:[self birdFlyAnimationWithToValue:@(PanScreenWidth+30) duration:10  ] forKey:nil];
+    
+    //鸟 倒影
+    _birdRefImage = [[UIImageView alloc]initWithFrame:CGRectMake(-30, PanScreenHeight * 0.8, 70, 50)];
+    //[self.backgroudView addSubview:self.birdRefImage];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:self.birdRefImage.image];
+    [_birdRefImage setAnimationImages:self.imageArr];
+    _birdRefImage.animationRepeatCount = 0;
+    _birdRefImage.animationDuration = 1;
+    _birdRefImage.alpha = 0.4;
+    [_birdRefImage startAnimating];
+    
+    [_birdRefImage.layer addAnimation:[self birdFlyAnimationWithToValue:@(PanScreenWidth+30) duration:10] forKey:nil];
+    
+    
+    //云朵效果
+    _cloudImageViewF = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ele_sunnyCloud2"]];
+    CGRect frame = _cloudImageViewF.frame;
+    frame.size = CGSizeMake(PanScreenHeight *0.7, PanScreenWidth*0.5);
+    _cloudImageViewF.frame = frame;
+    _cloudImageViewF.center = CGPointMake(PanScreenWidth * 0.25, PanScreenHeight*0.7);
+    [_cloudImageViewF.layer addAnimation:[self birdFlyAnimationWithToValue:@(PanScreenWidth+30) duration:70] forKey:nil];
+    [self.view addSubview:_cloudImageViewF];
+    
+    
+    _cloudImageViewS = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ele_sunnyCloud1"]];
+    _cloudImageViewS.frame = self.cloudImageViewF.frame;
+    _cloudImageViewS.center = CGPointMake(PanScreenWidth * 0.05, PanScreenHeight*0.7);
+    [_cloudImageViewS.layer addAnimation:[self birdFlyAnimationWithToValue:@(PanScreenWidth+30) duration:70] forKey:nil];
+    [self.view addSubview:_cloudImageViewS];
+    
+}
+
+//雨天动画
+- (void)rain {
+    //加载JSON文件
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"rainData.json" ofType:nil];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    //将JSON数据转为NSArray或NSDictionary
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    _jsonArray = dict[@"weather"][@"image"];
+    
+    for (NSInteger i = 0; i < _jsonArray.count; i++) {
+        
+        NSDictionary *dic = [_jsonArray objectAtIndex:i];
+        UIImageView *rainLineView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:dic[@"-imageName"]]];
+        rainLineView.tag = 100+i;
+        NSArray *sizeArr = [dic[@"-size"] componentsSeparatedByString:@","];
+        NSArray *originArr = [dic[@"-origin"] componentsSeparatedByString:@","];
+        rainLineView.frame = CGRectMake([originArr[0] integerValue]*widthPix , [originArr[1] integerValue], [sizeArr[0] integerValue], [sizeArr[1] integerValue]);
+        [self.view addSubview:rainLineView];
+        [rainLineView.layer addAnimation:[self rainAnimationWithDuration:2+i%5] forKey:nil];
+        [rainLineView.layer addAnimation:[self rainAlphaWithDuration:2+i%5] forKey:nil];
+    }
+    
+    
+    
+    //乌云
+    _rainCloudImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"night_rain_cloud"]];
+    CGRect frame = _rainCloudImage.frame;
+    frame.size = CGSizeMake(768/371.0* PanScreenWidth*0.5, PanScreenWidth*0.5);
+    _rainCloudImage.frame = frame;
+    _rainCloudImage.center = CGPointMake(PanScreenWidth * 0.25, PanScreenHeight*0.1);
+    [_rainCloudImage.layer addAnimation:[self birdFlyAnimationWithToValue:@(PanScreenWidth+30) duration:50] forKey:nil];
+    [self.view addSubview:_rainCloudImage];
+    
+}
+
+
+
+
+//动画横向移动方法
+- (CABasicAnimation *)birdFlyAnimationWithToValue:(NSNumber *)toValue duration:(NSInteger)duration{
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.translation.x"];
+    animation.toValue = toValue;
+    animation.duration = duration;
+    animation.removedOnCompletion = NO;
+    animation.repeatCount = MAXFLOAT;
+    animation.fillMode = kCAFillModeForwards;
+    return animation;
+}
+
+//动画旋转方法
+- (CABasicAnimation *)sunshineAnimationWithDuration:(NSInteger)duration{
+    //旋转动画
+    CABasicAnimation* rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
+    [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    rotationAnimation.duration = duration;
+    rotationAnimation.repeatCount = MAXFLOAT;//你可以设置到最大的整数值
+    rotationAnimation.cumulative = NO;
+    rotationAnimation.removedOnCompletion = NO;
+    rotationAnimation.fillMode = kCAFillModeForwards;
+    return rotationAnimation;
+}
+
+//下雨动画方法
+- (CABasicAnimation *)rainAnimationWithDuration:(NSInteger)duration{
+    
+    CABasicAnimation* caBaseTransform = [CABasicAnimation animation];
+    caBaseTransform.duration = duration;
+    caBaseTransform.keyPath = @"transform";
+    caBaseTransform.repeatCount = MAXFLOAT;
+    caBaseTransform.removedOnCompletion = NO;
+    caBaseTransform.fillMode = kCAFillModeForwards;
+    caBaseTransform.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(-170, -620, 0)];
+    caBaseTransform.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(PanScreenHeight/2.0*34/124.0, PanScreenHeight/2, 0)];
+    
+    return caBaseTransform;
+    
+}
+//透明度动画
+- (CABasicAnimation *)rainAlphaWithDuration:(NSInteger)duration {
+    
+    CABasicAnimation *showViewAnn = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    showViewAnn.fromValue   = [NSNumber numberWithFloat:1.0];
+    showViewAnn.toValue     = [NSNumber numberWithFloat:0.1];
+    showViewAnn.duration    = duration;
+    showViewAnn.repeatCount = MAXFLOAT;
+    showViewAnn.fillMode    = kCAFillModeForwards;
+    showViewAnn.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    showViewAnn.removedOnCompletion = NO;
+    
+    return showViewAnn;
+}
+
+
+//--getter----------------------------------------------------
+-(NSMutableArray *)imageArr {
+    if (!_imageArr) {
+        _imageArr = [NSMutableArray array];
+        for (int i = 1; i < 9; i++) {
+            NSString *fileName = [NSString stringWithFormat:@"ele_sunnyBird%d.png",i];
+            NSString *path = [[NSBundle mainBundle] pathForResource:fileName ofType:nil];
+            UIImage *image = [UIImage imageWithContentsOfFile:path];
+            [_imageArr addObject:image];
+        }
+        
+    }
+    return _imageArr;
+}
+
+
 
 /*
 #pragma mark - Navigation
