@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -704,7 +705,7 @@
                     </variation>
                 </label>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" allowsEditingTextAttributes="YES" placeholder="请输入本期抄表值" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4bp-Kk-BjZ">
-                    <rect key="frame" x="130" y="296" width="203" height="27"/>
+                    <rect key="frame" x="130" y="296" width="213" height="27"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="27" id="dBy-H0-dgv"/>
                     </constraints>
@@ -736,13 +737,13 @@
                     </variation>
                 </textField>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="m³" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QuU-nf-V8u">
-                    <rect key="frame" x="333" y="237" width="22" height="21"/>
+                    <rect key="frame" x="343" y="237" width="22" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="m³" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5vg-CT-seI">
-                    <rect key="frame" x="333" y="299" width="22" height="21"/>
+                    <rect key="frame" x="343" y="299" width="22" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -837,7 +838,7 @@
                 <constraint firstItem="FQY-7W-SAy" firstAttribute="centerY" secondItem="tuL-9y-mBS" secondAttribute="centerY" id="0mi-lm-hjM"/>
                 <constraint firstItem="cee-37-HiI" firstAttribute="trailing" secondItem="6EI-Vi-VzJ" secondAttribute="trailing" id="1J0-cB-jGt"/>
                 <constraint firstAttribute="trailing" secondItem="5vg-CT-seI" secondAttribute="trailing" constant="15" id="2Jn-hn-g5c">
-                    <variation key="widthClass=compact" constant="20"/>
+                    <variation key="widthClass=compact" constant="10"/>
                 </constraint>
                 <constraint firstAttribute="trailing" secondItem="cm1-9B-I42" secondAttribute="trailing" constant="10" id="2Nd-dl-sio"/>
                 <constraint firstAttribute="bottom" secondItem="34Z-JC-IIQ" secondAttribute="bottom" id="2R2-Cf-BPO"/>
@@ -863,7 +864,7 @@
                 <constraint firstItem="34Z-JC-IIQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="BTc-Ix-43d"/>
                 <constraint firstItem="HNi-j7-UN7" firstAttribute="centerX" secondItem="AV8-hh-Hcb" secondAttribute="centerX" id="BhZ-M5-We8"/>
                 <constraint firstItem="Roz-tL-3Kc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="CxX-xN-dPy"/>
-                <constraint firstAttribute="trailing" secondItem="QuU-nf-V8u" secondAttribute="trailing" constant="20" id="DQt-9z-Ba7"/>
+                <constraint firstAttribute="trailing" secondItem="QuU-nf-V8u" secondAttribute="trailing" constant="10" id="DQt-9z-Ba7"/>
                 <constraint firstItem="6Bj-dj-6IN" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="Dmz-bs-cQ7"/>
                 <constraint firstItem="34Z-JC-IIQ" firstAttribute="top" secondItem="jik-05-LIr" secondAttribute="bottom" id="FX6-kX-6C0"/>
                 <constraint firstAttribute="trailing" secondItem="dVs-LX-Ofd" secondAttribute="trailing" id="GS0-l3-RrI"/>

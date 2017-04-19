@@ -32,7 +32,7 @@ UITextFieldDelegate
     [super viewDidLoad];
     
     if (_isBigMeter) {
-        self.title                  = @"大表数据查询";
+        self.title                  = @"水表数据查询";
         _callerName.text            = @"主叫方：";
         _callerLabel.placeholder    = @"请输入网络编号";
     } else {
@@ -42,6 +42,8 @@ UITextFieldDelegate
         _callerLabel.placeholder    = @"请输入户号";
         _callerLabel.text           = self.user_id_str;
     }
+    
+    [_callerLabel becomeFirstResponder];
     
     cellID = @"meterDataID";
     
@@ -110,7 +112,7 @@ UITextFieldDelegate
         
         AFHTTPResponseSerializer *serializer = manager.responseSerializer;
         
-        manager.requestSerializer.timeoutInterval = 5;
+        manager.requestSerializer.timeoutInterval = 30;
         
         serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/plain"];
         
@@ -306,7 +308,7 @@ UITextFieldDelegate
         
         AFHTTPResponseSerializer *serializer = manager.responseSerializer;
         
-        manager.requestSerializer.timeoutInterval = 60;
+        manager.requestSerializer.timeoutInterval = 30;
         
         serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
         

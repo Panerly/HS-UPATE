@@ -7,7 +7,6 @@
 //
 
 #import "HSTabBarController.h"
-#import "HomeViewController.h"
 #import "SettingViewController.h"
 #import "MeteringViewController.h"
 #import "ServerViewController.h"

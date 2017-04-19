@@ -124,7 +124,9 @@ BMKMapManager* _mapManager;
     if ([[UIApplication sharedApplication]currentUserNotificationSettings].types!=UIUserNotificationTypeNone) {
         
         UILocalNotification *notification=[[UILocalNotification alloc] init];
+        
         if (notification!=nil) {
+            
             NSDate *now = [NSDate date];
             //从现在开始，0秒以后通知
             notification.fireDate    = [now dateByAddingTimeInterval:5];
@@ -136,7 +138,7 @@ BMKMapManager* _mapManager;
             notification.alertAction = NSLocalizedString(@"滑动屏幕进行抄收", nil);
             //这个通知到时间时，你的应用程序右上角显示的数字。
             notification.applicationIconBadgeNumber = alertNum;
-            //add key  给这个通知增加key 便于半路取消。nfkey这个key是我自己随便起的。
+            //add key  给这个通知增加key 便于半路取消。nfkey这个key是随便起的。
             // 假如你的通知不会在还没到时间的时候手动取消 那下面的两行代码你可以不用写了。
             NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:(int)alertNum],@"nfkey",nil];
             [notification setUserInfo:dict];

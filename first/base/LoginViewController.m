@@ -62,7 +62,6 @@
     
     //创建登录btn
     [self _createLogBtn];
-    
 }
 
 - (void)textFieldDidChange:(UITextField *)textField {
@@ -267,11 +266,11 @@
                     
                 }];
             }else{//管理员 、配置完成
-                [self logBigMeter];
+                [self logIn];
             }
             
         }else{//非管理员
-            [self logBigMeter];
+            [self logIn];
         }
         
     
@@ -295,11 +294,11 @@
 
 }
 
-//登录大表
-- (void)logBigMeter {
+//登录
+- (void)logIn {
     
     //登录API 需传入的参数：用户名、密码、数据库名、IP地址
-    NSString *logInUrl = [NSString stringWithFormat:@"http://%@/waterweb/LoginServlet",self.ipLabel];
+    NSString *logInUrl = [NSString stringWithFormat:@"%@",logInApi];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -322,12 +321,20 @@
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         //用户名或密码错误
-        if ([[responseObject objectForKey:@"type"] isEqualToString:@"0"]) {
+        if ([[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"test"] objectForKey:@"type"]] isEqualToString:@"0"]) {
             
-            [self logLitMeter];
-            
-            //数据库配置错误
-        }else if ([[responseObject objectForKey:@"type"] isEqualToString:@"404"]) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"用户名或密码错误" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            [alert addAction:cancel];
+            [weakSelf presentViewController:alert animated:YES completion:^{
+                
+            }];
+            [logInButton ErrorRevertAnimationCompletion:^{
+                
+            }];
+        }else if ([[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"type"]] isEqualToString:@"302"]){//数据库配置错误
             
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"数据库配置错误！" preferredStyle:UIAlertControllerStyleAlert];
             
@@ -343,10 +350,8 @@
             [logInButton ErrorRevertAnimationCompletion:^{
                 
             }];
-        }
-        
-        //成功进入首页
-        else {
+            
+        }else {//成功进入首页
             
             //保存用户名和密码
             
@@ -354,25 +359,298 @@
             
             [defaults setObject:weakSelf.passWord.text forKey:@"passWord"];
             
-            [defaults setObject:[responseObject objectForKey:@"type"] forKey:@"type"];
+            [defaults setObject:@"ok" forKey:@"login_status"];
             
-            [defaults setObject:[responseObject objectForKey:@"area_list"] forKey:@"area_list"];
+            [defaults setObject:[[responseObject objectForKey:@"test"] objectForKey:@"type"] forKey:@"type"];
             
-            [defaults setObject:[responseObject objectForKey:@"meter_cali_list"] forKey:@"meter_cali_list"];
+            [defaults setObject:[[responseObject objectForKey:@"test"] objectForKey:@"collector_area"] forKey:@"collector_area"];
             
-            [defaults setObject:[responseObject objectForKey:@"meter_name_list"] forKey:@"meter_name_list"];
+            [defaults setObject:[[responseObject objectForKey:@"test"] objectForKey:@"xqbh"] forKey:@"xqbh"];
             
-            [defaults setObject:[responseObject objectForKey:@"sb_type_list"] forKey:@"sb_type_list"];
+            [defaults setObject:[[responseObject objectForKey:@"test"] objectForKey:@"find_purview"] forKey:@"find_purview"];
             
-            [defaults setObject:[responseObject objectForKey:@"type_list"] forKey:@"type_list"];
+            [defaults setObject:[[responseObject objectForKey:@"sing"] objectForKey:@"area_list"] forKey:@"area_list"];
+            
+            [defaults setObject:[[responseObject objectForKey:@"sing"] objectForKey:@"meter_cali_list"] forKey:@"meter_cali_list"];
+            
+            [defaults setObject:[[responseObject objectForKey:@"sing"] objectForKey:@"meter_name_list"] forKey:@"meter_name_list"];
+            
+            [defaults setObject:[[responseObject objectForKey:@"sing"] objectForKey:@"sb_type_list"] forKey:@"sb_type_list"];
+            
+            [defaults setObject:[[responseObject objectForKey:@"sing"] objectForKey:@"type_list"] forKey:@"type_list"];
             
             [defaults synchronize];
             
-            [self logLitMeter];
+            //成功进入
+            [logInButton ExitAnimationCompletion:^{
+                
+                HSTabBarController *tabBarCtrl = [[HSTabBarController alloc] init];
+                
+                tabBarCtrl.transitioningDelegate = self;
+                
+                [weakSelf presentViewController:tabBarCtrl animated:YES completion:^{
+                    tabBarCtrl.modalPresentationStyle = UIModalPresentationPageSheet;
+                }];
+                
+            }];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+        if (error.code == -1001) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"登陆失败" message:@"请求超时" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            [alert addAction:cancel];
+            [weakSelf presentViewController:alert animated:YES completion:^{
+                
+            }];
+        }
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"登陆失败" message:[NSString stringWithFormat:@"%@",error] preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        [alert addAction:cancel];
+        [weakSelf presentViewController:alert animated:YES completion:^{
+            
+        }];
+        [logInButton ErrorRevertAnimationCompletion:^{
+            
+        }];
+    }];
+    
+    
+    [task resume];
+    
+}
+
+
+////登录大表
+//- (void)logBigMeter {
+//    
+//    //登录API 需传入的参数：用户名、密码、数据库名、IP地址
+//    NSString *logInUrl = [NSString stringWithFormat:@"http://%@/waterweb/LoginServlet",self.ipLabel];
+//    
+//    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+//    
+//    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+//    manager.requestSerializer.timeoutInterval = 10;
+//    
+//    NSDictionary *parameters = @{@"username":self.userName.text,
+//                                 @"password":self.passWord.text,
+//                                 @"db":self.dbLabel,
+//                                 };
+//    
+//    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
+//    
+//    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+//    
+//    __weak typeof(self) weakSelf = self;
+//    
+//    NSURLSessionTask *task =[manager POST:logInUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+//        
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        
+//        //用户名或密码错误
+//        if ([[responseObject objectForKey:@"type"] isEqualToString:@"0"]) {
+//            
+//            [self logLitMeter];
+//            
+//            //数据库配置错误
+//        }else if ([[responseObject objectForKey:@"type"] isEqualToString:@"404"]) {
+//            
+//            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"数据库配置错误！" preferredStyle:UIAlertControllerStyleAlert];
+//            
+//            UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//                
+//            }];
+//            
+//            [alertVC addAction:action];
+//            [self presentViewController:alertVC animated:YES completion:^{
+//                
+//            }];
+//            
+//            [logInButton ErrorRevertAnimationCompletion:^{
+//                
+//            }];
+//        }
+//        
+//        //成功进入首页
+//        else {
+//            
+//            //保存用户名和密码
+//            
+//            [defaults setObject:weakSelf.userName.text forKey:@"userName"];
+//            
+//            [defaults setObject:weakSelf.passWord.text forKey:@"passWord"];
+//            
+//            [defaults setObject:[responseObject objectForKey:@"type"] forKey:@"type"];
+//            
+//            [defaults setObject:[responseObject objectForKey:@"area_list"] forKey:@"area_list"];
+//            
+//            [defaults setObject:[responseObject objectForKey:@"meter_cali_list"] forKey:@"meter_cali_list"];
+//            
+//            [defaults setObject:[responseObject objectForKey:@"meter_name_list"] forKey:@"meter_name_list"];
+//            
+//            [defaults setObject:[responseObject objectForKey:@"sb_type_list"] forKey:@"sb_type_list"];
+//            
+//            [defaults setObject:[responseObject objectForKey:@"type_list"] forKey:@"type_list"];
+//            
+//            [defaults synchronize];
+//            
+//            [self logLitMeter];
+//        }
+//        
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        
+////        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+////            
+////        }];
+////        if (error.code == -1004) {
+////            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"未能连接到服务器!" preferredStyle:UIAlertControllerStyleAlert];
+////            
+////            [alertVC addAction:action];
+////            [self presentViewController:alertVC animated:YES completion:^{
+////                
+////            }];
+////        }
+////        if (error.code == -1001) {
+////            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录超时!" preferredStyle:UIAlertControllerStyleAlert];
+////            
+////            [alertVC addAction:action];
+////            [self presentViewController:alertVC animated:YES completion:^{
+////                
+////            }];
+////        } else if (error.code == 3840){
+////            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"配置错误!" preferredStyle:UIAlertControllerStyleAlert];
+////            
+////            [alertVC addAction:action];
+////            [self presentViewController:alertVC animated:YES completion:^{
+////                
+////            }];
+////            
+////        }else {
+////            
+////            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"服务器连接失败!" preferredStyle:UIAlertControllerStyleAlert];
+////            
+////            [alertVC addAction:action];
+////            [self presentViewController:alertVC animated:YES completion:^{
+////                
+////            }];
+////        }
+//        
+////        [logInButton ErrorRevertAnimationCompletion:^{
+////            
+////        }];
+//        [self logLitMeter];
+//    }];
+//    
+//    [task resume];
+//
+//}
+//
+//#pragma mark - login litmeter 大表登录检测后登录小表
+//- (void)logLitMeter {
+//    /*
+//    // 1.初始化
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    // 2.设置证书模式
+//    NSString * cerPath = [[NSBundle mainBundle] pathForResource:@"AddTrust External CA Root" ofType:@"cer"];
+//    NSData * cerData = [NSData dataWithContentsOfFile:cerPath];
+//    NSLog(@"%@",cerPath);
+//    
+//    if (cerPath) {
+//     
+//        manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone withPinnedCertificates:[[NSSet alloc] initWithObjects:cerData, nil]];
+//        // 客户端是否信任非法证书
+//        manager.securityPolicy.allowInvalidCertificates = YES;
+//        // 是否在证书域字段中验证域名
+//        [manager.securityPolicy setValidatesDomainName:NO];
+//    }
+//    
+//    [manager POST:@"http://www.hzsbgs.com:8888/scinf/gyd2?time=2016_11_24_14_49_27" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+//     
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//     
+//        NSLog(@"%@",responseObject);
+//     
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//     
+//        NSLog(@"%@",error);
+//     
+//    }];*/
+//    
+//    //登录API 需传入的参数：用户名、密码、数据库名、IP地址
+//    NSString *logInUrl                  = [NSString stringWithFormat:@"%@/Meter_Reading/S_Login_InfoServlet",litMeterApi];
+//    
+//    NSURLSessionConfiguration *config   = [NSURLSessionConfiguration defaultSessionConfiguration];
+//    
+//    AFHTTPSessionManager *manager       = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+//    manager.requestSerializer.timeoutInterval = 10;
+//    
+//    NSDictionary *parameters = @{@"name":self.userName.text,
+//                                 @"pwd":self.passWord.text,
+//                                 };
+//    
+//    AFHTTPResponseSerializer *serializer    = manager.responseSerializer;
+//    
+//    serializer.acceptableContentTypes       = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
+//    
+//    __weak typeof(self) weakSelf = self;
+//    
+//    NSURLSessionTask *task =[manager POST:logInUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+//        
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//
+////        NSLog(@"登录返回字段：%@",responseObject);
+//        if ([responseObject objectForKey:@"type"]) {
+//            
+//            if ([[responseObject objectForKey:@"type"] isEqualToString:@"0"]) {
+//                
+//                UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"用户名或密码错误！" preferredStyle:UIAlertControllerStyleAlert];
+//                
+//                UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//                    
+//                }];
+//                
+//                [alertVC addAction:action];
+//                [self presentViewController:alertVC animated:YES completion:^{
+//                    
+//                }];
+//                
+//                [logInButton ErrorRevertAnimationCompletion:^{
+//                    
+//                }];
+//            }
+//            else {//小表登录成功
+//                //保存用户名和密码
+//                
+//                [defaults setObject:weakSelf.userName.text forKey:@"userName"];
+//                
+//                [defaults setObject:weakSelf.passWord.text forKey:@"passWord"];
+//                
+//                [defaults setObject:[responseObject objectForKey:@"find_purview"] forKey:@"find_purview"];
+//                
+//                [defaults setObject:[responseObject objectForKey:@"xqbh"] forKey:@"xqbh"];
+//                
+//                [defaults synchronize];
+//                
+//                //成功进入
+//                [logInButton ExitAnimationCompletion:^{
+//                    
+//                    HSTabBarController *tabBarCtrl = [[HSTabBarController alloc] init];
+//                    
+//                    tabBarCtrl.transitioningDelegate = self;
+//                    
+//                    [weakSelf presentViewController:tabBarCtrl animated:YES completion:^{
+//                        tabBarCtrl.modalPresentationStyle = UIModalPresentationPageSheet;
+//                    }];
+//                    
+//                }];
+//            }
+//        }
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        
 //        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 //            
 //        }];
@@ -391,14 +669,6 @@
 //            [self presentViewController:alertVC animated:YES completion:^{
 //                
 //            }];
-//        } else if (error.code == 3840){
-//            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"配置错误!" preferredStyle:UIAlertControllerStyleAlert];
-//            
-//            [alertVC addAction:action];
-//            [self presentViewController:alertVC animated:YES completion:^{
-//                
-//            }];
-//            
 //        }else {
 //            
 //            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"服务器连接失败!" preferredStyle:UIAlertControllerStyleAlert];
@@ -408,153 +678,13 @@
 //                
 //            }];
 //        }
-        
+//        
 //        [logInButton ErrorRevertAnimationCompletion:^{
 //            
 //        }];
-        [self logLitMeter];
-    }];
-    
-    [task resume];
-
-}
-
-#pragma mark - login litmeter 大表登录检测后登录小表
-- (void)logLitMeter {
-    /*
-    // 1.初始化
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    // 2.设置证书模式
-    NSString * cerPath = [[NSBundle mainBundle] pathForResource:@"AddTrust External CA Root" ofType:@"cer"];
-    NSData * cerData = [NSData dataWithContentsOfFile:cerPath];
-    NSLog(@"%@",cerPath);
-    
-    if (cerPath) {
-     
-        manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone withPinnedCertificates:[[NSSet alloc] initWithObjects:cerData, nil]];
-        // 客户端是否信任非法证书
-        manager.securityPolicy.allowInvalidCertificates = YES;
-        // 是否在证书域字段中验证域名
-        [manager.securityPolicy setValidatesDomainName:NO];
-    }
-    
-    [manager POST:@"http://www.hzsbgs.com:8888/scinf/gyd2?time=2016_11_24_14_49_27" parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
-     
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-     
-        NSLog(@"%@",responseObject);
-     
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-     
-        NSLog(@"%@",error);
-     
-    }];*/
-    
-    //登录API 需传入的参数：用户名、密码、数据库名、IP地址
-    NSString *logInUrl                  = [NSString stringWithFormat:@"%@/Meter_Reading/S_Login_InfoServlet",litMeterApi];
-    
-    NSURLSessionConfiguration *config   = [NSURLSessionConfiguration defaultSessionConfiguration];
-    
-    AFHTTPSessionManager *manager       = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
-    manager.requestSerializer.timeoutInterval = 10;
-    
-    NSDictionary *parameters = @{@"name":self.userName.text,
-                                 @"pwd":self.passWord.text,
-                                 };
-    
-    AFHTTPResponseSerializer *serializer    = manager.responseSerializer;
-    
-    serializer.acceptableContentTypes       = [serializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    
-    __weak typeof(self) weakSelf = self;
-    
-    NSURLSessionTask *task =[manager POST:logInUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-
-//        NSLog(@"登录返回字段：%@",responseObject);
-        if ([responseObject objectForKey:@"type"]) {
-            
-            if ([[responseObject objectForKey:@"type"] isEqualToString:@"0"]) {
-                
-                UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"用户名或密码错误！" preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                    
-                }];
-                
-                [alertVC addAction:action];
-                [self presentViewController:alertVC animated:YES completion:^{
-                    
-                }];
-                
-                [logInButton ErrorRevertAnimationCompletion:^{
-                    
-                }];
-            }
-            else {//小表登录成功
-                //保存用户名和密码
-                
-                [defaults setObject:weakSelf.userName.text forKey:@"userName"];
-                
-                [defaults setObject:weakSelf.passWord.text forKey:@"passWord"];
-                
-                [defaults setObject:[responseObject objectForKey:@"find_purview"] forKey:@"find_purview"];
-                
-                [defaults setObject:[responseObject objectForKey:@"xqbh"] forKey:@"xqbh"];
-                
-                [defaults synchronize];
-                
-                //成功进入
-                [logInButton ExitAnimationCompletion:^{
-                    
-                    HSTabBarController *tabBarCtrl = [[HSTabBarController alloc] init];
-                    
-                    tabBarCtrl.transitioningDelegate = self;
-                    
-                    [weakSelf presentViewController:tabBarCtrl animated:YES completion:^{
-                        tabBarCtrl.modalPresentationStyle = UIModalPresentationPageSheet;
-                    }];
-                    
-                }];
-            }
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            
-        }];
-        if (error.code == -1004) {
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"未能连接到服务器!" preferredStyle:UIAlertControllerStyleAlert];
-            
-            [alertVC addAction:action];
-            [self presentViewController:alertVC animated:YES completion:^{
-                
-            }];
-        }
-        if (error.code == -1001) {
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"登录超时!" preferredStyle:UIAlertControllerStyleAlert];
-            
-            [alertVC addAction:action];
-            [self presentViewController:alertVC animated:YES completion:^{
-                
-            }];
-        }else {
-            
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"服务器连接失败!" preferredStyle:UIAlertControllerStyleAlert];
-            
-            [alertVC addAction:action];
-            [self presentViewController:alertVC animated:YES completion:^{
-                
-            }];
-        }
-        
-        [logInButton ErrorRevertAnimationCompletion:^{
-            
-        }];
-    }];
-    [task resume];
-}
+//    }];
+//    [task resume];
+//}
 
 //touch返回原态
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -578,6 +708,20 @@
 {
     [super viewWillAppear:animated];
     
+//    //判断是否登录了
+//    NSUserDefaults *defaults1 = [NSUserDefaults standardUserDefaults];
+//    
+//    if ([[defaults1 objectForKey:@"login_status"] isEqualToString:@"ok"]) {
+//        
+//        HSTabBarController *tabBarCtrl = [[HSTabBarController alloc] init];
+//        
+//        tabBarCtrl.transitioningDelegate = self;
+//        
+//        [self presentViewController:tabBarCtrl animated:YES completion:^{
+//            
+//            tabBarCtrl.modalPresentationStyle = UIModalPresentationPageSheet;
+//        }];
+//    }
     if (!self.userBaseView) {
         self.userBaseView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, 150)];
         [self.view addSubview:self.userBaseView];
@@ -624,6 +768,7 @@
     }
     //监听输入内容，判断是否显示配置选项
     [self.userName addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate

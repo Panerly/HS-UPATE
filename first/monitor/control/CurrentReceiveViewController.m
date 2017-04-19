@@ -51,14 +51,6 @@ UINavigationControllerDelegate
     
     self.definesPresentationContext = YES;
     
-    if (self.isRealTimeOrHis == 0) {
-       self.title = @"实时抄见";
-    }else if (self.isRealTimeOrHis == 1){
-        self.title = @"历史抄见";
-    }else if (self.isRealTimeOrHis == 2){
-        self.title = @"水表修改";
-    }
-    
     self.automaticallyAdjustsScrollViewInsets = NO;
     
      if ([[[UIDevice currentDevice]systemVersion]floatValue] >= 7.0)
@@ -75,7 +67,6 @@ UINavigationControllerDelegate
     [self _createTabelView];
     
     self.dataArr = [NSMutableArray array];
-    
 }
 
 - (void)_getCode
@@ -90,7 +81,7 @@ UINavigationControllerDelegate
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.isRealTimeOrHis == 0) {
+    if ([self.title isEqualToString:@"实时抄见"]) {
         
         cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
         
@@ -99,7 +90,7 @@ UINavigationControllerDelegate
             cell.layer.transform = CATransform3DMakeScale(1, 1, 1);
         } completion:nil];
         
-    }else if (self.isRealTimeOrHis == 1){
+    }else if ([self.title isEqualToString:@"历史抄见"]){
         
         // 1. 配置CATransform3D的内容
         CATransform3D transform;
@@ -146,6 +137,8 @@ UINavigationControllerDelegate
     NSURLSessionConfiguration *config   = [NSURLSessionConfiguration defaultSessionConfiguration];
     
     AFHTTPSessionManager *manager       = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    
+    manager.requestSerializer.timeoutInterval = 10;
 
     NSDictionary *parameters = @{@"username":self.userNameLabel,
                                  @"password":self.passWordLabel,
@@ -186,6 +179,19 @@ UINavigationControllerDelegate
             [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
             
             [loading removeFromSuperview];
+        }else {
+            [loading removeFromSuperview];
+            [_tableView.mj_header endRefreshing];
+            UIAlertController *alertVC  = [UIAlertController alertControllerWithTitle:@"提示" message:@"暂无数据" preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *action       = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            
+            [alertVC addAction:action];
+            [self presentViewController:alertVC animated:YES completion:^{
+                
+            }];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -290,7 +296,7 @@ UINavigationControllerDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (self.isRealTimeOrHis == 0) {
+    if ([self.title isEqualToString:@"实时抄见"]) {
         
         DetailViewController *detailVC  = [[DetailViewController alloc] init];
         
@@ -301,7 +307,7 @@ UINavigationControllerDelegate
         [self.navigationController showViewController:detailVC sender:nil];
     }
     
-    if (self.isRealTimeOrHis == 1) {
+    if ([self.title isEqualToString:@"历史抄见"]) {
         
         HisDetailViewController *hisDetailVC = [[HisDetailViewController alloc] init];
         hisDetailVC.hidesBottomBarWhenPushed = YES;
@@ -309,7 +315,7 @@ UINavigationControllerDelegate
         [self.navigationController showViewController:hisDetailVC sender:nil];
     }
     
-    if (self.isRealTimeOrHis == 2) {
+    if ([self.title isEqualToString:@"水表修改"]) {
         
         MeterEditViewController *editDetailVC = [[MeterEditViewController alloc] init];
         editDetailVC.meter_id = (!self.searchController.active)?((CRModel *)_dataArr[indexPath.row]).meter_id : ((CRModel *)self.searchResults[indexPath.row]).meter_id;

@@ -88,7 +88,7 @@
                             grid.text = @"未抄";
                         }else {
                             
-                            grid.text = @"已超收";
+                            grid.text = @"已抄收";
                         }
                         break;
                     case 2:

@@ -40,6 +40,11 @@
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_server.jpg"]];
     
     _interactive = [[AMWaveTransition alloc] init];
+    
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]init];
+    backItem.title = @"返回";
+    backItem.tintColor = [UIColor colorWithRed:129/255.0 green:129/255.0 blue:129/255.0 alpha:1.0];
+    self.navigationItem.backBarButtonItem = backItem;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -148,7 +153,14 @@
             }
             if ([responseObject objectForKey:@"user_id"]) {
                 
-                weakSelf.meterNum.text = [NSString stringWithFormat:@"水表号:   %@", [responseObject objectForKey:@"user_id"]];
+                NSString *specialID = [[NSUserDefaults standardUserDefaults] objectForKey:@"collector_area"];
+                if ([specialID isEqualToString:@"32"]) {//长春水务令改
+                    
+                    weakSelf.meterNum.text = [NSString stringWithFormat:@"长水号:   %@", [responseObject objectForKey:@"user_id"]];
+                }else{
+                    
+                    weakSelf.meterNum.text = [NSString stringWithFormat:@"水表号:   %@", [responseObject objectForKey:@"user_id"]];
+                }
             }else{
                 weakSelf.meterNum.text = [NSString stringWithFormat:@"水表号:   N/A"];
             }

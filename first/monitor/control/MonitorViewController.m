@@ -751,12 +751,12 @@ UIWebViewDelegate
     switch (sender.tag) {//100-103大表监测   200-203小表监测
             
         case 100:
-            currentReceiveVC.isRealTimeOrHis = 0;
+            currentReceiveVC.title = @"实时抄见";
             [self.navigationController showViewController:currentReceiveVC sender:nil];
             
             break;
         case 101:
-            currentReceiveVC.isRealTimeOrHis = 1;
+            currentReceiveVC.title = @"历史抄见";
             [self.navigationController showViewController:currentReceiveVC sender:nil];
             
             break;
@@ -766,7 +766,7 @@ UIWebViewDelegate
             
             break;
         case 103:
-            currentReceiveVC.isRealTimeOrHis = 2;
+            currentReceiveVC.title = @"水表修改";
             [self.navigationController showViewController:currentReceiveVC sender:nil];
             
             break;

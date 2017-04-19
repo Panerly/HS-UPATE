@@ -29,6 +29,9 @@
 #import "JHChart.h"
 #import "LSStatusBarHUD.h"
 
+//登录接口
+#define logInApi @"http://www.hzsbgs.com:8000/Meter_Reading/S_Login_InfoServlet2"
+
 //天气key
 #define weatherAPIkey @"87aa67335bd8e0739a06cfccc6edecb5"
 //天气
@@ -41,12 +44,14 @@
 #define litMeterApi @"http://www.hzsbgs.com:8000"
 
 //大小表抄收监控数据
-#define mapCompleteApi @"http://192.168.3.175:8080/Meter_Reading/IosMapCompleteServlet"
+#define mapCompleteApi @"http://www.hzsbgs.com:8000/Meter_Reading/IosMapCompleteServlet"
 
-#define mapBigMeterCompleteApi @"http://192.168.3.175:8080/Meter_Reading/MapComplete_Servlet"
+#define mapBigMeterCompleteApi @"http://www.hzsbgs.com:8000/Meter_Reading/MapComplete_Servlet"
 
 //抄表数据上传接口
-#define uploadApi @"http://192.168.3.175:8080/Meter_Reading/Reading_nowServlet1";
+#define uploadApi @"http://www.hzsbgs.com:8000/Meter_Reading/Reading_nowServlet1";
+
+
 
 #define cancelTitle @"取消"
 

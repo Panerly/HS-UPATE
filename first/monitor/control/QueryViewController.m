@@ -10,6 +10,7 @@
 #import "QueryTableViewCell.h"
 #import "SCViewController.h"
 #import "QueryModel.h"
+#import "KSDatePicker.h"
 
 @interface QueryViewController ()<UITableViewDelegate,UITableViewDataSource,SCChartDataSource>
 
@@ -24,6 +25,15 @@
     NSInteger selectedIndex;
     UIPinchGestureRecognizer *pinch;
     UIScrollView *scrollView;
+    
+    UIButton *dateBtn;
+    UIButton *curveBtn;
+    UIButton *moreBtn;
+    
+    int nextPlus;
+    int previousPlus;
+    int nextMonth;
+    int previousMonth;
 }
 @end
 
@@ -56,13 +66,42 @@
     self.xArr       = [NSMutableArray array];
     self.yArr       = [NSMutableArray array];
     yFlowArr        = [NSMutableArray array];
+    
+    [self initMoreBtn];
+    
+    nextPlus     = 0;
+    previousPlus = 0;
+    nextMonth    = 0;
+    previousMonth= 0;
+}
+
+- (void)initMoreBtn {
+    
+    moreBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 10 - 50, PanScreenHeight - 10 - 50 - 49, 50, 50)];
+    [moreBtn setImage:[UIImage imageNamed:@"icon_more"] forState:UIControlStateNormal];
+    [moreBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:moreBtn];
+    curveBtn.hidden = YES;
+    
+    curveBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 10 - 50, PanScreenHeight - 10 * 2 - 50 * 2 - 49, 50, 50)];
+    [curveBtn setImage:[UIImage imageNamed:@"icon_curve"] forState:UIControlStateNormal];
+    [self.view insertSubview:curveBtn belowSubview:moreBtn];
+    [curveBtn addTarget:self action:@selector(curveAction) forControlEvents:UIControlEventTouchUpInside];
+    curveBtn.hidden = YES;
+    
+    dateBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 10 - 50, PanScreenHeight - 10 * 3 - 50 * 3 - 49, 50, 50)];
+    [dateBtn setImage:[UIImage imageNamed:@"icon_date"] forState:UIControlStateNormal];
+    [self.view insertSubview:dateBtn belowSubview:curveBtn];
+    [dateBtn addTarget:self action:@selector(dateAction) forControlEvents:UIControlEventTouchUpInside];
+    dateBtn.hidden = YES;
 }
 
 //分享item
 - (void)initShareBtn {
+    
     UIButton *rightButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,57,45)];
     rightButton.imageEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
-    [rightButton setImage:[UIImage imageNamed:@"share_icon.png"]forState:UIControlStateNormal];
+    [rightButton setImage:[UIImage imageNamed:@"icon_share@3x"]forState:UIControlStateNormal];
     rightButton.tintColor = [UIColor redColor];
     [rightButton addTarget:self action:@selector(selectRightAction:)forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
@@ -145,22 +184,21 @@
     NSDate* date1 = [[NSDate alloc] init];
     date1 = [date1 dateByAddingTimeInterval:-30*3600*24];
     _monthDateTime = [formatter stringFromDate:date1];
-
 }
 
 //设值
 - (void)_setValue
 {
-    defaults = [NSUserDefaults standardUserDefaults];
+    defaults      = [NSUserDefaults standardUserDefaults];
     self.userName = [defaults objectForKey:@"userName"];
     self.passWord = [defaults objectForKey:@"passWord"];
     self.ip = [defaults objectForKey:@"ip"];
     self.db = [defaults objectForKey:@"db"];
     
-    self.manageMeterNum.text = [NSString stringWithFormat:@"表编号: %@",self.meter_id];
-    self.meterType.text = [NSString stringWithFormat:@"表类型: %@",self.meterTypeValue];
+    self.manageMeterNum.text    = [NSString stringWithFormat:@"表编号: %@",self.meter_id];
+    self.meterType.text         = [NSString stringWithFormat:@"表类型: %@",self.meterTypeValue];
     self.communicationType.text = [NSString stringWithFormat:@"口径: %@",self.communicationTypeValue];
-    self.installAddr.text = [NSString stringWithFormat:@"安装地址: %@",self.installAddrValue];
+    self.installAddr.text       = [NSString stringWithFormat:@"安装地址: %@",self.installAddrValue];
 }
 
 //设置代理
@@ -184,7 +222,9 @@
 
     scrollView.contentSize = CGSizeMake(PanScreenWidth*2, 150);
     [_curveView addSubview:scrollView];
+    
     [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        
         make.left.equalTo(_curveView.mas_left).with.offset(10);
         make.top.equalTo(_curveView.mas_top);
         make.right.equalTo(_curveView.right);
@@ -201,6 +241,7 @@ static CGFloat i = 1.0;
 - (void)scaleAction:(UIPinchGestureRecognizer*)pinchs
 {
     if (i == 0) {
+        
         i = 1.0f;
     } else {
      
@@ -222,9 +263,13 @@ static CGFloat i = 1.0;
         }
     }
     NSLog(@"缩放倍率：%f",i);
+    
     scrollView.contentSize = CGSizeMake(PanScreenWidth*i, 150);
+    
     [chartView removeFromSuperview];
+    
     chartView = [[SCChart alloc] initwithSCChartDataFrame:CGRectMake(0, 0,  PanScreenWidth*i, 150) withSource:self withStyle:SCChartLineStyle];
+    
     [chartView showInView:scrollView];
 }
 
@@ -294,31 +339,187 @@ static CGFloat i = 1.0;
     return YES;
 }
 
+static bool isClicked;
 //详情视图
-- (IBAction)curveAction:(id)sender {
+- (void)moreAction {
     
-    SCViewController *curveVC = [[SCViewController alloc] init];
-    
-    curveVC.xArr= _xArr;
-    
-    if (selectedIndex == 0) {
-        curveVC.yArr = yFlowArr;
-    }
-    else if (selectedIndex == 1) {
-        curveVC.xArr = _xArr;
-        curveVC.yArr = _yArr;
-    }
-    else if (selectedIndex == 2) {
+    if (isClicked == NO && selectedIndex == 0) {
         
-        curveVC.yArr = _yArr;
+        dateBtn.hidden  = NO;
+        curveBtn.hidden = NO;
+        
+        dateBtn.transform = CGAffineTransformMakeScale(.01, .01);
+        dateBtn.transform = CGAffineTransformMakeTranslation(0, 10 * 2 + 50 + 49);
+        curveBtn.transform = CGAffineTransformMakeScale(.01, .01);
+        curveBtn.transform = CGAffineTransformMakeTranslation(0, 10 + 49);
+        
+        
+        [UIView animateWithDuration:.3 animations:^{
+            dateBtn.transform = CGAffineTransformIdentity;
+        }];
+        [UIView animateWithDuration:.5 animations:^{
+            curveBtn.transform = CGAffineTransformIdentity;
+        }];
+        
+    }else {
+        
+        [self hideBtn];
     }
-    [self.navigationController showViewController:curveVC sender:nil];
+    isClicked = !isClicked;
+    
+}
+- (void)curveAction {
+    
+        SCViewController *curveVC = [[SCViewController alloc] init];
+    
+        curveVC.xArr= _xArr;
+    
+        if (selectedIndex == 0) {
+            curveVC.yArr = yFlowArr;
+        }
+        else if (selectedIndex == 1) {
+            curveVC.xArr = _xArr;
+            curveVC.yArr = _yArr;
+        }
+        else if (selectedIndex == 2) {
+    
+            curveVC.yArr = _yArr;
+        }
+        [self.navigationController showViewController:curveVC sender:nil];
+}
+- (void)dateAction {
+    
+    KSDatePicker* picker = [[KSDatePicker alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 40, 300)];
+    
+    picker.appearance.radius = 5;
+    
+    //设置回调
+    picker.appearance.resultCallBack = ^void(KSDatePicker* datePicker,NSDate* currentDate,KSDatePickerButtonType buttonType){
+        
+        if (buttonType == KSDatePickerButtonCommit) {
+            
+            NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyy-MM-dd"];
+            [self requestDayData:[formatter stringFromDate:currentDate] :[formatter stringFromDate:currentDate]];
+        }
+    };
+    // 显示
+    [picker show];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     if (self.view.window == nil && [self isViewLoaded]) {
         self.view = nil;
+    }
+}
+- (IBAction)previousData:(UIButton *)sender {
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *comps = nil;
+    comps = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
+    NSDateComponents *adcomps = [[NSDateComponents alloc] init];
+    NSDateComponents *adcomps2 = [[NSDateComponents alloc] init];
+    switch (selectedIndex) {
+        case 0:
+            
+            previousPlus--;
+            [adcomps setYear:0];
+            [adcomps setMonth:0];
+            [adcomps setDay:previousPlus + nextPlus];
+            break;
+        case 1:
+            previousPlus--;
+            [adcomps setYear:0];
+            [adcomps setMonth:0];
+            [adcomps setDay:previousPlus + nextPlus];
+            break;
+        case 2:
+            previousMonth--;
+            [adcomps setYear:0];
+            [adcomps setMonth:previousMonth + nextMonth];
+            [adcomps2 setMonth:previousMonth + nextMonth + 1];
+            [adcomps setDay:0];
+            break;
+            
+        default:
+            break;
+    }
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *newdate = [calendar dateByAddingComponents:adcomps toDate:[NSDate date] options:0];
+    NSString *newdateStr = [formatter stringFromDate:newdate];
+    NSDate *newdate2 = [calendar dateByAddingComponents:adcomps2 toDate:[NSDate date] options:0];
+    NSString *newdateStr2 = [formatter stringFromDate:newdate2];
+    switch (selectedIndex) {
+        case 0:
+            [self requestDayData:newdateStr :newdateStr];
+            break;
+        case 1:
+            [self requestHourData:newdateStr];
+            break;
+        case 2:
+            [self requestData:newdateStr :newdateStr2];
+            break;
+            
+        default:
+            break;
+    }
+}
+- (IBAction)nextData:(UIButton *)sender {
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    
+    NSDateComponents *comps = nil;
+    comps = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
+    NSDateComponents *adcomps = [[NSDateComponents alloc] init];
+    NSDateComponents *adcomps2 = [[NSDateComponents alloc] init];
+    switch (selectedIndex) {
+        case 0:
+            
+            nextPlus++;
+            [adcomps setYear:0];
+            [adcomps setMonth:0];
+            [adcomps setDay:previousPlus + nextPlus];
+            break;
+        case 1:
+            
+            nextPlus++;
+            [adcomps setYear:0];
+            [adcomps setMonth:0];
+            [adcomps setDay:previousPlus + nextPlus];
+            break;
+        case 2:
+            
+            nextMonth++;
+            [adcomps setYear:0];
+            [adcomps setMonth:nextMonth + previousMonth];
+            [adcomps2 setMonth:nextMonth + previousMonth + 1];
+            [adcomps setDay:0];
+            break;
+            
+        default:
+            break;
+    }
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *newdate = [calendar dateByAddingComponents:adcomps toDate:[NSDate date] options:0];
+    NSString *newdateStr = [formatter stringFromDate:newdate];
+    
+    NSDate *newdate2 = [calendar dateByAddingComponents:adcomps2 toDate:[NSDate date] options:0];
+    NSString *newdateStr2 = [formatter stringFromDate:newdate2];
+    switch (selectedIndex) {
+        case 0:
+            [self requestDayData:newdateStr :newdateStr];
+            break;
+        case 1:
+            [self requestHourData:newdateStr];
+            break;
+        case 2:
+            [self requestData:newdateStr :newdateStr2];
+            break;
+            
+        default:
+            break;
     }
 }
 
@@ -328,24 +529,79 @@ static CGFloat i = 1.0;
     selectedIndex = sender.selectedSegmentIndex;
     
     switch (sender.selectedSegmentIndex) {
+            
         case 0://时流量查询（每十五分钟）
+            self.previousLabel.text = @"前一天";
+            self.nextLabel.text = @"后一天";
+            curveBtn.hidden = YES;
+            dateBtn.hidden = YES;
+            [moreBtn setImage:[UIImage imageNamed:@"icon_more"] forState:UIControlStateNormal];
+            [moreBtn removeTarget:self action:@selector(curveAction) forControlEvents:UIControlEventTouchUpInside];
+            [moreBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
             [self requestDayData:_dayDateTime :_dayDateTime];
             break;
             
         case 1://日流量查询(每小时流量)
+            self.previousLabel.text = @"前一天";
+            self.nextLabel.text = @"后一天";
+            if (curveBtn.hidden == NO) {
+                
+                [self hideBtn];
+            }else {
+                dateBtn.hidden = YES;
+                curveBtn.hidden = YES;
+            }
+            [moreBtn setImage:[UIImage imageNamed:@"icon_curve"] forState:UIControlStateNormal];
+            [moreBtn removeTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
+            [moreBtn addTarget:self action:@selector(curveAction) forControlEvents:UIControlEventTouchUpInside];
             [self requestHourData:_dayDateTime];
+            
             break;
         case 2://月流量查询（每天）
+            self.previousLabel.text = @"上个月";
+            self.nextLabel.text = @"下个月";
+            if (curveBtn.hidden == NO) {
+                
+                [self hideBtn];
+            }else {
+                dateBtn.hidden = YES;
+                curveBtn.hidden = YES;
+            }
+            [moreBtn setImage:[UIImage imageNamed:@"icon_curve"] forState:UIControlStateNormal];
+            [moreBtn removeTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
+            [moreBtn addTarget:self action:@selector(curveAction) forControlEvents:UIControlEventTouchUpInside];
+            [moreBtn setImage:[UIImage imageNamed:@"icon_curve"] forState:UIControlStateNormal];
             [self requestData:_monthDateTime :_dayDateTime];
         default:
             break;
     }
     
 }
+- (void)hideBtn {
+    
+    [UIView animateWithDuration:.5 animations:^{
+        
+        dateBtn.transform = CGAffineTransformMakeScale(.5, .5);
+        dateBtn.transform = CGAffineTransformMakeTranslation(0, 10 * 2 + 50 + 49);
+    } completion:^(BOOL finished) {
+        
+        dateBtn.hidden = YES;
+        
+    }];
+    [UIView animateWithDuration:.3 animations:^{
+        
+        curveBtn.transform = CGAffineTransformMakeScale(.5, .5);
+        curveBtn.transform = CGAffineTransformMakeTranslation(0, 10 + 49);
+    } completion:^(BOOL finished) {
+        
+        curveBtn.hidden = YES;
+    }];
+}
 
 //请求一天每小时水表抄收数据
 - (void)requestHourData:(NSString *)date {
-    NSLog(@"一天每小时水表抄收数据 %@",date);
+
+    [SVProgressHUD setForegroundColor:[UIColor blackColor]];
     [SVProgressHUD showWithStatus:@"加载中" maskType:SVProgressHUDMaskTypeGradient];
     
     NSString *url = [NSString stringWithFormat:@"http://%@/waterweb/DateServlet",self.ip];
@@ -513,6 +769,8 @@ static CGFloat i = 1.0;
 //查询时流量
 - (void)requestDayData:(NSString *)fromDate :(NSString *)toDate
 {
+    [SVProgressHUD setForegroundColor:[UIColor blackColor]];
+    [SVProgressHUD showWithStatus:@"加载中" maskType:SVProgressHUDMaskTypeGradient];
     defaults = [NSUserDefaults standardUserDefaults];
     self.userName = [defaults objectForKey:@"userName"];
     self.passWord = [defaults objectForKey:@"passWord"];

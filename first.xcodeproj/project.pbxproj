@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		450103021CF2AA560070E38A /* HomeSB.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 450103011CF2AA560070E38A /* HomeSB.storyboard */; };
 		450103041CF2B6A70070E38A /* bg_weater2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 450103031CF2B6A70070E38A /* bg_weater2.jpg */; };
 		450203A01D6944BB001CF0BB /* UIView+YALConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502039C1D6944BB001CF0BB /* UIView+YALConstraints.m */; };
 		450203A11D6944BB001CF0BB /* YALContextMenuTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502039F1D6944BB001CF0BB /* YALContextMenuTableView.m */; };
@@ -31,6 +30,67 @@
 		45090A7C1D66ED7100DA9456 /* icon_annotation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45090A7B1D66ED7100DA9456 /* icon_annotation@2x.png */; };
 		45090A7E1D66F47000DA9456 /* icon_direction@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45090A7D1D66F47000DA9456 /* icon_direction@2x.png */; };
 		45090A801D66F7A800DA9456 /* icon_loca@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45090A7F1D66F7A800DA9456 /* icon_loca@2x.png */; };
+		450BA6A31E8CA3F400CDA23E /* 中雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6811E8CA3F400CDA23E /* 中雨.png */; };
+		450BA6A41E8CA3F400CDA23E /* 中雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6821E8CA3F400CDA23E /* 中雪.png */; };
+		450BA6A51E8CA3F400CDA23E /* 中雪转晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6831E8CA3F400CDA23E /* 中雪转晴.png */; };
+		450BA6A61E8CA3F400CDA23E /* 多云.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6841E8CA3F400CDA23E /* 多云.png */; };
+		450BA6A71E8CA3F400CDA23E /* 多云转晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6851E8CA3F400CDA23E /* 多云转晴.png */; };
+		450BA6A81E8CA3F400CDA23E /* 大暴雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6861E8CA3F400CDA23E /* 大暴雨.png */; };
+		450BA6A91E8CA3F400CDA23E /* 大雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6871E8CA3F400CDA23E /* 大雨.png */; };
+		450BA6AA1E8CA3F400CDA23E /* 大雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6881E8CA3F400CDA23E /* 大雪.png */; };
+		450BA6AB1E8CA3F400CDA23E /* 大雪转晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6891E8CA3F400CDA23E /* 大雪转晴.png */; };
+		450BA6AC1E8CA3F400CDA23E /* 大风.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA68A1E8CA3F400CDA23E /* 大风.png */; };
+		450BA6AD1E8CA3F400CDA23E /* 小雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA68B1E8CA3F400CDA23E /* 小雨.png */; };
+		450BA6AE1E8CA3F400CDA23E /* 小雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA68C1E8CA3F400CDA23E /* 小雪.png */; };
+		450BA6AF1E8CA3F400CDA23E /* 小雪转晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA68D1E8CA3F400CDA23E /* 小雪转晴.png */; };
+		450BA6B01E8CA3F400CDA23E /* 少云.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA68E1E8CA3F400CDA23E /* 少云.png */; };
+		450BA6B11E8CA3F500CDA23E /* 平静.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA68F1E8CA3F400CDA23E /* 平静.png */; };
+		450BA6B21E8CA3F500CDA23E /* 微风.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6901E8CA3F400CDA23E /* 微风.png */; };
+		450BA6B31E8CA3F500CDA23E /* 晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6911E8CA3F400CDA23E /* 晴.png */; };
+		450BA6B41E8CA3F500CDA23E /* 晴间多云.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6921E8CA3F400CDA23E /* 晴间多云.png */; };
+		450BA6B51E8CA3F500CDA23E /* 暴雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6931E8CA3F400CDA23E /* 暴雨.png */; };
+		450BA6B61E8CA3F500CDA23E /* 暴雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6941E8CA3F400CDA23E /* 暴雪.png */; };
+		450BA6B71E8CA3F500CDA23E /* 有风.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6951E8CA3F400CDA23E /* 有风.png */; };
+		450BA6B81E8CA3F500CDA23E /* 未知.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6961E8CA3F400CDA23E /* 未知.png */; };
+		450BA6B91E8CA3F500CDA23E /* 极端降雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6971E8CA3F400CDA23E /* 极端降雨.png */; };
+		450BA6BA1E8CA3F500CDA23E /* 沙尘暴.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6981E8CA3F400CDA23E /* 沙尘暴.png */; };
+		450BA6BB1E8CA3F500CDA23E /* 浮尘.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6991E8CA3F400CDA23E /* 浮尘.png */; };
+		450BA6BC1E8CA3F500CDA23E /* 特大暴雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA69A1E8CA3F400CDA23E /* 特大暴雨.png */; };
+		450BA6BD1E8CA3F500CDA23E /* 阴.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA69B1E8CA3F400CDA23E /* 阴.png */; };
+		450BA6BF1E8CA3F500CDA23E /* 雨夹雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA69D1E8CA3F400CDA23E /* 雨夹雪.png */; };
+		450BA6C01E8CA3F500CDA23E /* 雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA69E1E8CA3F400CDA23E /* 雪.png */; };
+		450BA6C11E8CA3F500CDA23E /* 雷阵雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA69F1E8CA3F400CDA23E /* 雷阵雨.png */; };
+		450BA6C21E8CA3F500CDA23E /* 雾.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6A01E8CA3F400CDA23E /* 雾.png */; };
+		450BA6C31E8CA3F500CDA23E /* 霾.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6A11E8CA3F400CDA23E /* 霾.png */; };
+		450BA6C41E8CA3F500CDA23E /* 龙卷风.png in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6A21E8CA3F400CDA23E /* 龙卷风.png */; };
+		450BA6E21E8E325D00CDA23E /* 中雨.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6C61E8E325D00CDA23E /* 中雨.gif */; };
+		450BA6E31E8E325D00CDA23E /* 中雪.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6C71E8E325D00CDA23E /* 中雪.gif */; };
+		450BA6E41E8E325D00CDA23E /* 冻雨.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6C81E8E325D00CDA23E /* 冻雨.gif */; };
+		450BA6E51E8E325D00CDA23E /* 多云.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6C91E8E325D00CDA23E /* 多云.gif */; };
+		450BA6E61E8E325D00CDA23E /* 多云间晴.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6CA1E8E325D00CDA23E /* 多云间晴.gif */; };
+		450BA6E71E8E325D00CDA23E /* 大暴雨.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6CB1E8E325D00CDA23E /* 大暴雨.gif */; };
+		450BA6E81E8E325D00CDA23E /* 大雨.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6CC1E8E325D00CDA23E /* 大雨.gif */; };
+		450BA6E91E8E325D00CDA23E /* 大雨转晴.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6CD1E8E325D00CDA23E /* 大雨转晴.gif */; };
+		450BA6EA1E8E325D00CDA23E /* 大雪.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6CE1E8E325D00CDA23E /* 大雪.gif */; };
+		450BA6EB1E8E325D00CDA23E /* 小雨.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6CF1E8E325D00CDA23E /* 小雨.gif */; };
+		450BA6EC1E8E325D00CDA23E /* 小雨转晴.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6D01E8E325D00CDA23E /* 小雨转晴.gif */; };
+		450BA6ED1E8E325D00CDA23E /* 小雪.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6D11E8E325D00CDA23E /* 小雪.gif */; };
+		450BA6EE1E8E325D00CDA23E /* 少云.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6D21E8E325D00CDA23E /* 少云.gif */; };
+		450BA6EF1E8E325D00CDA23E /* 晴天.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6D31E8E325D00CDA23E /* 晴天.gif */; };
+		450BA6F01E8E325D00CDA23E /* 晴间多云.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6D41E8E325D00CDA23E /* 晴间多云.gif */; };
+		450BA6F11E8E325D00CDA23E /* 暴雨.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6D51E8E325D00CDA23E /* 暴雨.gif */; };
+		450BA6F21E8E325D00CDA23E /* 暴雨转晴.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6D61E8E325D00CDA23E /* 暴雨转晴.gif */; };
+		450BA6F31E8E325D00CDA23E /* 未知.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6D71E8E325D00CDA23E /* 未知.gif */; };
+		450BA6F41E8E325D00CDA23E /* 极端降雨.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6D81E8E325D00CDA23E /* 极端降雨.gif */; };
+		450BA6F51E8E325D00CDA23E /* 毛毛雨.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6D91E8E325D00CDA23E /* 毛毛雨.gif */; };
+		450BA6F61E8E325D00CDA23E /* 沙尘暴.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6DA1E8E325D00CDA23E /* 沙尘暴.gif */; };
+		450BA6F71E8E325D00CDA23E /* 特大暴雨.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6DB1E8E325D00CDA23E /* 特大暴雨.gif */; };
+		450BA6F81E8E325D00CDA23E /* 阴.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6DC1E8E325D00CDA23E /* 阴.gif */; };
+		450BA6F91E8E325D00CDA23E /* 阵雨.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6DD1E8E325D00CDA23E /* 阵雨.gif */; };
+		450BA6FA1E8E325D00CDA23E /* 雷阵雨.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6DE1E8E325D00CDA23E /* 雷阵雨.gif */; };
+		450BA6FB1E8E325D00CDA23E /* 雷阵雨加冰雹.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6DF1E8E325D00CDA23E /* 雷阵雨加冰雹.gif */; };
+		450BA6FC1E8E325D00CDA23E /* 霾.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6E01E8E325D00CDA23E /* 霾.gif */; };
+		450BA6FD1E8E325D00CDA23E /* 风.gif in Resources */ = {isa = PBXBuildFile; fileRef = 450BA6E11E8E325D00CDA23E /* 风.gif */; };
 		450D3CB71DD0690B0024E9AA /* CommProTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 450D3CB51DD0690B0024E9AA /* CommProTableViewCell.m */; };
 		450D3CB81DD0690B0024E9AA /* CommProTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450D3CB61DD0690B0024E9AA /* CommProTableViewCell.xib */; };
 		450D58AF1CEDB354009B8ED9 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 450D58AE1CEDB354009B8ED9 /* Login.storyboard */; };
@@ -107,7 +167,6 @@
 		451B648C1E88DD0800CED784 /* night_sunny_big_star.png in Resources */ = {isa = PBXBuildFile; fileRef = 451B64341E88DD0800CED784 /* night_sunny_big_star.png */; };
 		451C25821D4992F10076AB93 /* WZXPopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 451C25811D4992F10076AB93 /* WZXPopViewController.m */; };
 		451C258D1D499D080076AB93 /* bg_晴.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 451C258C1D499D080076AB93 /* bg_晴.jpg */; };
-		451C258F1D49AA660076AB93 /* 雨夹雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 451C258E1D49AA660076AB93 /* 雨夹雪.png */; };
 		451C25911D49ABE30076AB93 /* light@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 451C25901D49ABE30076AB93 /* light@3x.png */; };
 		451DFFEB1D13857E003DCDDD /* weatherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 451DFFEA1D13857E003DCDDD /* weatherModel.m */; };
 		451DFFED1D13AECA003DCDDD /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451DFFEC1D13AECA003DCDDD /* CoreLocation.framework */; };
@@ -182,7 +241,6 @@
 		454809281D41F28800FB9D64 /* bg_大雨.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4548091C1D41F28800FB9D64 /* bg_大雨.jpg */; };
 		454809291D41F28800FB9D64 /* bg_沙尘暴.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4548091D1D41F28800FB9D64 /* bg_沙尘暴.jpg */; };
 		4548092A1D41F28800FB9D64 /* bg_雪.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4548091E1D41F28800FB9D64 /* bg_雪.jpg */; };
-		4548092D1D41FB3600FB9D64 /* 小到中雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 4548092C1D41FB3600FB9D64 /* 小到中雨.png */; };
 		4548092F1D41FDE100FB9D64 /* bg_小到中雨.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4548092E1D41FDE100FB9D64 /* bg_小到中雨.jpg */; };
 		454936481D615C9D004EC4E0 /* LitMeterListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 454936471D615C9D004EC4E0 /* LitMeterListViewController.m */; };
 		4549364B1D615FF9004EC4E0 /* icon_drop_down@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 454936491D615FF9004EC4E0 /* icon_drop_down@3x.png */; };
@@ -238,20 +296,6 @@
 		45771FA71D0E7CFD006BF7F3 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 45771FA21D0E7CFD006BF7F3 /* City.m */; };
 		45771FA81D0E7CFD006BF7F3 /* Province.m in Sources */ = {isa = PBXBuildFile; fileRef = 45771FA41D0E7CFD006BF7F3 /* Province.m */; };
 		45771FA91D0E7CFD006BF7F3 /* WeatherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 45771FA61D0E7CFD006BF7F3 /* WeatherModel.m */; };
-		45771FC11D0E7DD9006BF7F3 /* 晴间多云.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FAE1D0E7DD9006BF7F3 /* 晴间多云.png */; };
-		45771FC21D0E7DD9006BF7F3 /* 多云转晴1.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FAF1D0E7DD9006BF7F3 /* 多云转晴1.png */; };
-		45771FC31D0E7DD9006BF7F3 /* weather-forecast-14.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FB01D0E7DD9006BF7F3 /* weather-forecast-14.png */; };
-		45771FC41D0E7DD9006BF7F3 /* 中雨1.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FB11D0E7DD9006BF7F3 /* 中雨1.png */; };
-		45771FC51D0E7DD9006BF7F3 /* 多云1.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FB21D0E7DD9006BF7F3 /* 多云1.png */; };
-		45771FC61D0E7DD9006BF7F3 /* 大雨1.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FB31D0E7DD9006BF7F3 /* 大雨1.png */; };
-		45771FC71D0E7DD9006BF7F3 /* 小雨1.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FB41D0E7DD9006BF7F3 /* 小雨1.png */; };
-		45771FC81D0E7DD9006BF7F3 /* 小雪1.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FB51D0E7DD9006BF7F3 /* 小雪1.png */; };
-		45771FC91D0E7DD9006BF7F3 /* 晴1.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FB61D0E7DD9006BF7F3 /* 晴1.png */; };
-		45771FCA1D0E7DD9006BF7F3 /* 阴1.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FB71D0E7DD9006BF7F3 /* 阴1.png */; };
-		45771FCB1D0E7DD9006BF7F3 /* 阵雨1.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FB81D0E7DD9006BF7F3 /* 阵雨1.png */; };
-		45771FCC1D0E7DD9006BF7F3 /* 雪1.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FB91D0E7DD9006BF7F3 /* 雪1.png */; };
-		45771FCE1D0E7DD9006BF7F3 /* 雷阵雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FBB1D0E7DD9006BF7F3 /* 雷阵雨.png */; };
-		45771FCF1D0E7DD9006BF7F3 /* 雹.png in Resources */ = {isa = PBXBuildFile; fileRef = 45771FBC1D0E7DD9006BF7F3 /* 雹.png */; };
 		457853EE1DEFFAB600F69A82 /* SeniorlevelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 457853EC1DEFFAB600F69A82 /* SeniorlevelViewController.m */; };
 		457949631D67E4CB0064D959 /* icon_layer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 457949621D67E4CB0064D959 /* icon_layer@2x.png */; };
 		457949681D67F58F0064D959 /* icon_pin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 457949671D67F58F0064D959 /* icon_pin@2x.png */; };
@@ -271,28 +315,7 @@
 		45812B8B1E78ED1B001B8B05 /* NewHome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45812B8A1E78ED1B001B8B05 /* NewHome.storyboard */; };
 		45812B8E1E78F560001B8B05 /* NewHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45812B8D1E78F560001B8B05 /* NewHomeViewController.m */; };
 		45812B921E791982001B8B05 /* FTPopOverMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 45812B911E791982001B8B05 /* FTPopOverMenu.m */; };
-		45812B941E792001001B8B05 /* 多云.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812B931E792001001B8B05 /* 多云.png */; };
-		45812B961E7920FB001B8B05 /* 小雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812B951E7920FB001B8B05 /* 小雨.png */; };
-		45812B981E792160001B8B05 /* 阴.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812B971E792160001B8B05 /* 阴.png */; };
-		45812B9A1E79218A001B8B05 /* 晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812B991E79218A001B8B05 /* 晴.png */; };
-		45812B9C1E7921FD001B8B05 /* 多云转晴.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812B9B1E7921FD001B8B05 /* 多云转晴.png */; };
-		45812B9E1E792245001B8B05 /* 中雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812B9D1E792245001B8B05 /* 中雨.png */; };
-		45812BA01E792270001B8B05 /* 大雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812B9F1E792270001B8B05 /* 大雨.png */; };
-		45812BA21E79229D001B8B05 /* 小雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BA11E79229D001B8B05 /* 小雪.png */; };
-		45812BA41E792330001B8B05 /* 少云.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BA31E792330001B8B05 /* 少云.png */; };
-		45812BA61E792365001B8B05 /* 有风.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BA51E792365001B8B05 /* 有风.png */; };
-		45812BA81E792394001B8B05 /* 平静.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BA71E792394001B8B05 /* 平静.png */; };
-		45812BAA1E7923C6001B8B05 /* 微风.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BA91E7923C6001B8B05 /* 微风.png */; };
-		45812BAC1E7923FB001B8B05 /* 阵雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BAB1E7923FB001B8B05 /* 阵雪.png */; };
-		45812BAE1E79242F001B8B05 /* 暴雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BAD1E79242F001B8B05 /* 暴雪.png */; };
-		45812BB01E792456001B8B05 /* 雪.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BAF1E792456001B8B05 /* 雪.png */; };
-		45812BB21E792486001B8B05 /* 特大暴雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BB11E792486001B8B05 /* 特大暴雨.png */; };
-		45812BB41E7924C1001B8B05 /* 浮尘.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BB31E7924C1001B8B05 /* 浮尘.png */; };
-		45812BB61E792513001B8B05 /* 霾.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BB51E792513001B8B05 /* 霾.png */; };
-		45812BB81E79254A001B8B05 /* 极端降雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BB71E79254A001B8B05 /* 极端降雨.png */; };
-		45812BBA1E7A1856001B8B05 /* 阵雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BB91E7A1856001B8B05 /* 阵雨.png */; };
 		45812BBC1E7A5A80001B8B05 /* icon_home_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 45812BBB1E7A5A7F001B8B05 /* icon_home_bg.png */; };
-		4585C8FC1E5BD8C500AD894F /* 暴雪1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4585C8FB1E5BD8C500AD894F /* 暴雪1.png */; };
 		4588272A1DB0BD14008103F9 /* LitMeterDetailDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 458827291DB0BD14008103F9 /* LitMeterDetailDataModel.m */; };
 		458A74E01D5AD13D00A53D8C /* MeterInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 458A74DF1D5AD13D00A53D8C /* MeterInfoModel.m */; };
 		458A74E91D5ADEEA00A53D8C /* MeterInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 458A74E71D5ADEEA00A53D8C /* MeterInfoTableViewCell.m */; };
@@ -398,7 +421,6 @@
 		45934EC81E124A10006694E3 /* NSIndexPath+LMReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 45934EC31E124A10006694E3 /* NSIndexPath+LMReport.m */; };
 		45978D631CED7E6400BF3C0E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 45978D621CED7E6400BF3C0E /* main.m */; };
 		45978D6C1CED7E6400BF3C0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45978D6A1CED7E6400BF3C0E /* Main.storyboard */; };
-		45978D6E1CED7E6400BF3C0E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45978D6D1CED7E6400BF3C0E /* Assets.xcassets */; };
 		45978D711CED7E6400BF3C0E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45978D6F1CED7E6400BF3C0E /* LaunchScreen.storyboard */; };
 		45978D7C1CED7E6400BF3C0E /* firstTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 45978D7B1CED7E6400BF3C0E /* firstTests.m */; };
 		45978D871CED7E6400BF3C0E /* firstUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 45978D861CED7E6400BF3C0E /* firstUITests.m */; };
@@ -420,6 +442,7 @@
 		459E7CA01DE6D6600037D607 /* icon_qrcode@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 459E7C9F1DE6D6600037D607 /* icon_qrcode@3x.png */; };
 		45A117131DE29F5400C9A431 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 45A117121DE29F5400C9A431 /* logo.png */; };
 		45A117151DE29F5B00C9A431 /* lunchImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 45A117141DE29F5B00C9A431 /* lunchImage.png */; };
+		45A147901EA70E4400F8D481 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45A1478F1EA70E4400F8D481 /* Assets.xcassets */; };
 		45A215C41D372DD2007B4765 /* FlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A215C31D372DD2007B4765 /* FlowLayout.m */; };
 		45A24A551DBD9FA6009C1CF3 /* icon_his_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45A24A541DBD9FA6009C1CF3 /* icon_his_btn@2x.png */; };
 		45A520BD1DB60160006BD05E /* CityData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45A520B11DB60160006BD05E /* CityData.plist */; };
@@ -457,6 +480,7 @@
 		45C791EB1DA888BA00078786 /* SDCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C791E21DA888BA00078786 /* SDCollectionViewCell.m */; };
 		45C791EC1DA888BA00078786 /* SDCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C791E41DA888BA00078786 /* SDCycleScrollView.m */; };
 		45C791ED1DA888BA00078786 /* UIView+SDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C791E61DA888BA00078786 /* UIView+SDExtension.m */; };
+		45CBA5CF1EA45C5100CE28C1 /* 阵雨.png in Resources */ = {isa = PBXBuildFile; fileRef = 45CBA5CE1EA45C5100CE28C1 /* 阵雨.png */; };
 		45D44BAC1D1CC4B600024E1B /* HisDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D44BAA1D1CC4B600024E1B /* HisDetailViewController.m */; };
 		45D44BAD1D1CC4B600024E1B /* HisDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D44BAB1D1CC4B600024E1B /* HisDetailViewController.xib */; };
 		45D44BB11D1CC80800024E1B /* HisDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D44BAF1D1CC80800024E1B /* HisDetailTableViewCell.m */; };
@@ -490,7 +514,6 @@
 		45DC9C9B1DD9626A00222D9E /* icon_meter_stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DC9C941DD9626A00222D9E /* icon_meter_stop.png */; };
 		45DC9C9C1DD9626A00222D9E /* icon_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DC9C951DD9626A00222D9E /* icon_normal.png */; };
 		45DC9C9D1DD9626A00222D9E /* icon_reversal.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DC9C961DD9626A00222D9E /* icon_reversal.png */; };
-		45DCA3081CEEDEF500E42468 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DCA3051CEEDEF500E42468 /* HomeViewController.m */; };
 		45DCA31A1CEEF1E600E42468 /* MeteringViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DCA3191CEEF1E600E42468 /* MeteringViewController.m */; };
 		45DCA31D1CEEF20400E42468 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DCA31C1CEEF20400E42468 /* SettingViewController.m */; };
 		45DCA3201CEEF22A00E42468 /* ServerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DCA31F1CEEF22A00E42468 /* ServerViewController.m */; };
@@ -585,7 +608,6 @@
 
 /* Begin PBXFileReference section */
 		450102FF1CF2A7AD0070E38A /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		450103011CF2AA560070E38A /* HomeSB.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HomeSB.storyboard; sourceTree = "<group>"; };
 		450103031CF2B6A70070E38A /* bg_weater2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg_weater2.jpg; sourceTree = "<group>"; };
 		4502039B1D6944BB001CF0BB /* UIView+YALConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YALConstraints.h"; sourceTree = "<group>"; };
 		4502039C1D6944BB001CF0BB /* UIView+YALConstraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+YALConstraints.m"; sourceTree = "<group>"; };
@@ -616,6 +638,67 @@
 		45090A7B1D66ED7100DA9456 /* icon_annotation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_annotation@2x.png"; sourceTree = "<group>"; };
 		45090A7D1D66F47000DA9456 /* icon_direction@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_direction@2x.png"; sourceTree = "<group>"; };
 		45090A7F1D66F7A800DA9456 /* icon_loca@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_loca@2x.png"; sourceTree = "<group>"; };
+		450BA6811E8CA3F400CDA23E /* 中雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "中雨.png"; sourceTree = "<group>"; };
+		450BA6821E8CA3F400CDA23E /* 中雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "中雪.png"; sourceTree = "<group>"; };
+		450BA6831E8CA3F400CDA23E /* 中雪转晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "中雪转晴.png"; sourceTree = "<group>"; };
+		450BA6841E8CA3F400CDA23E /* 多云.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "多云.png"; sourceTree = "<group>"; };
+		450BA6851E8CA3F400CDA23E /* 多云转晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "多云转晴.png"; sourceTree = "<group>"; };
+		450BA6861E8CA3F400CDA23E /* 大暴雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "大暴雨.png"; sourceTree = "<group>"; };
+		450BA6871E8CA3F400CDA23E /* 大雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "大雨.png"; sourceTree = "<group>"; };
+		450BA6881E8CA3F400CDA23E /* 大雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "大雪.png"; sourceTree = "<group>"; };
+		450BA6891E8CA3F400CDA23E /* 大雪转晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "大雪转晴.png"; sourceTree = "<group>"; };
+		450BA68A1E8CA3F400CDA23E /* 大风.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "大风.png"; sourceTree = "<group>"; };
+		450BA68B1E8CA3F400CDA23E /* 小雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "小雨.png"; sourceTree = "<group>"; };
+		450BA68C1E8CA3F400CDA23E /* 小雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "小雪.png"; sourceTree = "<group>"; };
+		450BA68D1E8CA3F400CDA23E /* 小雪转晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "小雪转晴.png"; sourceTree = "<group>"; };
+		450BA68E1E8CA3F400CDA23E /* 少云.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "少云.png"; sourceTree = "<group>"; };
+		450BA68F1E8CA3F400CDA23E /* 平静.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "平静.png"; sourceTree = "<group>"; };
+		450BA6901E8CA3F400CDA23E /* 微风.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "微风.png"; sourceTree = "<group>"; };
+		450BA6911E8CA3F400CDA23E /* 晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "晴.png"; sourceTree = "<group>"; };
+		450BA6921E8CA3F400CDA23E /* 晴间多云.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "晴间多云.png"; sourceTree = "<group>"; };
+		450BA6931E8CA3F400CDA23E /* 暴雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "暴雨.png"; sourceTree = "<group>"; };
+		450BA6941E8CA3F400CDA23E /* 暴雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "暴雪.png"; sourceTree = "<group>"; };
+		450BA6951E8CA3F400CDA23E /* 有风.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "有风.png"; sourceTree = "<group>"; };
+		450BA6961E8CA3F400CDA23E /* 未知.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "未知.png"; sourceTree = "<group>"; };
+		450BA6971E8CA3F400CDA23E /* 极端降雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "极端降雨.png"; sourceTree = "<group>"; };
+		450BA6981E8CA3F400CDA23E /* 沙尘暴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "沙尘暴.png"; sourceTree = "<group>"; };
+		450BA6991E8CA3F400CDA23E /* 浮尘.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "浮尘.png"; sourceTree = "<group>"; };
+		450BA69A1E8CA3F400CDA23E /* 特大暴雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "特大暴雨.png"; sourceTree = "<group>"; };
+		450BA69B1E8CA3F400CDA23E /* 阴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "阴.png"; sourceTree = "<group>"; };
+		450BA69D1E8CA3F400CDA23E /* 雨夹雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雨夹雪.png"; sourceTree = "<group>"; };
+		450BA69E1E8CA3F400CDA23E /* 雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雪.png"; sourceTree = "<group>"; };
+		450BA69F1E8CA3F400CDA23E /* 雷阵雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雷阵雨.png"; sourceTree = "<group>"; };
+		450BA6A01E8CA3F400CDA23E /* 雾.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雾.png"; sourceTree = "<group>"; };
+		450BA6A11E8CA3F400CDA23E /* 霾.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "霾.png"; sourceTree = "<group>"; };
+		450BA6A21E8CA3F400CDA23E /* 龙卷风.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "龙卷风.png"; sourceTree = "<group>"; };
+		450BA6C61E8E325D00CDA23E /* 中雨.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "中雨.gif"; sourceTree = "<group>"; };
+		450BA6C71E8E325D00CDA23E /* 中雪.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "中雪.gif"; sourceTree = "<group>"; };
+		450BA6C81E8E325D00CDA23E /* 冻雨.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "冻雨.gif"; sourceTree = "<group>"; };
+		450BA6C91E8E325D00CDA23E /* 多云.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "多云.gif"; sourceTree = "<group>"; };
+		450BA6CA1E8E325D00CDA23E /* 多云间晴.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "多云间晴.gif"; sourceTree = "<group>"; };
+		450BA6CB1E8E325D00CDA23E /* 大暴雨.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "大暴雨.gif"; sourceTree = "<group>"; };
+		450BA6CC1E8E325D00CDA23E /* 大雨.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "大雨.gif"; sourceTree = "<group>"; };
+		450BA6CD1E8E325D00CDA23E /* 大雨转晴.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "大雨转晴.gif"; sourceTree = "<group>"; };
+		450BA6CE1E8E325D00CDA23E /* 大雪.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "大雪.gif"; sourceTree = "<group>"; };
+		450BA6CF1E8E325D00CDA23E /* 小雨.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "小雨.gif"; sourceTree = "<group>"; };
+		450BA6D01E8E325D00CDA23E /* 小雨转晴.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "小雨转晴.gif"; sourceTree = "<group>"; };
+		450BA6D11E8E325D00CDA23E /* 小雪.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "小雪.gif"; sourceTree = "<group>"; };
+		450BA6D21E8E325D00CDA23E /* 少云.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "少云.gif"; sourceTree = "<group>"; };
+		450BA6D31E8E325D00CDA23E /* 晴天.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "晴天.gif"; sourceTree = "<group>"; };
+		450BA6D41E8E325D00CDA23E /* 晴间多云.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "晴间多云.gif"; sourceTree = "<group>"; };
+		450BA6D51E8E325D00CDA23E /* 暴雨.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "暴雨.gif"; sourceTree = "<group>"; };
+		450BA6D61E8E325D00CDA23E /* 暴雨转晴.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "暴雨转晴.gif"; sourceTree = "<group>"; };
+		450BA6D71E8E325D00CDA23E /* 未知.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "未知.gif"; sourceTree = "<group>"; };
+		450BA6D81E8E325D00CDA23E /* 极端降雨.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "极端降雨.gif"; sourceTree = "<group>"; };
+		450BA6D91E8E325D00CDA23E /* 毛毛雨.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "毛毛雨.gif"; sourceTree = "<group>"; };
+		450BA6DA1E8E325D00CDA23E /* 沙尘暴.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "沙尘暴.gif"; sourceTree = "<group>"; };
+		450BA6DB1E8E325D00CDA23E /* 特大暴雨.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "特大暴雨.gif"; sourceTree = "<group>"; };
+		450BA6DC1E8E325D00CDA23E /* 阴.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "阴.gif"; sourceTree = "<group>"; };
+		450BA6DD1E8E325D00CDA23E /* 阵雨.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "阵雨.gif"; sourceTree = "<group>"; };
+		450BA6DE1E8E325D00CDA23E /* 雷阵雨.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "雷阵雨.gif"; sourceTree = "<group>"; };
+		450BA6DF1E8E325D00CDA23E /* 雷阵雨加冰雹.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "雷阵雨加冰雹.gif"; sourceTree = "<group>"; };
+		450BA6E01E8E325D00CDA23E /* 霾.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "霾.gif"; sourceTree = "<group>"; };
+		450BA6E11E8E325D00CDA23E /* 风.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "风.gif"; sourceTree = "<group>"; };
 		450D3CB41DD0690B0024E9AA /* CommProTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommProTableViewCell.h; sourceTree = "<group>"; };
 		450D3CB51DD0690B0024E9AA /* CommProTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommProTableViewCell.m; sourceTree = "<group>"; };
 		450D3CB61DD0690B0024E9AA /* CommProTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommProTableViewCell.xib; sourceTree = "<group>"; };
@@ -709,7 +792,6 @@
 		451C25801D4992F10076AB93 /* WZXPopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WZXPopViewController.h; sourceTree = "<group>"; };
 		451C25811D4992F10076AB93 /* WZXPopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WZXPopViewController.m; sourceTree = "<group>"; };
 		451C258C1D499D080076AB93 /* bg_晴.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "bg_晴.jpg"; sourceTree = "<group>"; };
-		451C258E1D49AA660076AB93 /* 雨夹雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雨夹雪.png"; sourceTree = "<group>"; };
 		451C25901D49ABE30076AB93 /* light@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "light@3x.png"; sourceTree = "<group>"; };
 		451DFFE91D13857E003DCDDD /* weatherModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = weatherModel.h; sourceTree = "<group>"; };
 		451DFFEA1D13857E003DCDDD /* weatherModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = weatherModel.m; sourceTree = "<group>"; };
@@ -816,7 +898,6 @@
 		4548091C1D41F28800FB9D64 /* bg_大雨.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "bg_大雨.jpg"; sourceTree = "<group>"; };
 		4548091D1D41F28800FB9D64 /* bg_沙尘暴.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "bg_沙尘暴.jpg"; sourceTree = "<group>"; };
 		4548091E1D41F28800FB9D64 /* bg_雪.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "bg_雪.jpg"; sourceTree = "<group>"; };
-		4548092C1D41FB3600FB9D64 /* 小到中雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "小到中雨.png"; sourceTree = "<group>"; };
 		4548092E1D41FDE100FB9D64 /* bg_小到中雨.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "bg_小到中雨.jpg"; sourceTree = "<group>"; };
 		454936461D615C9D004EC4E0 /* LitMeterListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LitMeterListViewController.h; sourceTree = "<group>"; };
 		454936471D615C9D004EC4E0 /* LitMeterListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LitMeterListViewController.m; sourceTree = "<group>"; };
@@ -902,20 +983,6 @@
 		45771FA41D0E7CFD006BF7F3 /* Province.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Province.m; sourceTree = "<group>"; };
 		45771FA51D0E7CFD006BF7F3 /* WeatherModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherModel.h; sourceTree = "<group>"; };
 		45771FA61D0E7CFD006BF7F3 /* WeatherModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherModel.m; sourceTree = "<group>"; };
-		45771FAE1D0E7DD9006BF7F3 /* 晴间多云.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "晴间多云.png"; sourceTree = "<group>"; };
-		45771FAF1D0E7DD9006BF7F3 /* 多云转晴1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "多云转晴1.png"; sourceTree = "<group>"; };
-		45771FB01D0E7DD9006BF7F3 /* weather-forecast-14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weather-forecast-14.png"; sourceTree = "<group>"; };
-		45771FB11D0E7DD9006BF7F3 /* 中雨1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "中雨1.png"; sourceTree = "<group>"; };
-		45771FB21D0E7DD9006BF7F3 /* 多云1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "多云1.png"; sourceTree = "<group>"; };
-		45771FB31D0E7DD9006BF7F3 /* 大雨1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "大雨1.png"; sourceTree = "<group>"; };
-		45771FB41D0E7DD9006BF7F3 /* 小雨1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "小雨1.png"; sourceTree = "<group>"; };
-		45771FB51D0E7DD9006BF7F3 /* 小雪1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "小雪1.png"; sourceTree = "<group>"; };
-		45771FB61D0E7DD9006BF7F3 /* 晴1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "晴1.png"; sourceTree = "<group>"; };
-		45771FB71D0E7DD9006BF7F3 /* 阴1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "阴1.png"; sourceTree = "<group>"; };
-		45771FB81D0E7DD9006BF7F3 /* 阵雨1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "阵雨1.png"; sourceTree = "<group>"; };
-		45771FB91D0E7DD9006BF7F3 /* 雪1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雪1.png"; sourceTree = "<group>"; };
-		45771FBB1D0E7DD9006BF7F3 /* 雷阵雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雷阵雨.png"; sourceTree = "<group>"; };
-		45771FBC1D0E7DD9006BF7F3 /* 雹.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雹.png"; sourceTree = "<group>"; };
 		457853EB1DEFFAB600F69A82 /* SeniorlevelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeniorlevelViewController.h; sourceTree = "<group>"; };
 		457853EC1DEFFAB600F69A82 /* SeniorlevelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeniorlevelViewController.m; sourceTree = "<group>"; };
 		457949621D67E4CB0064D959 /* icon_layer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_layer@2x.png"; sourceTree = "<group>"; };
@@ -940,28 +1007,7 @@
 		45812B8D1E78F560001B8B05 /* NewHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewHomeViewController.m; sourceTree = "<group>"; };
 		45812B901E791982001B8B05 /* FTPopOverMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPopOverMenu.h; sourceTree = "<group>"; };
 		45812B911E791982001B8B05 /* FTPopOverMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTPopOverMenu.m; sourceTree = "<group>"; };
-		45812B931E792001001B8B05 /* 多云.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "多云.png"; sourceTree = "<group>"; };
-		45812B951E7920FB001B8B05 /* 小雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "小雨.png"; sourceTree = "<group>"; };
-		45812B971E792160001B8B05 /* 阴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "阴.png"; sourceTree = "<group>"; };
-		45812B991E79218A001B8B05 /* 晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "晴.png"; sourceTree = "<group>"; };
-		45812B9B1E7921FD001B8B05 /* 多云转晴.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "多云转晴.png"; sourceTree = "<group>"; };
-		45812B9D1E792245001B8B05 /* 中雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "中雨.png"; sourceTree = "<group>"; };
-		45812B9F1E792270001B8B05 /* 大雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "大雨.png"; sourceTree = "<group>"; };
-		45812BA11E79229D001B8B05 /* 小雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "小雪.png"; sourceTree = "<group>"; };
-		45812BA31E792330001B8B05 /* 少云.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "少云.png"; sourceTree = "<group>"; };
-		45812BA51E792365001B8B05 /* 有风.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "有风.png"; sourceTree = "<group>"; };
-		45812BA71E792394001B8B05 /* 平静.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "平静.png"; sourceTree = "<group>"; };
-		45812BA91E7923C6001B8B05 /* 微风.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "微风.png"; sourceTree = "<group>"; };
-		45812BAB1E7923FB001B8B05 /* 阵雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "阵雪.png"; sourceTree = "<group>"; };
-		45812BAD1E79242F001B8B05 /* 暴雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "暴雪.png"; sourceTree = "<group>"; };
-		45812BAF1E792456001B8B05 /* 雪.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "雪.png"; sourceTree = "<group>"; };
-		45812BB11E792486001B8B05 /* 特大暴雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "特大暴雨.png"; sourceTree = "<group>"; };
-		45812BB31E7924C1001B8B05 /* 浮尘.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "浮尘.png"; sourceTree = "<group>"; };
-		45812BB51E792513001B8B05 /* 霾.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "霾.png"; sourceTree = "<group>"; };
-		45812BB71E79254A001B8B05 /* 极端降雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "极端降雨.png"; sourceTree = "<group>"; };
-		45812BB91E7A1856001B8B05 /* 阵雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "阵雨.png"; sourceTree = "<group>"; };
 		45812BBB1E7A5A7F001B8B05 /* icon_home_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_home_bg.png; sourceTree = "<group>"; };
-		4585C8FB1E5BD8C500AD894F /* 暴雪1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "暴雪1.png"; sourceTree = "<group>"; };
 		458827281DB0BD14008103F9 /* LitMeterDetailDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LitMeterDetailDataModel.h; sourceTree = "<group>"; };
 		458827291DB0BD14008103F9 /* LitMeterDetailDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LitMeterDetailDataModel.m; sourceTree = "<group>"; };
 		45898E291DB8992200636982 /* Fashionblack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fashionblack.ttf; sourceTree = "<group>"; };
@@ -1162,7 +1208,6 @@
 		45978D5E1CED7E6400BF3C0E /* 杭州水表.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "杭州水表.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45978D621CED7E6400BF3C0E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		45978D6B1CED7E6400BF3C0E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		45978D6D1CED7E6400BF3C0E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		45978D701CED7E6400BF3C0E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		45978D721CED7E6400BF3C0E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		45978D771CED7E6400BF3C0E /* firstTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = firstTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1205,6 +1250,7 @@
 		459E7C9F1DE6D6600037D607 /* icon_qrcode@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_qrcode@3x.png"; sourceTree = "<group>"; };
 		45A117121DE29F5400C9A431 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		45A117141DE29F5B00C9A431 /* lunchImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lunchImage.png; sourceTree = "<group>"; };
+		45A1478F1EA70E4400F8D481 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = first/Assets.xcassets; sourceTree = "<group>"; };
 		45A215C21D372DD2007B4765 /* FlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowLayout.h; sourceTree = "<group>"; };
 		45A215C31D372DD2007B4765 /* FlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowLayout.m; sourceTree = "<group>"; };
 		45A24A541DBD9FA6009C1CF3 /* icon_his_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_his_btn@2x.png"; sourceTree = "<group>"; };
@@ -1259,6 +1305,7 @@
 		45C791E41DA888BA00078786 /* SDCycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDCycleScrollView.m; sourceTree = "<group>"; };
 		45C791E51DA888BA00078786 /* UIView+SDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDExtension.h"; sourceTree = "<group>"; };
 		45C791E61DA888BA00078786 /* UIView+SDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDExtension.m"; sourceTree = "<group>"; };
+		45CBA5CE1EA45C5100CE28C1 /* 阵雨.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "阵雨.png"; sourceTree = "<group>"; };
 		45D44BA91D1CC4B600024E1B /* HisDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HisDetailViewController.h; sourceTree = "<group>"; };
 		45D44BAA1D1CC4B600024E1B /* HisDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HisDetailViewController.m; sourceTree = "<group>"; };
 		45D44BAB1D1CC4B600024E1B /* HisDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HisDetailViewController.xib; sourceTree = "<group>"; };
@@ -1307,8 +1354,6 @@
 		45DC9C941DD9626A00222D9E /* icon_meter_stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_meter_stop.png; sourceTree = "<group>"; };
 		45DC9C951DD9626A00222D9E /* icon_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_normal.png; sourceTree = "<group>"; };
 		45DC9C961DD9626A00222D9E /* icon_reversal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_reversal.png; sourceTree = "<group>"; };
-		45DCA3041CEEDEF500E42468 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
-		45DCA3051CEEDEF500E42468 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		45DCA3181CEEF1E600E42468 /* MeteringViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeteringViewController.h; sourceTree = "<group>"; };
 		45DCA3191CEEF1E600E42468 /* MeteringViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeteringViewController.m; sourceTree = "<group>"; };
 		45DCA31B1CEEF20400E42468 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -1522,6 +1567,82 @@
 				45090A571D66BD4900DA9456 /* BaiduMapAPI_Map.framework */,
 			);
 			path = BaiduMap_IOSSDK_v3;
+			sourceTree = "<group>";
+		};
+		450BA6801E8CA3F400CDA23E /* 白天 */ = {
+			isa = PBXGroup;
+			children = (
+				450BA6811E8CA3F400CDA23E /* 中雨.png */,
+				450BA6821E8CA3F400CDA23E /* 中雪.png */,
+				450BA6831E8CA3F400CDA23E /* 中雪转晴.png */,
+				450BA6841E8CA3F400CDA23E /* 多云.png */,
+				450BA6851E8CA3F400CDA23E /* 多云转晴.png */,
+				450BA6861E8CA3F400CDA23E /* 大暴雨.png */,
+				450BA6871E8CA3F400CDA23E /* 大雨.png */,
+				450BA6881E8CA3F400CDA23E /* 大雪.png */,
+				450BA6891E8CA3F400CDA23E /* 大雪转晴.png */,
+				450BA68A1E8CA3F400CDA23E /* 大风.png */,
+				450BA68B1E8CA3F400CDA23E /* 小雨.png */,
+				450BA68C1E8CA3F400CDA23E /* 小雪.png */,
+				450BA68D1E8CA3F400CDA23E /* 小雪转晴.png */,
+				450BA68E1E8CA3F400CDA23E /* 少云.png */,
+				450BA68F1E8CA3F400CDA23E /* 平静.png */,
+				450BA6901E8CA3F400CDA23E /* 微风.png */,
+				450BA6911E8CA3F400CDA23E /* 晴.png */,
+				450BA6921E8CA3F400CDA23E /* 晴间多云.png */,
+				450BA6931E8CA3F400CDA23E /* 暴雨.png */,
+				450BA6941E8CA3F400CDA23E /* 暴雪.png */,
+				450BA6951E8CA3F400CDA23E /* 有风.png */,
+				450BA6961E8CA3F400CDA23E /* 未知.png */,
+				450BA6971E8CA3F400CDA23E /* 极端降雨.png */,
+				450BA6981E8CA3F400CDA23E /* 沙尘暴.png */,
+				450BA6991E8CA3F400CDA23E /* 浮尘.png */,
+				450BA69A1E8CA3F400CDA23E /* 特大暴雨.png */,
+				450BA69B1E8CA3F400CDA23E /* 阴.png */,
+				45CBA5CE1EA45C5100CE28C1 /* 阵雨.png */,
+				450BA69D1E8CA3F400CDA23E /* 雨夹雪.png */,
+				450BA69E1E8CA3F400CDA23E /* 雪.png */,
+				450BA69F1E8CA3F400CDA23E /* 雷阵雨.png */,
+				450BA6A01E8CA3F400CDA23E /* 雾.png */,
+				450BA6A11E8CA3F400CDA23E /* 霾.png */,
+				450BA6A21E8CA3F400CDA23E /* 龙卷风.png */,
+			);
+			path = "白天";
+			sourceTree = "<group>";
+		};
+		450BA6C51E8E325D00CDA23E /* 动画 */ = {
+			isa = PBXGroup;
+			children = (
+				450BA6C61E8E325D00CDA23E /* 中雨.gif */,
+				450BA6C71E8E325D00CDA23E /* 中雪.gif */,
+				450BA6C81E8E325D00CDA23E /* 冻雨.gif */,
+				450BA6C91E8E325D00CDA23E /* 多云.gif */,
+				450BA6CA1E8E325D00CDA23E /* 多云间晴.gif */,
+				450BA6CB1E8E325D00CDA23E /* 大暴雨.gif */,
+				450BA6CC1E8E325D00CDA23E /* 大雨.gif */,
+				450BA6CD1E8E325D00CDA23E /* 大雨转晴.gif */,
+				450BA6CE1E8E325D00CDA23E /* 大雪.gif */,
+				450BA6CF1E8E325D00CDA23E /* 小雨.gif */,
+				450BA6D01E8E325D00CDA23E /* 小雨转晴.gif */,
+				450BA6D11E8E325D00CDA23E /* 小雪.gif */,
+				450BA6D21E8E325D00CDA23E /* 少云.gif */,
+				450BA6D31E8E325D00CDA23E /* 晴天.gif */,
+				450BA6D41E8E325D00CDA23E /* 晴间多云.gif */,
+				450BA6D51E8E325D00CDA23E /* 暴雨.gif */,
+				450BA6D61E8E325D00CDA23E /* 暴雨转晴.gif */,
+				450BA6D71E8E325D00CDA23E /* 未知.gif */,
+				450BA6D81E8E325D00CDA23E /* 极端降雨.gif */,
+				450BA6D91E8E325D00CDA23E /* 毛毛雨.gif */,
+				450BA6DA1E8E325D00CDA23E /* 沙尘暴.gif */,
+				450BA6DB1E8E325D00CDA23E /* 特大暴雨.gif */,
+				450BA6DC1E8E325D00CDA23E /* 阴.gif */,
+				450BA6DD1E8E325D00CDA23E /* 阵雨.gif */,
+				450BA6DE1E8E325D00CDA23E /* 雷阵雨.gif */,
+				450BA6DF1E8E325D00CDA23E /* 雷阵雨加冰雹.gif */,
+				450BA6E01E8E325D00CDA23E /* 霾.gif */,
+				450BA6E11E8E325D00CDA23E /* 风.gif */,
+			);
+			path = "动画";
 			sourceTree = "<group>";
 		};
 		4517940C1D6AC94300433921 /* dataBase(本地数据库) */ = {
@@ -2212,44 +2333,9 @@
 		45771FAA1D0E7DD9006BF7F3 /* 天气图标 */ = {
 			isa = PBXGroup;
 			children = (
+				450BA6C51E8E325D00CDA23E /* 动画 */,
+				450BA6801E8CA3F400CDA23E /* 白天 */,
 				451B64041E88DD0800CED784 /* newweather */,
-				45771FB01D0E7DD9006BF7F3 /* weather-forecast-14.png */,
-				45771FB81D0E7DD9006BF7F3 /* 阵雨1.png */,
-				45812BB91E7A1856001B8B05 /* 阵雨.png */,
-				45771FBB1D0E7DD9006BF7F3 /* 雷阵雨.png */,
-				45771FB41D0E7DD9006BF7F3 /* 小雨1.png */,
-				45812B951E7920FB001B8B05 /* 小雨.png */,
-				45771FB11D0E7DD9006BF7F3 /* 中雨1.png */,
-				45812B9D1E792245001B8B05 /* 中雨.png */,
-				45771FB31D0E7DD9006BF7F3 /* 大雨1.png */,
-				45812B9F1E792270001B8B05 /* 大雨.png */,
-				45771FB71D0E7DD9006BF7F3 /* 阴1.png */,
-				45812B971E792160001B8B05 /* 阴.png */,
-				45771FB21D0E7DD9006BF7F3 /* 多云1.png */,
-				45812B931E792001001B8B05 /* 多云.png */,
-				45771FB61D0E7DD9006BF7F3 /* 晴1.png */,
-				45812B991E79218A001B8B05 /* 晴.png */,
-				45771FAF1D0E7DD9006BF7F3 /* 多云转晴1.png */,
-				45812B9B1E7921FD001B8B05 /* 多云转晴.png */,
-				45812BA31E792330001B8B05 /* 少云.png */,
-				45771FAE1D0E7DD9006BF7F3 /* 晴间多云.png */,
-				45771FB51D0E7DD9006BF7F3 /* 小雪1.png */,
-				45812BA11E79229D001B8B05 /* 小雪.png */,
-				45812BA51E792365001B8B05 /* 有风.png */,
-				45812BA71E792394001B8B05 /* 平静.png */,
-				45812BA91E7923C6001B8B05 /* 微风.png */,
-				45812BAB1E7923FB001B8B05 /* 阵雪.png */,
-				4585C8FB1E5BD8C500AD894F /* 暴雪1.png */,
-				45812BAD1E79242F001B8B05 /* 暴雪.png */,
-				45771FB91D0E7DD9006BF7F3 /* 雪1.png */,
-				45812BAF1E792456001B8B05 /* 雪.png */,
-				45812BB11E792486001B8B05 /* 特大暴雨.png */,
-				45812BB71E79254A001B8B05 /* 极端降雨.png */,
-				45771FBC1D0E7DD9006BF7F3 /* 雹.png */,
-				45812BB31E7924C1001B8B05 /* 浮尘.png */,
-				45812BB51E792513001B8B05 /* 霾.png */,
-				4548092C1D41FB3600FB9D64 /* 小到中雨.png */,
-				451C258E1D49AA660076AB93 /* 雨夹雪.png */,
 			);
 			path = "天气图标";
 			sourceTree = "<group>";
@@ -2661,6 +2747,7 @@
 			children = (
 				4521A9CA1D5830D4003BCDDB /* framework */,
 				45978D601CED7E6400BF3C0E /* first */,
+				45A1478F1EA70E4400F8D481 /* Assets.xcassets */,
 				45978D7A1CED7E6400BF3C0E /* firstTests */,
 				45978D851CED7E6400BF3C0E /* firstUITests */,
 				45978D5F1CED7E6400BF3C0E /* Products */,
@@ -2689,7 +2776,6 @@
 				45DCA2FD1CEEDE8300E42468 /* me(设置) */,
 				45978D6A1CED7E6400BF3C0E /* Main.storyboard */,
 				45978D6F1CED7E6400BF3C0E /* LaunchScreen.storyboard */,
-				45978D6D1CED7E6400BF3C0E /* Assets.xcassets */,
 				45978D611CED7E6400BF3C0E /* Supporting Files */,
 			);
 			path = first;
@@ -3059,9 +3145,6 @@
 			children = (
 				45A520B01DB60160006BD05E /* TLCityPicker */,
 				45771FA01D0E7CFD006BF7F3 /* weather */,
-				45DCA3041CEEDEF500E42468 /* HomeViewController.h */,
-				45DCA3051CEEDEF500E42468 /* HomeViewController.m */,
-				450103011CF2AA560070E38A /* HomeSB.storyboard */,
 				45812B8C1E78F560001B8B05 /* NewHomeViewController.h */,
 				45812B8D1E78F560001B8B05 /* NewHomeViewController.m */,
 				45812B8A1E78ED1B001B8B05 /* NewHome.storyboard */,
@@ -3627,50 +3710,54 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				450BA6E51E8E325D00CDA23E /* 多云.gif in Resources */,
+				450BA6C11E8CA3F500CDA23E /* 雷阵雨.png in Resources */,
 				458047C21DBDFAE20015536B /* bg_阴.jpg in Resources */,
-				45771FCA1D0E7DD9006BF7F3 /* 阴1.png in Resources */,
 				458047C41DBDFC200015536B /* icon_test.jpg in Resources */,
 				458A74EC1D5AEB7E00A53D8C /* 定位3@2x.png in Resources */,
 				45EB0C141D3E02BF0062AE52 /* server@2x.png in Resources */,
-				45771FC61D0E7DD9006BF7F3 /* 大雨1.png in Resources */,
 				454809271D41F28800FB9D64 /* bg_小雨.jpg in Resources */,
+				450BA6F01E8E325D00CDA23E /* 晴间多云.gif in Resources */,
+				450BA6E91E8E325D00CDA23E /* 大雨转晴.gif in Resources */,
+				450BA6F41E8E325D00CDA23E /* 极端降雨.gif in Resources */,
+				450BA6BF1E8CA3F500CDA23E /* 雨夹雪.png in Resources */,
+				45CBA5CF1EA45C5100CE28C1 /* 阵雨.png in Resources */,
+				450BA6AA1E8CA3F400CDA23E /* 大雪.png in Resources */,
 				451794161D6ACCAC00433921 /* LocaDBViewController.xib in Resources */,
 				451B64831E88DD0800CED784 /* bg_snow_day.jpg in Resources */,
-				45812B9A1E79218A001B8B05 /* 晴.png in Resources */,
 				45812AD81E77B188001B8B05 /* home_selected2@2.png in Resources */,
-				45812BA21E79229D001B8B05 /* 小雪.png in Resources */,
 				452ACC441D20FF5000B50002 /* SearchResultViewController.xib in Resources */,
 				451B647C1E88DD0800CED784 /* bg_fog_night.jpg in Resources */,
 				458DFC341D36322700EB874A /* bg3.jpg in Resources */,
 				45EB0C0C1D3E01E70062AE52 /* monitor_selected@2x.png in Resources */,
+				450BA6FD1E8E325D00CDA23E /* 风.gif in Resources */,
 				4521337D1D24D769006841E1 /* 定位3.png in Resources */,
-				45771FC31D0E7DD9006BF7F3 /* weather-forecast-14.png in Resources */,
+				450BA6BD1E8CA3F500CDA23E /* 阴.png in Resources */,
 				450203A71D6944D5001CF0BB /* ContextMenuCell.xib in Resources */,
 				451B646D1E88DD0800CED784 /* ele_sunnyBirdInvertedImage8.png in Resources */,
-				451C258F1D49AA660076AB93 /* 雨夹雪.png in Resources */,
 				451B647A1E88DD0800CED784 /* bg_fog.jpg in Resources */,
 				451B64661E88DD0800CED784 /* ele_sunnyBirdInvertedImage1.png in Resources */,
 				450E92061D71511D00593A9A /* icon_search@3x.png in Resources */,
 				451B64631E88DD0800CED784 /* ele_sunnyBird6.png in Resources */,
 				45DC9C9A1DD9626A00222D9E /* icon_demage.png in Resources */,
-				45771FC91D0E7DD9006BF7F3 /* 晴1.png in Resources */,
+				450BA6ED1E8E325D00CDA23E /* 小雪.gif in Resources */,
 				451C25911D49ABE30076AB93 /* light@3x.png in Resources */,
 				459157601E022B840025F439 /* qrcode_scan_pic_nor@2x.png in Resources */,
+				450BA6B21E8CA3F500CDA23E /* 微风.png in Resources */,
 				451C258D1D499D080076AB93 /* bg_晴.jpg in Resources */,
 				451B64781E88DD0800CED784 /* ele_sunnySun.png in Resources */,
 				458A74EA1D5ADEEA00A53D8C /* MeterInfoTableViewCell.xib in Resources */,
-				45812B9C1E7921FD001B8B05 /* 多云转晴.png in Resources */,
 				45F03A371D5982A3009D8E4C /* moreClear@2x.png in Resources */,
 				45F03A391D598725009D8E4C /* back@2x.png in Resources */,
 				456D19601D5C70F70038C442 /* 定位@3x.png in Resources */,
 				451B64711E88DD0800CED784 /* ele_sunnyNightMeteor1.png in Resources */,
 				451B64621E88DD0800CED784 /* ele_sunnyBird5.png in Resources */,
 				4549364C1D615FF9004EC4E0 /* icon_drop_up@3x.png in Resources */,
-				4585C8FC1E5BD8C500AD894F /* 暴雪1.png in Resources */,
-				45812B941E792001001B8B05 /* 多云.png in Resources */,
+				450BA6E81E8E325D00CDA23E /* 大雨.gif in Resources */,
 				45812ADC1E77B23E001B8B05 /* home2@2x.png in Resources */,
 				45BF59A41D1A68CD00F3EFBD /* waterCharg.png in Resources */,
 				45F42BB71D6BD3DF006E2412 /* icon_more@2x.png in Resources */,
+				450BA6F21E8E325D00CDA23E /* 暴雨转晴.gif in Resources */,
 				452ACC391D20DFF600B50002 /* MeterDataViewController.xib in Resources */,
 				45771F8F1D0E3B5C006BF7F3 /* AppIcon40x40@2x.png in Resources */,
 				45D44BCC1D1D07AB00024E1B /* 刷新4.gif in Resources */,
@@ -3687,36 +3774,39 @@
 				456D195C1D5C6DFA0038C442 /* refresh@2x.png in Resources */,
 				451B646E1E88DD0800CED784 /* ele_sunnyCloud1.png in Resources */,
 				45F42BC51D6BE660006E2412 /* CompleteTableViewCell.xib in Resources */,
+				450BA6B11E8CA3F500CDA23E /* 平静.png in Resources */,
 				4521A9C91D5811A9003BCDDB /* config@2x.png in Resources */,
 				4517942D1D6ADCE400433921 /* Info.plist in Resources */,
+				450BA6BC1E8CA3F500CDA23E /* 特大暴雨.png in Resources */,
+				450BA6C01E8CA3F500CDA23E /* 雪.png in Resources */,
 				4559EEF51D2E229500A80DE6 /* qrcode_icon.png in Resources */,
 				451B64851E88DD0800CED784 /* bg_sunny_day.jpg in Resources */,
 				45C705F11D12436D002164C6 /* chart.png in Resources */,
-				45812B981E792160001B8B05 /* 阴.png in Resources */,
 				45771F8E1D0E3B5C006BF7F3 /* AppIcon29x29@3x.png in Resources */,
 				45FF5D081D0FACE200F3D4E4 /* now.png in Resources */,
 				45BF59AA1D1A6C2F00F3EFBD /* help.png in Resources */,
+				450BA6A31E8CA3F400CDA23E /* 中雨.png in Resources */,
 				45BF59941D1A381800F3EFBD /* MeteringSingleViewController.xib in Resources */,
 				4548092A1D41F28800FB9D64 /* bg_雪.jpg in Resources */,
 				451B646B1E88DD0800CED784 /* ele_sunnyBirdInvertedImage6.png in Resources */,
 				4591575F1E022B840025F439 /* qrcode_scan_back_nor@2x.png in Resources */,
-				45812BB61E792513001B8B05 /* 霾.png in Resources */,
 				45D44BCA1D1D07AB00024E1B /* 刷新2.gif in Resources */,
+				450BA6F31E8E325D00CDA23E /* 未知.gif in Resources */,
 				45D44BB21D1CC80800024E1B /* HisDetailTableViewCell.xib in Resources */,
 				45FF5D101D0FAD0400F3D4E4 /* meter.png in Resources */,
-				45771FC51D0E7DD9006BF7F3 /* 多云1.png in Resources */,
 				454809221D41F28800FB9D64 /* bg_多云.jpg in Resources */,
 				457949631D67E4CB0064D959 /* icon_layer@2x.png in Resources */,
 				451B64771E88DD0800CED784 /* ele_sunnyNightYellowLight.png in Resources */,
-				4548092D1D41FB3600FB9D64 /* 小到中雨.png in Resources */,
+				450BA6FB1E8E325D00CDA23E /* 雷阵雨加冰雹.gif in Resources */,
+				450BA6B31E8CA3F500CDA23E /* 晴.png in Resources */,
 				4555A2361D45E169009D1DC6 /* MJRefresh.bundle in Resources */,
-				45812BAC1E7923FB001B8B05 /* 阵雪.png in Resources */,
 				45812BBC1E7A5A80001B8B05 /* icon_home_bg.png in Resources */,
 				456D19581D5C1F2E0038C442 /* 数据交换.png in Resources */,
 				45F42BB91D6BE494006E2412 /* icon_complete@2x.png in Resources */,
 				451B64601E88DD0800CED784 /* ele_sunnyBird3.png in Resources */,
 				45A117151DE29F5B00C9A431 /* lunchImage.png in Resources */,
 				458DFC2E1D36149F00EB874A /* 刷新50.gif in Resources */,
+				450BA6F81E8E325D00CDA23E /* 阴.gif in Resources */,
 				451B648B1E88DD0800CED784 /* night_rain_cloud.png in Resources */,
 				453BD7E21DBEF68900C3C66C /* .gitkeep in Resources */,
 				45771F921D0E3B5C006BF7F3 /* AppIcon60x60@3x.png in Resources */,
@@ -3726,26 +3816,26 @@
 				45BF599C1D1A4C3A00F3EFBD /* line.png in Resources */,
 				456FB2A61D9B948600BB041C /* LitMeterListTableViewCell.xib in Resources */,
 				451B64681E88DD0800CED784 /* ele_sunnyBirdInvertedImage3.png in Resources */,
-				45812BB41E7924C1001B8B05 /* 浮尘.png in Resources */,
 				45EDA2171D1101D70074B786 /* DetailViewController.xib in Resources */,
 				450D58AF1CEDB354009B8ED9 /* Login.storyboard in Resources */,
-				45812BBA1E7A1856001B8B05 /* 阵雨.png in Resources */,
-				45771FCC1D0E7DD9006BF7F3 /* 雪1.png in Resources */,
 				4559EEFB1D2E382500A80DE6 /* call_icon.png in Resources */,
 				45771F911D0E3B5C006BF7F3 /* AppIcon60x60@2x.png in Resources */,
 				457CEE131D47065500E961A6 /* cry3.gif in Resources */,
 				451B645E1E88DD0800CED784 /* ele_sunnyBird1.png in Resources */,
 				457CEE121D47065500E961A6 /* cry2.gif in Resources */,
+				450BA6F91E8E325D00CDA23E /* 阵雨.gif in Resources */,
 				45BF59A61D1A693500F3EFBD /* suggestions.png in Resources */,
 				451794181D6ACD5300433921 /* icon_db@3x.png in Resources */,
 				45FF5D161D0FAD1C00F3D4E4 /* userhelp.png in Resources */,
 				45D634CC1D17816D004358B8 /* SettingTableViewCell.xib in Resources */,
 				451B646F1E88DD0800CED784 /* ele_sunnyCloud2.png in Resources */,
+				450BA6F61E8E325D00CDA23E /* 沙尘暴.gif in Resources */,
 				45934EB51E124793006694E3 /* LSStatusBarHUD.bundle in Resources */,
 				451B64691E88DD0800CED784 /* ele_sunnyBirdInvertedImage4.png in Resources */,
-				45771FC41D0E7DD9006BF7F3 /* 中雨1.png in Resources */,
+				450BA6AF1E8CA3F400CDA23E /* 小雪转晴.png in Resources */,
 				45107CEB1D52CC9400693E3D /* bg_server.jpg in Resources */,
 				458A74EE1D5AFC6100A53D8C /* SingleViewCtl.xib in Resources */,
+				450BA6C41E8CA3F500CDA23E /* 龙卷风.png in Resources */,
 				45D634D81D17937E004358B8 /* QueryViewController.xib in Resources */,
 				4521D72B1D542712006DA76C /* ShareSDKFlatShareViewUI.bundle in Resources */,
 				459157651E022B840025F439 /* ScanQR4@2x.png in Resources */,
@@ -3753,13 +3843,15 @@
 				45FF5D041D0FA6DB00F3D4E4 /* bg_weather3.jpg in Resources */,
 				45D635101D17DAFA004358B8 /* pic.png in Resources */,
 				45BF599E1D1A51B400F3EFBD /* takephoto.png in Resources */,
+				450BA6C31E8CA3F500CDA23E /* 霾.png in Resources */,
 				451B64031E88DC9100CED784 /* rainData.json in Resources */,
 				45BF599A1D1A3B9400F3EFBD /* SingleViewController.xib in Resources */,
 				454936561D61673B004EC4E0 /* LitMeterDetailViewController.xib in Resources */,
+				450BA6FC1E8E325D00CDA23E /* 霾.gif in Resources */,
 				456811901D6D7FCF00C8AF52 /* mapapi.bundle in Resources */,
 				453F094B1D9E26E200396B61 /* LitMeterDetailTableViewCell.xib in Resources */,
+				450BA6E71E8E325D00CDA23E /* 大暴雨.gif in Resources */,
 				459157631E022B840025F439 /* ScanQR2@2x.png in Resources */,
-				45812BA01E792270001B8B05 /* 大雨.png in Resources */,
 				451B64801E88DD0800CED784 /* bg_normal.jpg in Resources */,
 				45D44BAD1D1CC4B600024E1B /* HisDetailViewController.xib in Resources */,
 				4521D7251D542712006DA76C /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
@@ -3769,17 +3861,20 @@
 				45FAAA0C1D2260140040866C /* MeterDataTableViewCell.xib in Resources */,
 				454809211D41F28800FB9D64 /* bg_cloudy_night.jpg in Resources */,
 				451B645F1E88DD0800CED784 /* ele_sunnyBird2.png in Resources */,
+				450BA6EF1E8E325D00CDA23E /* 晴天.gif in Resources */,
+				450BA6B71E8CA3F500CDA23E /* 有风.png in Resources */,
+				450BA6AB1E8CA3F400CDA23E /* 大雪转晴.png in Resources */,
+				450BA6E21E8E325D00CDA23E /* 中雨.gif in Resources */,
 				45EB0C151D3E02BF0062AE52 /* server_selected@2x.png in Resources */,
-				45771FC81D0E7DD9006BF7F3 /* 小雪1.png in Resources */,
 				456D19551D5C1F2E0038C442 /* userScan.png in Resources */,
 				4590EBDE1D3492A2002C49D2 /* ImageBrowser.storyboard in Resources */,
 				45D44BCB1D1D07AB00024E1B /* 刷新3.gif in Resources */,
-				45812B9E1E792245001B8B05 /* 中雨.png in Resources */,
 				45F03A3B1D5987B5009D8E4C /* close@2x.png in Resources */,
 				45DC9C9D1DD9626A00222D9E /* icon_reversal.png in Resources */,
 				45090A801D66F7A800DA9456 /* icon_loca@2x.png in Resources */,
 				459241BC1D18DEAC0007A5A5 /* chart_line.png in Resources */,
 				45D6350E1D17DAB7004358B8 /* 定位2.png in Resources */,
+				450BA6B01E8CA3F400CDA23E /* 少云.png in Resources */,
 				459157641E022B840025F439 /* ScanQR3@2x.png in Resources */,
 				451B64731E88DD0800CED784 /* ele_sunnyNightStar1.png in Resources */,
 				4521D7291D542712006DA76C /* read_me.txt in Resources */,
@@ -3791,6 +3886,7 @@
 				45ED96701D9129A900B312C3 /* icon_edit@2x.png in Resources */,
 				4521D7201D542712006DA76C /* ShareSDKLocalizable.strings in Resources */,
 				456D19571D5C1F2E0038C442 /* 光电直读.png in Resources */,
+				450BA6EC1E8E325D00CDA23E /* 小雨转晴.gif in Resources */,
 				45090A7C1D66ED7100DA9456 /* icon_annotation@2x.png in Resources */,
 				45DC9C981DD9626A00222D9E /* icon_changemeter.png in Resources */,
 				45A520BD1DB60160006BD05E /* CityData.plist in Resources */,
@@ -3798,36 +3894,39 @@
 				45901B671D41E13100E6249C /* Info.plist in Resources */,
 				45E26C1B1D50746C00820EC3 /* Pay.xib in Resources */,
 				4517941A1D6ACDB300433921 /* icon_db_internet@3x.png in Resources */,
-				45812BB01E792456001B8B05 /* 雪.png in Resources */,
 				451B647E1E88DD0800CED784 /* bg_na.jpg in Resources */,
 				451B647F1E88DD0800CED784 /* bg_night_rain.jpg in Resources */,
 				457CEE111D47065500E961A6 /* cry1.gif in Resources */,
-				45812BA81E792394001B8B05 /* 平静.png in Resources */,
+				450BA6F11E8E325D00CDA23E /* 暴雨.gif in Resources */,
+				450BA6AC1E8CA3F400CDA23E /* 大风.png in Resources */,
+				450BA6BA1E8CA3F500CDA23E /* 沙尘暴.png in Resources */,
 				459157611E022B840025F439 /* qrcode_scan_torch_nor@2x.png in Resources */,
+				450BA6EE1E8E325D00CDA23E /* 少云.gif in Resources */,
 				4559EEF71D2E336B00A80DE6 /* light.png in Resources */,
 				450D3CB81DD0690B0024E9AA /* CommProTableViewCell.xib in Resources */,
 				451B64881E88DD0800CED784 /* ele_rainLine2.png in Resources */,
 				45771F9E1D0E5724006BF7F3 /* passWord.png in Resources */,
-				45812BB21E792486001B8B05 /* 特大暴雨.png in Resources */,
 				45A24A551DBD9FA6009C1CF3 /* icon_his_btn@2x.png in Resources */,
 				45BF59A81D1A6BC000F3EFBD /* explain.png in Resources */,
-				45771FCE1D0E7DD9006BF7F3 /* 雷阵雨.png in Resources */,
+				450BA6B81E8CA3F500CDA23E /* 未知.png in Resources */,
+				450BA6A51E8CA3F400CDA23E /* 中雪转晴.png in Resources */,
 				45FF5D141D0FAD1C00F3D4E4 /* dos.png in Resources */,
-				45812BA41E792330001B8B05 /* 少云.png in Resources */,
 				45FF5D201D0FC93D00F3D4E4 /* CurrentReceive.xib in Resources */,
 				4548092F1D41FDE100FB9D64 /* bg_小到中雨.jpg in Resources */,
 				451B64791E88DD0800CED784 /* ele_sunnySunshine.png in Resources */,
+				450BA6B41E8CA3F500CDA23E /* 晴间多云.png in Resources */,
 				45B4435F1CF41FB8000644B2 /* Config.storyboard in Resources */,
+				450BA6B51E8CA3F500CDA23E /* 暴雨.png in Resources */,
 				45EB0C0E1D3E01E70062AE52 /* metering_selected@2x.png in Resources */,
 				454936581D6179BD004EC4E0 /* icon_section.png in Resources */,
-				45771FCB1D0E7DD9006BF7F3 /* 阵雨1.png in Resources */,
 				451B64671E88DD0800CED784 /* ele_sunnyBirdInvertedImage2.png in Resources */,
+				450BA6A81E8CA3F400CDA23E /* 大暴雨.png in Resources */,
 				45DC9C991DD9626A00222D9E /* icon_compute.png in Resources */,
+				450BA6EB1E8E325D00CDA23E /* 小雨.gif in Resources */,
 				459157621E022B840025F439 /* ScanQR1@2x.png in Resources */,
 				4521D73D1D542C3B006DA76C /* icon_share@2x.png in Resources */,
 				45D635091D17B7F1004358B8 /* QueryTableViewCell.xib in Resources */,
 				454809291D41F28800FB9D64 /* bg_沙尘暴.jpg in Resources */,
-				45771FC21D0E7DD9006BF7F3 /* 多云转晴1.png in Resources */,
 				458AD5271DE807ED00E5CC49 /* icon_delete@3x.png in Resources */,
 				456D19561D5C1F2E0038C442 /* 日盘点.png in Resources */,
 				45DC9C9C1DD9626A00222D9E /* icon_normal.png in Resources */,
@@ -3835,23 +3934,24 @@
 				451B64891E88DD0800CED784 /* ele_rainLine3.png in Resources */,
 				45812ADA1E77B238001B8B05 /* home_selected2@2x.png in Resources */,
 				457949681D67F58F0064D959 /* icon_pin@2x.png in Resources */,
-				450103021CF2AA560070E38A /* HomeSB.storyboard in Resources */,
+				450BA6A91E8CA3F400CDA23E /* 大雨.png in Resources */,
+				450BA6A61E8CA3F400CDA23E /* 多云.png in Resources */,
+				450BA6AE1E8CA3F400CDA23E /* 小雪.png in Resources */,
 				451B647B1E88DD0800CED784 /* bg_fog_day.jpg in Resources */,
-				45771FC71D0E7DD9006BF7F3 /* 小雨1.png in Resources */,
 				451B64751E88DD0800CED784 /* ele_sunnyNightWave1.png in Resources */,
 				454809231D41F28800FB9D64 /* bg_fine_night.jpg in Resources */,
+				450BA6F51E8E325D00CDA23E /* 毛毛雨.gif in Resources */,
 				450103041CF2B6A70070E38A /* bg_weater2.jpg in Resources */,
 				45FF5D0F1D0FAD0400F3D4E4 /* message.png in Resources */,
 				457CEE0B1D46EAB200E961A6 /* bg_阵雨.jpg in Resources */,
 				45B602FB1D532238006A7B08 /* cry4.gif in Resources */,
 				451B64611E88DD0800CED784 /* ele_sunnyBird4.png in Resources */,
 				45812ADE1E77B309001B8B05 /* me@2x.png in Resources */,
+				450BA6E31E8E325D00CDA23E /* 中雪.gif in Resources */,
 				451B64761E88DD0800CED784 /* ele_sunnyNightWave2.png in Resources */,
 				454809251D41F28800FB9D64 /* bg_霾.jpg in Resources */,
 				454809241D41F28800FB9D64 /* bg_雾.jpg in Resources */,
-				45812BA61E792365001B8B05 /* 有风.png in Resources */,
 				459241BE1D18DF2B0007A5A5 /* Real-time_curve.png in Resources */,
-				45812BAE1E79242F001B8B05 /* 暴雪.png in Resources */,
 				45DC9C971DD9626A00222D9E /* icon_abnormal.png in Resources */,
 				453BD7E11DBEF68900C3C66C /* .gitkeep in Resources */,
 				451B14731DC3364D00F613C6 /* TZPopInputView.xib in Resources */,
@@ -3860,36 +3960,43 @@
 				4521D7221D542712006DA76C /* Resource.bundle in Resources */,
 				458DFC301D36195200EB874A /* down.png in Resources */,
 				454004071D29FEB300A8EF2A /* save2.png in Resources */,
-				45812B961E7920FB001B8B05 /* 小雨.png in Resources */,
+				450BA6E41E8E325D00CDA23E /* 冻雨.gif in Resources */,
+				450BA6A41E8CA3F400CDA23E /* 中雪.png in Resources */,
 				45E26C151D505C2B00820EC3 /* bg_雷阵雨.jpg in Resources */,
+				450BA6A71E8CA3F400CDA23E /* 多云转晴.png in Resources */,
+				450BA6BB1E8CA3F500CDA23E /* 浮尘.png in Resources */,
 				451B648C1E88DD0800CED784 /* night_sunny_big_star.png in Resources */,
-				45812BAA1E7923C6001B8B05 /* 微风.png in Resources */,
 				4531FE4B1D238FCF00E2C18F /* save.png in Resources */,
-				45978D6E1CED7E6400BF3C0E /* Assets.xcassets in Resources */,
 				451B64841E88DD0800CED784 /* bg_snow_night.jpg in Resources */,
 				451B646A1E88DD0800CED784 /* ele_sunnyBirdInvertedImage5.png in Resources */,
 				45EB0C0F1D3E01E70062AE52 /* metering@2x.png in Resources */,
 				45AA96E41E1367620048B5A9 /* BigMeterDetailCell.xib in Resources */,
+				450BA6EA1E8E325D00CDA23E /* 大雪.gif in Resources */,
 				45EB0C0D1D3E01E70062AE52 /* monitor@2x.png in Resources */,
+				450BA6F71E8E325D00CDA23E /* 特大暴雨.gif in Resources */,
 				45901BA01D41E13100E6249C /* SVProgressHUD.bundle in Resources */,
 				45771F901D0E3B5C006BF7F3 /* AppIcon40x40@3x.png in Resources */,
 				4549364B1D615FF9004EC4E0 /* icon_drop_down@3x.png in Resources */,
 				459E7C9C1DE6CC8B0037D607 /* icon_bg_weather.jpg in Resources */,
 				454809281D41F28800FB9D64 /* bg_大雨.jpg in Resources */,
+				450BA6FA1E8E325D00CDA23E /* 雷阵雨.gif in Resources */,
 				45812B8B1E78ED1B001B8B05 /* NewHome.storyboard in Resources */,
+				450BA6E61E8E325D00CDA23E /* 多云间晴.gif in Resources */,
+				450BA6B61E8CA3F500CDA23E /* 暴雪.png in Resources */,
+				450BA6AD1E8CA3F400CDA23E /* 小雨.png in Resources */,
+				450BA6B91E8CA3F500CDA23E /* 极端降雨.png in Resources */,
 				451B64821E88DD0800CED784 /* bg_rain_night.jpg in Resources */,
-				45812BB81E79254A001B8B05 /* 极端降雨.png in Resources */,
+				450BA6C21E8CA3F500CDA23E /* 雾.png in Resources */,
 				45E7DB181D1B975A0011340D /* userInfor.storyboard in Resources */,
 				45FF5D0D1D0FAD0400F3D4E4 /* edit.png in Resources */,
 				45D44BC91D1D07AB00024E1B /* 刷新1.gif in Resources */,
 				459E7CA01DE6D6600037D607 /* icon_qrcode@3x.png in Resources */,
 				45771F8D1D0E3B5C006BF7F3 /* AppIcon29x29@2x.png in Resources */,
-				45771FCF1D0E7DD9006BF7F3 /* 雹.png in Resources */,
 				45978D6C1CED7E6400BF3C0E /* Main.storyboard in Resources */,
 				45FF5D0E1D0FAD0400F3D4E4 /* his.png in Resources */,
 				45812AE01E77B315001B8B05 /* me_selected@2x.png in Resources */,
 				45BF59AC1D1A71FB00F3EFBD /* 定位图.gif in Resources */,
-				45771FC11D0E7DD9006BF7F3 /* 晴间多云.png in Resources */,
+				45A147901EA70E4400F8D481 /* Assets.xcassets in Resources */,
 				451B64861E88DD0800CED784 /* bg_sunny_night.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4059,7 +4166,6 @@
 				45901B9A1D41E13100E6249C /* UIImage+WebP.m in Sources */,
 				453BD7EF1DBEF68900C3C66C /* WYSectorLayer.m in Sources */,
 				45901B5B1D41E13100E6249C /* AFHTTPSessionManager.m in Sources */,
-				45DCA3081CEEDEF500E42468 /* HomeViewController.m in Sources */,
 				45C705F81D1244CB002164C6 /* ChartViewController.m in Sources */,
 				45901B931D41E13100E6249C /* SDWebImageDownloader.m in Sources */,
 				45D634D21D17917E004358B8 /* UserInfoViewController.m in Sources */,
@@ -4328,7 +4434,7 @@
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/first/base/PrefixHeader.pch";
 				INFOPLIST_FILE = first/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4362,7 +4468,7 @@
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/first/base/PrefixHeader.pch";
 				INFOPLIST_FILE = first/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

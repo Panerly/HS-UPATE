@@ -121,7 +121,7 @@ static int i = 0;
             [_limitOfDayUsageSwitchBtn setOn:[[alarmNsetList objectAtIndex:4]isEqualToString:@"0"] ? NO : YES];
             [_longtimeNotUseSwitchBtn setOn:[[alarmNsetList objectAtIndex:1]isEqualToString:@"0"] ? NO : YES];
             
-#warning mark - diff db got diff count but at least 5
+#pragma mark - diff db got diff count but at least 5
             if (alarmNsetList.count>5) {
                 
                 [_limitOfUsageSwitchBtn setOn:[[alarmNsetList objectAtIndex:5]isEqualToString:@"0"] ? NO : YES];

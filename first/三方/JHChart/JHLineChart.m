@@ -710,11 +710,8 @@
         return;
     }
     
-   
-    
     //第一、UIBezierPath绘制线段
     [self configPerXAndPerY];
- 
     
     for (NSInteger i = 0;i<_drawDataArr.count;i++) {
         
@@ -723,9 +720,6 @@
         [self drawPathWithDataArr:dataArr andIndex:i];
         
     }
-    
-
-    
 }
 
 
@@ -751,6 +745,7 @@
         CGPoint p = value.CGPointValue;
         
         if (_pathCurve) {
+            
             if (i==0) {
                 
                 if (_contentFill) {
@@ -780,13 +775,11 @@
                    [firstPath addLineToPoint:p];
                    [secondPath addLineToPoint:p];
             }
-
         }
 
         if (i==dataArr.count-1) {
             
             [secondPath addLineToPoint:P_M(p.x, self.chartOrigin.y)];
-            
         }
     }
     
@@ -817,7 +810,7 @@
     
     ani.duration = 2.0;
     
-    ani.delegate = self;
+    ani.delegate = (id)self;
     
     [shapeLayer addAnimation:ani forKey:NSStringFromSelector(@selector(strokeEnd))];
     
@@ -840,8 +833,6 @@
         [weakself.layer addSublayer:shaperLay];
         [_layerArr addObject:shaperLay];
     });
-    
-    
 }
 
 
@@ -873,7 +864,6 @@
             }else
                 positionLineColor = [UIColor orangeColor];
 
-            
             [self drawLineWithContext:context andStarPoint:P_M(self.chartOrigin.x, p.y) andEndPoint:p andIsDottedLine:YES andColor:positionLineColor];
             [self drawLineWithContext:context andStarPoint:P_M(p.x, self.chartOrigin.y) andEndPoint:p andIsDottedLine:YES andColor:positionLineColor];
             
@@ -881,7 +871,6 @@
                 UIColor *pointNumberColor = (_pointNumberColorArr.count == _valueArr.count?(_pointNumberColorArr[m]):([UIColor orangeColor]));
                 
                 switch (_lineChartQuadrantType) {
-                       
                         
                     case JHLineChartQuadrantTypeFirstQuardrant:
                     {
@@ -910,16 +899,10 @@
                     default:
                         break;
                 }
-                
             }
-            
-            
         }
     }
-    
      _isEndAnimation = NO;
-    
-    
 }
 
 

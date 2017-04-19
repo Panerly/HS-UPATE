@@ -48,7 +48,7 @@
 - (void)_createVersion {
     
     UIButton *versionBtn = [[UIButton alloc] initWithFrame:CGRectMake((PanScreenWidth-200)/2, PanScreenHeight - 49 -50, 200, 40)];
-    [versionBtn setTitle:@"版本：V1.1.6" forState:UIControlStateNormal];
+    [versionBtn setTitle:@"版本：V1.1.8" forState:UIControlStateNormal];
     [versionBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [versionBtn.titleLabel setFont:[UIFont systemFontOfSize:13]];
     [versionBtn addTarget:self action:@selector(versionAction) forControlEvents:UIControlEventTouchUpInside];
@@ -58,7 +58,7 @@
 //版本更新内容
 - (void)versionAction {
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"版本提示" message:@"1. 修改首页UI\n2.修复已知bug\n3.BUG反馈群：QQ群:511584754" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"版本提示" message:@"1.兼容 iOS 8.0\n2.快速查看前后日期数据\n3.更新内容提示\n4.BUG反馈群：QQ群:511584754" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
     
     [alert addAction:cancel];
@@ -179,17 +179,17 @@
         cleanImageView.frame = CGRectMake(10, (50-30)/2, 30, 30);
         [cell addSubview:cleanImageView];
         
-        UILabel *cleanLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
-        cleanLabel.center = CGPointMake((PanScreenWidth-100)/2+40, CGRectGetMidY(cell.frame));
-        cleanLabel.text = @"点击清理";
-        cleanLabel.textColor = [UIColor colorWithRed:81/255.0f green:155/255.0f blue:248/255.0f alpha:1];
-        cleanLabel.textAlignment = NSTextAlignmentCenter;
+        UILabel *cleanLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, CGRectGetMaxY(cell.frame)-30, 100, 30)];
+        cleanLabel.text = @"清理缓存";
+        cleanLabel.textColor = [UIColor lightGrayColor];
+//        cleanLabel.textColor = [UIColor colorWithRed:81/255.0f green:155/255.0f blue:248/255.0f alpha:1];
+        cleanLabel.textAlignment = NSTextAlignmentLeft;
         [cell addSubview:cleanLabel];
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(PanScreenWidth-60, (50-25)/2, 60, 25)];
-        label.text = [NSString stringWithFormat:@"%.1fM",fileSize / 1024.0 / 1024.0];
-        label.font = [UIFont boldSystemFontOfSize:18];
-        [cell addSubview:label];
+//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(PanScreenWidth-60, (50-25)/2, 60, 25)];
+//        label.text = [NSString stringWithFormat:@"%.1fM",fileSize / 1024.0 / 1024.0];
+//        label.font = [UIFont boldSystemFontOfSize:18];
+//        [cell addSubview:label];
 
         //        [cell addSubview:effectView];
         
@@ -305,6 +305,13 @@
 //    }
 }
 - (void)logOut {
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    [defaults setObject:@"no" forKey:@"login_status"];
+    
+    [defaults synchronize];
+    
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];

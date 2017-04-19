@@ -24,7 +24,4 @@
 
 @property (nonatomic, strong) NSString *typeLabel;
 
-//用于判断是查询历史数据还是实时数据
-@property (nonatomic, assign) int isRealTimeOrHis;
-
 @end

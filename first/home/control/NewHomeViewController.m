@@ -8,6 +8,7 @@
 
 #import "NewHomeViewController.h"
 #import "TLCityPickerController.h"
+#import "UIImage+GIF.h"
 
 //判定方向距离
 #define touchDistance 100
@@ -93,6 +94,7 @@
 -(void)checkVersion
 {
     NSString *newVersion;
+    NSString *newVersionData;
     NSURL *url = [NSURL URLWithString:@"http://itunes.apple.com/cn/lookup?id=1193445551"];//这个URL地址是该app在iTunes connect里面的相关配置信息。其中id是该app在app store唯一的ID编号。
     NSString *jsonResponseString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
     
@@ -107,12 +109,13 @@
     for (NSDictionary *dic in array) {
         
         newVersion = [dic valueForKey:@"version"];
+        newVersionData = [dic valueForKey:@"releaseNotes"];
     }
     
-    [self compareVesionWithServerVersion:newVersion];
+    [self compareVesionWithServerVersion:newVersion newData:newVersionData];
 }
 
--(BOOL)compareVesionWithServerVersion:(NSString *)version{
+-(BOOL)compareVesionWithServerVersion:(NSString *)version newData:(NSString *)newData{
     NSArray *versionArray = [version componentsSeparatedByString:@"."];//服务器返回版
     //获取本地软件的版本号
     NSString *APP_VERSION = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
@@ -125,19 +128,30 @@
         int now = [[currentVesionArray objectAtIndex:i] intValue];
         if (new > now) {//appstore版本大于当前版本，提示更新
             NSLog(@"有新版本 new%ld-----now%ld", (long)new, (long)now);
-            NSString *msg = [NSString stringWithFormat:@"发现新版本，是否下载新版本？"];
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"升级提示" message:msg preferredStyle:UIAlertControllerStyleAlert];
+            NSString *msg = [NSString stringWithFormat:@"%@",newData];
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"发现新版本" message:msg preferredStyle:UIAlertControllerStyleAlert];
             
-            [self presentViewController:alert animated:YES completion:nil];
+            UIView *subView1 = alert.view.subviews[0];
+            UIView *subView2 = subView1.subviews[0];
+            UIView *subView3 = subView2.subviews[0];
+            UIView *subView4 = subView3.subviews[0];
+            UIView *subView5 = subView4.subviews[0];
+            //取title和message：
+            UILabel *message = subView5.subviews[1];
+            //然后设置message内容居左：
+            message.textAlignment = NSTextAlignmentLeft;
+            
             
             [alert addAction:[UIAlertAction actionWithTitle:@"现在升级" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/cn/app/yi-ka-tongbic-ban/id1139094792?l=en&mt=8"]];//这里写的URL地址是该app在app store里面的下载链接地址，其中ID是该app在app store对应的唯一的ID编号。
                 NSLog(@"点击现在升级按钮");
             }]];
-            
-            [alert addAction:[UIAlertAction actionWithTitle:@"下次再说" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                NSLog(@"点击下次再说按钮");
-            }]];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"下次再说" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            [cancelAction setValue:[UIColor lightGrayColor] forKey:@"_titleTextColor"];
+            [alert addAction:cancelAction];
+            [self presentViewController:alert animated:YES completion:nil];
             
             return YES;
         }else if (new < now){//appStore版本小于当前版本
@@ -351,20 +365,11 @@
                         weakSelf.day5WeatherImageView.image = [UIImage imageNamed:[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:4] objectForKey:@"cond"] objectForKey:@"txt_d"]];
                         weakSelf.day6WeatherImageView.image = [UIImage imageNamed:[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:5] objectForKey:@"cond"] objectForKey:@"txt_d"]];
                         weakSelf.day7WeatherImageView.image = [UIImage imageNamed:[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:6] objectForKey:@"cond"] objectForKey:@"txt_d"]];
+                        
+//                        weakSelf.weatherTodayImageView.image = [UIImage sd_animatedGIFNamed:[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:0] objectForKey:@"cond"] objectForKey:@"txt_d"]];//动画天气图标
                         weakSelf.weatherTodayImageView.image = [UIImage imageNamed:[[[[arr objectForKey:@"daily_forecast"] objectAtIndex:0] objectForKey:@"cond"] objectForKey:@"txt_d"]];
                     }
                 }
-                
-//                if ([UIImage imageNamed:[NSString stringWithFormat:@"bg_%@.jpg",self.day1Label.text]] == nil) {
-//                    [weakSelf.weather_bg setImage:[UIImage imageNamed:@"bg_weather3.jpg"]];
-//                }else {
-//
-//                    [_weather_bg setImage:[UIImage imageNamed:[NSString stringWithFormat:@"bg_%@.jpg",self.day1Label.text]]];
-//                    CATransition *trans = [[CATransition alloc] init];
-//                    trans.type = @"rippleEffect";
-//                    trans.duration = .5;
-//                    [_weather_bg.layer addAnimation:trans forKey:@"transition"];
-//                }
                 
                 CATransition *transition = [[CATransition alloc] init];
                 transition.type          = @"rippleEffect";
@@ -493,7 +498,7 @@
 - (void)loadingInfo
 {
     NSString *loadingStr = @"loading";
-    self.tmpLabel.text      = [NSString stringWithFormat:@"🔍"];
+    self.tmpLabel.text      = [NSString stringWithFormat:@"🚫"];
     self.maxTmpLabel.text   = [NSString stringWithFormat:@"%@",loadingStr];
     self.minTmpLabel.text   = [NSString stringWithFormat:@"%@",loadingStr];
     self.updateLabel.text   = [NSString stringWithFormat:@"%@",loadingStr];
@@ -964,6 +969,7 @@ static int timesOut = 0;
 
 //雨天动画
 - (void)rain {
+    
     //加载JSON文件
     NSString *path = [[NSBundle mainBundle] pathForResource:@"rainData.json" ofType:nil];
     NSData *data = [NSData dataWithContentsOfFile:path];

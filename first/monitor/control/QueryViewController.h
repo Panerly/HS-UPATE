@@ -35,6 +35,8 @@
 //用户名
 @property (nonatomic, strong) NSString *userName;
 
+@property (weak, nonatomic) IBOutlet UILabel *previousLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nextLabel;
 
 //当天时间
 @property (nonatomic, strong) NSString *dayDateTime;
@@ -53,7 +55,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) UIButton *btnAction;
-- (IBAction)curveAction:(UIButton *)sender;
 
 @property (weak, nonatomic) IBOutlet UIView *curveView;
 

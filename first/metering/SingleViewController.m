@@ -606,52 +606,48 @@ static BOOL flag;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (IBAction)meterStatuesBtn:(UIButton *)sender {
-    [FTPopOverMenu showForSender:sender
-                        withMenu:@[@"正常",@"水表破损",@"水表倒装",@"人工估表",@"水表停走",@"周检换表",@"用水异常"]
-                  imageNameArray:@[@"icon_normal",@"icon_demage",@"icon_reversal",@"icon_compute",@"icon_meter_stop",@"icon_changemeter",@"icon_abnormal"]
-                       doneBlock:^(NSInteger selectedIndex) {
-                           switch (selectedIndex) {
-                               case 0:
-                                   _meteringSituation.text      = @"正常";
-                                   _meteringSituation.textColor = [UIColor greenColor];
-                                   break;
-                               case 1:
-                                   _meteringSituation.text      = @"水表破损";
-                                   _meteringSituation.textColor = [UIColor redColor];
-                                   break;
-                               case 2:
-                                   _meteringSituation.text      = @"水表倒装";
-                                   _meteringSituation.textColor = [UIColor redColor];
-                                   break;
-                               case 3:
-                                   _meteringSituation.text      = @"人工估表";
-                                   _meteringSituation.textColor = [UIColor redColor];
-                                   break;
-                               case 4:
-                                   _meteringSituation.text      = @"水表停走";
-                                   _meteringSituation.textColor = [UIColor redColor];
-                                   break;
-                               case 5:
-                                   _meteringSituation.text      = @"周检换表";
-                                   _meteringSituation.textColor = [UIColor redColor];
-                                   break;
-                               case 6:
-                                   _meteringSituation.text      = @"用水异常";
-                                   _meteringSituation.textColor = [UIColor redColor];
-                                   break;
-                                   
-                               default:
-                                   _meteringSituation.text      = @"正常";
-                                   _meteringSituation.textColor = [UIColor greenColor];
-                                   break;
-                           }
-                           
-                       } dismissBlock:^{
-                           
-                           NSLog(@"user canceled. do nothing.");
-                           
-                       }];
-
+    [FTPopOverMenu showForSender:sender withMenuArray:@[@"正常",@"水表破损",@"水表倒装",@"人工估表",@"水表停走",@"周检换表",@"用水异常"] imageArray:@[@"icon_normal",@"icon_demage",@"icon_reversal",@"icon_compute",@"icon_meter_stop",@"icon_changemeter",@"icon_abnormal"] doneBlock:^(NSInteger selectedIndex) {
+        
+        switch (selectedIndex) {
+            case 0:
+                _meteringSituation.text      = @"正常";
+                _meteringSituation.textColor = [UIColor greenColor];
+                break;
+            case 1:
+                _meteringSituation.text      = @"水表破损";
+                _meteringSituation.textColor = [UIColor redColor];
+                break;
+            case 2:
+                _meteringSituation.text      = @"水表倒装";
+                _meteringSituation.textColor = [UIColor redColor];
+                break;
+            case 3:
+                _meteringSituation.text      = @"人工估表";
+                _meteringSituation.textColor = [UIColor redColor];
+                break;
+            case 4:
+                _meteringSituation.text      = @"水表停走";
+                _meteringSituation.textColor = [UIColor redColor];
+                break;
+            case 5:
+                _meteringSituation.text      = @"周检换表";
+                _meteringSituation.textColor = [UIColor redColor];
+                break;
+            case 6:
+                _meteringSituation.text      = @"用水异常";
+                _meteringSituation.textColor = [UIColor redColor];
+                break;
+                
+            default:
+                _meteringSituation.text      = @"正常";
+                _meteringSituation.textColor = [UIColor greenColor];
+                break;
+        }
+    } dismissBlock:^{
+        
+        NSLog(@"user canceled. do nothing.");
+    }];
+    
 }
 
 #pragma mark - UITextFieldDelegate

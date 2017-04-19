@@ -72,7 +72,6 @@
     if (self) {
         
         self  = [[UIStoryboard storyboardWithName:@"Config" bundle:nil] instantiateViewControllerWithIdentifier:@"Config"];
-        
     }
     return self;
 }
@@ -108,7 +107,6 @@
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
-    
 }
 - (IBAction)userCountBtn:(id)sender {
 
@@ -116,10 +114,13 @@
         
         _pickerView                 = [[UIPickerView alloc] initWithFrame:CGRectMake(0, PanScreenHeight, PanScreenWidth, 200)];
         _pickerView.backgroundColor = [UIColor lightGrayColor];
-        _pickerView.delegate = self;
+        _pickerView.delegate        = self;
         _pickerView.dataSource      = self;
+        
         for (int i = 0; i < _pickerNameArr.count; i++) {
+            
             if ([_pickerNameArr[i] isEqualToString:[defaults objectForKey:@"count"]]) {
+                
                 [_pickerView selectRow:i inComponent:0 animated:YES];
                 [_pickerView reloadComponent:0];
             }
@@ -127,7 +128,6 @@
     }
     if (flag == NO) {
        
-        
         [self.view addSubview:_pickerView];
         
         [UIView animateWithDuration:.3 animations:^{
@@ -157,6 +157,7 @@
 {
     [_DBConfig resignFirstResponder];
     [_IPConfig resignFirstResponder];
+    
     [UIView animateWithDuration:.3 animations:^{
         
         _pickerView.frame = CGRectMake(0, PanScreenHeight, PanScreenWidth, 200);
