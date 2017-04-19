@@ -30,6 +30,7 @@
     UIButton *curveBtn;
     UIButton *moreBtn;
     
+    //用于判断上下的时间段
     int nextPlus;
     int previousPlus;
     int nextMonth;
@@ -75,6 +76,7 @@
     previousMonth= 0;
 }
 
+//更多btn
 - (void)initMoreBtn {
     
     moreBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 10 - 50, PanScreenHeight - 10 - 50 - 49, 50, 50)];
@@ -368,6 +370,8 @@ static bool isClicked;
     isClicked = !isClicked;
     
 }
+
+//打开曲线图
 - (void)curveAction {
     
         SCViewController *curveVC = [[SCViewController alloc] init];
@@ -387,6 +391,8 @@ static bool isClicked;
         }
         [self.navigationController showViewController:curveVC sender:nil];
 }
+
+//选取时间段进行检索
 - (void)dateAction {
     
     KSDatePicker* picker = [[KSDatePicker alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 40, 300)];
@@ -413,6 +419,8 @@ static bool isClicked;
         self.view = nil;
     }
 }
+
+//前一天时间或者上个月的数据
 - (IBAction)previousData:(UIButton *)sender {
     
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
@@ -466,6 +474,7 @@ static bool isClicked;
             break;
     }
 }
+//后一天的数据或者下个月的数据
 - (IBAction)nextData:(UIButton *)sender {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     
