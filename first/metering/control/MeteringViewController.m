@@ -1141,12 +1141,12 @@ static BOOL flashIsOn;
     
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    if (self.view.window == nil && [self isViewLoaded]) {
-        self.view = nil;
-    }
-}
+//- (void)didReceiveMemoryWarning {
+//    [super didReceiveMemoryWarning];
+//    if (self.view.window == nil && [self isViewLoaded]) {
+//        self.view = nil;
+//    }
+//}
 
 #pragma mark - searchController delegate
 

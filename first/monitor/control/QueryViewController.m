@@ -420,6 +420,7 @@ static bool isClicked;
     }
 }
 
+#pragma mark - chose Time
 //前一天时间或者上个月的数据
 - (IBAction)previousData:(UIButton *)sender {
     
@@ -607,6 +608,7 @@ static bool isClicked;
     }];
 }
 
+#pragma mark - requestData
 //请求一天每小时水表抄收数据
 - (void)requestHourData:(NSString *)date {
 
@@ -722,7 +724,6 @@ static bool isClicked;
             
             NSString *count = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"count"]];
             if ([count isEqualToString:@"0"]) {
-//                [SCToastView showInView:_tableView text:@"暂无数据" duration:4 autoHide:YES];
                 [SVProgressHUD showInfoWithStatus:@"暂无数据"];
             }
             NSDictionary *meter1Dic = [responseObject objectForKey:@"meters"];
@@ -758,16 +759,6 @@ static bool isClicked;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-//        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"服务器连接失败" preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//            
-//        }];
-//        
-//        [alertVC addAction:action];
-//        [self presentViewController:alertVC animated:YES completion:^{
-//            
-//        }];
     [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"请求失败：%@",error]];
     }];
     

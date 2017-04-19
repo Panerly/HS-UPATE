@@ -796,12 +796,12 @@ UIWebViewDelegate
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    if (self.view.window == nil && [self isViewLoaded]) {
-        self.view = nil;
-    }
-}
+//- (void)didReceiveMemoryWarning {
+//    [super didReceiveMemoryWarning];
+//    if (self.view.window == nil && [self isViewLoaded]) {
+//        self.view = nil;
+//    }
+//}
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
