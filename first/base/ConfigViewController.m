@@ -41,8 +41,8 @@
     _dBArr          = @[@"bigmeter_water",@"bigmeter_water",@"bigmeter",@"bigmeter_zjgs",@"bigmeter_zkd",@"bigmeter_chizhou",@"bigmeter_xc",@"bigmeter_xs",@"bigmeter_chengdu"];
     _pickerIPArr    = @[@"60.191.39.206:8000",@"192.168.3.156:8080",@"122.224.204.102:8080",@"124.160.64.122:8080",@"202.141.176.120:8080",@"218.23.188.30:8000",@"58.243.104.26:8080",@"183.129.135.2:8080",@"125.70.9.203:5002"];
     
-    self.IPConfig.text = [[defaults objectForKey:@"ip"] isEqualToString:@""]?[defaults objectForKey:@"ip"]:@"60.191.39.206:8000";
-    self.DBConfig.text = [[defaults objectForKey:@"db"] isEqualToString:@""]?[defaults objectForKey:@"db"]:@"bigmeter_water";
+    self.IPConfig.text = [defaults objectForKey:@"ip"] == nil ? @"60.191.39.206:8000" : [defaults objectForKey:@"ip"];
+    self.DBConfig.text = [defaults objectForKey:@"db"] == nil ? @"bigmeter_water" : [defaults objectForKey:@"db"];
 }
 
 //- (void)configKeyChainItemWrapper
@@ -63,7 +63,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    _userCountLabel.text = [NSString stringWithFormat:@"%@",[[defaults objectForKey:@"unit"] isEqualToString:@""]?[defaults objectForKey:@"unit"]:@"所属单位:杭州水表"];
+    NSString *str = [[NSUserDefaults standardUserDefaults] objectForKey:@"unit"];
+    
+    _userCountLabel.text = [NSString stringWithFormat:@"%@",str == nil ? @"所属单位:杭州水表" : str];
 }
 //从storyboard加载
 - (instancetype)init
@@ -80,17 +82,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-//
-////配置完成按钮
-//- (IBAction)ConpleteBtn:(id)sender {
-//    
-////    ((LoginViewController *)self.nextResponder).ipLabel = self.IPConfig.text;
-////    ((LoginViewController *)self.nextResponder).dbLabel = self.DBConfig.text;
-//    
-//
-//    
-//    
-//}
+
+//配置完成按钮
 - (IBAction)saveBtn:(id)sender {
     
     //保存账号
@@ -191,6 +184,7 @@
     _userCountLabel.text = [NSString stringWithFormat:@"所属单位:  %@",_pickerNameArr[row]];
     [defaults setObject:_pickerNameArr[row] forKey:@"count"];
     [defaults setObject:_userCountLabel.text forKey:@"unit"];
+    [defaults synchronize];
     _IPConfig.text = _pickerIPArr[row];
     _DBConfig.text = _dBArr[row];
 }

@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3864C8961EA85429004EA57A /* WYLineChartBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3864C8831EA85429004EA57A /* WYLineChartBackgroundView.m */; };
+		3864C8971EA85429004EA57A /* WYLineChartCoordinateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3864C8851EA85429004EA57A /* WYLineChartCoordinateView.m */; };
+		3864C8981EA85429004EA57A /* WYLineChartJunctionShape.m in Sources */ = {isa = PBXBuildFile; fileRef = 3864C8881EA85429004EA57A /* WYLineChartJunctionShape.m */; };
+		3864C8991EA85429004EA57A /* WYLineChartMainLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3864C88A1EA85429004EA57A /* WYLineChartMainLineView.m */; };
+		3864C89A1EA85429004EA57A /* WYLineChartReferenceLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3864C88C1EA85429004EA57A /* WYLineChartReferenceLineView.m */; };
+		3864C89B1EA85429004EA57A /* WYChartCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3864C88F1EA85429004EA57A /* WYChartCategory.m */; };
+		3864C89C1EA85429004EA57A /* WYLineChartCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3864C8911EA85429004EA57A /* WYLineChartCalculator.m */; };
+		3864C89D1EA85429004EA57A /* WYLineChartPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 3864C8931EA85429004EA57A /* WYLineChartPoint.m */; };
+		3864C89E1EA85429004EA57A /* WYLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3864C8951EA85429004EA57A /* WYLineChartView.m */; };
 		450103041CF2B6A70070E38A /* bg_weater2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 450103031CF2B6A70070E38A /* bg_weater2.jpg */; };
 		450203A01D6944BB001CF0BB /* UIView+YALConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502039C1D6944BB001CF0BB /* UIView+YALConstraints.m */; };
 		450203A11D6944BB001CF0BB /* YALContextMenuTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502039F1D6944BB001CF0BB /* YALContextMenuTableView.m */; };
@@ -205,24 +214,6 @@
 		452ACC431D20FF5000B50002 /* SearchResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 452ACC411D20FF5000B50002 /* SearchResultViewController.m */; };
 		452ACC441D20FF5000B50002 /* SearchResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 452ACC421D20FF5000B50002 /* SearchResultViewController.xib */; };
 		4531FE4B1D238FCF00E2C18F /* save.png in Resources */ = {isa = PBXBuildFile; fileRef = 4531FE4A1D238FCF00E2C18F /* save.png */; };
-		453BD7E11DBEF68900C3C66C /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 453BD7B71DBEF68900C3C66C /* .gitkeep */; };
-		453BD7E21DBEF68900C3C66C /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 453BD7B91DBEF68900C3C66C /* .gitkeep */; };
-		453BD7E31DBEF68900C3C66C /* WYLineChartBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7BD1DBEF68900C3C66C /* WYLineChartBackgroundView.m */; };
-		453BD7E41DBEF68900C3C66C /* WYLineChartCoordinateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7BF1DBEF68900C3C66C /* WYLineChartCoordinateView.m */; };
-		453BD7E51DBEF68900C3C66C /* WYLineChartJunctionShape.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7C21DBEF68900C3C66C /* WYLineChartJunctionShape.m */; };
-		453BD7E61DBEF68900C3C66C /* WYLineChartMainLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7C41DBEF68900C3C66C /* WYLineChartMainLineView.m */; };
-		453BD7E71DBEF68900C3C66C /* WYLineChartReferenceLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7C61DBEF68900C3C66C /* WYLineChartReferenceLineView.m */; };
-		453BD7E81DBEF68900C3C66C /* WYChartCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7C91DBEF68900C3C66C /* WYChartCategory.m */; };
-		453BD7E91DBEF68900C3C66C /* WYLineChartCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7CB1DBEF68900C3C66C /* WYLineChartCalculator.m */; };
-		453BD7EA1DBEF68900C3C66C /* WYLineChartPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7CD1DBEF68900C3C66C /* WYLineChartPoint.m */; };
-		453BD7EB1DBEF68900C3C66C /* WYLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7CF1DBEF68900C3C66C /* WYLineChartView.m */; };
-		453BD7EC1DBEF68900C3C66C /* WYMainPieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7D31DBEF68900C3C66C /* WYMainPieChartView.m */; };
-		453BD7ED1DBEF68900C3C66C /* WYPieCenterCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7D51DBEF68900C3C66C /* WYPieCenterCircle.m */; };
-		453BD7EE1DBEF68900C3C66C /* WYPieChartForegroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7D71DBEF68900C3C66C /* WYPieChartForegroundView.m */; };
-		453BD7EF1DBEF68900C3C66C /* WYSectorLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7D91DBEF68900C3C66C /* WYSectorLayer.m */; };
-		453BD7F01DBEF68900C3C66C /* WYPieChartCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7DC1DBEF68900C3C66C /* WYPieChartCalculator.m */; };
-		453BD7F11DBEF68900C3C66C /* WYPieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7DE1DBEF68900C3C66C /* WYPieChartView.m */; };
-		453BD7F21DBEF68900C3C66C /* WYPieSector.m in Sources */ = {isa = PBXBuildFile; fileRef = 453BD7E01DBEF68900C3C66C /* WYPieSector.m */; };
 		453F09461D9E26C000396B61 /* LitMeterDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 453F09451D9E26C000396B61 /* LitMeterDetailModel.m */; };
 		453F094A1D9E26E200396B61 /* LitMeterDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 453F09481D9E26E200396B61 /* LitMeterDetailTableViewCell.m */; };
 		453F094B1D9E26E200396B61 /* LitMeterDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453F09491D9E26E200396B61 /* LitMeterDetailTableViewCell.xib */; };
@@ -607,6 +598,24 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3864C8821EA85429004EA57A /* WYLineChartBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartBackgroundView.h; sourceTree = "<group>"; };
+		3864C8831EA85429004EA57A /* WYLineChartBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartBackgroundView.m; sourceTree = "<group>"; };
+		3864C8841EA85429004EA57A /* WYLineChartCoordinateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartCoordinateView.h; sourceTree = "<group>"; };
+		3864C8851EA85429004EA57A /* WYLineChartCoordinateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartCoordinateView.m; sourceTree = "<group>"; };
+		3864C8871EA85429004EA57A /* WYLineChartJunctionShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartJunctionShape.h; sourceTree = "<group>"; };
+		3864C8881EA85429004EA57A /* WYLineChartJunctionShape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartJunctionShape.m; sourceTree = "<group>"; };
+		3864C8891EA85429004EA57A /* WYLineChartMainLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartMainLineView.h; sourceTree = "<group>"; };
+		3864C88A1EA85429004EA57A /* WYLineChartMainLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartMainLineView.m; sourceTree = "<group>"; };
+		3864C88B1EA85429004EA57A /* WYLineChartReferenceLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartReferenceLineView.h; sourceTree = "<group>"; };
+		3864C88C1EA85429004EA57A /* WYLineChartReferenceLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartReferenceLineView.m; sourceTree = "<group>"; };
+		3864C88E1EA85429004EA57A /* WYChartCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYChartCategory.h; sourceTree = "<group>"; };
+		3864C88F1EA85429004EA57A /* WYChartCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYChartCategory.m; sourceTree = "<group>"; };
+		3864C8901EA85429004EA57A /* WYLineChartCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartCalculator.h; sourceTree = "<group>"; };
+		3864C8911EA85429004EA57A /* WYLineChartCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartCalculator.m; sourceTree = "<group>"; };
+		3864C8921EA85429004EA57A /* WYLineChartPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartPoint.h; sourceTree = "<group>"; };
+		3864C8931EA85429004EA57A /* WYLineChartPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartPoint.m; sourceTree = "<group>"; };
+		3864C8941EA85429004EA57A /* WYLineChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartView.h; sourceTree = "<group>"; };
+		3864C8951EA85429004EA57A /* WYLineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartView.m; sourceTree = "<group>"; };
 		450102FF1CF2A7AD0070E38A /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		450103031CF2B6A70070E38A /* bg_weater2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg_weater2.jpg; sourceTree = "<group>"; };
 		4502039B1D6944BB001CF0BB /* UIView+YALConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YALConstraints.h"; sourceTree = "<group>"; };
@@ -840,40 +849,6 @@
 		452ACC411D20FF5000B50002 /* SearchResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultViewController.m; sourceTree = "<group>"; };
 		452ACC421D20FF5000B50002 /* SearchResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultViewController.xib; sourceTree = "<group>"; };
 		4531FE4A1D238FCF00E2C18F /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save.png; sourceTree = "<group>"; };
-		453BD7B71DBEF68900C3C66C /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		453BD7B91DBEF68900C3C66C /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		453BD7BC1DBEF68900C3C66C /* WYLineChartBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartBackgroundView.h; sourceTree = "<group>"; };
-		453BD7BD1DBEF68900C3C66C /* WYLineChartBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartBackgroundView.m; sourceTree = "<group>"; };
-		453BD7BE1DBEF68900C3C66C /* WYLineChartCoordinateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartCoordinateView.h; sourceTree = "<group>"; };
-		453BD7BF1DBEF68900C3C66C /* WYLineChartCoordinateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartCoordinateView.m; sourceTree = "<group>"; };
-		453BD7C11DBEF68900C3C66C /* WYLineChartJunctionShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartJunctionShape.h; sourceTree = "<group>"; };
-		453BD7C21DBEF68900C3C66C /* WYLineChartJunctionShape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartJunctionShape.m; sourceTree = "<group>"; };
-		453BD7C31DBEF68900C3C66C /* WYLineChartMainLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartMainLineView.h; sourceTree = "<group>"; };
-		453BD7C41DBEF68900C3C66C /* WYLineChartMainLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartMainLineView.m; sourceTree = "<group>"; };
-		453BD7C51DBEF68900C3C66C /* WYLineChartReferenceLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartReferenceLineView.h; sourceTree = "<group>"; };
-		453BD7C61DBEF68900C3C66C /* WYLineChartReferenceLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartReferenceLineView.m; sourceTree = "<group>"; };
-		453BD7C81DBEF68900C3C66C /* WYChartCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYChartCategory.h; sourceTree = "<group>"; };
-		453BD7C91DBEF68900C3C66C /* WYChartCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYChartCategory.m; sourceTree = "<group>"; };
-		453BD7CA1DBEF68900C3C66C /* WYLineChartCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartCalculator.h; sourceTree = "<group>"; };
-		453BD7CB1DBEF68900C3C66C /* WYLineChartCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartCalculator.m; sourceTree = "<group>"; };
-		453BD7CC1DBEF68900C3C66C /* WYLineChartPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartPoint.h; sourceTree = "<group>"; };
-		453BD7CD1DBEF68900C3C66C /* WYLineChartPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartPoint.m; sourceTree = "<group>"; };
-		453BD7CE1DBEF68900C3C66C /* WYLineChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLineChartView.h; sourceTree = "<group>"; };
-		453BD7CF1DBEF68900C3C66C /* WYLineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLineChartView.m; sourceTree = "<group>"; };
-		453BD7D21DBEF68900C3C66C /* WYMainPieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYMainPieChartView.h; sourceTree = "<group>"; };
-		453BD7D31DBEF68900C3C66C /* WYMainPieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYMainPieChartView.m; sourceTree = "<group>"; };
-		453BD7D41DBEF68900C3C66C /* WYPieCenterCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPieCenterCircle.h; sourceTree = "<group>"; };
-		453BD7D51DBEF68900C3C66C /* WYPieCenterCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPieCenterCircle.m; sourceTree = "<group>"; };
-		453BD7D61DBEF68900C3C66C /* WYPieChartForegroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPieChartForegroundView.h; sourceTree = "<group>"; };
-		453BD7D71DBEF68900C3C66C /* WYPieChartForegroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPieChartForegroundView.m; sourceTree = "<group>"; };
-		453BD7D81DBEF68900C3C66C /* WYSectorLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYSectorLayer.h; sourceTree = "<group>"; };
-		453BD7D91DBEF68900C3C66C /* WYSectorLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYSectorLayer.m; sourceTree = "<group>"; };
-		453BD7DB1DBEF68900C3C66C /* WYPieChartCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPieChartCalculator.h; sourceTree = "<group>"; };
-		453BD7DC1DBEF68900C3C66C /* WYPieChartCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPieChartCalculator.m; sourceTree = "<group>"; };
-		453BD7DD1DBEF68900C3C66C /* WYPieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPieChartView.h; sourceTree = "<group>"; };
-		453BD7DE1DBEF68900C3C66C /* WYPieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPieChartView.m; sourceTree = "<group>"; };
-		453BD7DF1DBEF68900C3C66C /* WYPieSector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPieSector.h; sourceTree = "<group>"; };
-		453BD7E01DBEF68900C3C66C /* WYPieSector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPieSector.m; sourceTree = "<group>"; };
 		453F09441D9E26C000396B61 /* LitMeterDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LitMeterDetailModel.h; sourceTree = "<group>"; };
 		453F09451D9E26C000396B61 /* LitMeterDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LitMeterDetailModel.m; sourceTree = "<group>"; };
 		453F09471D9E26E200396B61 /* LitMeterDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LitMeterDetailTableViewCell.h; sourceTree = "<group>"; };
@@ -1510,6 +1485,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3864C8801EA85429004EA57A /* WYLineChart */ = {
+			isa = PBXGroup;
+			children = (
+				3864C8811EA85429004EA57A /* Background */,
+				3864C8861EA85429004EA57A /* Foreground */,
+				3864C88D1EA85429004EA57A /* Main */,
+			);
+			path = WYLineChart;
+			sourceTree = "<group>";
+		};
+		3864C8811EA85429004EA57A /* Background */ = {
+			isa = PBXGroup;
+			children = (
+				3864C8821EA85429004EA57A /* WYLineChartBackgroundView.h */,
+				3864C8831EA85429004EA57A /* WYLineChartBackgroundView.m */,
+				3864C8841EA85429004EA57A /* WYLineChartCoordinateView.h */,
+				3864C8851EA85429004EA57A /* WYLineChartCoordinateView.m */,
+			);
+			path = Background;
+			sourceTree = "<group>";
+		};
+		3864C8861EA85429004EA57A /* Foreground */ = {
+			isa = PBXGroup;
+			children = (
+				3864C8871EA85429004EA57A /* WYLineChartJunctionShape.h */,
+				3864C8881EA85429004EA57A /* WYLineChartJunctionShape.m */,
+				3864C8891EA85429004EA57A /* WYLineChartMainLineView.h */,
+				3864C88A1EA85429004EA57A /* WYLineChartMainLineView.m */,
+				3864C88B1EA85429004EA57A /* WYLineChartReferenceLineView.h */,
+				3864C88C1EA85429004EA57A /* WYLineChartReferenceLineView.m */,
+			);
+			path = Foreground;
+			sourceTree = "<group>";
+		};
+		3864C88D1EA85429004EA57A /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				3864C88E1EA85429004EA57A /* WYChartCategory.h */,
+				3864C88F1EA85429004EA57A /* WYChartCategory.m */,
+				3864C8901EA85429004EA57A /* WYLineChartCalculator.h */,
+				3864C8911EA85429004EA57A /* WYLineChartCalculator.m */,
+				3864C8921EA85429004EA57A /* WYLineChartPoint.h */,
+				3864C8931EA85429004EA57A /* WYLineChartPoint.m */,
+				3864C8941EA85429004EA57A /* WYLineChartView.h */,
+				3864C8951EA85429004EA57A /* WYLineChartView.m */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		4502039A1D6944BB001CF0BB /* YALContextMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -1981,119 +2005,6 @@
 			path = view;
 			sourceTree = "<group>";
 		};
-		453BD7B51DBEF68900C3C66C /* WYChart */ = {
-			isa = PBXGroup;
-			children = (
-				453BD7B61DBEF68900C3C66C /* Assets */,
-				453BD7B81DBEF68900C3C66C /* Classes */,
-			);
-			path = WYChart;
-			sourceTree = "<group>";
-		};
-		453BD7B61DBEF68900C3C66C /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				453BD7B71DBEF68900C3C66C /* .gitkeep */,
-			);
-			path = Assets;
-			sourceTree = "<group>";
-		};
-		453BD7B81DBEF68900C3C66C /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				453BD7B91DBEF68900C3C66C /* .gitkeep */,
-				453BD7BA1DBEF68900C3C66C /* WYLineChart */,
-				453BD7D01DBEF68900C3C66C /* WYPieChart */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		453BD7BA1DBEF68900C3C66C /* WYLineChart */ = {
-			isa = PBXGroup;
-			children = (
-				453BD7BB1DBEF68900C3C66C /* Background */,
-				453BD7C01DBEF68900C3C66C /* Foreground */,
-				453BD7C71DBEF68900C3C66C /* Main */,
-			);
-			path = WYLineChart;
-			sourceTree = "<group>";
-		};
-		453BD7BB1DBEF68900C3C66C /* Background */ = {
-			isa = PBXGroup;
-			children = (
-				453BD7BC1DBEF68900C3C66C /* WYLineChartBackgroundView.h */,
-				453BD7BD1DBEF68900C3C66C /* WYLineChartBackgroundView.m */,
-				453BD7BE1DBEF68900C3C66C /* WYLineChartCoordinateView.h */,
-				453BD7BF1DBEF68900C3C66C /* WYLineChartCoordinateView.m */,
-			);
-			path = Background;
-			sourceTree = "<group>";
-		};
-		453BD7C01DBEF68900C3C66C /* Foreground */ = {
-			isa = PBXGroup;
-			children = (
-				453BD7C11DBEF68900C3C66C /* WYLineChartJunctionShape.h */,
-				453BD7C21DBEF68900C3C66C /* WYLineChartJunctionShape.m */,
-				453BD7C31DBEF68900C3C66C /* WYLineChartMainLineView.h */,
-				453BD7C41DBEF68900C3C66C /* WYLineChartMainLineView.m */,
-				453BD7C51DBEF68900C3C66C /* WYLineChartReferenceLineView.h */,
-				453BD7C61DBEF68900C3C66C /* WYLineChartReferenceLineView.m */,
-			);
-			path = Foreground;
-			sourceTree = "<group>";
-		};
-		453BD7C71DBEF68900C3C66C /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				453BD7C81DBEF68900C3C66C /* WYChartCategory.h */,
-				453BD7C91DBEF68900C3C66C /* WYChartCategory.m */,
-				453BD7CA1DBEF68900C3C66C /* WYLineChartCalculator.h */,
-				453BD7CB1DBEF68900C3C66C /* WYLineChartCalculator.m */,
-				453BD7CC1DBEF68900C3C66C /* WYLineChartPoint.h */,
-				453BD7CD1DBEF68900C3C66C /* WYLineChartPoint.m */,
-				453BD7CE1DBEF68900C3C66C /* WYLineChartView.h */,
-				453BD7CF1DBEF68900C3C66C /* WYLineChartView.m */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
-		453BD7D01DBEF68900C3C66C /* WYPieChart */ = {
-			isa = PBXGroup;
-			children = (
-				453BD7D11DBEF68900C3C66C /* Components */,
-				453BD7DA1DBEF68900C3C66C /* Main */,
-			);
-			path = WYPieChart;
-			sourceTree = "<group>";
-		};
-		453BD7D11DBEF68900C3C66C /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				453BD7D21DBEF68900C3C66C /* WYMainPieChartView.h */,
-				453BD7D31DBEF68900C3C66C /* WYMainPieChartView.m */,
-				453BD7D41DBEF68900C3C66C /* WYPieCenterCircle.h */,
-				453BD7D51DBEF68900C3C66C /* WYPieCenterCircle.m */,
-				453BD7D61DBEF68900C3C66C /* WYPieChartForegroundView.h */,
-				453BD7D71DBEF68900C3C66C /* WYPieChartForegroundView.m */,
-				453BD7D81DBEF68900C3C66C /* WYSectorLayer.h */,
-				453BD7D91DBEF68900C3C66C /* WYSectorLayer.m */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		453BD7DA1DBEF68900C3C66C /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				453BD7DB1DBEF68900C3C66C /* WYPieChartCalculator.h */,
-				453BD7DC1DBEF68900C3C66C /* WYPieChartCalculator.m */,
-				453BD7DD1DBEF68900C3C66C /* WYPieChartView.h */,
-				453BD7DE1DBEF68900C3C66C /* WYPieChartView.m */,
-				453BD7DF1DBEF68900C3C66C /* WYPieSector.h */,
-				453BD7E01DBEF68900C3C66C /* WYPieSector.m */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
 		453F093D1D9E257F00396B61 /* LitmeterDetail（小区户表列表） */ = {
 			isa = PBXGroup;
 			children = (
@@ -2421,6 +2332,7 @@
 		45901AB71D41E13100E6249C /* ThirdSource */ = {
 			isa = PBXGroup;
 			children = (
+				3864C8801EA85429004EA57A /* WYLineChart */,
 				45812B8F1E791982001B8B05 /* FTPopOverMenu */,
 				45934EB81E124A10006694E3 /* LMReport */,
 				45934EB01E124793006694E3 /* LSStatusBarHUD */,
@@ -2435,7 +2347,6 @@
 				45901AF21D41E13100E6249C /* Masonry */,
 				45901B2F1D41E13100E6249C /* SDWebImage */,
 				45901B531D41E13100E6249C /* SVProgressHUD */,
-				453BD7B51DBEF68900C3C66C /* WYChart */,
 				45C791D71DA888BA00078786 /* SDCycleScrollView */,
 				45F42BC81D6C1FAF006E2412 /* LLSwitch */,
 				451794091D6AB09F00433921 /* GUAAlertView.h */,
@@ -3667,7 +3578,7 @@
 		45978D561CED7E6400BF3C0E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = HS;
 				TargetAttributes = {
 					45978D5D1CED7E6400BF3C0E = {
@@ -3808,7 +3719,6 @@
 				458DFC2E1D36149F00EB874A /* 刷新50.gif in Resources */,
 				450BA6F81E8E325D00CDA23E /* 阴.gif in Resources */,
 				451B648B1E88DD0800CED784 /* night_rain_cloud.png in Resources */,
-				453BD7E21DBEF68900C3C66C /* .gitkeep in Resources */,
 				45771F921D0E3B5C006BF7F3 /* AppIcon60x60@3x.png in Resources */,
 				451794321D6AE30500433921 /* TableViewCell.xib in Resources */,
 				451B64701E88DD0800CED784 /* ele_sunnyNightFirefly.png in Resources */,
@@ -3953,7 +3863,6 @@
 				454809241D41F28800FB9D64 /* bg_雾.jpg in Resources */,
 				459241BE1D18DF2B0007A5A5 /* Real-time_curve.png in Resources */,
 				45DC9C971DD9626A00222D9E /* icon_abnormal.png in Resources */,
-				453BD7E11DBEF68900C3C66C /* .gitkeep in Resources */,
 				451B14731DC3364D00F613C6 /* TZPopInputView.xib in Resources */,
 				45BF598C1D1A2E5300F3EFBD /* Metering.storyboard in Resources */,
 				4555A23D1D45E483009D1DC6 /* bg_中雨.jpg in Resources */,
@@ -4045,6 +3954,7 @@
 				4517942A1D6ADCE400433921 /* FMDatabasePool.m in Sources */,
 				4570480A1DF505FF00C2561A /* MapDataModel.m in Sources */,
 				45901B691D41E13100E6249C /* JSONModelClassProperty.m in Sources */,
+				3864C89D1EA85429004EA57A /* WYLineChartPoint.m in Sources */,
 				4555A2321D45E169009D1DC6 /* MJRefreshBackStateFooter.m in Sources */,
 				45A520BF1DB60160006BD05E /* TLCityGroupCell.m in Sources */,
 				45F42BC01D6BE635006E2412 /* CompleteModel.m in Sources */,
@@ -4056,8 +3966,8 @@
 				459A97071DFF9432004C6547 /* JHPieForeBGView.m in Sources */,
 				45D44BBE1D1CFADA00024E1B /* SCCircleCell.m in Sources */,
 				45901B9D1D41E13100E6249C /* UIView+WebCacheOperation.m in Sources */,
+				3864C8971EA85429004EA57A /* WYLineChartCoordinateView.m in Sources */,
 				45E2E2A61DDD9B6300CE42B7 /* GCDSemaphore.m in Sources */,
-				453BD7E31DBEF68900C3C66C /* WYLineChartBackgroundView.m in Sources */,
 				459A97061DFF9432004C6547 /* JHPieChart.m in Sources */,
 				45901B7B1D41E13100E6249C /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				4517942C1D6ADCE400433921 /* FMResultSet.m in Sources */,
@@ -4066,10 +3976,8 @@
 				45F42BCF1D6C1FAF006E2412 /* LLAnimationManager.m in Sources */,
 				45901B9F1D41E13100E6249C /* SVIndefiniteAnimatedView.m in Sources */,
 				45934EC51E124A10006694E3 /* LMRGrid.m in Sources */,
-				453BD7F11DBEF68900C3C66C /* WYPieChartView.m in Sources */,
 				45901B831D41E13100E6249C /* SCChart.m in Sources */,
 				45934EAF1E12330F006694E3 /* MapDataDetailViewController.m in Sources */,
-				453BD7F21DBEF68900C3C66C /* WYPieSector.m in Sources */,
 				45D635081D17B7F1004358B8 /* QueryTableViewCell.m in Sources */,
 				45901B811D41E13100E6249C /* SCBar.m in Sources */,
 				459157661E022B840025F439 /* SJCameraViewController.m in Sources */,
@@ -4099,6 +4007,7 @@
 				45E26C131D50437900820EC3 /* KSDatePickerAppearance.m in Sources */,
 				451794291D6ADCE400433921 /* FMDatabaseAdditions.m in Sources */,
 				4555A2331D45E169009D1DC6 /* MJRefreshGifHeader.m in Sources */,
+				3864C8991EA85429004EA57A /* WYLineChartMainLineView.m in Sources */,
 				459E7C9A1DE6C8D00037D607 /* FBShimmeringView.m in Sources */,
 				453F2CAF1D263E170048A4DB /* MeterEditModel.m in Sources */,
 				45E26FA51D6E98C200DEAB9D /* ScanImageViewController.m in Sources */,
@@ -4106,6 +4015,7 @@
 				45DCA3201CEEF22A00E42468 /* ServerViewController.m in Sources */,
 				45F42BBD1D6BE5A3006E2412 /* CompleteViewController.m in Sources */,
 				45901B781D41E13100E6249C /* MASViewAttribute.m in Sources */,
+				3864C8981EA85429004EA57A /* WYLineChartJunctionShape.m in Sources */,
 				4555A23A1D45E169009D1DC6 /* UIScrollView+MJRefresh.m in Sources */,
 				4555A22A1D45E169009D1DC6 /* MJRefreshComponent.m in Sources */,
 				45D44BBF1D1CFADA00024E1B /* SCPieCell.m in Sources */,
@@ -4122,14 +4032,13 @@
 				459A970E1DFF9432004C6547 /* JHWaveChart.m in Sources */,
 				45901B901D41E13100E6249C /* SDImageCache.m in Sources */,
 				459A970C1DFF9432004C6547 /* JHTableChart.m in Sources */,
-				453BD7E61DBEF68900C3C66C /* WYLineChartMainLineView.m in Sources */,
 				4555A2391D45E169009D1DC6 /* UIScrollView+MJExtension.m in Sources */,
 				45901B5E1D41E13100E6249C /* AFURLRequestSerialization.m in Sources */,
 				45DCA3851CEF024F00E42468 /* MonitorViewController.m in Sources */,
 				45901B711D41E13100E6249C /* MagicMoveInverseTransition.m in Sources */,
 				45901B8C1D41E13100E6249C /* UICountingLabel.m in Sources */,
 				451794311D6AE30500433921 /* TableViewCell.m in Sources */,
-				453BD7E81DBEF68900C3C66C /* WYChartCategory.m in Sources */,
+				3864C8961EA85429004EA57A /* WYLineChartBackgroundView.m in Sources */,
 				45AA96E31E1367620048B5A9 /* BigMeterDetailCell.m in Sources */,
 				45C791E81DA888BA00078786 /* TAAnimatedDotView.m in Sources */,
 				450D3CB71DD0690B0024E9AA /* CommProTableViewCell.m in Sources */,
@@ -4140,7 +4049,6 @@
 				454936551D61673B004EC4E0 /* LitMeterDetailViewController.m in Sources */,
 				45901B6B1D41E13100E6249C /* JSONAPI.m in Sources */,
 				453F2CAC1D2634A70048A4DB /* MeterEditScrollView.m in Sources */,
-				453BD7E51DBEF68900C3C66C /* WYLineChartJunctionShape.m in Sources */,
 				45934EC71E124A10006694E3 /* LMRStyle.m in Sources */,
 				458A74E01D5AD13D00A53D8C /* MeterInfoModel.m in Sources */,
 				45901B881D41E13100E6249C /* SCLineChart.m in Sources */,
@@ -4148,7 +4056,6 @@
 				451B146A1DC31AED00F613C6 /* UIButton+WHE.m in Sources */,
 				45DCA3771CEF004E00E42468 /* AppDelegate.mm in Sources */,
 				4555A22C1D45E169009D1DC6 /* MJRefreshHeader.m in Sources */,
-				453BD7E91DBEF68900C3C66C /* WYLineChartCalculator.m in Sources */,
 				45A520C11DB60160006BD05E /* TLCityPickerController.m in Sources */,
 				45812B921E791982001B8B05 /* FTPopOverMenu.m in Sources */,
 				456FB2A51D9B948600BB041C /* LitMeterListTableViewCell.m in Sources */,
@@ -4157,14 +4064,13 @@
 				45901B8E1D41E13100E6249C /* MKAnnotationView+WebCache.m in Sources */,
 				45901B871D41E13100E6249C /* SCGenericChart.m in Sources */,
 				45901B6E1D41E13100E6249C /* JSONKeyMapper.m in Sources */,
-				453BD7EC1DBEF68900C3C66C /* WYMainPieChartView.m in Sources */,
 				45090A4B1D66AD6400DA9456 /* AMWaveTransition.m in Sources */,
 				45D44BB11D1CC80800024E1B /* HisDetailTableViewCell.m in Sources */,
 				45901B9E1D41E13100E6249C /* SpinerLayer.m in Sources */,
 				45901B911D41E13100E6249C /* SDWebImageCompat.m in Sources */,
 				45FF5D261D0FD1B400F3D4E4 /* CRModel.m in Sources */,
 				45901B9A1D41E13100E6249C /* UIImage+WebP.m in Sources */,
-				453BD7EF1DBEF68900C3C66C /* WYSectorLayer.m in Sources */,
+				3864C89C1EA85429004EA57A /* WYLineChartCalculator.m in Sources */,
 				45901B5B1D41E13100E6249C /* AFHTTPSessionManager.m in Sources */,
 				45C705F81D1244CB002164C6 /* ChartViewController.m in Sources */,
 				45901B931D41E13100E6249C /* SDWebImageDownloader.m in Sources */,
@@ -4173,8 +4079,6 @@
 				45DCA31A1CEEF1E600E42468 /* MeteringViewController.m in Sources */,
 				45D44BBC1D1CFADA00024E1B /* SCBarCell.m in Sources */,
 				45A520C21DB60160006BD05E /* TLCityPickerSearchResultController.m in Sources */,
-				453BD7E41DBEF68900C3C66C /* WYLineChartCoordinateView.m in Sources */,
-				453BD7EA1DBEF68900C3C66C /* WYLineChartPoint.m in Sources */,
 				45E2E2A41DDD9B6300CE42B7 /* GCDGroup.m in Sources */,
 				45D44BAC1D1CC4B600024E1B /* HisDetailViewController.m in Sources */,
 				4555A22B1D45E169009D1DC6 /* MJRefreshFooter.m in Sources */,
@@ -4203,7 +4107,6 @@
 				4555A2341D45E169009D1DC6 /* MJRefreshNormalHeader.m in Sources */,
 				45901B991D41E13100E6249C /* UIImage+MultiFormat.m in Sources */,
 				45901B5C1D41E13100E6249C /* AFNetworkReachabilityManager.m in Sources */,
-				453BD7EB1DBEF68900C3C66C /* WYLineChartView.m in Sources */,
 				45BF59991D1A3B9400F3EFBD /* SingleViewController.m in Sources */,
 				45FAAA0B1D2260140040866C /* MeterDataTableViewCell.m in Sources */,
 				45C791ED1DA888BA00078786 /* UIView+SDExtension.m in Sources */,
@@ -4213,7 +4116,6 @@
 				459A970B1DFF9432004C6547 /* JHShowInfoView.m in Sources */,
 				4555A2311D45E169009D1DC6 /* MJRefreshBackNormalFooter.m in Sources */,
 				45901B9B1D41E13100E6249C /* UIImageView+HighlightedWebCache.m in Sources */,
-				453BD7E71DBEF68900C3C66C /* WYLineChartReferenceLineView.m in Sources */,
 				451B146C1DC31AED00F613C6 /* UIImage+CYButtonIcon.m in Sources */,
 				45DCA3791CEF004E00E42468 /* HSTabBarController.m in Sources */,
 				451DFFEB1D13857E003DCDDD /* weatherModel.m in Sources */,
@@ -4232,13 +4134,14 @@
 				450203A11D6944BB001CF0BB /* YALContextMenuTableView.m in Sources */,
 				45901B791D41E13100E6249C /* MASViewConstraint.m in Sources */,
 				453F09461D9E26C000396B61 /* LitMeterDetailModel.m in Sources */,
-				453BD7F01DBEF68900C3C66C /* WYPieChartCalculator.m in Sources */,
 				45FF5D231D0FCD0800F3D4E4 /* CurrentReceiveTableViewCell.m in Sources */,
 				4517940B1D6AB09F00433921 /* GUAAlertView.m in Sources */,
+				3864C89E1EA85429004EA57A /* WYLineChartView.m in Sources */,
 				45901B6F1D41E13100E6249C /* JSONValueTransformer.m in Sources */,
 				45D634C71D177B3A004358B8 /* SettingModel.m in Sources */,
 				45090A671D66BFCF00DA9456 /* CommProViewController.mm in Sources */,
 				4555A2351D45E169009D1DC6 /* MJRefreshStateHeader.m in Sources */,
+				3864C89B1EA85429004EA57A /* WYChartCategory.m in Sources */,
 				45E2E2AA1DDDA14B00CE42B7 /* MLTransition.m in Sources */,
 				45D44BD01D1D15F100024E1B /* HisDetailModel.m in Sources */,
 				455A4CFB1DC1A8770008E942 /* AnimationView.m in Sources */,
@@ -4246,10 +4149,8 @@
 				45C791EB1DA888BA00078786 /* SDCollectionViewCell.m in Sources */,
 				45934EC61E124A10006694E3 /* LMRLabel.m in Sources */,
 				451B14721DC3364D00F613C6 /* TZPopInputView.m in Sources */,
-				453BD7EE1DBEF68900C3C66C /* WYPieChartForegroundView.m in Sources */,
 				4588272A1DB0BD14008103F9 /* LitMeterDetailDataModel.m in Sources */,
 				451B146B1DC31AED00F613C6 /* UIColor+WHE.m in Sources */,
-				453BD7ED1DBEF68900C3C66C /* WYPieCenterCircle.m in Sources */,
 				4579496F1D682D560064D959 /* XSChart.m in Sources */,
 				458A74E91D5ADEEA00A53D8C /* MeterInfoTableViewCell.m in Sources */,
 				45901B6C1D41E13100E6249C /* JSONHTTPClient.m in Sources */,
@@ -4263,6 +4164,7 @@
 				45A520BE1DB60160006BD05E /* TLCity.m in Sources */,
 				45771FA91D0E7CFD006BF7F3 /* WeatherModel.m in Sources */,
 				45F42BD01D6C1FAF006E2412 /* LLEyesLayer.m in Sources */,
+				3864C89A1EA85429004EA57A /* WYLineChartReferenceLineView.m in Sources */,
 				45FF5D1A1D0FC7DD00F3D4E4 /* CurrentReceiveViewController.m in Sources */,
 				45F42BD11D6C1FAF006E2412 /* LLSwitch.m in Sources */,
 			);
@@ -4332,7 +4234,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -4342,8 +4244,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -4369,7 +4273,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos9.1;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -4378,7 +4282,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -4388,8 +4292,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -4408,7 +4314,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = iphoneos9.1;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};

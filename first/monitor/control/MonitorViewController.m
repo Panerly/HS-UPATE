@@ -31,7 +31,6 @@ UIWebViewDelegate
     UIImageView *loading;
     UISegmentedControl *segmentedCtl;
     BOOL isBigMeter;
-    UIPageControl *pageControl;
 }
 @property (nonatomic, strong) SDCycleScrollView *cycleScrollView;
 @property (nonatomic, strong) NSMutableArray *imageArray;
@@ -290,11 +289,16 @@ UIWebViewDelegate
     
 }
 
+//大小表检测切换
 - (void)setSegmentedCtl {
+    
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"find_purview"] isEqualToString:@"00"]) {//管理员
         
-        segmentedCtl                    = [[UISegmentedControl alloc] initWithItems:@[@"大表监测",@"小表监测"]];
-        segmentedCtl.frame              = CGRectMake(0, 0, PanScreenWidth/3, 30);
+        if (!segmentedCtl) {
+            
+            segmentedCtl = [[UISegmentedControl alloc] initWithItems:@[@"大表监测",@"小表监测"]];
+        }
+        segmentedCtl.frame = CGRectMake(0, 0, PanScreenWidth/3, 30);
         [segmentedCtl addTarget:self action:@selector(transMeters:) forControlEvents:UIControlEventValueChanged];
         self.navigationItem.titleView     = segmentedCtl;
         segmentedCtl.selectedSegmentIndex = 0;
@@ -397,8 +401,6 @@ UIWebViewDelegate
                     
                     [(UIButton *)arr[i-100] removeFromSuperview];
                     [self.imageArray removeAllObjects];
-                    [pageControl removeFromSuperview];
-                    pageControl         = nil;
                     [_cycleScrollView removeFromSuperview];
                     _cycleScrollView    = nil;
                 }];
@@ -620,8 +622,13 @@ UIWebViewDelegate
         loading.transform  = CGAffineTransformMakeScale(.01, .01);
     } completion:^(BOOL finished) {
         
-        [_webView removeFromSuperview];
-        [loading removeFromSuperview];
+        if (_webView) {
+            
+            [_webView removeFromSuperview];
+            [loading removeFromSuperview];
+            _webView = nil;
+            loading = nil;
+        }
     }];
 }
 
@@ -629,7 +636,10 @@ UIWebViewDelegate
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
     //刷新控件
-    loading         = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    if (!loading) {
+        
+        loading         = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    }
     loading.center  = self.view.center;
     
     UIImage *image  = [UIImage sd_animatedGIFNamed:@"刷新5"];
@@ -669,7 +679,7 @@ UIWebViewDelegate
                 button = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth/2 * i + PanScreenWidth/8, 59 + viewHeight, width, width)];
             } else
                 
-                button = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth/2 * i + PanScreenWidth/8, width * (j+1) + j*35+viewHeight-15, width, width)];
+            button = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth/2 * i + PanScreenWidth/8, width * (j+1) + j*35+viewHeight-15, width, width)];
             
             [button setBackgroundImage:[UIImage imageNamed:imageArr[i+i+j]] forState:UIControlStateNormal];
             button.imageEdgeInsets = UIEdgeInsetsMake(5,13,21,button.titleLabel.bounds.size.width);//设置image在button上的位置（上top，左left，下bottom，右right）这里可以写负值，对上写－5，那么image就象上移动5个像素

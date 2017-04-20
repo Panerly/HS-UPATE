@@ -140,12 +140,13 @@ UINavigationControllerDelegate
     
     manager.requestSerializer.timeoutInterval = 10;
 
-    NSDictionary *parameters = @{@"username":self.userNameLabel,
+    NSDictionary *parameters = @{
+                                 @"username":self.userNameLabel,
                                  @"password":self.passWordLabel,
                                  @"db":self.dbLabel,
                                  @"type":self.typeLabel,
                                  };
-    NSLog(@"%@",self.typeLabel);
+
     AFHTTPResponseSerializer *serializer    = manager.responseSerializer;
     
     serializer.acceptableContentTypes       = [serializer.acceptableContentTypes setByAddingObject:@"text/plain"];
