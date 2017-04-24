@@ -67,7 +67,8 @@
     [self createBackgroundView];
     
     //检测升级
-    [self checkVersion];
+    [self performSelector:@selector(checkVersion) withObject:self afterDelay:5];
+//    [self checkVersion];
     
     // 设置导航控制器的代理为self
     self.navigationController.delegate = self;
@@ -129,6 +130,7 @@
         if (new > now) {//appstore版本大于当前版本，提示更新
             NSLog(@"有新版本 new%ld-----now%ld", (long)new, (long)now);
             NSString *msg = [NSString stringWithFormat:@"%@",newData];
+            [[NSUserDefaults standardUserDefaults] setObject:msg forKey:@"versionData"];
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"发现新版本" message:msg preferredStyle:UIAlertControllerStyleAlert];
             
             UIView *subView1 = alert.view.subviews[0];

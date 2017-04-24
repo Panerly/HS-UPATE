@@ -141,6 +141,7 @@ NSString *const SJCameraErrorFailedToAddInput = @"SJThumbnailNotification";
 #pragma mark - Configuration Flash
 
 - (BOOL)cameraHasTorch {
+
     return [[self activeCamera] hasTorch];
 }
 

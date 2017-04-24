@@ -62,8 +62,21 @@
     
     //创建登录btn
     [self _createLogBtn];
+    NSLog(@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"status"]);
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"status"] isEqualToString:@"ok"]) {
+        //成功进入
+        [self performSelector:@selector(comeIn) withObject:self afterDelay:.5];
+    }
 }
 
+- (void)comeIn {
+    
+    HSTabBarController *tabBarCtrl = [[HSTabBarController alloc] init];
+    
+    [self presentViewController:tabBarCtrl animated:YES completion:^{
+        tabBarCtrl.modalPresentationStyle = UIModalPresentationPageSheet;
+    }];
+}
 - (void)textFieldDidChange:(UITextField *)textField {
     if (textField == self.userName) {
         
@@ -359,7 +372,7 @@
             
             [defaults setObject:weakSelf.passWord.text forKey:@"passWord"];
             
-            [defaults setObject:@"ok" forKey:@"login_status"];
+            [defaults setObject:@"ok" forKey:@"status"];
             
             [defaults setObject:[[responseObject objectForKey:@"test"] objectForKey:@"type"] forKey:@"type"];
             

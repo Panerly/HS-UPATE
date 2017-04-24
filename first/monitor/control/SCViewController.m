@@ -10,6 +10,11 @@
 #import "SCChartCell.h"
 #import "SCBarCell.h"
 
+typedef NS_ENUM(NSInteger, SectionNum) {
+    SectionNum1 = 0,
+    SectionNum2 = 1
+};
+
 @interface SCViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @end
@@ -45,11 +50,11 @@ static NSString *reuseIdentifierBar = @"SCBarCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-        case 0:
-            return 1;
+        case SectionNum1:
+            return SectionNum2;
             break;
-        case 1:
-            return 1;
+        case SectionNum2:
+            return SectionNum2;
             break;
 
         default:
@@ -62,7 +67,7 @@ static NSString *reuseIdentifierBar = @"SCBarCell";
     
     
     switch (indexPath.section) {
-        case 0:
+        case SectionNum1:
         {
             SCChartCell *cell  = [tableView dequeueReusableCellWithIdentifier:reuseIdentifierChart forIndexPath:indexPath];
             cell.xNum = _xArr;
@@ -77,7 +82,7 @@ static NSString *reuseIdentifierBar = @"SCBarCell";
         }
             break;
             
-        case 1:
+        case SectionNum2:
         {
             
             SCBarCell *barCell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifierBar forIndexPath:indexPath];
