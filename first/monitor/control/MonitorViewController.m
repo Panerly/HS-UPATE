@@ -167,13 +167,16 @@ UIWebViewDelegate
     }
     //移除小表
     for (int j = 200; j < 204; j++) {
+        
         if (litButton) {
+            
             litButton = nil;
         }
         [(UIButton *)litBtnArr[j-200] removeFromSuperview];
     }
     
     if (!_cycleScrollView) {
+        
         //添加大表及滚动视图
         [self _createButton];
         [self _createPicPlay];
@@ -561,8 +564,11 @@ UIWebViewDelegate
 
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
 {
+        /*web服务器已关闭
         UIButton *backBtn;
+    
         if (index == 0) {
+            
             if (!_webView) {
     
                 _webView            = [[UIWebView alloc] initWithFrame:CGRectMake(0, 64, PanScreenWidth, PanScreenHeight-64-49)];
@@ -600,6 +606,10 @@ UIWebViewDelegate
             IntroductionViewController *intrVC = [[IntroductionViewController alloc] init];
             [self.navigationController showViewController:intrVC sender:nil];
         }
+         */
+    
+    IntroductionViewController *intrVC = [[IntroductionViewController alloc] init];
+    [self.navigationController showViewController:intrVC sender:nil];
 }
 
 #pragma mark -- 懒加载

@@ -11,6 +11,6 @@
 @interface Province : NSObject
 
 @property (nonatomic, copy)NSString *name;
-@property (nonatomic, copy)NSMutableArray *cities;
+@property (nonatomic, strong)NSMutableArray *cities;
 
 @end

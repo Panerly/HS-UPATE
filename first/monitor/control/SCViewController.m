@@ -59,10 +59,12 @@ static NSString *reuseIdentifierBar = @"SCBarCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    
     switch (indexPath.section) {
         case 0:
         {
-            SCChartCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifierChart forIndexPath:indexPath];
+            SCChartCell *cell  = [tableView dequeueReusableCellWithIdentifier:reuseIdentifierChart forIndexPath:indexPath];
             cell.xNum = _xArr;
             cell.yNum = _yArr;
             if (!cell) {
@@ -77,6 +79,7 @@ static NSString *reuseIdentifierBar = @"SCBarCell";
             
         case 1:
         {
+            
             SCBarCell *barCell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifierBar forIndexPath:indexPath];
             barCell.xNum = _xArr;
             barCell.yNum = _yArr;
@@ -99,24 +102,26 @@ static NSString *reuseIdentifierBar = @"SCBarCell";
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
     CGRect frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width , 30);
-    UILabel *label = [[UILabel alloc]initWithFrame:frame];
-    label.font = [UIFont systemFontOfSize:14];
-    label.backgroundColor = [[UIColor lightGrayColor]colorWithAlphaComponent:0.3];
+    UILabel *showingLabel = [[UILabel alloc] initWithFrame:frame];
+    showingLabel.font = [UIFont systemFontOfSize:14];
+    showingLabel.backgroundColor = [[UIColor lightGrayColor]colorWithAlphaComponent:0.3];
+    
     switch (section) {
         case 0:
-            label.text = @"折线图·水表读数";
+            showingLabel.text = @"折线图·水表读数";
             break;
         case 1:
-            label.text = @"柱状图·水表读数·所有数据";
+            showingLabel.text = @"柱状图·水表读数·所有数据";
             break;
 
         default:
             break;
     }
-    label.textColor = [UIColor colorWithRed:0.257 green:0.650 blue:0.478 alpha:1.000];
-    label.textAlignment = NSTextAlignmentCenter;
-    return label;
+    showingLabel.textColor = [UIColor colorWithRed:0.257 green:0.650 blue:0.478 alpha:1.000];
+    showingLabel.textAlignment = NSTextAlignmentCenter;
+    return showingLabel;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
