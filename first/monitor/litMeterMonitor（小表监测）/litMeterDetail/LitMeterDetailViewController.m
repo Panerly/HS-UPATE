@@ -77,9 +77,11 @@ WYLineChartViewDatasource
     
     UIButton *rightButton       = [[UIButton alloc]initWithFrame:CGRectMake(0,0,57,45)];
     rightButton.imageEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
-    [rightButton setImage:[UIImage imageNamed:@"share_icon.png"]forState:UIControlStateNormal];
     rightButton.tintColor       = [UIColor redColor];
+    
+    [rightButton setImage:[UIImage imageNamed:@"icon_share@3x"]forState:UIControlStateNormal];
     [rightButton addTarget:self action:@selector(selectRightAction:)forControlEvents:UIControlEventTouchUpInside];
+    
     UIBarButtonItem *rightItem  = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
     self.navigationItem.rightBarButtonItem = rightItem;
 }

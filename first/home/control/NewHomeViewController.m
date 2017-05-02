@@ -441,10 +441,11 @@
 
 -(NSString*)getweek:(NSInteger)week
 {
-    NSString*weekStr=nil;
-    if(week==1)
-    {
+    NSString *weekStr=nil;
+    
+    if(week==1){
         weekStr=@"星期天";
+        
     }else if(week==2){
         weekStr=@"星期一";
         

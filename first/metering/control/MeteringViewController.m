@@ -212,17 +212,22 @@ static BOOL flashIsOn;
 
 //加载大表本地数据
 - (void)loadBigMeterLocalData {
+    
     [self createDB];
     if ([self.db open]) {
+        
         FMResultSet *restultSet = [self.db executeQuery:@"SELECT * FROM litMeter_info where collector_area = '00' order by id"];
         if (_dataArr) {
+            
             [_dataArr removeAllObjects];
         }else {
+            
             _dataArr = [NSMutableArray array];
             [_dataArr removeAllObjects];
         }
         
         while ([restultSet next]) {
+            
             NSString *install_addr         = [restultSet stringForColumn:@"install_addr"];
             MeterInfoModel *meterinfoModel = [[MeterInfoModel alloc] init];
             meterinfoModel.install_Addr    = install_addr;
@@ -329,6 +334,7 @@ static BOOL flashIsOn;
         [db close];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
         NSLog(@"小表数据查询失败：%@",error);
         [loading removeFromSuperview];
     }];
@@ -890,6 +896,7 @@ static BOOL flashIsOn;
 
 //查找本地库信息是否存在此扫描结果数据
 - (NSString*)getInfo :(NSString *)meter_id {
+    
     NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];;
     NSString *fileName = [doc stringByAppendingPathComponent:@"meter.sqlite"];
     
@@ -919,6 +926,7 @@ static BOOL flashIsOn;
 #pragma mark - Local methods
 
 - (void)initiateMenuOptions {
+    
     self.menuTitles = @[
                         @"",
                         @"开  启  手  电  筒",
@@ -938,6 +946,7 @@ static BOOL flashIsOn;
 #pragma mark - YALContextMenuTableViewDelegate
 
 - (void)contextMenuTableView:(YALContextMenuTableView *)contextMenuTableView didDismissWithIndexPath:(NSIndexPath *)indexPath{
+    
     NSLog(@"Menu dismissed with indexpath.row = %ld", (long)indexPath.row);
     isTap = !isTap;
     if (!isTap) {
@@ -961,6 +970,7 @@ static BOOL flashIsOn;
 #pragma mark - UITableViewDataSource, UITableViewDelegate
 
 - (void)tableView:(YALContextMenuTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (isTap) {
         [tableView dismisWithIndexPath:indexPath];
