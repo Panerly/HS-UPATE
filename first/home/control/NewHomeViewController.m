@@ -102,18 +102,23 @@
     NSData *data = [jsonResponseString dataUsingEncoding:NSUTF8StringEncoding];
     
     //    解析json数据
-    
-    id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-    
-    NSArray *array = json[@"results"];
-    
-    for (NSDictionary *dic in array) {
+    if (nil != data) {
         
-        newVersion = [dic valueForKey:@"version"];
-        newVersionData = [dic valueForKey:@"releaseNotes"];
+        id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        
+        NSArray *array = json[@"results"];
+        
+        for (NSDictionary *dic in array) {
+            
+            newVersion = [dic valueForKey:@"version"];
+            newVersionData = [dic valueForKey:@"releaseNotes"];
+        }
+        
+        [self compareVesionWithServerVersion:newVersion newData:newVersionData];
     }
     
-    [self compareVesionWithServerVersion:newVersion newData:newVersionData];
+    
+    
 }
 
 -(BOOL)compareVesionWithServerVersion:(NSString *)version newData:(NSString *)newData{

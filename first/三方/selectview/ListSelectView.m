@@ -50,7 +50,8 @@
     
     
     if (self.isAnimated) {
-        [self addPopAnimation];
+//        [self addPopAnimation];
+        [self animationWithView:self.selectView duration:.5];
     }
     
 }
@@ -161,9 +162,8 @@
     horizontal2.hidden = _isShowCancelBtn||_isShowSureBtn?NO:YES;
     horizontal2.backgroundColor = [UIColor grayColor];
     [self.selectView addSubview:horizontal2];
-    
-}
 
+}
 #pragma mark listViewdataSource method and delegate method
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section{
     return self.titleArray.count;
@@ -182,11 +182,7 @@
 //        lab.font = [UIFont systemFontOfSize:18.f];
 //        [cell.contentView addSubview:lab];
         cell.textLabel.text = self.titleArray[indexPath.row];
-
-        
     }
-    
-   
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -224,5 +220,25 @@
     animation.duration  = .25f;
     animation.fillMode  = kCAFillModeBackwards;
     [self.layer addAnimation:animation forKey:nil];
+}
+- (void)animationWithView:(UIView *)view duration:(CFTimeInterval)duration{
+    
+    CAKeyframeAnimation * animation;
+    animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    animation.duration = duration;
+    animation.removedOnCompletion = NO;
+    
+    animation.fillMode = kCAFillModeForwards;
+    
+    NSMutableArray *values = [NSMutableArray array];
+    
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.01, 0.01, 1.0)]];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2, 1.2, 1.0)]];
+    [values addObject:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)]];
+    
+    animation.values = values;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName: @"easeInEaseOut"];
+
+    [view.layer addAnimation:animation forKey:nil];
 }
 @end

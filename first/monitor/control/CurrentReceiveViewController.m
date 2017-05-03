@@ -99,6 +99,7 @@ UINavigationControllerDelegate
     select_view.isShowCancelBtn = YES;
     select_view.isShowSureBtn   = NO;
     select_view.isShowTitle     = YES;
+    
     __weak typeof(self) weakSelf = self;
     
     [select_view addTitleArray:areaListArr andTitleString:@"请选择区域" animated:YES completionHandler:^(NSString * _Nullable string, NSInteger index) {
@@ -137,6 +138,7 @@ UINavigationControllerDelegate
         
     }];
 }
+
 
 //请求区域信息
 - (void)_requestArea {
