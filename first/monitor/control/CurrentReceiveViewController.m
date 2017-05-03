@@ -146,7 +146,8 @@ UINavigationControllerDelegate
     [SVProgressHUD setForegroundColor:[UIColor blackColor]];
     [SVProgressHUD showWithStatus:@"请稍等" maskType:SVProgressHUDMaskTypeGradient];
     
-    NSString *urlStr = [NSString stringWithFormat:@"%@/waterweb/GetareaServlet",self.ipLabel];
+    NSString *urlStr = [NSString stringWithFormat:@"http://%@/waterweb/GetareaServlet",self.ipLabel];
+//    NSString *urlStr = [NSString stringWithFormat:@"http://192.168.8.156:8080/waterweb/GetareaServlet"];//测试
     
     NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -239,15 +240,6 @@ UINavigationControllerDelegate
         }];
     }];
     
-//    NSURLSessionTask *areaTask = [manager POST:urlStr parameters:para constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-//        
-//    } progress:^(NSProgress * _Nonnull uploadProgress) {
-//        
-//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        
-//    }];
     [areaTask resume];
 }
 
@@ -266,6 +258,7 @@ UINavigationControllerDelegate
     }
     
     NSString *areaUrl                  = [NSString stringWithFormat:@"http://%@/waterweb/ListServlet",self.ipLabel];
+//    NSString *areaUrl                  = [NSString stringWithFormat:@"http://192.168.8.156:8080/waterweb/ListServlet"];//测试用
     
     NSURLSessionConfiguration *config   = [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -352,7 +345,7 @@ UINavigationControllerDelegate
 
 - (void)showListView:(NSMutableArray *)arr {
     
-    ListSelectView *select_view = [[ListSelectView alloc] initWithFrame:self.view.bounds];
+    ListSelectView *select_view = [[ListSelectView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, PanScreenHeight)];
     
     select_view.choose_type     = MORECHOOSETITLETYPE;
     select_view.isShowCancelBtn = YES;

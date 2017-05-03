@@ -75,7 +75,7 @@
     }
     
     if (self.collectionViewHeight + 200 > PanScreenHeight) {
-        self.collectionViewHeight = PanScreenHeight-200;
+        self.collectionViewHeight = PanScreenHeight-300;
     }
 }
 
