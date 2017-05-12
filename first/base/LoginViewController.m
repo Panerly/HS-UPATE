@@ -65,7 +65,7 @@
     NSLog(@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"status"]);
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"status"] isEqualToString:@"ok"]) {
         //成功进入
-        [self performSelector:@selector(comeIn) withObject:self afterDelay:.5];
+        [self performSelector:@selector(comeIn) withObject:self afterDelay:.1];
     }
 }
 

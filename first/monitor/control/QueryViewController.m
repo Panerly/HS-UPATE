@@ -214,12 +214,18 @@
 //创建曲线图&手势
 - (void)_createCurveView
 {
-    scrollView = [[UIScrollView alloc] init];
+    if (nil == scrollView) {
+        
+        scrollView = [[UIScrollView alloc] init];
+    }
     scrollView.scrollEnabled = YES;
     scrollView.zoomScale = 2;
     
     //添加缩放手势
-    pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scaleAction:)];
+    if (nil == pinch) {
+        
+        pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scaleAction:)];
+    }
     [scrollView addGestureRecognizer:pinch];
 
     scrollView.contentSize = CGSizeMake(PanScreenWidth*2, 150);
@@ -233,7 +239,13 @@
         make.bottom.equalTo(_curveView.bottom);
     }];
     
-    chartView = [[SCChart alloc] initwithSCChartDataFrame:CGRectMake(self.view.frame.origin.x, 0,  PanScreenWidth*2.5, 150) withSource:self withStyle:SCChartLineStyle];
+    if (self.dataArr.count > 10) {
+        
+        chartView = [[SCChart alloc] initwithSCChartDataFrame:CGRectMake(self.view.frame.origin.x, 0,  PanScreenWidth*2.5, 150) withSource:self withStyle:SCChartLineStyle];
+    }else {
+        
+        chartView = [[SCChart alloc] initwithSCChartDataFrame:CGRectMake(self.view.frame.origin.x, 0,  PanScreenWidth*2.5, 150) withSource:self withStyle:SCChartLineStyle];
+    }
     [chartView showInView:scrollView];
 }
 
@@ -355,6 +367,19 @@ static bool isClicked;
         curveBtn.transform = CGAffineTransformMakeScale(.01, .01);
         curveBtn.transform = CGAffineTransformMakeTranslation(0, 10 + 49);
         
+        //后添加
+        [UIView animateWithDuration:.5 animations:^{
+            
+            dateBtn.transform = CGAffineTransformMakeScale(1.5, 1.5);
+        } completion:^(BOOL finished) {
+            
+        }];
+        [UIView animateWithDuration:.3 animations:^{
+            
+            curveBtn.transform = CGAffineTransformMakeScale(1.2, 1.2);
+        } completion:^(BOOL finished) {
+            
+        }];
         
         [UIView animateWithDuration:.3 animations:^{
             dateBtn.transform = CGAffineTransformIdentity;
@@ -362,6 +387,7 @@ static bool isClicked;
         [UIView animateWithDuration:.5 animations:^{
             curveBtn.transform = CGAffineTransformIdentity;
         }];
+        
         
     }else {
         

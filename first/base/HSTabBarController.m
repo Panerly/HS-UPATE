@@ -117,7 +117,9 @@
     NSInteger index = [self.tabBar.items indexOfObject:item];
     [self animationWithIndex:index];
 }
+
 - (void)animationWithIndex:(NSInteger) index {
+    
     NSMutableArray * tabbarbuttonArray = [NSMutableArray array];
     for (UIView *tabBarButton in self.tabBar.subviews) {
         if ([tabBarButton isKindOfClass:NSClassFromString(@"UITabBarButton")]) {

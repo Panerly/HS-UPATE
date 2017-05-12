@@ -67,8 +67,13 @@
     [self createBackgroundView];
     
     //检测升级
-    [self performSelector:@selector(checkVersion) withObject:self afterDelay:5];
-//    [self checkVersion];
+    __weak typeof(self) weakSelf = self;
+    dispatch_queue_t queue= dispatch_queue_create("checkVersion.queue", DISPATCH_QUEUE_CONCURRENT);
+    
+    dispatch_async(queue, ^{
+        
+        [weakSelf checkVersion];
+    });
     
     // 设置导航控制器的代理为self
     self.navigationController.delegate = self;
@@ -76,6 +81,7 @@
 
 //创建背景视图
 - (void)createBackgroundView {
+    
     self.backgroudView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_home_bg"]];
     _backgroudView.frame = self.view.bounds;
     //[self.view addSubview:self.backgroudView];
@@ -122,6 +128,7 @@
 }
 
 -(BOOL)compareVesionWithServerVersion:(NSString *)version newData:(NSString *)newData{
+    
     NSArray *versionArray = [version componentsSeparatedByString:@"."];//服务器返回版
     //获取本地软件的版本号
     NSString *APP_VERSION = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
@@ -662,6 +669,7 @@ static int timesOut = 0;
  *  定位超时
  */
 - (void)timesOut{
+    
     [SVProgressHUD showErrorWithStatus:@"定位超时！"];
     [_locationManager stopUpdatingLocation];
 }
@@ -904,7 +912,7 @@ static int timesOut = 0;
     //太阳
     _sunImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ele_sunnySun"]];
     CGRect frameSun = _sunImage.frame;
-    frameSun.size = CGSizeMake(200, 200*579/612.0);
+    frameSun.size   = CGSizeMake(200, 200*579/612.0);
     _sunImage.frame = frameSun;
     _sunImage.center = CGPointMake(PanScreenHeight * 0.1, PanScreenHeight * 0.1);
     [self.view addSubview:_sunImage];
@@ -1017,11 +1025,11 @@ static int timesOut = 0;
 //动画横向移动方法
 - (CABasicAnimation *)birdFlyAnimationWithToValue:(NSNumber *)toValue duration:(NSInteger)duration{
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.translation.x"];
-    animation.toValue = toValue;
-    animation.duration = duration;
+    animation.toValue       = toValue;
+    animation.duration      = duration;
     animation.removedOnCompletion = NO;
-    animation.repeatCount = MAXFLOAT;
-    animation.fillMode = kCAFillModeForwards;
+    animation.repeatCount   = MAXFLOAT;
+    animation.fillMode      = kCAFillModeForwards;
     return animation;
 }
 
@@ -1031,11 +1039,11 @@ static int timesOut = 0;
     CABasicAnimation* rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
     [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    rotationAnimation.duration = duration;
-    rotationAnimation.repeatCount = MAXFLOAT;//你可以设置到最大的整数值
-    rotationAnimation.cumulative = NO;
+    rotationAnimation.duration      = duration;
+    rotationAnimation.repeatCount   = MAXFLOAT;//你可以设置到最大的整数值
+    rotationAnimation.cumulative    = NO;
     rotationAnimation.removedOnCompletion = NO;
-    rotationAnimation.fillMode = kCAFillModeForwards;
+    rotationAnimation.fillMode      = kCAFillModeForwards;
     return rotationAnimation;
 }
 
@@ -1043,12 +1051,12 @@ static int timesOut = 0;
 - (CABasicAnimation *)rainAnimationWithDuration:(NSInteger)duration{
     
     CABasicAnimation* caBaseTransform = [CABasicAnimation animation];
-    caBaseTransform.duration = duration;
-    caBaseTransform.keyPath = @"transform";
+    caBaseTransform.duration    = duration;
+    caBaseTransform.keyPath     = @"transform";
     caBaseTransform.repeatCount = MAXFLOAT;
     caBaseTransform.removedOnCompletion = NO;
-    caBaseTransform.fillMode = kCAFillModeForwards;
-    caBaseTransform.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(-170, -620, 0)];
+    caBaseTransform.fillMode    = kCAFillModeForwards;
+    caBaseTransform.fromValue   = [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(-170, -620, 0)];
     caBaseTransform.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(PanScreenHeight/2.0*34/124.0, PanScreenHeight/2, 0)];
     
     return caBaseTransform;
