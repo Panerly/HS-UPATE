@@ -15,6 +15,7 @@
 #import "HisDetailViewController.h"
 #import "MeterEditViewController.h"
 #import "AMWaveTransition.h"
+#import "ListSelectView.h"
 
 @interface CurrentReceiveViewController ()
 <
@@ -27,6 +28,8 @@ UINavigationControllerDelegate
 {
     NSString *identy;
     UIImageView *loading;
+    NSMutableArray *areaListArr;
+    NSMutableArray *flagListArr;
 }
 //创建搜索栏
 @property (nonatomic, strong) UISearchController *searchController;
@@ -62,13 +65,308 @@ UINavigationControllerDelegate
     
     [self _getCode];
     
-    [self _requestData];
+    [self initRightItem];
     
     [self _createTabelView];
     
+    [self _requestArea];
+    
     self.dataArr = [NSMutableArray array];
+    areaListArr  = [NSMutableArray array];
+    flagListArr  = [NSMutableArray array];
 }
 
+//选择所有数据item
+- (void)initRightItem {
+    
+    UIButton *rightButton       = [[UIButton alloc]initWithFrame:CGRectMake(0,0,57,45)];
+    rightButton.imageEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
+    rightButton.showsTouchWhenHighlighted = YES;
+    
+    [rightButton setTintColor:[UIColor whiteColor]];
+    [rightButton setImage:[UIImage imageNamed:@"icon_more@3x"] forState:UIControlStateNormal];
+    [rightButton addTarget:self action:@selector(showAllData:)forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *rightItem  = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
+    self.navigationItem.rightBarButtonItem = rightItem;
+}
+
+- (void)showAllData:(UIButton *)sender {
+    
+    ListSelectView *select_view = [[ListSelectView alloc] initWithFrame:self.view.bounds];
+    
+    select_view.choose_type     = MORECHOOSETITLETYPE;
+    select_view.isShowCancelBtn = YES;
+    select_view.isShowSureBtn   = NO;
+    select_view.isShowTitle     = YES;
+    
+    __weak typeof(self) weakSelf = self;
+    
+    [select_view addTitleArray:areaListArr andTitleString:@"请选择区域" animated:YES completionHandler:^(NSString * _Nullable string, NSInteger index) {
+        
+        NSLog(@"%@------%ld",string,(long)index);
+        [weakSelf _requestAreaData:flagListArr[index]];
+    } withSureButtonBlock:^{
+        
+        NSLog(@"sure btn");
+    }];
+
+    [FTPopOverMenu showForSender:sender withMenuArray:@[@"  选择区域",@"  所有数据"] doneBlock:^(NSInteger selectedIndex) {
+        
+        switch (selectedIndex) {
+            case 0:
+            {
+                if (areaListArr.count == 0) {
+                    
+                    [weakSelf _requestArea];
+                }else {
+                    
+                    [weakSelf.view addSubview:select_view];
+                }
+            }
+                break;
+            case 1:
+                
+                [weakSelf _requestData];
+                break;
+                
+            default:
+                break;
+        }
+        
+    } dismissBlock:^{
+        
+    }];
+}
+
+
+//请求区域信息
+- (void)_requestArea {
+    
+    __weak typeof(self) weakSelf = self;
+    
+    [SVProgressHUD setForegroundColor:[UIColor blackColor]];
+    [SVProgressHUD showWithStatus:@"请稍等" maskType:SVProgressHUDMaskTypeGradient];
+    
+    NSString *urlStr = [NSString stringWithFormat:@"http://%@/waterweb/GetareaServlet",self.ipLabel];
+//    NSString *urlStr = [NSString stringWithFormat:@"http://192.168.8.156:8080/waterweb/GetareaServlet"];//测试
+    
+    NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:sessionConfig];
+
+    manager.requestSerializer.timeoutInterval = 10;
+    AFHTTPResponseSerializer *serializer = manager.responseSerializer;
+    
+    serializer.acceptableContentTypes = [serializer.acceptableContentTypes setByAddingObject:@"text/plain"];
+    
+    NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
+    NSString *passWord = [[NSUserDefaults standardUserDefaults] objectForKey:@"passWord"];
+    NSString *db = [[NSUserDefaults standardUserDefaults] objectForKey:@"db"];
+    NSString *collector_area = [[NSUserDefaults standardUserDefaults] objectForKey:@"collector_area"];
+    
+    
+    NSDictionary *para = @{
+                           @"username":userName,
+                           @"password":passWord,
+                           @"db":db,
+                           @"collector_area":collector_area
+                           };
+    
+    NSURLSessionTask *areaTask = [manager GET:urlStr parameters:para progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        [SVProgressHUD dismiss];
+        
+        if (responseObject) {
+            
+            for (NSDictionary *dic in responseObject) {
+                
+                if ([[dic objectForKey:@"collector_area"] isEqualToString:@"暂无分区"]) {
+                    
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"暂无分区" message:@"是否查看所有数据?" preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                        
+                    }];
+                    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [weakSelf _requestData];
+                    }];
+                    [alert addAction:cancelAction];
+                    [alert addAction:action];
+                    [weakSelf presentViewController:alert animated:YES completion:^{
+                        
+                    }];
+                }else {
+                    
+                    [areaListArr addObject:[dic objectForKey:@"collector_area"]];
+                    [flagListArr addObject:[dic objectForKey:@"flg"]];
+                }
+            }
+            if (areaListArr.count != 0) {
+                
+                [weakSelf showListView:areaListArr];
+            }
+        } else {
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"暂无数据" message:@"是否查看所有数据?" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [weakSelf _requestData];
+            }];
+            [alert addAction:cancelAction];
+            [alert addAction:action];
+            [weakSelf presentViewController:alert animated:YES completion:^{
+                
+            }];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        [SVProgressHUD dismiss];
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"获取区域列表失败，是否重试？" message:[NSString stringWithFormat:@"失败信息:%@",error] preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            [weakSelf _requestArea];
+        }];
+        [alert addAction:cancelAction];
+        [alert addAction:confirm];
+        [weakSelf presentViewController:alert animated:YES completion:^{
+            
+        }];
+    }];
+    
+    [areaTask resume];
+}
+
+//请求所在区域的数据
+- (void)_requestAreaData:(NSString *)string {
+    //刷新控件
+    loading        = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+    loading.center = self.view.center;
+    UIImage *image = [UIImage sd_animatedGIFNamed:@"刷新5"];
+    [loading setImage:image];
+    [self.view addSubview:loading];
+    
+    if (_tableView.mj_header.isRefreshing) {
+        
+        [loading removeFromSuperview];
+    }
+    
+    NSString *areaUrl                  = [NSString stringWithFormat:@"http://%@/waterweb/ListServlet",self.ipLabel];
+//    NSString *areaUrl                  = [NSString stringWithFormat:@"http://192.168.8.156:8080/waterweb/ListServlet"];//测试用
+    
+    NSURLSessionConfiguration *config   = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    AFHTTPSessionManager *manager       = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:config];
+    
+    manager.requestSerializer.timeoutInterval = 10;
+    
+    NSDictionary *parameters = @{
+                                 @"username":self.userNameLabel,
+                                 @"password":self.passWordLabel,
+                                 @"db":self.dbLabel,
+                                 @"type":self.typeLabel,
+                                 @"flg":string
+                                 };
+    
+    AFHTTPResponseSerializer *serializer    = manager.responseSerializer;
+    
+    serializer.acceptableContentTypes       = [serializer.acceptableContentTypes setByAddingObject:@"text/plain"];
+    
+    __weak typeof(self) weakSelf            = self;
+    
+    NSURLSessionTask *task =[manager POST:areaUrl parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        if (responseObject) {
+            
+            [SVProgressHUD showInfoWithStatus:@"加载成功"];
+            
+            [_tableView.mj_header endRefreshing];
+            
+            NSDictionary *responseObjectArr = [responseObject objectForKey:@"meters"];
+            
+            [self.dataArr removeAllObjects];
+            
+            for (NSDictionary *dic in responseObjectArr) {
+                
+                NSError *error = nil;
+                
+                CRModel *crModel = [[CRModel alloc] initWithDictionary:dic error:&error];
+                
+                [self.dataArr addObject:crModel];
+                
+            }
+            
+            [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            
+            [loading removeFromSuperview];
+        }else {
+            [loading removeFromSuperview];
+            [_tableView.mj_header endRefreshing];
+            UIAlertController *alertVC  = [UIAlertController alertControllerWithTitle:@"提示" message:@"暂无数据" preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *action       = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            
+            [alertVC addAction:action];
+            [self presentViewController:alertVC animated:YES completion:^{
+                
+            }];
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        [loading removeFromSuperview];
+        [_tableView.mj_header endRefreshing];
+        
+        UIAlertController *alertVC  = [UIAlertController alertControllerWithTitle:@"提示" message:@"服务器连接失败" preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *action       = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        
+        [alertVC addAction:action];
+        [self presentViewController:alertVC animated:YES completion:^{
+            
+        }];
+        
+    }];
+    
+    [task resume];
+}
+
+- (void)showListView:(NSMutableArray *)arr {
+    
+    ListSelectView *select_view = [[ListSelectView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, PanScreenHeight)];
+    
+    select_view.choose_type     = MORECHOOSETITLETYPE;
+    select_view.isShowCancelBtn = YES;
+    select_view.isShowSureBtn   = NO;
+    select_view.isShowTitle     = YES;
+    
+    
+    __weak typeof(self) weakSelf = self;
+    [select_view addTitleArray:arr andTitleString:@"请选择区域" animated:YES completionHandler:^(NSString * _Nullable string, NSInteger index) {
+        
+        NSLog(@"%@------%ld",string,(long)index);
+        [weakSelf _requestAreaData:flagListArr[index]];
+    } withSureButtonBlock:^{
+        NSLog(@"sure btn");
+    }];
+    [self.view addSubview:select_view];
+}
+
+//获取用户信息
 - (void)_getCode
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -79,6 +377,8 @@ UINavigationControllerDelegate
     self.dbLabel        = [defaults objectForKey:@"db"];
     self.typeLabel      = [defaults objectForKey:@"type"];
 }
+
+//添加cell动画
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.title isEqualToString:@"实时抄见"]) {
@@ -140,12 +440,13 @@ UINavigationControllerDelegate
     
     manager.requestSerializer.timeoutInterval = 10;
 
-    NSDictionary *parameters = @{@"username":self.userNameLabel,
+    NSDictionary *parameters = @{
+                                 @"username":self.userNameLabel,
                                  @"password":self.passWordLabel,
                                  @"db":self.dbLabel,
                                  @"type":self.typeLabel,
                                  };
-    NSLog(@"%@",self.typeLabel);
+
     AFHTTPResponseSerializer *serializer    = manager.responseSerializer;
     
     serializer.acceptableContentTypes       = [serializer.acceptableContentTypes setByAddingObject:@"text/plain"];
@@ -364,12 +665,12 @@ UINavigationControllerDelegate
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    if (self.view.window == nil && [self isViewLoaded]) {
-        self.view = nil;
-    }
-}
+//- (void)didReceiveMemoryWarning {
+//    [super didReceiveMemoryWarning];
+//    if (self.view.window == nil && [self isViewLoaded]) {
+//        self.view = nil;
+//    }
+//}
 
 
 #pragma mark - searchBarDelegate

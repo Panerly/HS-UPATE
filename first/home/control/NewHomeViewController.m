@@ -67,7 +67,13 @@
     [self createBackgroundView];
     
     //检测升级
-    [self checkVersion];
+    __weak typeof(self) weakSelf = self;
+    dispatch_queue_t queue= dispatch_queue_create("checkVersion.queue", DISPATCH_QUEUE_CONCURRENT);
+    
+    dispatch_async(queue, ^{
+        
+        [weakSelf checkVersion];
+    });
     
     // 设置导航控制器的代理为self
     self.navigationController.delegate = self;
@@ -75,6 +81,7 @@
 
 //创建背景视图
 - (void)createBackgroundView {
+    
     self.backgroudView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_home_bg"]];
     _backgroudView.frame = self.view.bounds;
     //[self.view addSubview:self.backgroudView];
@@ -101,21 +108,27 @@
     NSData *data = [jsonResponseString dataUsingEncoding:NSUTF8StringEncoding];
     
     //    解析json数据
-    
-    id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-    
-    NSArray *array = json[@"results"];
-    
-    for (NSDictionary *dic in array) {
+    if (nil != data) {
         
-        newVersion = [dic valueForKey:@"version"];
-        newVersionData = [dic valueForKey:@"releaseNotes"];
+        id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        
+        NSArray *array = json[@"results"];
+        
+        for (NSDictionary *dic in array) {
+            
+            newVersion = [dic valueForKey:@"version"];
+            newVersionData = [dic valueForKey:@"releaseNotes"];
+        }
+        
+        [self compareVesionWithServerVersion:newVersion newData:newVersionData];
     }
     
-    [self compareVesionWithServerVersion:newVersion newData:newVersionData];
+    
+    
 }
 
 -(BOOL)compareVesionWithServerVersion:(NSString *)version newData:(NSString *)newData{
+    
     NSArray *versionArray = [version componentsSeparatedByString:@"."];//服务器返回版
     //获取本地软件的版本号
     NSString *APP_VERSION = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
@@ -129,6 +142,7 @@
         if (new > now) {//appstore版本大于当前版本，提示更新
             NSLog(@"有新版本 new%ld-----now%ld", (long)new, (long)now);
             NSString *msg = [NSString stringWithFormat:@"%@",newData];
+            [[NSUserDefaults standardUserDefaults] setObject:msg forKey:@"versionData"];
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"发现新版本" message:msg preferredStyle:UIAlertControllerStyleAlert];
             
             UIView *subView1 = alert.view.subviews[0];
@@ -143,7 +157,7 @@
             
             
             [alert addAction:[UIAlertAction actionWithTitle:@"现在升级" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/cn/app/yi-ka-tongbic-ban/id1139094792?l=en&mt=8"]];//这里写的URL地址是该app在app store里面的下载链接地址，其中ID是该app在app store对应的唯一的ID编号。
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/cn/app/hang-zhou-shui-biao/id1193445551?l=en&mt=8"]];//这里写的URL地址是该app在app store里面的下载链接地址，其中ID是该app在app store对应的唯一的ID编号。
                 NSLog(@"点击现在升级按钮");
             }]];
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"下次再说" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -439,10 +453,11 @@
 
 -(NSString*)getweek:(NSInteger)week
 {
-    NSString*weekStr=nil;
-    if(week==1)
-    {
+    NSString *weekStr=nil;
+    
+    if(week==1){
         weekStr=@"星期天";
+        
     }else if(week==2){
         weekStr=@"星期一";
         
@@ -654,6 +669,7 @@ static int timesOut = 0;
  *  定位超时
  */
 - (void)timesOut{
+    
     [SVProgressHUD showErrorWithStatus:@"定位超时！"];
     [_locationManager stopUpdatingLocation];
 }
@@ -896,7 +912,7 @@ static int timesOut = 0;
     //太阳
     _sunImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ele_sunnySun"]];
     CGRect frameSun = _sunImage.frame;
-    frameSun.size = CGSizeMake(200, 200*579/612.0);
+    frameSun.size   = CGSizeMake(200, 200*579/612.0);
     _sunImage.frame = frameSun;
     _sunImage.center = CGPointMake(PanScreenHeight * 0.1, PanScreenHeight * 0.1);
     [self.view addSubview:_sunImage];
@@ -1009,11 +1025,11 @@ static int timesOut = 0;
 //动画横向移动方法
 - (CABasicAnimation *)birdFlyAnimationWithToValue:(NSNumber *)toValue duration:(NSInteger)duration{
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.translation.x"];
-    animation.toValue = toValue;
-    animation.duration = duration;
+    animation.toValue       = toValue;
+    animation.duration      = duration;
     animation.removedOnCompletion = NO;
-    animation.repeatCount = MAXFLOAT;
-    animation.fillMode = kCAFillModeForwards;
+    animation.repeatCount   = MAXFLOAT;
+    animation.fillMode      = kCAFillModeForwards;
     return animation;
 }
 
@@ -1023,11 +1039,11 @@ static int timesOut = 0;
     CABasicAnimation* rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
     [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    rotationAnimation.duration = duration;
-    rotationAnimation.repeatCount = MAXFLOAT;//你可以设置到最大的整数值
-    rotationAnimation.cumulative = NO;
+    rotationAnimation.duration      = duration;
+    rotationAnimation.repeatCount   = MAXFLOAT;//你可以设置到最大的整数值
+    rotationAnimation.cumulative    = NO;
     rotationAnimation.removedOnCompletion = NO;
-    rotationAnimation.fillMode = kCAFillModeForwards;
+    rotationAnimation.fillMode      = kCAFillModeForwards;
     return rotationAnimation;
 }
 
@@ -1035,12 +1051,12 @@ static int timesOut = 0;
 - (CABasicAnimation *)rainAnimationWithDuration:(NSInteger)duration{
     
     CABasicAnimation* caBaseTransform = [CABasicAnimation animation];
-    caBaseTransform.duration = duration;
-    caBaseTransform.keyPath = @"transform";
+    caBaseTransform.duration    = duration;
+    caBaseTransform.keyPath     = @"transform";
     caBaseTransform.repeatCount = MAXFLOAT;
     caBaseTransform.removedOnCompletion = NO;
-    caBaseTransform.fillMode = kCAFillModeForwards;
-    caBaseTransform.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(-170, -620, 0)];
+    caBaseTransform.fillMode    = kCAFillModeForwards;
+    caBaseTransform.fromValue   = [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(-170, -620, 0)];
     caBaseTransform.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(PanScreenHeight/2.0*34/124.0, PanScreenHeight/2, 0)];
     
     return caBaseTransform;

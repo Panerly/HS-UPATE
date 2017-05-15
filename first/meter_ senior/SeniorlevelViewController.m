@@ -103,6 +103,7 @@ UITableViewDataSource
 
 //大小饼图视图切换
 - (void)initLeftBarItem {
+    
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame     = CGRectMake(0, 0, 30, 30);
     btn.showsTouchWhenHighlighted = YES;
@@ -113,6 +114,7 @@ UITableViewDataSource
 }
 //大小表分享
 - (void)initRightBarItem {
+    
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeContactAdd];
     btn.showsTouchWhenHighlighted = YES;
     [btn addTarget:self action:@selector(setSelectBtn:) forControlEvents:UIControlEventTouchUpInside];
@@ -356,15 +358,20 @@ UITableViewDataSource
                         withMenu:@[@"大表",@"小表",@"分享"]
                   imageNameArray:@[@"icon_bigMeter",@"icon_smallMeter",@"share_icon.png"]
                        doneBlock:^(NSInteger selectedIndex) {
+                           
                            if (selectedIndex == 0) {
-                               if (self.tableView) {
-                                   self.tableView.hidden = NO;
+                               
+                               if (weakSelf.tableView) {
+                                   
+                                   weakSelf.tableView.hidden = NO;
                                }
+                               
                                [timer invalidate];
                                [weakSelf setTimer];
                                isBigMeter = YES;
                                bmkViewTag = 300;
                                [_bmkMapView removeAnnotations:_annomationArray];
+                               
                                for (int i = 0; i < _bigMeterDataArr.count; i++) {
                                    
                                    BMKPointAnnotation* bigMeterAnnotation = [[BMKPointAnnotation alloc]init];
@@ -377,14 +384,18 @@ UITableViewDataSource
                                    bmkViewTag++;
                                }
                            }else if (selectedIndex == 1) {
-                               if (self.tableView) {
-                                   self.tableView.hidden = YES;
+                               
+                               if (weakSelf.tableView) {
+                                   
+                                   weakSelf.tableView.hidden = YES;
                                }
+                               
                                [timer invalidate];
                                [weakSelf setTimer];
                                isBigMeter = NO;
                                bmkViewTag = 300;
                                [_bmkMapView removeAnnotations:_annomationArray];
+                               
                                for (int i = 0; i < _litMeterDataArr.count; i++) {
                                    
                                    BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
@@ -397,6 +408,7 @@ UITableViewDataSource
                                    bmkViewTag++;
                                }
                            }else if (selectedIndex == 2) {
+                               
                                [weakSelf selectRightAction:sender];
                            }
                            
@@ -755,8 +767,10 @@ UITableViewDataSource
     timer = [NSTimer scheduledTimerWithTimeInterval:.5 target:self selector:@selector(changeImage) userInfo:nil repeats:YES];
     [timer fire];
 }
+
 //不断更改图标以实现图表闪烁效果
 - (void)changeImage {
+    
     [_bmkMapView removeAnnotations:_annomationArray];
     UIImage *image1 = [UIImage imageNamed:@"icon_bigMeter_uncomplete"];
     UIImage *image2 = [UIImage imageNamed:@"icon_bigMeter"];
@@ -816,8 +830,10 @@ UITableViewDataSource
         BMKPinAnnotationView *newAnnotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"myAnnotation"];
         
         if (isBigMeter) {
+            
             [newAnnotationView setImage:bmkImage];
         } else {
+            
             [newAnnotationView setImage:bmkImage];
         }
         

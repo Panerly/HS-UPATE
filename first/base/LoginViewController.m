@@ -62,8 +62,21 @@
     
     //创建登录btn
     [self _createLogBtn];
+    NSLog(@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"status"]);
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"status"] isEqualToString:@"ok"]) {
+        //成功进入
+        [self performSelector:@selector(comeIn) withObject:self afterDelay:.1];
+    }
 }
 
+- (void)comeIn {
+    
+    HSTabBarController *tabBarCtrl = [[HSTabBarController alloc] init];
+    
+    [self presentViewController:tabBarCtrl animated:YES completion:^{
+        tabBarCtrl.modalPresentationStyle = UIModalPresentationPageSheet;
+    }];
+}
 - (void)textFieldDidChange:(UITextField *)textField {
     if (textField == self.userName) {
         
@@ -95,8 +108,8 @@
     self.passWord.text = [defaults objectForKey:@"passWord"];
     self.userName.text = [defaults objectForKey:@"userName"];
     NSLog(@"%@",[defaults objectForKey:@"ip"]?[defaults objectForKey:@"ip"]:@"123");
-    self.ipLabel = [defaults objectForKey:@"ip"]?[defaults objectForKey:@"ip"]:@"60.191.39.206:8000";
-    self.dbLabel = [defaults objectForKey:@"db"]?[defaults objectForKey:@"db"]:@"bigmeter_water";
+    self.ipLabel = [defaults objectForKey:@"ip"] == nil ? @"60.191.39.206:8000" : [defaults objectForKey:@"ip"];
+    self.dbLabel = [defaults objectForKey:@"db"] == nil ? @"bigmeter_water" : [defaults objectForKey:@"db"];
 }
 
 //- (void)configKeyChainItemWrapper
@@ -206,12 +219,12 @@
     return self;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    if (self.view.window == nil && [self isViewLoaded]) {
-        self.view = nil;
-    }
-}
+//- (void)didReceiveMemoryWarning {
+//    [super didReceiveMemoryWarning];
+//    if (self.view.window == nil && [self isViewLoaded]) {
+//        self.view = nil;
+//    }
+//}
 
 
 //登录
@@ -298,7 +311,7 @@
 - (void)logIn {
     
     //登录API 需传入的参数：用户名、密码、数据库名、IP地址
-    NSString *logInUrl = [NSString stringWithFormat:@"%@",logInApi];
+    NSString *logInUrl = [NSString stringWithFormat:@"http://%@/Meter_Reading/S_Login_InfoServlet2",self.ipLabel];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -359,7 +372,7 @@
             
             [defaults setObject:weakSelf.passWord.text forKey:@"passWord"];
             
-            [defaults setObject:@"ok" forKey:@"login_status"];
+            [defaults setObject:@"ok" forKey:@"status"];
             
             [defaults setObject:[[responseObject objectForKey:@"test"] objectForKey:@"type"] forKey:@"type"];
             
@@ -368,6 +381,7 @@
             [defaults setObject:[[responseObject objectForKey:@"test"] objectForKey:@"xqbh"] forKey:@"xqbh"];
             
             [defaults setObject:[[responseObject objectForKey:@"test"] objectForKey:@"find_purview"] forKey:@"find_purview"];
+            
             
             [defaults setObject:[[responseObject objectForKey:@"sing"] objectForKey:@"area_list"] forKey:@"area_list"];
             

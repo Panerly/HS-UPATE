@@ -145,10 +145,12 @@
     }
     if (indexPath.row == 2) {
         
-        if (![[defaults objectForKey:@"sex"] isEqualToString:@"男"] && ![[defaults objectForKey:@"sex"] isEqualToString:@"女"]) {
+        if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"sex"] isEqualToString:@"男"] && ![[[NSUserDefaults standardUserDefaults] objectForKey:@"sex"] isEqualToString:@"女"]) {
             cell.textLabel.text = @"性别 : 男";
+        }else {
+            
+            cell.textLabel.text = [NSString stringWithFormat:@"性别 ：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"sex"]];
         }
-        cell.textLabel.text = [NSString stringWithFormat:@"性别 ：%@",[defaults objectForKey:@"sex"]];
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
@@ -197,11 +199,13 @@
         UIAlertAction *boy = [UIAlertAction actionWithTitle:@"男" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
             [defaults setObject:@"男" forKey:@"sex"];
+            [defaults synchronize];
             [_tableView reloadData];
         }];
         UIAlertAction *girl = [UIAlertAction actionWithTitle:@"女" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
             [defaults setObject:@"女" forKey:@"sex"];
+            [defaults synchronize];
             [_tableView reloadData];
         }];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -251,6 +255,7 @@
     [self.view addSubview:datePicker];
     
     [defaults setObject:bornDate forKey:@"bornDate"];
+    [defaults synchronize];
     [_tableView reloadData];
 }
 

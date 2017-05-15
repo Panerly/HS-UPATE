@@ -156,7 +156,7 @@
 +(instancetype)createWindowWithAutoHide:(BOOL)autoHide
     {
         UIViewController *vc= [UIApplication sharedApplication].keyWindow.rootViewController;
-        BOOL exist;
+        BOOL exist = nil;
          LSStatusBarHUD *last= vc.ls_hudWindow;
         if (last) {
             

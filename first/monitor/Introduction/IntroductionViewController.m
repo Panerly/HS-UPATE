@@ -21,10 +21,23 @@
     [super viewDidLoad];
 
     self.title = @"杭水简介";
-    _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, PanScreenHeight+30)];
-    _webView.delegate = self;
-    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.rabbitpre.com/m/jyyyI3E"]]];
-    [self.view addSubview:_webView];
+    if (!_webView) {
+        
+        _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, PanScreenWidth, PanScreenHeight+30)];
+        _webView.delegate = self;
+        [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.rabbitpre.com/m/jyyyI3E"]]];
+        [self.view addSubview:_webView];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    if (_webView) {
+        
+        [_webView removeFromSuperview];
+        _webView = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {

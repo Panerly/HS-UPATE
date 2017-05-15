@@ -48,7 +48,7 @@
 - (void)_createVersion {
     
     UIButton *versionBtn = [[UIButton alloc] initWithFrame:CGRectMake((PanScreenWidth-200)/2, PanScreenHeight - 49 -50, 200, 40)];
-    [versionBtn setTitle:@"版本：V1.1.8" forState:UIControlStateNormal];
+    [versionBtn setTitle:@"版本：V1.2.2" forState:UIControlStateNormal];
     [versionBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [versionBtn.titleLabel setFont:[UIFont systemFontOfSize:13]];
     [versionBtn addTarget:self action:@selector(versionAction) forControlEvents:UIControlEventTouchUpInside];
@@ -58,7 +58,8 @@
 //版本更新内容
 - (void)versionAction {
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"版本提示" message:@"1.兼容 iOS 8.0\n2.快速查看前后日期数据\n3.更新内容提示\n4.BUG反馈群：QQ群:511584754" preferredStyle:UIAlertControllerStyleAlert];
+    NSString *versionData = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"versionData"]];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"版本提示" message:versionData preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
     
     [alert addAction:cancel];
@@ -308,7 +309,7 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    [defaults setObject:@"no" forKey:@"login_status"];
+    [defaults setObject:@"no" forKey:@"status"];
     
     [defaults synchronize];
     

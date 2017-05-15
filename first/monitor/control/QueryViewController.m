@@ -30,6 +30,7 @@
     UIButton *curveBtn;
     UIButton *moreBtn;
     
+    //用于判断上下的时间段
     int nextPlus;
     int previousPlus;
     int nextMonth;
@@ -75,6 +76,7 @@
     previousMonth= 0;
 }
 
+//更多btn
 - (void)initMoreBtn {
     
     moreBtn = [[UIButton alloc] initWithFrame:CGRectMake(PanScreenWidth - 10 - 50, PanScreenHeight - 10 - 50 - 49, 50, 50)];
@@ -212,12 +214,18 @@
 //创建曲线图&手势
 - (void)_createCurveView
 {
-    scrollView = [[UIScrollView alloc] init];
+    if (nil == scrollView) {
+        
+        scrollView = [[UIScrollView alloc] init];
+    }
     scrollView.scrollEnabled = YES;
     scrollView.zoomScale = 2;
     
     //添加缩放手势
-    pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scaleAction:)];
+    if (nil == pinch) {
+        
+        pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scaleAction:)];
+    }
     [scrollView addGestureRecognizer:pinch];
 
     scrollView.contentSize = CGSizeMake(PanScreenWidth*2, 150);
@@ -231,7 +239,13 @@
         make.bottom.equalTo(_curveView.bottom);
     }];
     
-    chartView = [[SCChart alloc] initwithSCChartDataFrame:CGRectMake(self.view.frame.origin.x, 0,  PanScreenWidth*2.5, 150) withSource:self withStyle:SCChartLineStyle];
+    if (self.dataArr.count > 10) {
+        
+        chartView = [[SCChart alloc] initwithSCChartDataFrame:CGRectMake(self.view.frame.origin.x, 0,  PanScreenWidth*2.5, 150) withSource:self withStyle:SCChartLineStyle];
+    }else {
+        
+        chartView = [[SCChart alloc] initwithSCChartDataFrame:CGRectMake(self.view.frame.origin.x, 0,  PanScreenWidth*2.5, 150) withSource:self withStyle:SCChartLineStyle];
+    }
     [chartView showInView:scrollView];
 }
 
@@ -353,6 +367,19 @@ static bool isClicked;
         curveBtn.transform = CGAffineTransformMakeScale(.01, .01);
         curveBtn.transform = CGAffineTransformMakeTranslation(0, 10 + 49);
         
+        //后添加
+        [UIView animateWithDuration:.5 animations:^{
+            
+            dateBtn.transform = CGAffineTransformMakeScale(1.5, 1.5);
+        } completion:^(BOOL finished) {
+            
+        }];
+        [UIView animateWithDuration:.3 animations:^{
+            
+            curveBtn.transform = CGAffineTransformMakeScale(1.2, 1.2);
+        } completion:^(BOOL finished) {
+            
+        }];
         
         [UIView animateWithDuration:.3 animations:^{
             dateBtn.transform = CGAffineTransformIdentity;
@@ -361,6 +388,7 @@ static bool isClicked;
             curveBtn.transform = CGAffineTransformIdentity;
         }];
         
+        
     }else {
         
         [self hideBtn];
@@ -368,6 +396,8 @@ static bool isClicked;
     isClicked = !isClicked;
     
 }
+
+//打开曲线图
 - (void)curveAction {
     
         SCViewController *curveVC = [[SCViewController alloc] init];
@@ -387,6 +417,8 @@ static bool isClicked;
         }
         [self.navigationController showViewController:curveVC sender:nil];
 }
+
+//选取时间段进行检索
 - (void)dateAction {
     
     KSDatePicker* picker = [[KSDatePicker alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 40, 300)];
@@ -413,6 +445,9 @@ static bool isClicked;
         self.view = nil;
     }
 }
+
+#pragma mark - chose Time
+//前一天时间或者上个月的数据
 - (IBAction)previousData:(UIButton *)sender {
     
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
@@ -466,6 +501,7 @@ static bool isClicked;
             break;
     }
 }
+//后一天的数据或者下个月的数据
 - (IBAction)nextData:(UIButton *)sender {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     
@@ -598,6 +634,7 @@ static bool isClicked;
     }];
 }
 
+#pragma mark - requestData
 //请求一天每小时水表抄收数据
 - (void)requestHourData:(NSString *)date {
 
@@ -713,7 +750,6 @@ static bool isClicked;
             
             NSString *count = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"count"]];
             if ([count isEqualToString:@"0"]) {
-//                [SCToastView showInView:_tableView text:@"暂无数据" duration:4 autoHide:YES];
                 [SVProgressHUD showInfoWithStatus:@"暂无数据"];
             }
             NSDictionary *meter1Dic = [responseObject objectForKey:@"meters"];
@@ -749,16 +785,6 @@ static bool isClicked;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-//        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"服务器连接失败" preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//            
-//        }];
-//        
-//        [alertVC addAction:action];
-//        [self presentViewController:alertVC animated:YES completion:^{
-//            
-//        }];
     [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"请求失败：%@",error]];
     }];
     

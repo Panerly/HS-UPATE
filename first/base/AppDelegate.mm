@@ -15,16 +15,6 @@
 
 //ShareSDK头文件
 #import <ShareSDK/ShareSDK.h>
-//以下是ShareSDK必须添加的依赖库：
-//1、SystemConfiguration.framework
-//2、QuartzCore.framework
-//3、CoreTelephony.framework
-//4、libicucore.dylib
-//5、libz.1.2.5.dylib
-//6、Security.framework
-//7、JavaScriptCore.framework
-//8、libstdc++.dylib
-//9、CoreText.framework
 
 //＝＝＝＝＝＝＝＝＝＝以下是各个平台SDK的头文件，根据需要集成的平台添加＝＝＝
 //腾讯开放平台（对应QQ和QQ空间）SDK头文件
@@ -38,10 +28,9 @@
 //以下是微信SDK的依赖库：
 //libsqlite3.dylib
 
-
-////Pinterest SDK头文件
+//Pinterest SDK头文件
 //#import <Pinterest/Pinterest.h>
-
+#import <UserNotifications/UserNotifications.h>
 BMKMapManager* _mapManager;
 
 @interface AppDelegate ()
@@ -57,6 +46,29 @@ BMKMapManager* _mapManager;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
+    
+    
+    //条件编译  // 条件编译指令：根据判断条件，编译不同区块的代码
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= _IPHONE80_
+    
+    //1 配置远程推送收到消息后的状态:有脚标 有声音 有弹框
+    UIUserNotificationSettings *set = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert) categories:nil];
+    
+    //2 将配置添加进远程托送的设置中
+    [[UIApplication sharedApplication] registerUserNotificationSettings:set];
+    
+    //3 注册远程推送
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    
+#else
+    
+    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
+    
+#endif
+    
+    
+    
+    
     //c侧滑返回
     [MLTransition validatePanBackWithMLTransitionGestureRecognizerType:(MLTransitionGestureRecognizerTypePan)];
     
@@ -113,6 +125,35 @@ BMKMapManager* _mapManager;
     //[self getPushMessage];
     
     return YES;
+}
+//从苹果APNS获取Token成功
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+    NSLog(@"远程推送能力注册成功，deviceToken:%@",deviceToken);
+}
+
+//注册失败（获取Token）的话会执行的方法（设备不具备推送能力）
+-(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
+    NSLog(@"远程推送注册失败 原因是：%@",error);
+}
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+
+    NSLog(@"iOS6及以下系统，收到通知:%@", [self logDic:userInfo]);
+}
+
+
+
+- (void)application:(UIApplication *)application
+didReceiveRemoteNotification:(NSDictionary *)userInfo
+fetchCompletionHandler:
+(void (^)(UIBackgroundFetchResult))completionHandler {
+    
+    NSLog(@"iOS7及以上系统，收到通知:%@", [self logDic:userInfo]);
+    completionHandler(UIBackgroundFetchResultNewData);
+}
+
+- (NSString*)logDic:(NSDictionary*)info {
+    
+    return @"";
 }
 
 
