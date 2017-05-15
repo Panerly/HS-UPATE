@@ -1236,6 +1236,7 @@
 		45A520BA1DB60160006BD05E /* TLCityPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCityPickerDelegate.h; sourceTree = "<group>"; };
 		45A520BB1DB60160006BD05E /* TLCityPickerSearchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCityPickerSearchResultController.h; sourceTree = "<group>"; };
 		45A520BC1DB60160006BD05E /* TLCityPickerSearchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLCityPickerSearchResultController.m; sourceTree = "<group>"; };
+		45A544B81EC97C70000328B9 /* 杭州水表.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "杭州水表.entitlements"; sourceTree = "<group>"; };
 		45AA96E01E1367620048B5A9 /* BigMeterDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BigMeterDetailCell.h; sourceTree = "<group>"; };
 		45AA96E11E1367620048B5A9 /* BigMeterDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BigMeterDetailCell.m; sourceTree = "<group>"; };
 		45AA96E21E1367620048B5A9 /* BigMeterDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BigMeterDetailCell.xib; sourceTree = "<group>"; };
@@ -2659,12 +2660,14 @@
 		45978D551CED7E6400BF3C0E = {
 			isa = PBXGroup;
 			children = (
+				45A544B81EC97C70000328B9 /* 杭州水表.entitlements */,
 				4521A9CA1D5830D4003BCDDB /* framework */,
 				45978D601CED7E6400BF3C0E /* first */,
 				45A1478F1EA70E4400F8D481 /* Assets.xcassets */,
 				45978D7A1CED7E6400BF3C0E /* firstTests */,
 				45978D851CED7E6400BF3C0E /* firstUITests */,
 				45978D5F1CED7E6400BF3C0E /* Products */,
+				45A544B91EC98353000328B9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2786,6 +2789,13 @@
 				45A520BC1DB60160006BD05E /* TLCityPickerSearchResultController.m */,
 			);
 			path = TLCityPicker;
+			sourceTree = "<group>";
+		};
+		45A544B91EC98353000328B9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		45BF598F1D1A379900F3EFBD /* 任务详情 */ = {
@@ -3582,6 +3592,21 @@
 					45978D5D1CED7E6400BF3C0E = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = TS36BGK54V;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.SafariKeychain = {
+								enabled = 0;
+							};
+							com.apple.WAC = {
+								enabled = 0;
+							};
+						};
 					};
 					45978D761CED7E6400BF3C0E = {
 						CreatedOnToolsVersion = 7.1;
@@ -4318,7 +4343,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "杭州水表.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = TS36BGK54V;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4344,6 +4371,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hzsb.hzsb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -4352,7 +4381,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "杭州水表.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = TS36BGK54V;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4378,6 +4409,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hzsb.hzsb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
